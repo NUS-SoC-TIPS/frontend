@@ -1,27 +1,39 @@
 import { ReactElement } from 'react';
+import {
+  Box,
+  ChakraProvider,
+  Code,
+  Grid,
+  Link,
+  Text,
+  theme,
+  VStack,
+} from '@chakra-ui/react';
 
-import logo from './logo.svg';
-import './App.css';
+import { ColorModeSwitcher } from './ColorModeSwitcher';
+import { Logo } from './Logo';
 
-function App(): ReactElement<'div'> {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img alt="logo" className="App-logo" src={logo} />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
-export default App;
+export const App = (): ReactElement => (
+  <ChakraProvider theme={theme}>
+    <Box fontSize="xl" textAlign="center">
+      <Grid minH="100vh" p={3}>
+        <ColorModeSwitcher justifySelf="flex-end" />
+        <VStack spacing={8}>
+          <Logo h="40vmin" pointerEvents="none" />
+          <Text>
+            Edit <Code fontSize="xl">src/App.tsx</Code> and save to reload.
+          </Text>
+          <Link
+            color="teal.500"
+            fontSize="2xl"
+            href="https://chakra-ui.com"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Learn Chakra
+          </Link>
+        </VStack>
+      </Grid>
+    </Box>
+  </ChakraProvider>
+);
