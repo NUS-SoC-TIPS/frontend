@@ -1,13 +1,15 @@
 import { ReactElement } from 'react';
 import { Box, Container } from '@chakra-ui/react';
 
+import { Navbar } from 'components/navbar';
+
 export const Page = ({
   children,
 }: {
   children: ReactElement;
 }): ReactElement<typeof Box> => (
   <Box as="section" height="100vh" overflowY="auto">
-    {/* <Navbar /> */}
+    <Navbar />
     <Container
       maxWidth="100%"
       pb={{ base: '12', lg: '24' }}
