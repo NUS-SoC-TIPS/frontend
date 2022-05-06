@@ -1,2 +1,0 @@
-- What is an operator that can tell you if a number divides 3 / 5?
-- What is the best way to get a range of numbers from 1 to n?

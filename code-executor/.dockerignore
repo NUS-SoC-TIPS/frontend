@@ -1,6 +1,0 @@
-.mypy_cache
-.pytest_cache
-.coverage
-node_modules
-.env
-.env.*
