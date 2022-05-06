@@ -6,7 +6,6 @@ import {
   Circle,
   Heading,
   Img,
-  LightMode,
   Stack,
   Text,
   VisuallyHidden,
@@ -16,12 +15,8 @@ import { GitHubIcon } from 'components/icons/GitHubIcon';
 
 export const Hero = (): ReactElement<typeof Box> => {
   return (
-    <Box as="section" bg="gray.800" color="white" py="2.5rem">
-      <Box
-        maxW={{ base: 'xl', md: '5xl' }}
-        mx="auto"
-        px={{ base: '6', md: '8' }}
-      >
+    <Box as="section" py="2.5rem">
+      <Box maxW={{ base: 'xl', md: '5xl' }} mx="auto">
         <Box textAlign="center">
           <Heading
             as="h1"
@@ -47,22 +42,19 @@ export const Hero = (): ReactElement<typeof Box> => {
           mt="10"
           spacing="4"
         >
-          {/* @ts-expect-error: Light mode can take in a child */}
-          <LightMode>
-            <Button
-              as="a"
-              colorScheme="pink"
-              fontSize="md"
-              fontWeight="bold"
-              href="#"
-              iconSpacing="3"
-              leftIcon={<GitHubIcon boxSize="5" />}
-              px="8"
-              size="lg"
-            >
-              Get started with GitHub
-            </Button>
-          </LightMode>
+          <Button
+            as="a"
+            fontSize="md"
+            fontWeight="bold"
+            href="#"
+            iconSpacing="3"
+            leftIcon={<GitHubIcon boxSize="5" />}
+            px="8"
+            size="lg"
+            variant="primary"
+          >
+            Get started with GitHub
+          </Button>
         </Stack>
 
         <Box
@@ -82,7 +74,7 @@ export const Hero = (): ReactElement<typeof Box> => {
             }}
             as="button"
             bg="white"
-            color="pink.600"
+            color="accent"
             fontSize="xl"
             left="50%"
             position="absolute"
