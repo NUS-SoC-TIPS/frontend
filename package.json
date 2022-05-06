@@ -13,7 +13,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "prettier --check \"src/**/*.{ts,tsx}\" && eslint . --ext .ts,.js,.tsx,.jsx"
+    "lint": "prettier --check \"src/**/*.{ts,tsx}\" && eslint . --ext .ts,.js,.tsx,.jsx",
+    "prepare": "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || husky install"
   },
   "eslintConfig": {
     "extends": [
