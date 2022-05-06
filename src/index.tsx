@@ -5,6 +5,7 @@ import { ColorModeScript } from '@chakra-ui/react';
 import { App } from './app';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
+import '@fontsource/inter/variable.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,

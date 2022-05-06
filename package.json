@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@chakra-ui/pro-theme": "^0.0.47",
     "@chakra-ui/react": "^1.8.8",
     "@emotion/react": "^11.0.0",
     "@emotion/styled": "^11.0.0",
+    "@fontsource/inter": "^4.5.10",
     "framer-motion": "^4.0.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
