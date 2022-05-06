@@ -1,4 +1,4 @@
-# Contributing to Code2Gather
+# Contributing to TIPS Frontend
 
 _This document is inspired by the [Angular `CONTRIBUTING.md`](https://github.com/angular/angular/blob/master/CONTRIBUTING.md)._
 
@@ -38,7 +38,7 @@ Any line of the commit message cannot be longer than 100 characters.
   │       │             │
   │       │             └─⫸ Summary in present tense. Not capitalized. No period at the end.
   │       │
-  │       └─⫸ Commit Scope: frontend|auth|pairing|coding|code-executor|video|room|history
+  │       └─⫸ Commit Scope: app|assets|components|...
   │
   └─⫸ Commit Type: build|ci|docs|feat|fix|perf|refactor|test
 ```
@@ -63,22 +63,24 @@ Must be one of the following:
 
 #### Scope
 
-The scope should be the name of the npm package affected (as perceived by the person reading the changelog generated from commit messages).
+The scope should be the name of the subdirectory affected (as perceived by the person reading the changelog generated from commit messages).
 
-The following is the list of supported scopes:
+The following is the list of supported scopes (to be extended as new subdirectories are added):
 
-- `frontend`
-- `auth`
-- `pairing`
-- `coding`
-- `code-executor`
-- `video`
-- `room`
-- `history`
+- `app`
+- `assets`
+- `components`
+- `constants`
+- `contexts`
+- `lib`
+- `reducers`
+- `routes`
+- `types`
+- `utils`
 
 There are currently a few exceptions to the "use package name" rule:
 
-- none/empty string: useful for `test` and `refactor` changes that are done across all packages (e.g. `test: add missing unit tests`) and for docs changes that are not related to a specific package (e.g. `docs: fix typo in tutorial`).
+- none/empty string: useful for `test` and `refactor` changes that are done across all subdirectories (e.g. `test: add missing unit tests`) and for docs changes that are not related to a specific subdirectory (e.g. `docs: fix typo in tutorial`).
 
 #### Summary
 
@@ -92,7 +94,7 @@ Use the summary field to provide a succinct description of the change:
 
 Just as in the summary, use the imperative, present tense: "fix" not "fixed" nor "fixes".
 
-Explain the motivation for the change in the commit message body. This commit message should explain _why_ you are making the change. You can include a comparison of the previous behavior with the new behavior in order to illustrate the impact of the change.
+Explain the motivation for the change in the commit message body. This commit message should explain _why_ you are making the change. You can include a comparison of the previous behaviour with the new behaviour in order to illustrate the impact of the change.
 
 #### Commit Message Footer
 
