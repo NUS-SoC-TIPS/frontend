@@ -1,8 +1,12 @@
-import { ReactElement, ReactNode } from 'react';
+import { PropsWithChildren, ReactElement } from 'react';
 import { ChakraProvider, theme } from '@chakra-ui/react';
 import { render, RenderOptions, RenderResult } from '@testing-library/react';
 
-const AllProviders = ({ children }: { children?: ReactNode }): ReactElement => (
+type Props = PropsWithChildren<RenderOptions>;
+
+const AllProviders = ({
+  children,
+}: Props): ReactElement<Props, typeof ChakraProvider> => (
   <ChakraProvider theme={theme}>{children}</ChakraProvider>
 );
 
