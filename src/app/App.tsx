@@ -6,8 +6,6 @@ import { Loading } from 'components/loading';
 import { useUser } from 'contexts/UserContext';
 import { retryPromise } from 'utils/promiseUtils';
 
-import { theme } from './theme';
-
 // Code splitting with React.lazy and Suspense
 type ModuleType = typeof import('./AuthenticatedApp');
 
@@ -29,10 +27,8 @@ export const App = (): ReactElement<typeof ChakraProvider> => {
   }, []);
 
   return (
-    <ChakraProvider theme={theme}>
-      <Suspense fallback={<Loading />}>
-        {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
-      </Suspense>
-    </ChakraProvider>
+    <Suspense fallback={<Loading />}>
+      {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+    </Suspense>
   );
 };

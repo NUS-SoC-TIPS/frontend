@@ -1,4 +1,7 @@
 import { PropsWithChildren, ReactElement } from 'react';
+import { ChakraProvider } from '@chakra-ui/react';
+
+import { theme } from 'app/theme';
 
 import { AuthProvider } from './AuthContext';
 import { UserProvider } from './UserContext';
@@ -7,9 +10,11 @@ const AppProviders = ({
   children,
 }: PropsWithChildren<unknown>): ReactElement => {
   return (
-    <AuthProvider>
-      <UserProvider>{children}</UserProvider>
-    </AuthProvider>
+    <ChakraProvider theme={theme}>
+      <AuthProvider>
+        <UserProvider>{children}</UserProvider>
+      </AuthProvider>
+    </ChakraProvider>
   );
 };
 

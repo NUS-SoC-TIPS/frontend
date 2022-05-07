@@ -1,11 +1,12 @@
 import { screen } from '@testing-library/react';
 
-import { render } from '../../test-utils';
+import { emptyFunction } from 'utils/functionUtils';
+import { render } from 'utils/testUtils';
 
-import { Landing } from './Landing';
+import { Hero } from './Hero';
 
 test('renders page title', () => {
-  render(<Landing />);
+  render(<Hero isGettingStarted={false} onGetStarted={emptyFunction} />);
   const titleElement = screen.getByText(
     /Tech interview preparation made easier/i,
   );
