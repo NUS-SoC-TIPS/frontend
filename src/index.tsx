@@ -1,6 +1,9 @@
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import { ColorModeScript } from '@chakra-ui/react';
+
+import AppProviders from 'contexts/AppProviders';
 
 import { App } from './app';
 import reportWebVitals from './reportWebVitals';
@@ -10,10 +13,15 @@ import '@fontsource/inter/variable.css';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
+
 root.render(
   <StrictMode>
-    <ColorModeScript />
-    <App />
+    <BrowserRouter>
+      <AppProviders>
+        <ColorModeScript initialColorMode="dark" />
+        <App />
+      </AppProviders>
+    </BrowserRouter>
   </StrictMode>,
 );
 
