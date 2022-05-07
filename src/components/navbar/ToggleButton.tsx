@@ -15,8 +15,13 @@ const Bar = chakra('span', {
   },
 });
 
-const ToggleIcon = (props: { active: boolean }): ReactElement<typeof Box> => {
-  const { active } = props;
+interface ToggleIconProps {
+  isActive: boolean;
+}
+
+const ToggleIcon = ({
+  isActive: active,
+}: ToggleIconProps): ReactElement<ToggleIconProps, typeof Box> => {
   return (
     <Box
       aria-hidden={true}
@@ -47,12 +52,12 @@ interface ToggleButtonProps extends IconButtonProps {
 
 export const ToggleButton = (
   props: ToggleButtonProps,
-): ReactElement<typeof IconButton> => {
+): ReactElement<ToggleButtonProps, typeof IconButton> => {
   const { isOpen, ...iconButtonProps } = props;
   return (
     <IconButton
       color={isOpen ? 'white' : 'muted'}
-      icon={<ToggleIcon active={isOpen} />}
+      icon={<ToggleIcon isActive={isOpen} />}
       position="relative"
       size="sm"
       variant="unstyled"

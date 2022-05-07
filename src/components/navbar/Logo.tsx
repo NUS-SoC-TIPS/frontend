@@ -3,7 +3,7 @@ import { chakra, HTMLChakraProps } from '@chakra-ui/react';
 
 export const Logo = (
   props: HTMLChakraProps<'svg'>,
-): ReactElement<typeof chakra.svg> => (
+): ReactElement<HTMLChakraProps<'svg'>, typeof chakra.svg> => (
   <chakra.svg
     color="accent"
     fill="accent"

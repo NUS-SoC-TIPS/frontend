@@ -1,31 +1,35 @@
 import { ReactElement } from 'react';
 import {
   FiBarChart2,
-  FiBookmark,
   FiCheckSquare,
-  FiHelpCircle,
   FiHome,
-  FiSearch,
+  FiLogOut,
   FiSettings,
-  FiUsers,
+  FiUser,
 } from 'react-icons/fi';
-// import { Icon } from '@chakra-ui/icons';
-import {
-  Divider,
-  Flex,
-  Icon,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Stack,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { Divider, Flex, Stack, useColorModeValue } from '@chakra-ui/react';
+
+import { INTERVIEWS, LEETCODE, SETTINGS, TASKS } from 'constants/routes';
+import { User } from 'types/models/user';
+
+import { UserProfile } from '../userProfile';
 
 import { Logo } from './Logo';
 import { NavButton } from './NavButton';
-import { UserProfile } from './UserProfile';
 
-export const Sidebar = (): ReactElement<typeof Flex> => (
+interface Props {
+  user: User;
+  logout: () => void | Promise<void>;
+  pathname: string;
+  navigate: (path: string) => void;
+}
+
+export const Sidebar = ({
+  user,
+  logout,
+  pathname,
+  navigate,
+}: Props): ReactElement<Props, typeof Flex> => (
   <Flex as="section" bg="bg-canvas" minH="100vh">
     <Flex
       bg="bg-surface"
@@ -36,38 +40,49 @@ export const Sidebar = (): ReactElement<typeof Flex> => (
       px={{ base: '4', sm: '6' }}
       py={{ base: '6', sm: '8' }}
     >
-      <Stack justify="space-between" spacing="1">
+      <Stack justify="space-between" spacing="1" width="100%">
         <Stack shouldWrapChildren={true} spacing={{ base: '5', sm: '6' }}>
-          <Logo />
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <Icon as={FiSearch} boxSize="5" color="muted" />
-            </InputLeftElement>
-            <Input placeholder="Search" />
-          </InputGroup>
-          <Stack spacing="1">
-            <NavButton icon={FiHome} label="Home" />
+          <Logo pl={4} />
+          <Stack spacing="2">
             <NavButton
-              aria-current="page"
-              icon={FiBarChart2}
-              label="Dashboard"
+              aria-current={pathname === INTERVIEWS ? 'page' : undefined}
+              icon={FiHome}
+              label="Interviews"
+              onClick={(): void => navigate(INTERVIEWS)}
             />
-            <NavButton icon={FiCheckSquare} label="Tasks" />
-            <NavButton icon={FiBookmark} label="Bookmarks" />
-            <NavButton icon={FiUsers} label="Users" />
+            <NavButton
+              aria-current={pathname === LEETCODE ? 'page' : undefined}
+              icon={FiBarChart2}
+              label="LeetCode"
+              onClick={(): void => navigate(LEETCODE)}
+            />
+            <NavButton
+              aria-current={pathname === TASKS ? 'page' : undefined}
+              icon={FiCheckSquare}
+              label="Tasks"
+              onClick={(): void => navigate(TASKS)}
+            />
           </Stack>
         </Stack>
         <Stack spacing={{ base: '5', sm: '6' }}>
-          <Stack spacing="1">
-            <NavButton icon={FiHelpCircle} label="Help" />
-            <NavButton icon={FiSettings} label="Settings" />
+          <Stack spacing="2">
+            <NavButton
+              aria-current={pathname === SETTINGS ? 'page' : undefined}
+              icon={FiSettings}
+              label="Settings"
+              onClick={(): void => navigate(SETTINGS)}
+            />
+            <NavButton
+              icon={FiUser}
+              label="GitHub Profile"
+              onClick={(): void => {
+                window.open(user.profileUrl);
+              }}
+            />
+            <NavButton icon={FiLogOut} label="Logout" onClick={logout} />
           </Stack>
           <Divider />
-          <UserProfile
-            email="chris@chakra-ui.com"
-            image="https://tinyurl.com/yhkm2ek8"
-            name="Christoph Winston"
-          />
+          <UserProfile user={user} />
         </Stack>
       </Stack>
     </Flex>

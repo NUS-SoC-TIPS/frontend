@@ -1,13 +1,11 @@
-import { ReactElement } from 'react';
+import { PropsWithChildren, ReactElement } from 'react';
 import { Box, Container } from '@chakra-ui/react';
 
 import { Navbar } from 'components/navbar';
 
 export const Page = ({
   children,
-}: {
-  children: ReactElement;
-}): ReactElement<typeof Box> => (
+}: PropsWithChildren<unknown>): ReactElement<typeof Box> => (
   <Box as="section" height="100vh" overflowY="auto">
     <Navbar />
     <Container

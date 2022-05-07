@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { FiSettings } from 'react-icons/fi';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
-  Avatar,
   Box,
   Button,
   ButtonGroup,
@@ -17,14 +17,23 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
+import { INTERVIEWS, LEETCODE, SETTINGS, TASKS } from 'constants/routes';
+import { useAuth } from 'contexts/AuthContext';
+import { useUser } from 'contexts/UserContext';
+
 import { Logo } from './Logo';
 import { Sidebar } from './Sidebar';
 import { ToggleButton } from './ToggleButton';
+import { UserPopover } from './UserPopover';
 
 export const Navbar = (): ReactElement<typeof Box> => {
   const isDesktop = useBreakpointValue({ base: false, lg: true });
   const { isOpen, onToggle, onClose } = useDisclosure();
-  const user = null;
+  const user = useUser();
+  const { logout } = useAuth();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const { isLoggingIn, login } = useAuth();
 
   return (
     <Box
@@ -38,9 +47,24 @@ export const Navbar = (): ReactElement<typeof Box> => {
             <Logo />
             {isDesktop && user && (
               <ButtonGroup spacing="1" variant="ghost">
-                <Button aria-current="page">Interviews</Button>
-                <Button>LeetCode</Button>
-                <Button>Tasks</Button>
+                <Button
+                  aria-current={pathname === INTERVIEWS ? 'page' : undefined}
+                  onClick={(): void => navigate(INTERVIEWS)}
+                >
+                  Interviews
+                </Button>
+                <Button
+                  aria-current={pathname === LEETCODE ? 'page' : undefined}
+                  onClick={(): void => navigate(LEETCODE)}
+                >
+                  LeetCode
+                </Button>
+                <Button
+                  aria-current={pathname === TASKS ? 'page' : undefined}
+                  onClick={(): void => navigate(TASKS)}
+                >
+                  Tasks
+                </Button>
               </ButtonGroup>
             )}
           </HStack>
@@ -50,17 +74,23 @@ export const Navbar = (): ReactElement<typeof Box> => {
                 <>
                   <ButtonGroup spacing="1" variant="ghost">
                     <IconButton
+                      aria-current={pathname === SETTINGS ? 'page' : undefined}
                       aria-label="Settings"
                       icon={<FiSettings fontSize="1.25rem" />}
+                      onClick={(): void => navigate(SETTINGS)}
                     />
                   </ButtonGroup>
-                  <Avatar
-                    boxSize="10"
-                    name="Christoph Winston"
-                    src="https://tinyurl.com/yhkm2ek8"
-                  />
+                  <UserPopover logout={logout} user={user} />
                 </>
-              ) : null}
+              ) : (
+                <Button
+                  isLoading={isLoggingIn}
+                  onClick={login}
+                  variant="primary"
+                >
+                  Log in
+                </Button>
+              )}
             </HStack>
           ) : (
             <>
@@ -75,12 +105,15 @@ export const Navbar = (): ReactElement<typeof Box> => {
                 onClose={onClose}
                 placement="left"
                 preserveScrollBarGap={true}
-                // Only disabled for showcase
-                trapFocus={false}
               >
                 <DrawerOverlay />
                 <DrawerContent>
-                  <Sidebar />
+                  <Sidebar
+                    logout={logout}
+                    navigate={navigate}
+                    pathname={pathname}
+                    user={user}
+                  />
                 </DrawerContent>
               </Drawer>
             </>
