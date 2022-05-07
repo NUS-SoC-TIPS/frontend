@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { ReactElement } from 'react';
 import { Box } from '@chakra-ui/react';
 import { useLottie } from 'lottie-react';
 
@@ -20,7 +20,9 @@ interface Props {
 /**
  * Height is in em.
  */
-const LoadingAnimation: FC<Props> = ({ width = 10 }) => {
+const LoadingAnimation = ({
+  width = 10,
+}: Props): ReactElement<Props, typeof Box> => {
   const { View } = useLottie(defaultOptions);
 
   return (
