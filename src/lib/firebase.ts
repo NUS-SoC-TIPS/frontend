@@ -6,6 +6,8 @@ import {
   UserCredential,
 } from 'firebase/auth';
 
+import { emptyPromiseFunction } from 'utils/functionUtils';
+
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -18,13 +20,20 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
-// Initialize Firebase
-initializeApp(firebaseConfig);
+// eslint-disable-next-line import/no-mutable-exports
+let signInWithFirebase;
 
-const auth = getAuth();
-const githubAuthProvider = new GithubAuthProvider();
+if (process.env.NODE_ENV === 'test') {
+  signInWithFirebase = emptyPromiseFunction;
+} else {
+  // Initialize Firebase
+  initializeApp(firebaseConfig);
 
-const signInWithFirebase = (): Promise<UserCredential> =>
-  signInWithPopup(auth, githubAuthProvider);
+  const auth = getAuth();
+  const githubAuthProvider = new GithubAuthProvider();
+
+  signInWithFirebase = (): Promise<UserCredential> =>
+    signInWithPopup(auth, githubAuthProvider);
+}
 
 export { signInWithFirebase };
