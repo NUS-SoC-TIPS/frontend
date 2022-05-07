@@ -21,7 +21,7 @@ const firebaseConfig = {
 };
 
 // eslint-disable-next-line import/no-mutable-exports
-let signInWithFirebase;
+let signInWithFirebase: () => Promise<UserCredential | void>;
 
 if (process.env.NODE_ENV === 'test') {
   signInWithFirebase = emptyPromiseFunction;

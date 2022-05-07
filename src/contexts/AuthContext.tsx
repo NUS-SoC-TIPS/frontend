@@ -66,6 +66,10 @@ const AuthProvider = (props: PropsWithChildren<unknown>): ReactElement => {
   const login = async (): Promise<void> => {
     setIsLoggingIn(true);
     const response = await signInWithFirebase();
+    if (!response) {
+      setIsLoggingIn(false);
+      return Promise.reject(new Error('Failed to sign in'));
+    }
     const token = await response.user.getIdToken();
     const additionalInfo = getAdditionalUserInfo(response);
     const githubUsername = additionalInfo?.username;
