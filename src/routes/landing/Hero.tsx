@@ -13,7 +13,15 @@ import {
 
 import { GitHubIcon } from 'components/icons/GitHubIcon';
 
-export const Hero = (): ReactElement<typeof Box> => {
+interface Props {
+  onGetStarted: () => void | Promise<void>;
+  isGettingStarted: boolean;
+}
+
+export const Hero = ({
+  onGetStarted,
+  isGettingStarted,
+}: Props): ReactElement<Props, typeof Box> => {
   return (
     <Box as="section" py="2.5rem">
       <Box maxW={{ base: 'xl', md: '5xl' }} mx="auto">
@@ -27,7 +35,7 @@ export const Hero = (): ReactElement<typeof Box> => {
             mx="auto"
             size="3xl"
           >
-            Tech interview preparation made easier
+            Tech interview preparation made easier.
           </Heading>
           <Text fontSize="xl" maxW="xl" mt="4" mx="auto">
             Ace your upcoming technical interviews by practicing mock interviews
@@ -48,7 +56,9 @@ export const Hero = (): ReactElement<typeof Box> => {
             fontWeight="bold"
             href="#"
             iconSpacing="3"
+            isLoading={isGettingStarted}
             leftIcon={<GitHubIcon boxSize="5" />}
+            onClick={onGetStarted}
             px="8"
             size="lg"
             variant="primary"
