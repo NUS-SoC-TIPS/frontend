@@ -19,6 +19,7 @@ export interface AuthContextInterface {
   data: User | null;
   login(): Promise<void>;
   logout(): Promise<void>;
+  isLoggingIn: boolean;
 }
 
 export const AuthContext = createContext<AuthContextInterface | undefined>(
@@ -30,6 +31,7 @@ const AuthProvider = (props: PropsWithChildren<unknown>): ReactElement => {
   const [data, setData] = useState<User | null>(null);
   const [isError, setIsError] = useState(false);
   const [hasFetchedOnce, setHasFetchedOnce] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const fetchData = useCallback(() => {
     setIsLoading(true);
@@ -62,10 +64,15 @@ const AuthProvider = (props: PropsWithChildren<unknown>): ReactElement => {
   }
 
   const login = async (): Promise<void> => {
+    setIsLoggingIn(true);
     const response = await signInWithFirebase();
     const token = await response.user.getIdToken();
     const additionalInfo = getAdditionalUserInfo(response);
     const githubUsername = additionalInfo?.username;
+    const name =
+      (additionalInfo?.profile?.name as string | null) ??
+      response.user.displayName ??
+      githubUsername;
     // TODO: Provide a default photo url and null coalesce it
     const photoUrl = (additionalInfo?.profile?.avatar_url ??
       response.user.photoURL) as string | undefined;
@@ -74,18 +81,27 @@ const AuthProvider = (props: PropsWithChildren<unknown>): ReactElement => {
         ? `https://github.com/${githubUsername}`
         : undefined;
 
-    if (!githubUsername || !photoUrl || !profileUrl) {
+    if (!githubUsername || !photoUrl || !profileUrl || !name) {
+      setIsLoggingIn(false);
       return Promise.reject(new Error('Missing credentials'));
     }
 
-    return apiLogin({ token, githubUsername, photoUrl, profileUrl })
+    return apiLogin({ token, name, githubUsername, photoUrl, profileUrl })
       .then(fetchData)
-      .catch((e: Error) => Promise.reject(e));
+      .catch((e: Error) => {
+        setIsLoggingIn(false);
+        Promise.reject(e);
+      });
   };
 
   const logout = (): Promise<void> => apiLogout().then(fetchData);
 
-  return <AuthContext.Provider value={{ data, login, logout }} {...props} />;
+  return (
+    <AuthContext.Provider
+      value={{ data, login, logout, isLoggingIn }}
+      {...props}
+    />
+  );
 };
 
 const useAuth = (): AuthContextInterface => {
