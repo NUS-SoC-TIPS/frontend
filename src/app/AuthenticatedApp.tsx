@@ -1,12 +1,14 @@
 import { ReactElement } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { Landing } from 'routes/landing';
+import { INTERVIEWS } from 'constants/routes';
+import { Interviews } from 'routes/interviews';
 
 const AuthenticatedApp = (): ReactElement<typeof Routes> => {
   return (
     <Routes>
-      <Route element={<Landing />} path="/" />
+      <Route element={<Interviews />} path={INTERVIEWS} />
+      <Route element={<Navigate to={INTERVIEWS} />} path="*" />
     </Routes>
   );
 };

@@ -1,12 +1,14 @@
 import { ReactElement } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
+import { ROOT } from 'constants/routes';
 import { Landing } from 'routes/landing';
 
 const UnauthenticatedApp = (): ReactElement<typeof Routes> => {
   return (
     <Routes>
-      <Route element={<Landing />} path="/" />
+      <Route element={<Landing />} path={ROOT} />
+      <Route element={<Navigate to={ROOT} />} path="*" />
     </Routes>
   );
 };
