@@ -60,9 +60,7 @@ export const Navbar = (): ReactElement<typeof Box> => {
                     src="https://tinyurl.com/yhkm2ek8"
                   />
                 </>
-              ) : (
-                <Button variant="primary">Log in</Button>
-              )}
+              ) : null}
             </HStack>
           ) : (
             <>
