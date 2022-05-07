@@ -8,6 +8,18 @@ export const theme = extendTheme(
       initialColorMode: 'dark',
       useSystemColorMode: false,
     },
+    semanticTokens: {
+      colors: {
+        error: {
+          default: 'red.600',
+          _dark: 'red.400',
+        },
+        'error-subtle': {
+          default: 'red.500',
+          _dark: 'red.300',
+        },
+      },
+    },
   },
   proTheme,
 );
