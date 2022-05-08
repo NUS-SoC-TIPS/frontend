@@ -91,7 +91,10 @@ const AuthProvider = (props: PropsWithChildren<unknown>): ReactElement => {
     }
 
     return apiLogin({ token, name, githubUsername, photoUrl, profileUrl })
-      .then(fetchData)
+      .then(() => {
+        fetchData();
+        setIsLoggingIn(false);
+      })
       .catch((e: Error) => {
         setIsLoggingIn(false);
         Promise.reject(e);

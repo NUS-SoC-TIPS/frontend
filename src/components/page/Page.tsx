@@ -1,6 +1,7 @@
 import { PropsWithChildren, ReactElement } from 'react';
 import { Box, Container } from '@chakra-ui/react';
 
+import { Footer } from 'components/footer';
 import { Navbar } from 'components/navbar';
 
 export const Page = ({
@@ -15,5 +16,6 @@ export const Page = ({
     >
       {children}
     </Container>
+    <Footer />
   </Box>
 );

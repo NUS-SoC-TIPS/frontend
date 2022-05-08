@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { FaMoon, FaSun } from 'react-icons/fa';
+import { FiMoon, FiSun } from 'react-icons/fi';
 import {
   IconButton,
   IconButtonProps,
@@ -7,14 +7,28 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 
-type ColorModeSwitcherProps = Omit<IconButtonProps, 'aria-label'>;
+import { NavButton } from './NavButton';
+
+type ColorModeSwitcherProps = Omit<IconButtonProps, 'aria-label'> & {
+  isSideBar: boolean;
+};
 
 export const ColorModeSwitcher = (
   props: ColorModeSwitcherProps,
 ): ReactElement<ColorModeSwitcherProps, typeof IconButton> => {
   const { toggleColorMode } = useColorMode();
   const text = useColorModeValue('dark', 'light');
-  const SwitchIcon = useColorModeValue(FaMoon, FaSun);
+  const SwitchIcon = useColorModeValue(FiMoon, FiSun);
+
+  if (props.isSideBar) {
+    return (
+      <NavButton
+        icon={SwitchIcon}
+        label={`Switch to ${text} mode`}
+        onClick={toggleColorMode}
+      />
+    );
+  }
 
   return (
     <IconButton

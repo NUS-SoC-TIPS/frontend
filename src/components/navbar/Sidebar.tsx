@@ -5,16 +5,16 @@ import {
   FiHome,
   FiLogOut,
   FiSettings,
-  FiUser,
 } from 'react-icons/fi';
 import { Divider, Flex, Stack, useColorModeValue } from '@chakra-ui/react';
 
 import { INTERVIEWS, LEETCODE, SETTINGS, TASKS } from 'constants/routes';
 import { User } from 'types/models/user';
 
+import { Logo } from '../logo';
 import { UserProfile } from '../userProfile';
 
-import { Logo } from './Logo';
+import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { NavButton } from './NavButton';
 
 interface Props {
@@ -66,18 +66,12 @@ export const Sidebar = ({
         </Stack>
         <Stack spacing={{ base: '5', sm: '6' }}>
           <Stack spacing="2">
+            <ColorModeSwitcher isSideBar={true} />
             <NavButton
               aria-current={pathname === SETTINGS ? 'page' : undefined}
               icon={FiSettings}
               label="Settings"
               onClick={(): void => navigate(SETTINGS)}
-            />
-            <NavButton
-              icon={FiUser}
-              label="GitHub Profile"
-              onClick={(): void => {
-                window.open(user.profileUrl);
-              }}
             />
             <NavButton icon={FiLogOut} label="Logout" onClick={logout} />
           </Stack>

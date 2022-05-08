@@ -21,7 +21,9 @@ import { INTERVIEWS, LEETCODE, SETTINGS, TASKS } from 'constants/routes';
 import { useAuth } from 'contexts/AuthContext';
 import { useUser } from 'contexts/UserContext';
 
-import { Logo } from './Logo';
+import { Logo } from '../logo';
+
+import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { Sidebar } from './Sidebar';
 import { ToggleButton } from './ToggleButton';
 import { UserPopover } from './UserPopover';
@@ -73,6 +75,7 @@ export const Navbar = (): ReactElement<typeof Box> => {
               {user ? (
                 <>
                   <ButtonGroup spacing="1" variant="ghost">
+                    <ColorModeSwitcher isSideBar={false} />
                     <IconButton
                       aria-current={pathname === SETTINGS ? 'page' : undefined}
                       aria-label="Settings"
@@ -83,13 +86,16 @@ export const Navbar = (): ReactElement<typeof Box> => {
                   <UserPopover logout={logout} user={user} />
                 </>
               ) : (
-                <Button
-                  isLoading={isLoggingIn}
-                  onClick={login}
-                  variant="primary"
-                >
-                  Log in
-                </Button>
+                <>
+                  <ColorModeSwitcher isSideBar={false} />
+                  <Button
+                    isLoading={isLoggingIn}
+                    onClick={login}
+                    variant="primary"
+                  >
+                    Log in
+                  </Button>
+                </>
               )}
             </HStack>
           ) : (
