@@ -1,8 +1,10 @@
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { ColorModeScript } from '@chakra-ui/react';
 
+import { store } from 'app/store';
 import AppProviders from 'contexts/AppProviders';
 
 import { App } from './app';
@@ -16,12 +18,14 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <StrictMode>
-    <BrowserRouter>
-      <AppProviders>
-        <ColorModeScript initialColorMode="dark" />
-        <App />
-      </AppProviders>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <AppProviders>
+          <ColorModeScript initialColorMode="dark" />
+          <App />
+        </AppProviders>
+      </BrowserRouter>
+    </Provider>
   </StrictMode>,
 );
 
