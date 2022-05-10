@@ -27,16 +27,19 @@ const handleJoinRoom = (socket: Socket): void => {
       partner: User | null;
       videoToken: string;
       code: string[];
+      isPartnerInRoom: boolean;
       language: Language;
       notes: string;
     }) => {
-      const { partner, videoToken, notes, code, language } = data;
+      const { partner, videoToken, notes, code, language, isPartnerInRoom } =
+        data;
       const doc = applyChanges(initEmptyDoc(), code);
       store.dispatch(
         updateRoomState({
           partner,
           videoToken,
           notes,
+          isPartnerInRoom,
           status: RoomJoiningStatus.SUCCESS,
         }),
       );
@@ -84,7 +87,15 @@ const handleRoomIsFull = (socket: Socket): void => {
 
 const handlePartnerJoinedRoom = (socket: Socket): void => {
   socket.on(ROOM_EVENTS.JOINED_ROOM, (data: { partner: User }) => {
-    store.dispatch(updateRoomState({ partner: data.partner }));
+    store.dispatch(
+      updateRoomState({ partner: data.partner, isPartnerInRoom: true }),
+    );
+  });
+};
+
+const handlePartnerDisconnected = (socket: Socket): void => {
+  socket.on(ROOM_EVENTS.PARTNER_DISCONNECTED, () => {
+    store.dispatch(updateRoomState({ isPartnerInRoom: false }));
   });
 };
 
@@ -101,4 +112,5 @@ export const initSocketForRoom = (
   handleRoomIsClosed(socket);
   handleRoomIsFull(socket);
   handlePartnerJoinedRoom(socket);
+  handlePartnerDisconnected(socket);
 };

@@ -16,6 +16,7 @@ export interface RoomState {
   partner: User | null;
   videoToken: string;
   notes: string;
+  isPartnerInRoom: boolean; // the partner may be set, but they might have disconnected
   userActualSlug: string; // only used if user is already in another room
   usersInRoom: User[]; // only used if room is full
 }
@@ -25,6 +26,7 @@ const initialState: RoomState = {
   partner: null,
   videoToken: '',
   notes: '',
+  isPartnerInRoom: false,
   userActualSlug: '',
   usersInRoom: [],
 };
@@ -42,6 +44,7 @@ export const roomSlice = createSlice({
         partner,
         videoToken,
         notes,
+        isPartnerInRoom,
         userActualSlug,
         usersInRoom,
       } = action.payload;
@@ -49,6 +52,7 @@ export const roomSlice = createSlice({
       state.partner = partner ?? state.partner;
       state.videoToken = videoToken ?? state.videoToken;
       state.notes = notes ?? state.notes;
+      state.isPartnerInRoom = isPartnerInRoom ?? state.isPartnerInRoom;
       state.userActualSlug = userActualSlug ?? state.userActualSlug;
       state.usersInRoom = usersInRoom ?? state.usersInRoom;
     },
@@ -57,6 +61,7 @@ export const roomSlice = createSlice({
       state.partner = null;
       state.videoToken = '';
       state.notes = '';
+      state.isPartnerInRoom = false;
       state.userActualSlug = '';
       state.usersInRoom = [];
     },
