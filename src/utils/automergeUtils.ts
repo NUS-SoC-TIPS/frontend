@@ -78,7 +78,7 @@ export const initDocWithText = (text: string): Doc => {
 
 export const applyChanges = (doc: Doc, allChanges: string[]): Doc => {
   const changes = base64StringToBinaryChange(allChanges);
-  const [newDoc] = Automerge.applyChanges<Doc>(doc, changes);
+  const [newDoc] = Automerge.applyChanges<Doc>(Automerge.clone(doc), changes);
 
   return newDoc;
 };
