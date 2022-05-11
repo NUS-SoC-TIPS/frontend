@@ -5,7 +5,7 @@
 import Automerge from 'automerge';
 import DiffMatchPatch from 'diff-match-patch';
 
-import { Doc, TextDoc } from 'types/automerge/doc';
+import { Doc, TextDoc } from 'types/automerge';
 
 export const changeTextDoc = (doc: Doc, updatedText: string): Doc => {
   const dmp = new DiffMatchPatch.diff_match_patch();

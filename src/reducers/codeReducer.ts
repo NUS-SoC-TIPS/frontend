@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Doc } from 'types/automerge/doc';
+import { Doc } from 'types/automerge';
 import { Language } from 'types/models/code';
 import {
   applyChanges as automergeApplyChanges,
