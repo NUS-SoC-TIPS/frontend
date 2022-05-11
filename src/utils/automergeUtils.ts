@@ -83,6 +83,10 @@ export const applyChanges = (doc: Doc, allChanges: string[]): Doc => {
   return newDoc;
 };
 
+export const getElementIds = (doc: Doc): string[] => {
+  return Automerge.Frontend.getElementIds(doc.text);
+};
+
 export const binaryChangeToBase64String = (
   a: Automerge.BinaryChange[],
 ): string[] => {
