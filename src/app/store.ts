@@ -8,6 +8,13 @@ export const store = configureStore({
     room: roomReducer,
     code: codeReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredPaths: ['code.doc.text'],
+        ignoredActions: ['code/setDoc'],
+      },
+    }),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
