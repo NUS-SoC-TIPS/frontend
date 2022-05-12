@@ -7,7 +7,24 @@ import DiffMatchPatch from 'diff-match-patch';
 
 import { Doc, TextDoc } from 'types/automerge';
 
-export const changeTextDoc = (doc: Doc, updatedText: string): Doc => {
+let wasNewLine = false;
+// const prevPatch: DiffMatchPatch.patch_obj | null = null;
+
+export enum ChangeReaction {
+  DO_NOT_PROCEED,
+  PROCEED,
+  SET_TIMEOUT,
+  CLEAR_TIMEOUT,
+}
+
+/**
+ * Returns two values: a doc and a boolean. The boolean denotes whether the change was valid.
+ * If valid, the doc will be an updated doc. Else the doc would be the original doc passed in.
+ */
+export const changeTextDoc = (
+  doc: Doc,
+  updatedText: string,
+): [Doc, ChangeReaction] => {
   const dmp = new DiffMatchPatch.diff_match_patch();
 
   // Compute the diff:
@@ -21,6 +38,35 @@ export const changeTextDoc = (doc: Doc, updatedText: string): Doc => {
 
   const patches = dmp.patch_make(doc.text.toString(), diff);
   // console.log(patches);
+
+  if (!patches) {
+    return [doc, ChangeReaction.DO_NOT_PROCEED];
+  }
+
+  const finalPatch = patches[patches.length - 1];
+  let wasTabbedNewLine = false;
+
+  if (wasNewLine) {
+    wasTabbedNewLine =
+      finalPatch.diffs.length >= 2 &&
+      finalPatch.diffs[1][0] === 1 &&
+      finalPatch.diffs[1][1] === '\t\n';
+    // if (!wasTabbedNewLine) {
+    //   patches.push(prevPatch!);
+    // }
+    wasNewLine = false;
+  } else {
+    wasNewLine =
+      finalPatch.diffs.length >= 2 &&
+      finalPatch.diffs[1][0] === 1 &&
+      finalPatch.diffs[1][1] === '\n';
+    // if (wasNewLine) {
+    //   patches = patches.slice(0, -1);
+    //   if (!patches) {
+    //     return [doc, false];
+    //   }
+    // }
+  }
 
   // A patch object wraps the diffs along with some change metadata:
   //
@@ -36,7 +82,7 @@ export const changeTextDoc = (doc: Doc, updatedText: string): Doc => {
   // console.log(dmp.patch_apply(patches, doc.text.toString())[0]); // "Lucifer shall rise"
 
   // Now we translate these patches to operations against Automerge.Text instance:
-  const newDoc = Automerge.change(doc, (doc1) => {
+  const newDoc = Automerge.change(Automerge.clone(doc), (doc1) => {
     patches.forEach((patch) => {
       let idx = patch.start1;
       if (idx !== null) {
@@ -62,7 +108,14 @@ export const changeTextDoc = (doc: Doc, updatedText: string): Doc => {
       }
     });
   });
-  return newDoc;
+  return [
+    newDoc,
+    wasNewLine
+      ? ChangeReaction.SET_TIMEOUT
+      : wasTabbedNewLine
+      ? ChangeReaction.CLEAR_TIMEOUT
+      : ChangeReaction.PROCEED,
+  ];
 };
 
 export const initEmptyDoc = (): Doc => {
@@ -74,6 +127,10 @@ export const initDocWithText = (text: string): Doc => {
     doc.text = new Automerge.Text(text);
     return doc.text.insertAt?.bind(doc.text)!(0, ...text.split(''));
   });
+};
+
+export const getChanges = (oldDoc: Doc, newDoc: Doc): string[] => {
+  return binaryChangeToBase64String(Automerge.getChanges(oldDoc, newDoc));
 };
 
 export const applyChanges = (doc: Doc, allChanges: string[]): Doc => {

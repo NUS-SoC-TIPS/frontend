@@ -55,6 +55,13 @@ const codeSlice = createSlice({
   },
 });
 
-export const { setDoc, setLanguage, applyChanges } = codeSlice.actions;
+export const {
+  setDoc,
+  setLanguage,
+  applyChanges,
+  updatePartnerCursor,
+  clearNext,
+  setPosition,
+} = codeSlice.actions;
 
 export default codeSlice.reducer;
