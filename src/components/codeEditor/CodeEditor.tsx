@@ -2,6 +2,7 @@ import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import AceEditor, { IMarker } from 'react-ace';
 import { Ace } from 'ace-builds';
 
+import { ChangeEvent } from 'types/automerge/ace';
 import { Cursor, Position } from 'types/cursor';
 import { Language } from 'types/models/code';
 import { convertCursorToIMarker } from 'utils/cursorUtils';
@@ -18,7 +19,7 @@ import './CodeEditor.scss';
 
 interface Props {
   language: Language;
-  onChange: (code: string) => void;
+  onChange: (change: ChangeEvent) => void;
   onCursorChange: (data: Cursor) => void;
   value: string;
   width?: string;
@@ -138,11 +139,7 @@ const CodeEditor: FC<Props> = ({
       markers={markers}
       mode={language.toLowerCase()}
       name="code-editor"
-      onChange={(value, event): void => {
-        // eslint-disable-next-line no-console
-        console.log(event);
-        onChange(value);
-      }}
+      onChange={(_value, event): void => onChange(event as ChangeEvent)}
       onCopy={(text: string): void => {
         if (!text || text === '') {
           navigator.clipboard.writeText('');
@@ -171,10 +168,15 @@ const CodeEditor: FC<Props> = ({
       }}
       onPaste={(text: string): void => {
         if ((!text || text === '') && hasJustCopiedLine) {
-          const row = position.row;
-          const lines = value.split('\n');
-          lines.splice(row, 0, lineCopied);
-          onChange(lines.join('\n'));
+          const row = position.row + 1;
+          onChange({
+            action: 'insert' as const,
+            start: {
+              row,
+              column: 0,
+            },
+            lines: [`${lineCopied}\n`],
+          });
           ref?.current?.editor.execCommand('golinedown');
         }
       }}

@@ -3,119 +3,35 @@
 // it from https://lorefnon.tech/2018/09/23/using-google-diff-match-patch-with-automerge-text/
 
 import Automerge from 'automerge';
-import DiffMatchPatch from 'diff-match-patch';
 
 import { Doc, TextDoc } from 'types/automerge';
-
-let wasNewLine = false;
-// const prevPatch: DiffMatchPatch.patch_obj | null = null;
-
-export enum ChangeReaction {
-  DO_NOT_PROCEED,
-  PROCEED,
-  SET_TIMEOUT,
-  CLEAR_TIMEOUT,
-}
+import { ChangeEvent } from 'types/automerge/ace';
 
 /**
  * Returns two values: a doc and a boolean. The boolean denotes whether the change was valid.
  * If valid, the doc will be an updated doc. Else the doc would be the original doc passed in.
  */
-export const changeTextDoc = (
-  doc: Doc,
-  updatedText: string,
-): [Doc, ChangeReaction] => {
-  const dmp = new DiffMatchPatch.diff_match_patch();
-
-  // Compute the diff:
-  const diff = dmp.diff_main(doc.text.toString(), updatedText);
-  // diff is simply an array of binary tuples representing the change
-  // [[-1,"The ang"],[1,"Lucif"],[0,"e"],[-1,"l"],[1,"r"],[0," shall "],[-1,"fall"],[1,"rise"]]
-
-  // This cleans up the diff so that the diff is more human friendly.
-  dmp.diff_cleanupSemantic(diff);
-  // [[-1,"The angel"],[1,"Lucifer"],[0," shall "],[-1,"fall"],[1,"rise"]]
-
-  const patches = dmp.patch_make(doc.text.toString(), diff);
-  // console.log(patches);
-
-  if (!patches) {
-    return [doc, ChangeReaction.DO_NOT_PROCEED];
+export const changeTextDoc = (doc: Doc, change: ChangeEvent): Doc => {
+  const docString = doc.text.toString();
+  const lines = docString.split('\n');
+  const changedLine = change.lines.join('\n');
+  let startIndex = change.start.column;
+  for (let i = 0; i < change.start.row; i += 1) {
+    startIndex += lines[i].length + 1; // + 1 for the \n character
   }
 
-  const finalPatch = patches[patches.length - 1];
-  let wasTabbedNewLine = false;
-
-  if (wasNewLine) {
-    wasTabbedNewLine =
-      finalPatch.diffs.length >= 2 &&
-      finalPatch.diffs[1][0] === 1 &&
-      finalPatch.diffs[1][1] === '\t\n';
-    // if (!wasTabbedNewLine) {
-    //   patches.push(prevPatch!);
-    // }
-    wasNewLine = false;
-  } else {
-    wasNewLine =
-      finalPatch.diffs.length >= 2 &&
-      finalPatch.diffs[1][0] === 1 &&
-      finalPatch.diffs[1][1] === '\n';
-    // if (wasNewLine) {
-    //   patches = patches.slice(0, -1);
-    //   if (!patches) {
-    //     return [doc, false];
-    //   }
-    // }
-  }
-
-  // A patch object wraps the diffs along with some change metadata:
-  //
-  // [{
-  //   "diffs":[[-1,"The angel"],[1,"Lucifer"],[0," shall "],[-1,"fall"], [1,"rise"]],
-  //   "start1":0,
-  //   "start2":0,
-  //   "length1":20,
-  //   "length2":18
-  // }]
-
-  // We can use the patch to derive the changedText from the sourceText
-  // console.log(dmp.patch_apply(patches, doc.text.toString())[0]); // "Lucifer shall rise"
-
-  // Now we translate these patches to operations against Automerge.Text instance:
-  const newDoc = Automerge.change(Automerge.clone(doc), (doc1) => {
-    patches.forEach((patch) => {
-      let idx = patch.start1;
-      if (idx !== null) {
-        patch.diffs.forEach(([operation, changeText]) => {
-          switch (operation) {
-            case 1: // Insertion
-              doc1.text.insertAt?.bind(doc1.text)!(
-                idx!,
-                ...changeText.split(''),
-              );
-              idx! += changeText.length;
-              break;
-            case 0: // No Change
-              idx! += changeText.length;
-              break;
-            case -1: // Deletion
-              for (let i = 0; i < changeText.length; i++) {
-                doc1.text.deleteAt!(idx!);
-              }
-              break;
-          }
-        });
+  return Automerge.change(Automerge.clone(doc), (doc1) => {
+    if (change.action === 'insert') {
+      doc1.text.insertAt?.bind(doc1.text)!(
+        startIndex,
+        ...changedLine.split(''),
+      );
+    } else {
+      for (let i = 0; i < changedLine.length; i++) {
+        doc1.text.deleteAt!(startIndex);
       }
-    });
+    }
   });
-  return [
-    newDoc,
-    wasNewLine
-      ? ChangeReaction.SET_TIMEOUT
-      : wasTabbedNewLine
-      ? ChangeReaction.CLEAR_TIMEOUT
-      : ChangeReaction.PROCEED,
-  ];
 };
 
 export const initEmptyDoc = (): Doc => {

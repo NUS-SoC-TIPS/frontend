@@ -9,6 +9,7 @@ import { updateCode, updateCursor } from 'lib/codeSocket';
 import { initSocketForRoom } from 'lib/roomsSocket';
 import { clearNext, setPosition } from 'reducers/codeReducer';
 import { resetRoomState } from 'reducers/roomReducer';
+import { ChangeEvent } from 'types/automerge/ace';
 import { Cursor, Position } from 'types/cursor';
 import tokenUtils from 'utils/tokenUtils';
 
@@ -65,7 +66,7 @@ export const Room = (): ReactElement => {
           height="100%"
           language={language}
           nextPosition={nextCursor}
-          onChange={(code: string): void => updateCode(socket, doc, code)}
+          onChange={(code: ChangeEvent): void => updateCode(socket, code)}
           onCursorChange={(cursor: Cursor): void =>
             updateCursor(socket, cursor)
           }

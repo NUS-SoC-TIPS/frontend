@@ -16,6 +16,7 @@ import {
 
 export interface CodeState {
   doc: Doc;
+  docString: string;
   language: Language;
   cursor: CursorCrdt;
   partnerCursor: Cursor;
@@ -23,6 +24,7 @@ export interface CodeState {
 
 const initialState: CodeState = {
   doc: initDocWithText(''),
+  docString: '',
   language: Language.PYTHON,
   cursor: initCursorCrdt(),
   partnerCursor: initDefaultCursor(),
