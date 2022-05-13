@@ -7,7 +7,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 
-import { useAppDispatch, useAppSelector } from 'app/hooks';
+import { useAppDispatch } from 'app/hooks';
 import { ROOM } from 'constants/routes';
 import { SITE_URL } from 'constants/urls';
 import { setLanguage } from 'reducers/codeReducer';
@@ -17,10 +17,13 @@ import { LanguagePopover } from './LanguagePopover';
 
 interface Props {
   slug: string;
+  language: Language;
 }
 
-export const TopBar = ({ slug }: Props): ReactElement<Props, typeof Box> => {
-  const { language } = useAppSelector((state) => state.code);
+export const TopBar = ({
+  slug,
+  language,
+}: Props): ReactElement<Props, typeof Box> => {
   const dispatch = useAppDispatch();
   const [hasCopied, setHasCopied] = useState(false);
 
@@ -38,7 +41,7 @@ export const TopBar = ({ slug }: Props): ReactElement<Props, typeof Box> => {
       bg="bg-surface"
       boxShadow={useColorModeValue('sm', 'sm-dark')}
     >
-      <Container maxWidth="100%" px={2} py={3}>
+      <Container maxWidth="100%" px={2} py={2}>
         <HStack justify="space-between" spacing="10">
           <Box>
             <LanguagePopover
@@ -51,6 +54,7 @@ export const TopBar = ({ slug }: Props): ReactElement<Props, typeof Box> => {
           <Button
             disabled={hasCopied}
             onClick={onCopyInviteLink}
+            size="sm"
             variant="primary"
           >
             {hasCopied ? 'Copied!' : 'Copy Invite'}
