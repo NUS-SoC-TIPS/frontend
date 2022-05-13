@@ -16,6 +16,7 @@ export const ROOM_EVENTS = {
   // Various exceptions
   ROOM_DOES_NOT_EXIST: 'room_does_not_exist',
   ALREADY_IN_ROOM: 'already_in_room',
+  IN_ANOTHER_TAB: 'in_another_tab', // when user is in the room but in another tab
   ROOM_IS_FULL: 'room_is_full',
   ROOM_IS_CLOSED: 'room_is_closed',
 

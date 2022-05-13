@@ -85,6 +85,14 @@ const handleRoomIsFull = (socket: Socket): void => {
   );
 };
 
+const handleInAnotherTab = (socket: Socket): void => {
+  socket.on(ROOM_EVENTS.IN_ANOTHER_TAB, () => {
+    store.dispatch(
+      updateRoomState({ status: RoomJoiningStatus.IN_ANOTHER_TAB }),
+    );
+  });
+};
+
 const handlePartnerJoinedRoom = (socket: Socket): void => {
   socket.on(ROOM_EVENTS.JOINED_ROOM, (data: { partner: User }) => {
     store.dispatch(
@@ -109,6 +117,7 @@ export const initSocketForRoom = (
   handleJoinRoom(socket);
   handleRoomDoesNotExist(socket);
   handleAlreadyInRoom(socket);
+  handleInAnotherTab(socket);
   handleRoomIsClosed(socket);
   handleRoomIsFull(socket);
   handlePartnerJoinedRoom(socket);

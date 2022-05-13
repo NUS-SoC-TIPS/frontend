@@ -7,6 +7,7 @@ export enum RoomJoiningStatus {
   SUCCESS,
   CLOSED,
   IN_ANOTHER_ROOM,
+  IN_ANOTHER_TAB,
   ROOM_DOES_NOT_EXIST,
   FULL,
 }
