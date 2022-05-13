@@ -5,10 +5,11 @@ import { io, Socket } from 'socket.io-client';
 
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import CodeEditor from 'components/codeEditor/CodeEditor';
+import { Loading } from 'components/loading';
 import { updateCode, updateCursor } from 'lib/codeSocket';
 import { initSocketForRoom } from 'lib/roomsSocket';
 import { clearNext, setPosition } from 'reducers/codeReducer';
-import { resetRoomState } from 'reducers/roomReducer';
+import { resetRoomState, RoomJoiningStatus } from 'reducers/roomReducer';
 import { ChangeEvent } from 'types/automerge/ace';
 import { Cursor, Position } from 'types/cursor';
 import tokenUtils from 'utils/tokenUtils';
@@ -21,6 +22,9 @@ export const Room = (): ReactElement => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const { cursor, doc, partnerCursor, language } = useAppSelector(
     (state) => state.code,
+  );
+  const { status, partner, isPartnerInRoom } = useAppSelector(
+    (state) => state.room,
   );
   const { hasNext, nextCursor, currentCursor } = cursor;
   const dispatch = useAppDispatch();
@@ -44,8 +48,8 @@ export const Room = (): ReactElement => {
     };
   }, [token, params.slug, dispatch]);
 
-  if (!socket) {
-    return <div>Hello</div>;
+  if (!socket || status === RoomJoiningStatus.LOADING) {
+    return <Loading />;
   }
 
   return (
@@ -70,7 +74,7 @@ export const Room = (): ReactElement => {
           onCursorChange={(cursor: Cursor): void =>
             updateCursor(socket, cursor)
           }
-          partnerCursor={partnerCursor}
+          partnerCursor={partner && isPartnerInRoom ? partnerCursor : undefined}
           position={currentCursor}
           setPosition={(position: Position): void => {
             dispatch(setPosition(position));
