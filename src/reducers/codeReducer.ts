@@ -45,7 +45,7 @@ const codeSlice = createSlice({
       state.cursor = computeNext(state.cursor, state.doc, newDoc);
       state.doc = newDoc;
     },
-    updatePartnerCursor: (state, action: PayloadAction<Cursor>): void => {
+    setPartnerCursor: (state, action: PayloadAction<Cursor>): void => {
       state.partnerCursor = action.payload;
     },
     clearNext: (state): void => {
@@ -61,7 +61,7 @@ export const {
   setDoc,
   setLanguage,
   applyChanges,
-  updatePartnerCursor,
+  setPartnerCursor,
   clearNext,
   setPosition,
 } = codeSlice.actions;
