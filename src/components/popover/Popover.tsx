@@ -27,7 +27,6 @@ export const MyPopover = ({
     <Popover gutter={12} openDelay={0} placement="bottom" trigger="hover">
       {({ isOpen }): ReactElement => (
         <>
-          {/* @ts-expect-error: Prop types mismatch for children in React 18 */}
           <PopoverTrigger>
             <Button
               rightIcon={<PopoverIcon isOpen={isOpen} />}

@@ -64,8 +64,8 @@ export const ErrorBanner = (): ReactElement<typeof Container> => {
               _hover={{ bg: 'red.100' }}
               bg="red.50"
               color="red.600"
-              isFullWidth={true}
               onClick={(): void => window.location.reload()}
+              width="full"
             >
               Reload
             </Button>
