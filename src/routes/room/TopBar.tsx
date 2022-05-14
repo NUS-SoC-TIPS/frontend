@@ -1,4 +1,5 @@
 import { ReactElement, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -6,33 +7,35 @@ import {
   HStack,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { Socket } from 'socket.io-client';
 
-import { useAppDispatch } from 'app/hooks';
+import { useAppSelector } from 'app/hooks';
 import { ROOM } from 'constants/routes';
 import { SITE_URL } from 'constants/urls';
-import { setLanguage } from 'reducers/codeReducer';
+import { updateLanguage } from 'lib/codeSocket';
 import { Language } from 'types/models/code';
 
 import { LanguagePopover } from './LanguagePopover';
 
 interface Props {
-  slug: string;
-  language: Language;
+  socket: Socket;
 }
 
-export const TopBar = ({
-  slug,
-  language,
-}: Props): ReactElement<Props, typeof Box> => {
-  const dispatch = useAppDispatch();
+export const TopBar = ({ socket }: Props): ReactElement<Props, typeof Box> => {
+  const params = useParams();
+  const { language } = useAppSelector((state) => state.code);
   const [hasCopied, setHasCopied] = useState(false);
 
   const onCopyInviteLink = async (): Promise<void> => {
-    await navigator.clipboard.writeText(`${SITE_URL}${ROOM}/${slug}`);
+    await navigator.clipboard.writeText(`${SITE_URL}${ROOM}/${params.slug}`);
     setHasCopied(true);
     setTimeout(() => {
       setHasCopied(false);
     }, 1000);
+  };
+
+  const onChangeLanguage = (language: Language): void => {
+    updateLanguage(socket, language);
   };
 
   return (
@@ -46,9 +49,7 @@ export const TopBar = ({
           <Box>
             <LanguagePopover
               language={language}
-              setLanguage={(newLanguage: Language): void => {
-                dispatch(setLanguage(newLanguage));
-              }}
+              setLanguage={onChangeLanguage}
             />
           </Box>
           <Button

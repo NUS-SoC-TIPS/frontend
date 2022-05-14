@@ -4,32 +4,32 @@ import { Box } from '@chakra-ui/react';
 import { io, Socket } from 'socket.io-client';
 
 import { useAppDispatch, useAppSelector } from 'app/hooks';
-import CodeEditor from 'components/codeEditor/CodeEditor';
 import { Loading } from 'components/loading';
-import { useUser } from 'contexts/UserContext';
-import { updateCode, updateCursor } from 'lib/codeSocket';
+import { initSocketForCode } from 'lib/codeSocket';
 import { initSocketForRoom } from 'lib/roomsSocket';
-import { clearNext, setPosition } from 'reducers/codeReducer';
 import { resetRoomState, RoomJoiningStatus } from 'reducers/roomReducer';
-import { ChangeEvent } from 'types/automerge/ace';
-import { Cursor, Position } from 'types/cursor';
 import tokenUtils from 'utils/tokenUtils';
 
 import { BottomBar } from './BottomBar';
+import { Code } from './Code';
 import { TopBar } from './TopBar';
 
+/**
+ * The Room component contains stateful subcomponents. This is intentional, as the
+ * room logic would be too complex otherwise.
+ *
+ * What this component mainly does is to establish the socket connection. The socket
+ * is then passed into the individual subcomponents for them to handle the relevant
+ * logic.
+ *
+ * Otherwise, the subcomponents would communicate with one another via the redux
+ * store and state.
+ */
 export const Room = (): ReactElement => {
-  const params = useParams();
   const token = tokenUtils.getToken();
-  const user = useUser();
+  const params = useParams();
   const [socket, setSocket] = useState<Socket | null>(null);
-  const { cursor, doc, partnerCursor, language } = useAppSelector(
-    (state) => state.code,
-  );
-  const { status, partner, isPartnerInRoom } = useAppSelector(
-    (state) => state.room,
-  );
-  const { hasNext, nextCursor, currentCursor } = cursor;
+  const { status } = useAppSelector((state) => state.room);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -43,6 +43,7 @@ export const Room = (): ReactElement => {
         reconnectionAttempts: Infinity,
       });
       initSocketForRoom(newSocket, token, params.slug);
+      initSocketForCode(newSocket);
       setSocket(newSocket);
     }
     return () => {
@@ -51,7 +52,7 @@ export const Room = (): ReactElement => {
     };
   }, [token, params.slug, dispatch]);
 
-  if (!socket || !user || status === RoomJoiningStatus.LOADING) {
+  if (!socket || status === RoomJoiningStatus.LOADING) {
     return <Loading />;
   }
 
@@ -63,30 +64,11 @@ export const Room = (): ReactElement => {
       height="100vh"
       width="100vw"
     >
-      <TopBar language={language} slug={params.slug as string} />
+      <TopBar socket={socket} />
       <Box flex={1}>
-        <CodeEditor
-          clearNextPosition={(): void => {
-            dispatch(clearNext());
-          }}
-          hasNextPosition={hasNext}
-          height="100%"
-          language={language}
-          nextPosition={nextCursor}
-          onChange={(code: ChangeEvent): void => updateCode(socket, code)}
-          onCursorChange={(cursor: Cursor): void =>
-            updateCursor(socket, cursor)
-          }
-          partnerCursor={partner && isPartnerInRoom ? partnerCursor : undefined}
-          position={currentCursor}
-          setPosition={(position: Position): void => {
-            dispatch(setPosition(position));
-          }}
-          value={doc.text.toString()}
-          width="100%"
-        />
+        <Code socket={socket} />
       </Box>
-      <BottomBar partner={partner} user={user} />
+      <BottomBar />
     </Box>
   );
 };
