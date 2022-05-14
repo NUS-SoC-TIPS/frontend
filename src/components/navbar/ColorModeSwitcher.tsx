@@ -19,8 +19,9 @@ export const ColorModeSwitcher = (
   const { toggleColorMode } = useColorMode();
   const text = useColorModeValue('dark', 'light');
   const SwitchIcon = useColorModeValue(FiMoon, FiSun);
+  const { isSideBar, ...buttonProps } = props;
 
-  if (props.isSideBar) {
+  if (isSideBar) {
     return (
       <NavButton
         icon={SwitchIcon}
@@ -40,7 +41,7 @@ export const ColorModeSwitcher = (
       onClick={toggleColorMode}
       size="md"
       variant="ghost"
-      {...props}
+      {...buttonProps}
     />
   );
 };
