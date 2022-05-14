@@ -23,7 +23,6 @@ import { useUser } from 'contexts/UserContext';
 
 import { Logo } from '../logo';
 
-import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { Sidebar } from './Sidebar';
 import { ToggleButton } from './ToggleButton';
 import { UserPopover } from './UserPopover';
@@ -75,7 +74,7 @@ export const Navbar = (): ReactElement<typeof Box> => {
               {user ? (
                 <>
                   <ButtonGroup spacing="1" variant="ghost">
-                    <ColorModeSwitcher isSideBar={false} />
+                    {/* <ColorModeSwitcher isSideBar={false} /> */}
                     <IconButton
                       aria-current={pathname === SETTINGS ? 'page' : undefined}
                       aria-label="Settings"
@@ -87,7 +86,7 @@ export const Navbar = (): ReactElement<typeof Box> => {
                 </>
               ) : (
                 <>
-                  <ColorModeSwitcher isSideBar={false} />
+                  {/* <ColorModeSwitcher isSideBar={false} /> */}
                   <Button
                     isLoading={isLoggingIn}
                     onClick={login}

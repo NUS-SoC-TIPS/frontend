@@ -14,7 +14,6 @@ import { User } from 'types/models/user';
 import { Logo } from '../logo';
 import { UserProfile } from '../userProfile';
 
-import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { NavButton } from './NavButton';
 
 interface Props {
@@ -66,7 +65,7 @@ export const Sidebar = ({
         </Stack>
         <Stack spacing={{ base: '5', sm: '6' }}>
           <Stack spacing="2">
-            <ColorModeSwitcher isSideBar={true} />
+            {/* <ColorModeSwitcher isSideBar={true} /> */}
             <NavButton
               aria-current={pathname === SETTINGS ? 'page' : undefined}
               icon={FiSettings}
