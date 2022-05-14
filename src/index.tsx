@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { ColorModeScript } from '@chakra-ui/react';
 
 import { store } from 'app/store';
+import { theme } from 'app/theme';
 import AppProviders from 'contexts/AppProviders';
 
 import { App } from './app';
@@ -21,7 +22,7 @@ root.render(
     <Provider store={store}>
       <BrowserRouter>
         <AppProviders>
-          <ColorModeScript initialColorMode="dark" />
+          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <App />
         </AppProviders>
       </BrowserRouter>

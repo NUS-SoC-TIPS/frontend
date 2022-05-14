@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box } from '@chakra-ui/react';
+import { Box, DarkMode } from '@chakra-ui/react';
 import { io, Socket } from 'socket.io-client';
 
 import { useAppDispatch, useAppSelector } from 'app/hooks';
@@ -57,18 +57,20 @@ export const Room = (): ReactElement => {
   }
 
   return (
-    <Box
-      as="section"
-      display="flex"
-      flexDirection="column"
-      height="100vh"
-      width="100vw"
-    >
-      <TopBar socket={socket} />
-      <Box flex={1}>
-        <Code socket={socket} />
+    <DarkMode>
+      <Box
+        as="section"
+        display="flex"
+        flexDirection="column"
+        height="100vh"
+        width="100vw"
+      >
+        <TopBar socket={socket} />
+        <Box flex={1}>
+          <Code socket={socket} />
+        </Box>
+        <BottomBar />
       </Box>
-      <BottomBar />
-    </Box>
+    </DarkMode>
   );
 };
