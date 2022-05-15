@@ -22,8 +22,6 @@ export const ROOM_EVENTS = {
 
   // To end the session. Also sent back upon successful closure.
   CLOSE_ROOM: 'close_room',
-  // Sent to block any further changes while room is closing.
-  CLOSING_ROOM: 'closing_room',
 
   // When the partner disconnects
   PARTNER_DISCONNECTED: 'partner_disconnected',

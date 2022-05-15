@@ -16,6 +16,7 @@ interface Props extends ModalProps {
   onClose: () => void;
   title: string;
   actions?: ReactNode;
+  showCloseIcon?: boolean;
 }
 
 const DEFAULT_PROPS: Partial<ModalProps> = {
@@ -23,7 +24,13 @@ const DEFAULT_PROPS: Partial<ModalProps> = {
 };
 
 export const Modal = (props: Props): ReactElement<typeof ChakraModal> => {
-  const { title, actions, children, ...modalProps } = props;
+  const {
+    title,
+    actions,
+    children,
+    showCloseIcon = false,
+    ...modalProps
+  } = props;
   const combinedProps = {
     ...DEFAULT_PROPS,
     ...modalProps,
@@ -36,15 +43,15 @@ export const Modal = (props: Props): ReactElement<typeof ChakraModal> => {
         bg="blackAlpha.300"
       />
       <ModalContent borderRadius="2xl">
-        <ModalBody>
-          <ModalHeader>{title}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>{children}</ModalBody>
-          <ModalFooter>
+        <ModalBody p={{ base: 4, lg: 6 }}>
+          <ModalHeader p={2}>{title}</ModalHeader>
+          {showCloseIcon ?? <ModalCloseButton />}
+          <ModalBody p={2}>{children}</ModalBody>
+          <ModalFooter p={2}>
             {actions ? (
               actions
             ) : (
-              <Button colorScheme="blue" mr={3} onClick={props.onClose}>
+              <Button colorScheme="blue" onClick={props.onClose}>
                 Close
               </Button>
             )}
