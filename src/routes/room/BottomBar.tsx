@@ -1,4 +1,5 @@
 import { ReactElement, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -8,10 +9,13 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { Socket } from 'socket.io-client';
 
 import { useAppSelector } from 'app/hooks';
 import { Modal } from 'components/modal';
+import { INTERVIEWS } from 'constants/routes';
 import { useUser } from 'contexts/UserContext';
+import { closeRoom } from 'lib/roomsSocket';
 import { User } from 'types/models/user';
 
 interface UserDisplayProps {
@@ -31,10 +35,31 @@ const UserDisplay = ({
   );
 };
 
-export const BottomBar = (): ReactElement<typeof Box> => {
+interface Props {
+  socket: Socket;
+}
+
+export const BottomBar = ({
+  socket,
+}: Props): ReactElement<Props, typeof Box> => {
   const [isCloseRoomModalOpen, setIsCloseRoomModalOpen] = useState(false);
+  const [isClosingRoom, setIsClosingRoom] = useState(false);
   const user = useUser() as User;
-  const { partner } = useAppSelector((state) => state.room);
+  const { partner, isRoomClosed } = useAppSelector((state) => state.room);
+  const navigate = useNavigate();
+
+  const onCloseModal = (): void => {
+    if (isClosingRoom) {
+      navigate(INTERVIEWS);
+      return;
+    }
+    setIsCloseRoomModalOpen(false);
+  };
+
+  const onCloseRoom = (): void => {
+    setIsClosingRoom(true);
+    closeRoom(socket);
+  };
 
   return (
     <Box
@@ -61,11 +86,45 @@ export const BottomBar = (): ReactElement<typeof Box> => {
         </HStack>
       </Container>
       <Modal
-        isOpen={isCloseRoomModalOpen}
-        onClose={(): void => setIsCloseRoomModalOpen(false)}
-        title="Are you sure you wish to close the room?"
+        actions={
+          isRoomClosed ? (
+            <Button
+              onClick={(): void => navigate(INTERVIEWS)}
+              variant="primary"
+            >
+              Back to Home
+            </Button>
+          ) : (
+            <>
+              <Button
+                disabled={isClosingRoom}
+                mr={2}
+                onClick={onCloseModal}
+                variant="secondary"
+              >
+                Cancel
+              </Button>
+              <Button
+                isLoading={isClosingRoom}
+                onClick={onCloseRoom}
+                variant="primary"
+              >
+                Close Room
+              </Button>
+            </>
+          )
+        }
+        isOpen={isCloseRoomModalOpen || isRoomClosed}
+        onClose={onCloseModal}
+        title={
+          isRoomClosed
+            ? 'The room has been closed.'
+            : 'Are you sure you wish to close the room?'
+        }
       >
-        .
+        {isRoomClosed
+          ? 'Thank you for practicing using TIPS. You can see a record of this session back at the home page.'
+          : 'The room will be closed and this session will end for all participants.'}
       </Modal>
     </Box>
   );

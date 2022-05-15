@@ -69,7 +69,7 @@ export const Room = (): ReactElement => {
         <Box flex={1}>
           <Code socket={socket} />
         </Box>
-        <BottomBar />
+        <BottomBar socket={socket} />
       </Box>
     </DarkMode>
   );
