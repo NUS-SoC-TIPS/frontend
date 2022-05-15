@@ -12,6 +12,7 @@ import tokenUtils from 'utils/tokenUtils';
 
 import { InAnotherTab } from './errors/InAnotherTab';
 import { RoomDoesNotExist } from './errors/RoomDoesNotExist';
+import { RoomIsClosed } from './errors/RoomIsClosed';
 import { BottomBar } from './BottomBar';
 import { Code } from './Code';
 import { RoomPage } from './RoomPage';
@@ -59,10 +60,12 @@ export const Room = (): ReactElement => {
     return <Loading />;
   }
 
+  if (status === RoomJoiningStatus.CLOSED) {
+    return <RoomIsClosed />;
+  }
   if (status === RoomJoiningStatus.ROOM_DOES_NOT_EXIST) {
     return <RoomDoesNotExist />;
   }
-
   if (status === RoomJoiningStatus.IN_ANOTHER_TAB) {
     return <InAnotherTab />;
   }
