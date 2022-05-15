@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, DarkMode } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { io, Socket } from 'socket.io-client';
 
 import { useAppDispatch, useAppSelector } from 'app/hooks';
@@ -10,8 +10,11 @@ import { initSocketForRoom } from 'lib/roomsSocket';
 import { resetRoomState, RoomJoiningStatus } from 'reducers/roomReducer';
 import tokenUtils from 'utils/tokenUtils';
 
+import { InAnotherTab } from './errors/InAnotherTab';
+import { RoomDoesNotExist } from './errors/RoomDoesNotExist';
 import { BottomBar } from './BottomBar';
 import { Code } from './Code';
+import { RoomPage } from './RoomPage';
 import { TopBar } from './TopBar';
 
 /**
@@ -56,21 +59,21 @@ export const Room = (): ReactElement => {
     return <Loading />;
   }
 
+  if (status === RoomJoiningStatus.ROOM_DOES_NOT_EXIST) {
+    return <RoomDoesNotExist />;
+  }
+
+  if (status === RoomJoiningStatus.IN_ANOTHER_TAB) {
+    return <InAnotherTab />;
+  }
+
   return (
-    <DarkMode>
-      <Box
-        as="section"
-        display="flex"
-        flexDirection="column"
-        height="100vh"
-        width="100vw"
-      >
-        <TopBar socket={socket} />
-        <Box flex={1}>
-          <Code socket={socket} />
-        </Box>
-        <BottomBar socket={socket} />
+    <RoomPage>
+      <TopBar socket={socket} />
+      <Box flex={1}>
+        <Code socket={socket} />
       </Box>
-    </DarkMode>
+      <BottomBar socket={socket} />
+    </RoomPage>
   );
 };
