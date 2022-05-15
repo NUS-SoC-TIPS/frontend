@@ -7,6 +7,7 @@ import {
   Container,
   HStack,
   Text,
+  useBreakpointValue,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { Socket } from 'socket.io-client';
@@ -42,6 +43,7 @@ interface Props {
 export const BottomBar = ({
   socket,
 }: Props): ReactElement<Props, typeof Box> => {
+  const isDesktop = useBreakpointValue({ base: false, lg: true });
   const [isCloseRoomModalOpen, setIsCloseRoomModalOpen] = useState(false);
   const [isClosingRoom, setIsClosingRoom] = useState(false);
   const user = useUser() as User;
@@ -116,8 +118,12 @@ export const BottomBar = ({
             <Button size="sm" variant="secondary">
               Execute Code
             </Button>
-            <UserDisplay user={user} />
-            {partner && <UserDisplay color="green" user={partner} />}
+            {isDesktop && (
+              <>
+                <UserDisplay user={user} />
+                {partner && <UserDisplay color="green" user={partner} />}
+              </>
+            )}
           </HStack>
           <Button
             colorScheme="red"
