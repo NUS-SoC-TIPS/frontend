@@ -8,6 +8,10 @@ import { Language } from 'types/models/code';
 import { User } from 'types/models/user';
 import { applyChanges, initEmptyDoc } from 'utils/automergeUtils';
 
+export const closeRoom = (socket: Socket): void => {
+  socket.emit(ROOM_EVENTS.CLOSE_ROOM);
+};
+
 const handleConnect = (socket: Socket, bearerToken: string): void => {
   socket.on(GENERAL_EVENTS.CONNECT, () => {
     socket.emit(AUTH_EVENTS.AUTHENTICATE, { bearerToken });
@@ -107,6 +111,12 @@ const handlePartnerDisconnected = (socket: Socket): void => {
   });
 };
 
+const handleCloseRoom = (socket: Socket): void => {
+  socket.on(ROOM_EVENTS.CLOSE_ROOM, () => {
+    store.dispatch(updateRoomState({ isRoomClosed: true }));
+  });
+};
+
 export const initSocketForRoom = (
   socket: Socket,
   token: string,
@@ -122,4 +132,5 @@ export const initSocketForRoom = (
   handleRoomIsFull(socket);
   handlePartnerJoinedRoom(socket);
   handlePartnerDisconnected(socket);
+  handleCloseRoom(socket);
 };
