@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, ReactNode, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -49,11 +49,7 @@ export const BottomBar = ({
   const navigate = useNavigate();
 
   const onCloseModal = (): void => {
-    if (isRoomClosed) {
-      navigate(INTERVIEWS);
-      return;
-    }
-    if (isClosingRoom) {
+    if (isRoomClosed || isClosingRoom) {
       return;
     }
     setIsCloseRoomModalOpen(false);
@@ -62,6 +58,50 @@ export const BottomBar = ({
   const onCloseRoom = (): void => {
     setIsClosingRoom(true);
     closeRoom(socket);
+  };
+
+  const getModalActions = (): ReactNode => {
+    if (isRoomClosed) {
+      return (
+        <Button onClick={(): void => navigate(INTERVIEWS)} variant="primary">
+          Back to Home
+        </Button>
+      );
+    }
+
+    return (
+      <>
+        <Button
+          disabled={isClosingRoom}
+          mr={2}
+          onClick={onCloseModal}
+          variant="secondary"
+        >
+          Cancel
+        </Button>
+        <Button
+          isLoading={isClosingRoom}
+          onClick={onCloseRoom}
+          variant="primary"
+        >
+          Close Room
+        </Button>
+      </>
+    );
+  };
+
+  const getModalTitle = (): string => {
+    if (isRoomClosed) {
+      return 'The room has been closed.';
+    }
+    return 'Are you sure you wish to close the room?';
+  };
+
+  const getModalBody = (): string => {
+    if (isRoomClosed) {
+      return 'Thank you for practicing using TIPS. You can see a record of this session back at the home page.';
+    }
+    return 'The room will be closed and this session will end for all participants.';
   };
 
   return (
@@ -89,45 +129,12 @@ export const BottomBar = ({
         </HStack>
       </Container>
       <Modal
-        actions={
-          isRoomClosed ? (
-            <Button
-              onClick={(): void => navigate(INTERVIEWS)}
-              variant="primary"
-            >
-              Back to Home
-            </Button>
-          ) : (
-            <>
-              <Button
-                disabled={isClosingRoom}
-                mr={2}
-                onClick={onCloseModal}
-                variant="secondary"
-              >
-                Cancel
-              </Button>
-              <Button
-                isLoading={isClosingRoom}
-                onClick={onCloseRoom}
-                variant="primary"
-              >
-                Close Room
-              </Button>
-            </>
-          )
-        }
+        actions={getModalActions()}
         isOpen={isCloseRoomModalOpen || isRoomClosed}
         onClose={onCloseModal}
-        title={
-          isRoomClosed
-            ? 'The room has been closed.'
-            : 'Are you sure you wish to close the room?'
-        }
+        title={getModalTitle()}
       >
-        {isRoomClosed
-          ? 'Thank you for practicing using TIPS. You can see a record of this session back at the home page.'
-          : 'The room will be closed and this session will end for all participants.'}
+        {getModalBody()}
       </Modal>
     </Box>
   );
