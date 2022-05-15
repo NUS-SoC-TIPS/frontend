@@ -14,6 +14,7 @@ import { InAnotherRoom } from './errors/InAnotherRoom';
 import { InAnotherTab } from './errors/InAnotherTab';
 import { RoomDoesNotExist } from './errors/RoomDoesNotExist';
 import { RoomIsClosed } from './errors/RoomIsClosed';
+import { RoomIsFull } from './errors/RoomIsFull';
 import { BottomBar } from './BottomBar';
 import { Code } from './Code';
 import { RoomPage } from './RoomPage';
@@ -72,6 +73,9 @@ export const Room = (): ReactElement => {
   }
   if (status === RoomJoiningStatus.IN_ANOTHER_ROOM) {
     return <InAnotherRoom />;
+  }
+  if (status === RoomJoiningStatus.FULL) {
+    return <RoomIsFull />;
   }
 
   return (
