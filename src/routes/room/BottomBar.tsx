@@ -49,8 +49,11 @@ export const BottomBar = ({
   const navigate = useNavigate();
 
   const onCloseModal = (): void => {
-    if (isClosingRoom) {
+    if (isRoomClosed) {
       navigate(INTERVIEWS);
+      return;
+    }
+    if (isClosingRoom) {
       return;
     }
     setIsCloseRoomModalOpen(false);
