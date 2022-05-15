@@ -30,7 +30,7 @@ export const InAnotherTab = (): ReactElement<typeof RoomPage> => {
           </>
         }
         isOpen={true}
-        onClose={(): void => navigate(INTERVIEWS)}
+        onClose={(): void => undefined}
         title="You've already joined via another tab or window"
       >
         Either continue via that tab/window, or close that session and refresh

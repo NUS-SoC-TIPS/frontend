@@ -18,7 +18,7 @@ export const RoomDoesNotExist = (): ReactElement<typeof RoomPage> => {
           </Button>
         }
         isOpen={true}
-        onClose={(): void => navigate(INTERVIEWS)}
+        onClose={(): void => undefined}
         title="This room does not exist"
       >
         Do create a new room back at the home page to get started with
