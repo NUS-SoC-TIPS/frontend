@@ -10,6 +10,7 @@ import { initSocketForRoom } from 'lib/roomsSocket';
 import { resetRoomState, RoomJoiningStatus } from 'reducers/roomReducer';
 import tokenUtils from 'utils/tokenUtils';
 
+import { InAnotherRoom } from './errors/InAnotherRoom';
 import { InAnotherTab } from './errors/InAnotherTab';
 import { RoomDoesNotExist } from './errors/RoomDoesNotExist';
 import { RoomIsClosed } from './errors/RoomIsClosed';
@@ -68,6 +69,9 @@ export const Room = (): ReactElement => {
   }
   if (status === RoomJoiningStatus.IN_ANOTHER_TAB) {
     return <InAnotherTab />;
+  }
+  if (status === RoomJoiningStatus.IN_ANOTHER_ROOM) {
+    return <InAnotherRoom />;
   }
 
   return (
