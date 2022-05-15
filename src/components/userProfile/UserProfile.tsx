@@ -14,10 +14,10 @@ export const UserProfile = ({
     <HStack ps="2" spacing="3">
       <Avatar boxSize="10" name={user.name} src={user.photoUrl} />
       <Box>
-        <Text fontSize="sm" fontWeight="medium">
+        <Text fontSize="sm" fontWeight="medium" textAlign="left">
           {user.name}
         </Text>
-        <Text color="muted" fontSize="sm">
+        <Text color="muted" fontSize="sm" textAlign="left">
           {user.githubUsername}
         </Text>
       </Box>
