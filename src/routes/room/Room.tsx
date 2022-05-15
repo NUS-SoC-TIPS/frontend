@@ -65,14 +65,14 @@ export const Room = (): ReactElement => {
   if (status === RoomJoiningStatus.CLOSED) {
     return <RoomIsClosed />;
   }
-  if (status === RoomJoiningStatus.ROOM_DOES_NOT_EXIST) {
-    return <RoomDoesNotExist />;
+  if (status === RoomJoiningStatus.IN_ANOTHER_ROOM) {
+    return <InAnotherRoom />;
   }
   if (status === RoomJoiningStatus.IN_ANOTHER_TAB) {
     return <InAnotherTab />;
   }
-  if (status === RoomJoiningStatus.IN_ANOTHER_ROOM) {
-    return <InAnotherRoom />;
+  if (status === RoomJoiningStatus.ROOM_DOES_NOT_EXIST) {
+    return <RoomDoesNotExist />;
   }
   if (status === RoomJoiningStatus.FULL) {
     return <RoomIsFull />;
