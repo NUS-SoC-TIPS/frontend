@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box } from '@chakra-ui/react';
+import { Box, useBreakpointValue } from '@chakra-ui/react';
 import { io, Socket } from 'socket.io-client';
 
 import { useAppDispatch, useAppSelector } from 'app/hooks';
@@ -8,6 +8,7 @@ import { Loading } from 'components/loading';
 import { initSocketForCode } from 'lib/codeSocket';
 import { initSocketForRoom } from 'lib/roomsSocket';
 import { resetRoomState, RoomJoiningStatus } from 'reducers/roomReducer';
+import { useWindowDimensions } from 'utils/hookUtils';
 import tokenUtils from 'utils/tokenUtils';
 
 import { InAnotherRoom } from './errors/InAnotherRoom';
@@ -18,6 +19,7 @@ import { RoomIsFull } from './errors/RoomIsFull';
 import { BottomBar } from './BottomBar';
 import { Code } from './Code';
 import { RoomPage } from './RoomPage';
+import { Slider } from './Slider';
 import { TopBar } from './TopBar';
 
 /**
@@ -37,6 +39,9 @@ export const Room = (): ReactElement => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const { status } = useAppSelector((state) => state.room);
   const dispatch = useAppDispatch();
+  const isTablet = useBreakpointValue({ base: false, md: true });
+  const { width, height } = useWindowDimensions();
+  const [editorSize, setEditorSize] = useState(0.5);
 
   useEffect(() => {
     let newSocket: Socket | null = null;
@@ -61,7 +66,6 @@ export const Room = (): ReactElement => {
   if (!socket || status === RoomJoiningStatus.LOADING) {
     return <Loading />;
   }
-
   if (status === RoomJoiningStatus.CLOSED) {
     return <RoomIsClosed />;
   }
@@ -78,11 +82,35 @@ export const Room = (): ReactElement => {
     return <RoomIsFull />;
   }
 
+  const isPanelCollapsed = editorSize >= 1;
+  const fullLength = isTablet ? width : height - 112; // 48 + 48 + 16
+
+  const onSliderDrag = (distance: number): void => {
+    // eslint-disable-next-line no-console
+    console.log(distance);
+    let ratio = Math.min(Math.max(distance / fullLength, 0.3), 1);
+    if (ratio > 0.9) {
+      ratio = 1;
+    } else if (
+      (!isPanelCollapsed && ratio >= 0.8) ||
+      (isPanelCollapsed && ratio <= 0.9)
+    ) {
+      ratio = 0.8;
+    }
+    setEditorSize(ratio);
+  };
+
   return (
     <RoomPage>
       <TopBar socket={socket} />
-      <Box flex={1}>
-        <Code socket={socket} />
+      <Box display="flex" flex={1} flexDirection={isTablet ? 'row' : 'column'}>
+        <Code
+          height={isTablet ? '100%' : `${fullLength * editorSize}px`}
+          socket={socket}
+          width={isTablet ? `${fullLength * editorSize}px` : '100%'}
+        />
+        <Slider onDrag={onSliderDrag} />
+        {!isPanelCollapsed && <Box flex={1}>&nbsp;</Box>}
       </Box>
       <BottomBar socket={socket} />
     </RoomPage>

@@ -10,10 +10,14 @@ import { Cursor, Position } from 'types/cursor';
 
 interface Props {
   socket: Socket;
+  width: string;
+  height: string;
 }
 
 export const Code = ({
   socket,
+  width,
+  height,
 }: Props): ReactElement<Props, typeof CodeEditor> => {
   const {
     cursor: { hasNext, nextCursor, currentCursor },
@@ -30,7 +34,7 @@ export const Code = ({
         dispatch(clearNext());
       }}
       hasNextPosition={hasNext}
-      height="100%"
+      height={height}
       language={language}
       nextPosition={nextCursor}
       onChange={(code: ChangeEvent): void => updateCode(socket, code)}
@@ -41,7 +45,7 @@ export const Code = ({
         dispatch(setPosition(position));
       }}
       value={doc.text.toString()}
-      width="100%"
+      width={width}
     />
   );
 };
