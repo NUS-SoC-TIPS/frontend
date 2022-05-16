@@ -18,9 +18,10 @@ import { RoomIsClosed } from './errors/RoomIsClosed';
 import { RoomIsFull } from './errors/RoomIsFull';
 import { BottomBar } from './BottomBar';
 import { Code } from './Code';
+import { Panel } from './panel';
 import { RoomPage } from './RoomPage';
 import { Slider } from './Slider';
-import { TopBar } from './TopBar';
+import { TopBar } from './topBar';
 
 /**
  * The Room component contains stateful subcomponents. This is intentional, as the
@@ -84,10 +85,9 @@ export const Room = (): ReactElement => {
 
   const isPanelCollapsed = editorSize >= 1;
   const fullLength = isTablet ? width : height - 112; // 48 + 48 + 16
+  const scaledLength = fullLength * editorSize;
 
   const onSliderDrag = (distance: number): void => {
-    // eslint-disable-next-line no-console
-    console.log(distance);
     let ratio = Math.min(Math.max(distance / fullLength, 0.3), 1);
     if (ratio > 0.9) {
       ratio = 1;
@@ -105,12 +105,17 @@ export const Room = (): ReactElement => {
       <TopBar socket={socket} />
       <Box display="flex" flex={1} flexDirection={isTablet ? 'row' : 'column'}>
         <Code
-          height={isTablet ? '100%' : `${fullLength * editorSize}px`}
+          height={isTablet ? '100%' : `${scaledLength}px`}
           socket={socket}
-          width={isTablet ? `${fullLength * editorSize}px` : '100%'}
+          width={isTablet ? `${scaledLength}px` : '100%'}
         />
         <Slider onDrag={onSliderDrag} />
-        {!isPanelCollapsed && <Box flex={1}>&nbsp;</Box>}
+        {!isPanelCollapsed && (
+          <Panel
+            height={isTablet ? height - 96 : height - 112 - scaledLength}
+            socket={socket}
+          />
+        )}
       </Box>
       <BottomBar socket={socket} />
     </RoomPage>
