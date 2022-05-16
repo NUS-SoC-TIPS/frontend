@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import codeReducer from 'reducers/codeReducer';
+import panelReducer from 'reducers/panelReducer';
 import roomReducer from 'reducers/roomReducer';
 
 export const store = configureStore({
   reducer: {
     room: roomReducer,
     code: codeReducer,
+    panel: panelReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
