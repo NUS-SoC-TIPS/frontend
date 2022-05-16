@@ -11,6 +11,7 @@ import {
   VisuallyHidden,
 } from '@chakra-ui/react';
 
+import demo from 'assets/images/demo.png';
 import { GitHubIcon } from 'components/icons/GitHubIcon';
 
 interface Props {
@@ -74,10 +75,7 @@ export const Hero = ({
           position="relative"
           rounded="lg"
         >
-          <Img
-            alt="Screenshot of Envelope App"
-            src="https://res.cloudinary.com/chakra-ui-pro/image/upload/v1621085270/pro-website/app-screenshot-light_kit2sp.png"
-          />
+          <Img alt="Screenshot of App" src={demo} />
           <Circle
             _groupHover={{
               transform: 'translate3d(-50%, -50%, 0) scale(1.05)',
