@@ -22,16 +22,21 @@ import { User } from 'types/models/user';
 interface UserDisplayProps {
   user: User;
   color?: string;
+  isDisconnected?: boolean;
 }
 
 const UserDisplay = ({
   user,
   color = 'white',
+  isDisconnected = false,
 }: UserDisplayProps): ReactElement<UserDisplayProps, typeof HStack> => {
   return (
-    <HStack spacing="2">
+    <HStack opacity={isDisconnected ? '0.5' : undefined} spacing="2">
       <Circle bg={color} size="10px" />
-      <Text fontSize="sm">{user.githubUsername}</Text>
+      <Text fontSize="sm">
+        {user.name}
+        {isDisconnected ? ' (Disconnected)' : ''}
+      </Text>
     </HStack>
   );
 };
@@ -47,7 +52,9 @@ export const BottomBar = ({
   const [isCloseRoomModalOpen, setIsCloseRoomModalOpen] = useState(false);
   const [isClosingRoom, setIsClosingRoom] = useState(false);
   const user = useUser() as User;
-  const { partner, isRoomClosed } = useAppSelector((state) => state.room);
+  const { partner, isRoomClosed, isPartnerInRoom } = useAppSelector(
+    (state) => state.room,
+  );
   const navigate = useNavigate();
 
   const onCloseModal = (): void => {
@@ -121,7 +128,13 @@ export const BottomBar = ({
             {isDesktop && (
               <>
                 <UserDisplay user={user} />
-                {partner && <UserDisplay color="green" user={partner} />}
+                {partner && (
+                  <UserDisplay
+                    color="green"
+                    isDisconnected={!isPartnerInRoom}
+                    user={partner}
+                  />
+                )}
               </>
             )}
           </HStack>
