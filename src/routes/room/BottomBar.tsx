@@ -1,4 +1,5 @@
 import { ReactElement, ReactNode, useState } from 'react';
+import { FiLock } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -122,7 +123,12 @@ export const BottomBar = ({
       <Container maxWidth="100%" px={2} py={2}>
         <HStack justify="space-between" spacing="10">
           <HStack spacing="4">
-            <Button size="sm" variant="secondary">
+            <Button
+              disabled={true}
+              rightIcon={<FiLock />}
+              size="sm"
+              variant="secondary"
+            >
               Execute Code
             </Button>
             {isDesktop && (

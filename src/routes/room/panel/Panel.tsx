@@ -1,6 +1,7 @@
 import { ReactElement } from 'react';
 import {
   Box,
+  Code,
   Tab,
   TabList,
   TabPanel,
@@ -49,7 +50,9 @@ export const Panel = ({
               variant="flushed"
             />
           </TabPanel>
-          <TabPanel>WIP</TabPanel>
+          <TabPanel>
+            <Code>Execute the code to see its output!</Code>
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </Box>
