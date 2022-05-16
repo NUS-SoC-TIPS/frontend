@@ -32,3 +32,7 @@ export const CODE_EVENTS = {
   UPDATE_LANGUAGE: 'update_language',
   UPDATE_CURSOR: 'update_cursor',
 };
+
+export const NOTES_EVENTS = {
+  UPDATE_NOTES: 'update_notes',
+};
