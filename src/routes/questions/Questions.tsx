@@ -148,9 +148,13 @@ export const Questions = (): ReactElement<typeof Page> => {
                   </Text>
                 </Skeleton>
                 <Skeleton isLoaded={!isFetchingData}>
-                  <Heading size={useBreakpointValue({ base: 'sm', md: 'md' })}>
+                  <Heading size={useBreakpointValue({ base: 'sm' })}>
                     {formatDate(
                       state.stats?.closestWindow.startAt ?? currentTime,
+                    )}{' '}
+                    -{' '}
+                    {formatDate(
+                      state.stats?.closestWindow.endAt ?? currentTime,
                     )}
                   </Heading>
                 </Skeleton>
