@@ -64,7 +64,7 @@ export const Tasks = (): ReactElement<typeof Page> => {
 
   return (
     <Page>
-      <Stack spacing={{ base: '8', lg: '6' }}>
+      <Stack spacing={{ base: '8' }}>
         <Stack spacing="1">
           <Heading
             fontWeight="medium"

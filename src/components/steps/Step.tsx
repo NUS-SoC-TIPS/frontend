@@ -71,7 +71,8 @@ export const Step = (props: Props): ReactElement<Props, typeof Stack> => {
       </Stack>
       <Stack
         align={{ base: 'start', md: 'center' }}
-        pb={isMobile && !isLastStep ? '8' : '0'}
+        pb={isMobile ? '4' : '0'}
+        pt={isMobile ? '4' : '0'}
         spacing="0.5"
       >
         <Text color="emphasized" fontWeight="medium">
