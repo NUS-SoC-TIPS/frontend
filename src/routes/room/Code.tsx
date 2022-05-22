@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import { Socket } from 'socket.io-client';
 
 import { useAppDispatch, useAppSelector } from 'app/hooks';
-import CodeEditor from 'components/codeEditor/CodeEditor';
+import { CodeEditor } from 'components/codeEditor';
 import { updateCode, updateCursor } from 'lib/codeSocket';
 import { clearNext, setPosition } from 'reducers/codeReducer';
 import { ChangeEvent } from 'types/automerge/ace';

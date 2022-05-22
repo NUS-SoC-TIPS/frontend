@@ -6,7 +6,6 @@ import { ChangeEvent } from 'types/automerge/ace';
 import { Cursor, Position } from 'types/cursor';
 import { Language } from 'types/models/code';
 import { convertCursorToIMarker } from 'utils/cursorUtils';
-import { emptyFunction } from 'utils/functionUtils';
 
 import 'ace-builds/webpack-resolver';
 import 'ace-builds/src-noconflict/mode-java';
@@ -15,6 +14,7 @@ import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/ext-language_tools';
 import './theme-twilight';
 
+import { languagesMap } from './languagesMap';
 import './CodeEditor.scss';
 
 interface Props {
@@ -34,16 +34,16 @@ interface Props {
   partnerCursor?: Cursor;
 }
 
-const CodeEditor: FC<Props> = ({
+export const CodeEditor: FC<Props> = ({
   language,
   onChange,
-  onCursorChange = emptyFunction,
+  onCursorChange,
   value,
   width,
   height,
-  hasNextPosition: hasSuggestion,
-  clearNextPosition: clearSuggestion,
-  nextPosition: suggestedPosition,
+  hasNextPosition,
+  clearNextPosition,
+  nextPosition,
   position,
   setPosition,
   partnerCursor,
@@ -54,18 +54,15 @@ const CodeEditor: FC<Props> = ({
   const ref = useRef<AceEditor | null>(null);
 
   useEffect(() => {
-    if (hasSuggestion) {
-      ref?.current?.editor.moveCursorTo(
-        suggestedPosition.row,
-        suggestedPosition.column,
-      );
-      clearSuggestion();
+    if (hasNextPosition) {
+      ref?.current?.editor.moveCursorTo(nextPosition.row, nextPosition.column);
+      clearNextPosition();
     }
   }, [
-    clearSuggestion,
-    hasSuggestion,
-    suggestedPosition.column,
-    suggestedPosition.row,
+    clearNextPosition,
+    hasNextPosition,
+    nextPosition.column,
+    nextPosition.row,
   ]);
 
   const updateMarkers = useCallback(() => {
@@ -137,7 +134,7 @@ const CodeEditor: FC<Props> = ({
       enableLiveAutocompletion={true}
       height={height}
       markers={markers}
-      mode={language.toLowerCase()}
+      mode={languagesMap[language]}
       name="code-editor"
       onChange={(_value, event): void => onChange(event as ChangeEvent)}
       onCopy={(text: string): void => {
@@ -208,5 +205,3 @@ const CodeEditor: FC<Props> = ({
     />
   );
 };
-
-export default CodeEditor;
