@@ -12,9 +12,11 @@ import { Page } from 'components/page';
 import { useUser } from 'contexts/UserContext';
 
 import { NameFormControl } from './form/NameFormControl';
+import { PhotoFormControl } from './form/PhotoFormControl';
 
 interface State {
   name: string;
+  photoUrl: string;
 }
 
 export const Settings = (): ReactElement<typeof Page> => {
@@ -23,6 +25,7 @@ export const Settings = (): ReactElement<typeof Page> => {
     (s: State, a: Partial<State>) => ({ ...s, ...a }),
     {
       name: user?.name ?? '',
+      photoUrl: user?.photoUrl ?? '',
     } as State,
   );
 
@@ -43,6 +46,11 @@ export const Settings = (): ReactElement<typeof Page> => {
           <NameFormControl
             name={state.name}
             onChange={(name: string): void => setState({ name })}
+          />
+          <PhotoFormControl
+            name={state.name}
+            onChange={(photoUrl: string): void => setState({ photoUrl })}
+            photoUrl={state.photoUrl}
           />
         </Stack>
       </Stack>
