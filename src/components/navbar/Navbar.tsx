@@ -17,7 +17,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-import { INTERVIEWS, LEETCODE, SETTINGS, TASKS } from 'constants/routes';
+import { INTERVIEWS, QUESTIONS, SETTINGS, TASKS } from 'constants/routes';
 import { useAuth } from 'contexts/AuthContext';
 import { useUser } from 'contexts/UserContext';
 
@@ -42,23 +42,23 @@ export const Navbar = (): ReactElement<typeof Box> => {
       bg="bg-surface"
       boxShadow={useColorModeValue('sm', 'sm-dark')}
     >
-      <Container maxWidth="100%" py={{ base: '3', lg: '4' }}>
+      <Container maxW={{ base: '8xl' }} py={{ base: '3', lg: '4' }}>
         <Flex justify="space-between">
           <HStack spacing="4">
             <Logo />
             {isDesktop && user && (
               <ButtonGroup spacing="1" variant="ghost">
                 <Button
+                  aria-current={pathname === QUESTIONS ? 'page' : undefined}
+                  onClick={(): void => navigate(QUESTIONS)}
+                >
+                  Questions
+                </Button>
+                <Button
                   aria-current={pathname === INTERVIEWS ? 'page' : undefined}
                   onClick={(): void => navigate(INTERVIEWS)}
                 >
                   Interviews
-                </Button>
-                <Button
-                  aria-current={pathname === LEETCODE ? 'page' : undefined}
-                  onClick={(): void => navigate(LEETCODE)}
-                >
-                  LeetCode
                 </Button>
                 <Button
                   aria-current={pathname === TASKS ? 'page' : undefined}

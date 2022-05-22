@@ -1,14 +1,14 @@
 import { ReactElement } from 'react';
 import {
-  FiBarChart2,
+  FiBook,
   FiCheckSquare,
-  FiHome,
   FiLogOut,
+  FiMessageSquare,
   FiSettings,
 } from 'react-icons/fi';
 import { Divider, Flex, Stack, useColorModeValue } from '@chakra-ui/react';
 
-import { INTERVIEWS, LEETCODE, SETTINGS, TASKS } from 'constants/routes';
+import { INTERVIEWS, QUESTIONS, SETTINGS, TASKS } from 'constants/routes';
 import { User } from 'types/models/user';
 
 import { Logo } from '../logo';
@@ -44,16 +44,16 @@ export const Sidebar = ({
           <Logo pl={4} />
           <Stack spacing="2">
             <NavButton
-              aria-current={pathname === INTERVIEWS ? 'page' : undefined}
-              icon={FiHome}
-              label="Interviews"
-              onClick={(): void => navigate(INTERVIEWS)}
+              aria-current={pathname === QUESTIONS ? 'page' : undefined}
+              icon={FiBook}
+              label="Questions"
+              onClick={(): void => navigate(QUESTIONS)}
             />
             <NavButton
-              aria-current={pathname === LEETCODE ? 'page' : undefined}
-              icon={FiBarChart2}
-              label="LeetCode"
-              onClick={(): void => navigate(LEETCODE)}
+              aria-current={pathname === INTERVIEWS ? 'page' : undefined}
+              icon={FiMessageSquare}
+              label="Interviews"
+              onClick={(): void => navigate(INTERVIEWS)}
             />
             <NavButton
               aria-current={pathname === TASKS ? 'page' : undefined}
