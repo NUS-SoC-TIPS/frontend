@@ -103,6 +103,7 @@ export const AddQuestion = (): ReactElement<typeof Page> => {
     setState({ isAdding: true });
     return createSubmission({
       questionSlug: state.selectedQuestion!.slug,
+      questionSource: state.selectedQuestion!.source,
       languageUsed: state.languageUsed!,
       codeWritten: state.codeWritten,
     }).then((): void => {
