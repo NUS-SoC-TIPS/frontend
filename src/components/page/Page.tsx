@@ -10,7 +10,7 @@ export const Page = ({
   <Box as="section" height="100vh" overflowY="auto">
     <Navbar />
     <Container
-      maxWidth="100%"
+      maxW={{ base: '8xl' }}
       pb={{ base: '12', lg: '24' }}
       pt={{ base: '8', lg: '12' }}
     >
