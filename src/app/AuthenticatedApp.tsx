@@ -6,11 +6,13 @@ import {
   INTERVIEWS,
   QUESTIONS,
   ROOM,
+  SETTINGS,
   TASKS,
 } from 'constants/routes';
 import { Interviews } from 'routes/interviews';
 import { AddQuestion, Questions } from 'routes/questions';
 import { Room } from 'routes/room';
+import { Settings } from 'routes/settings';
 import { Tasks } from 'routes/tasks';
 
 const AuthenticatedApp = (): ReactElement<typeof Routes> => {
@@ -20,6 +22,7 @@ const AuthenticatedApp = (): ReactElement<typeof Routes> => {
       <Route element={<AddQuestion />} path={ADD_QUESTION} />
       <Route element={<Interviews />} path={INTERVIEWS} />
       <Route element={<Tasks />} path={TASKS} />
+      <Route element={<Settings />} path={SETTINGS} />
       <Route element={<Room />} path={`${ROOM}/:slug`} />
       <Route element={<Navigate to={QUESTIONS} />} path="*" />
     </Routes>
