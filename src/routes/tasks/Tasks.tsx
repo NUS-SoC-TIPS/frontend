@@ -2,12 +2,14 @@ import { ReactElement, useEffect, useMemo, useReducer } from 'react';
 import { Heading, Stack, Text, useBreakpointValue } from '@chakra-ui/react';
 
 import { Page } from 'components/page';
-import { Step, useStep } from 'components/steps';
+import { useStep } from 'components/steps';
 import { getTaskStats } from 'lib/stats';
 import { TaskStats } from 'types/api/stats';
-import { formatDate } from 'utils/dateUtils';
 
 import { computeCompletion, computeSteps } from './helpers';
+import { Interviews } from './Interviews';
+import { Submissions } from './Submissions';
+import { TaskStep } from './TaskStep';
 
 interface State {
   isLoading: boolean;
@@ -62,9 +64,11 @@ export const Tasks = (): ReactElement<typeof Page> => {
     };
   }, []);
 
+  const selectedStep = steps[currentStep];
+
   return (
     <Page>
-      <Stack spacing={{ base: '8' }}>
+      <Stack spacing="8">
         <Stack spacing="1">
           <Heading
             fontWeight="medium"
@@ -77,42 +81,32 @@ export const Tasks = (): ReactElement<typeof Page> => {
           </Text>
         </Stack>
         <Stack direction={{ base: 'column', md: 'row' }} spacing="0">
-          {steps.map((step, id) => {
-            const isActive = id <= currentStep;
-            const isFailure = state.completion[id].isFailure;
-            const isSuccess = state.completion[id].isSuccess;
-            const isPreviousStepFailure =
-              state.completion[Math.max(0, id - 1)].isFailure;
-
-            return (
-              <Step
-                cursor="pointer"
-                description={formatDate(step.window.startAt)}
-                isActive={isActive}
-                isFailure={isFailure}
-                isFirstStep={id === 0}
-                isLastStep={steps.length === id + 1}
-                isSuccess={isSuccess}
-                key={id}
-                leftLineColor={
-                  isPreviousStepFailure && currentStep >= id
-                    ? 'error'
-                    : isActive
-                    ? 'accent'
-                    : undefined
-                }
-                onClick={(): void => setStep(id)}
-                rightLineColor={
-                  isFailure && currentStep > id
-                    ? 'error'
-                    : id < currentStep
-                    ? 'accent'
-                    : undefined
-                }
-                title={`Week ${id + 1}`}
-              />
-            );
-          })}
+          {steps.map((step, id) => (
+            <TaskStep
+              completion={state.completion}
+              currentStep={currentStep}
+              id={id}
+              isLastStep={steps.length === id + 1}
+              key={id}
+              setStep={setStep}
+              step={step}
+            />
+          ))}
+        </Stack>
+        <Stack direction={{ base: 'column', md: 'row' }} spacing="6">
+          {selectedStep && (
+            <Submissions
+              numQuestions={selectedStep.window.numQuestions}
+              submissions={selectedStep.submissions}
+            />
+          )}
+          {selectedStep && (
+            <Interviews
+              interviews={selectedStep.interviews}
+              numInterviews={selectedStep.window.numQuestions}
+              requireInterview={selectedStep.window.requireInterview}
+            />
+          )}
         </Stack>
       </Stack>
     </Page>
