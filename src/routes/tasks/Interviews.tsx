@@ -29,7 +29,7 @@ export const Interviews = ({
   const hasEnoughInterviews = !requireInterview || interviews.length >= 1;
 
   return (
-    <Box as="section" flex={1} py={{ base: '4', md: '8' }}>
+    <Box as="section" flex={1}>
       <Container maxW="3xl" px="0">
         <Box
           bg="bg-surface"

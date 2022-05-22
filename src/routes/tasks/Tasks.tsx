@@ -5,6 +5,7 @@ import { Page } from 'components/page';
 import { useStep } from 'components/steps';
 import { getTaskStats } from 'lib/stats';
 import { TaskStats } from 'types/api/stats';
+import { formatDate } from 'utils/dateUtils';
 
 import { computeCompletion, computeSteps } from './helpers';
 import { Interviews } from './Interviews';
@@ -34,6 +35,7 @@ export const Tasks = (): ReactElement<typeof Page> => {
   );
   const { maxStep, initialStep } = useMemo(() => computeSteps(steps), [steps]);
   const [currentStep, { setStep }] = useStep({ maxStep, initialStep });
+  const titleSize = useBreakpointValue({ base: 'xxs' });
 
   useEffect(() => {
     let didCancel = false;
@@ -68,7 +70,7 @@ export const Tasks = (): ReactElement<typeof Page> => {
 
   return (
     <Page>
-      <Stack spacing="8">
+      <Stack spacing={{ base: '6', md: '8' }}>
         <Stack spacing="1">
           <Heading
             fontWeight="medium"
@@ -93,21 +95,28 @@ export const Tasks = (): ReactElement<typeof Page> => {
             />
           ))}
         </Stack>
-        <Stack direction={{ base: 'column', md: 'row' }} spacing="6">
-          {selectedStep && (
-            <Submissions
-              numQuestions={selectedStep.window.numQuestions}
-              submissions={selectedStep.submissions}
-            />
-          )}
-          {selectedStep && (
-            <Interviews
-              interviews={selectedStep.interviews}
-              numInterviews={selectedStep.window.numQuestions}
-              requireInterview={selectedStep.window.requireInterview}
-            />
-          )}
-        </Stack>
+        {selectedStep && (
+          <Stack spacing="4">
+            <Heading fontWeight="medium" mb="0" size={titleSize}>
+              Week {currentStep + 1} ({formatDate(selectedStep.window.startAt)}{' '}
+              - {formatDate(selectedStep.window.endAt)})
+            </Heading>
+            <Stack
+              direction={{ base: 'column', md: 'row' }}
+              spacing={{ base: '6', md: '6' }}
+            >
+              <Submissions
+                numQuestions={selectedStep.window.numQuestions}
+                submissions={selectedStep.submissions}
+              />
+              <Interviews
+                interviews={selectedStep.interviews}
+                numInterviews={selectedStep.window.numQuestions}
+                requireInterview={selectedStep.window.requireInterview}
+              />
+            </Stack>
+          </Stack>
+        )}
       </Stack>
     </Page>
   );

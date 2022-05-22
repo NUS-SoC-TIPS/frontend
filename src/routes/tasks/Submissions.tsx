@@ -29,7 +29,7 @@ export const Submissions = ({
   const hasEnoughSubmissions = submissions.length >= numQuestions;
 
   return (
-    <Box as="section" flex={1} py={{ base: '4', md: '8' }}>
+    <Box as="section" flex={1}>
       <Container maxW="3xl" px="0">
         <Box
           bg="bg-surface"
