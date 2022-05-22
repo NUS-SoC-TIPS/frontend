@@ -13,8 +13,9 @@ import { Logo } from '../logo';
 export const Footer = (): ReactElement<typeof Container> => (
   <Container
     as="footer"
-    maxWidth="100%"
-    py={{ base: '12', md: '16' }}
+    maxW={{ base: '8xl' }}
+    pb={{ base: '4' }}
+    pt={{ base: '12', md: '16' }}
     role="contentinfo"
   >
     <Stack spacing={{ base: '4', md: '5' }}>
