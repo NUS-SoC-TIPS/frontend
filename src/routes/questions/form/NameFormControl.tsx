@@ -16,7 +16,7 @@ interface Props {
 // Until then, we will prevent the menu from showing too many options at once, as it lags.
 const NUM_QUERIES_TO_SHOW = 50;
 
-export const AsyncSelectFormControl = ({
+export const NameFormControl = ({
   questions,
   isLoading,
   isError,

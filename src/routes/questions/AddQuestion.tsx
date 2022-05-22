@@ -19,10 +19,10 @@ import { createSubmission } from 'lib/submissions';
 import { Language } from 'types/models/code';
 import { Question } from 'types/models/question';
 
-import { AsyncSelectFormControl } from './form/AsyncSelectFormControl';
 import { CodeFormControl } from './form/CodeFormControl';
 import { DifficultyFormControl } from './form/DifficultyFormControl';
 import { LanguageFormControl } from './form/LanguageFormControl';
+import { NameFormControl } from './form/NameFormControl';
 import { UrlFormControl } from './form/UrlFormControl';
 
 interface State {
@@ -122,7 +122,7 @@ export const AddQuestion = (): ReactElement<typeof Page> => {
         </Stack>
         <Divider />
         <Stack divider={<StackDivider />} spacing="5">
-          <AsyncSelectFormControl {...state} onChange={onChangeAsyncSelect} />
+          <NameFormControl {...state} onChange={onChangeAsyncSelect} />
           {state.selectedQuestion && (
             <UrlFormControl question={state.selectedQuestion} />
           )}
