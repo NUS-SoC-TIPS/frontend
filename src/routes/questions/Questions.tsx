@@ -1,5 +1,4 @@
 import { ReactElement } from 'react';
-import { FiPlus } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import {
   Button,
@@ -37,12 +36,11 @@ export const Questions = (): ReactElement<typeof Page> => {
               Questions
             </Heading>
             <Text color="muted">
-              Add your question here once you have completed them!
+              Add your questions here once you have completed them!
             </Text>
           </Stack>
           <Stack direction="row" spacing="3">
             <Button
-              leftIcon={<FiPlus />}
               onClick={(): void => navigate(ADD_QUESTION)}
               variant="primary"
             >
