@@ -1,9 +1,10 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Button,
   Heading,
   SimpleGrid,
+  Skeleton,
   Stack,
   Text,
   useBreakpointValue,
@@ -11,15 +12,66 @@ import {
 
 import { Page } from 'components/page';
 import { ADD_QUESTION } from 'constants/routes';
+import { getQuestionStats } from 'lib/stats';
+import { QuestionStats } from 'types/api/stats';
+import { formatDate } from 'utils/dateUtils';
 
 import { Card } from '../../components/card';
 
-/**
- * This component constitutes a few stateful components, namely the
- * room button, the stats panels and the past interview records.
- */
+interface State {
+  isLoading: boolean;
+  isError: boolean;
+  stats: QuestionStats | null;
+}
+
 export const Questions = (): ReactElement<typeof Page> => {
   const navigate = useNavigate();
+  const [state, setState] = useReducer(
+    (s: State, a: Partial<State>) => ({ ...s, ...a }),
+    {
+      isLoading: true,
+      isError: false,
+      stats: null,
+    } as State,
+  );
+
+  useEffect(() => {
+    let didCancel = false;
+    const fetchData = async (): Promise<void> => {
+      try {
+        const stats = await getQuestionStats();
+        // eslint-disable-next-line no-console
+        console.log(stats);
+        if (!didCancel) {
+          setState({
+            isLoading: false,
+            stats,
+          });
+        }
+      } catch {
+        if (!didCancel) {
+          setState({
+            isLoading: false,
+            isError: true,
+          });
+        }
+      }
+    };
+
+    fetchData();
+
+    return (): void => {
+      didCancel = true;
+    };
+  }, []);
+
+  const currentTime = new Date();
+  const isFetchingData = state.isLoading || state.stats == null;
+  const isOngoingWindow = state.stats
+    ? state.stats.closestWindow.startAt <= currentTime &&
+      state.stats.closestWindow.endAt >= currentTime
+    : true;
+
   return (
     <Page>
       <Stack spacing={{ base: '8', lg: '6' }}>
@@ -50,9 +102,60 @@ export const Questions = (): ReactElement<typeof Page> => {
         </Stack>
         <Stack spacing={{ base: '5', lg: '6' }}>
           <SimpleGrid columns={{ base: 1, md: 3 }} gap="6">
-            <Card minH="3xs" />
-            <Card minH="3xs" />
-            <Card minH="3xs" />
+            <Card>
+              <Stack>
+                <Skeleton isLoaded={!isFetchingData}>
+                  <Text color="muted" fontSize="sm">
+                    {isOngoingWindow
+                      ? 'Completed This Window'
+                      : 'Completed This Week'}
+                  </Text>
+                </Skeleton>
+                <Skeleton isLoaded={!isFetchingData}>
+                  <Heading size={useBreakpointValue({ base: 'sm', md: 'md' })}>
+                    {state.stats?.numCompletedThisWindow ?? 0}
+                    {isOngoingWindow
+                      ? `/${state.stats?.closestWindow.numQuestions ?? 7}`
+                      : ''}
+                  </Heading>
+                </Skeleton>
+              </Stack>
+            </Card>
+            <Card>
+              <Stack>
+                <Skeleton isLoaded={!isFetchingData}>
+                  <Text color="muted" fontSize="sm">
+                    Completed All Time
+                  </Text>
+                </Skeleton>
+                <Skeleton isLoaded={!isFetchingData}>
+                  <Heading size={useBreakpointValue({ base: 'sm', md: 'md' })}>
+                    {state.stats?.numCompletedAllTime ?? 0}
+                  </Heading>
+                </Skeleton>
+              </Stack>
+            </Card>
+            <Card>
+              <Stack>
+                <Skeleton isLoaded={!isFetchingData}>
+                  <Text color="muted" fontSize="sm">
+                    {isOngoingWindow
+                      ? 'Current Window'
+                      : (state.stats?.closestWindow.startAt ?? currentTime) >=
+                        currentTime
+                      ? 'Upcoming Window'
+                      : 'Last Window'}
+                  </Text>
+                </Skeleton>
+                <Skeleton isLoaded={!isFetchingData}>
+                  <Heading size={useBreakpointValue({ base: 'sm', md: 'md' })}>
+                    {formatDate(
+                      state.stats?.closestWindow.startAt ?? currentTime,
+                    )}
+                  </Heading>
+                </Skeleton>
+              </Stack>
+            </Card>
           </SimpleGrid>
         </Stack>
         <Card minH="xs" />
