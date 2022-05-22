@@ -11,7 +11,8 @@ import {
 
 import { Page } from 'components/page';
 
-import { Card } from './Card';
+import { Card } from '../../components/card';
+
 import { RoomButton } from './RoomButton';
 
 /**
