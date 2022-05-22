@@ -13,6 +13,7 @@
     "automerge": "1.0.1-preview.5",
     "autosize": "^5.0.1",
     "axios": "^0.27.2",
+    "chakra-react-select": "^4.0.0",
     "firebase": "^9.8.0",
     "framer-motion": "^6.3.3",
     "lottie-react": "^2.2.1",
