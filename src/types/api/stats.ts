@@ -1,4 +1,9 @@
+import { Question } from 'types/models/question';
+import { QuestionSubmission } from 'types/models/submission';
+import { User } from 'types/models/user';
 import { Window } from 'types/models/window';
+
+import { RoomRecord } from './record';
 
 export interface QuestionStats {
   // If currently in the middle of a window, the number will be returned
@@ -11,4 +16,18 @@ export interface QuestionStats {
   // - Else if there exists a window in the future, the upcoming window will be returned
   // - Else (all windows are over), the most recent window will be returned
   closestWindow: Window;
+}
+
+export interface TaskStats {
+  windows: {
+    window: Window;
+    submissions: {
+      submission: QuestionSubmission;
+      question: Question;
+    }[];
+    interviews: {
+      record: RoomRecord;
+      partner: User;
+    }[];
+  }[];
 }
