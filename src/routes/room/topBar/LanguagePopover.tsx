@@ -12,7 +12,7 @@ interface Props {
 const languageNames: { [key: string]: string } = {
   [Language.JAVA]: 'Java',
   [Language.JAVASCRIPT]: 'JavaScript',
-  [Language.PYTHON]: 'Python 3',
+  [Language.PYTHON_THREE]: 'Python 3',
 };
 
 export const LanguagePopover = ({
