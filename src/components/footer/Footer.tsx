@@ -13,8 +13,8 @@ import { Logo } from '../logo';
 export const Footer = (): ReactElement<typeof Container> => (
   <Container
     as="footer"
-    maxW={{ base: '8xl' }}
-    pb={{ base: '4' }}
+    maxW="8xl"
+    pb="4"
     pt={{ base: '12', md: '16' }}
     role="contentinfo"
   >

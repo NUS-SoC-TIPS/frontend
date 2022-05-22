@@ -42,7 +42,7 @@ export const Navbar = (): ReactElement<typeof Box> => {
       bg="bg-surface"
       boxShadow={useColorModeValue('sm', 'sm-dark')}
     >
-      <Container maxW={{ base: '8xl' }} py={{ base: '3', lg: '4' }}>
+      <Container maxW="8xl" py={{ base: '3', lg: '4' }}>
         <Flex justify="space-between">
           <HStack spacing="4">
             <Logo />
