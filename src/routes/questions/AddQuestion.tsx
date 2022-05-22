@@ -10,10 +10,12 @@ import {
   StackDivider,
   Text,
   useBreakpointValue,
+  useToast,
 } from '@chakra-ui/react';
 
 import { Page } from 'components/page';
 import { QUESTIONS } from 'constants/routes';
+import { DEFAULT_TOAST_PROPS } from 'constants/toast';
 import { getQuestions } from 'lib/questions';
 import { createSubmission } from 'lib/submissions';
 import { Language } from 'types/models/code';
@@ -56,6 +58,7 @@ export const AddQuestion = (): ReactElement<typeof Page> => {
     } as State,
   );
   const navigate = useNavigate();
+  const toast = useToast();
 
   useEffect(() => {
     let didCancel = false;
@@ -103,6 +106,12 @@ export const AddQuestion = (): ReactElement<typeof Page> => {
       languageUsed: state.languageUsed!,
       codeWritten: state.codeWritten,
     }).then((): void => {
+      toast({
+        ...DEFAULT_TOAST_PROPS,
+        title: 'Question added!',
+        description: 'Awesome work with the question!',
+        status: 'success',
+      });
       navigate(QUESTIONS);
     });
   };
