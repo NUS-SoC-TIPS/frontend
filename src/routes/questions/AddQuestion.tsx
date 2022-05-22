@@ -19,11 +19,13 @@ import { createSubmission } from 'lib/submissions';
 import { Language } from 'types/models/code';
 import { Question } from 'types/models/question';
 
-import { CodeFormControl } from './form/CodeFormControl';
-import { DifficultyFormControl } from './form/DifficultyFormControl';
-import { LanguageFormControl } from './form/LanguageFormControl';
-import { NameFormControl } from './form/NameFormControl';
-import { UrlFormControl } from './form/UrlFormControl';
+import {
+  CodeFormControl,
+  DifficultyFormControl,
+  LanguageFormControl,
+  NameFormControl,
+  UrlFormControl,
+} from './form';
 
 interface State {
   questions: Question[];
