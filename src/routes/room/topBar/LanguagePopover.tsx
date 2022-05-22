@@ -2,6 +2,7 @@ import { ReactElement } from 'react';
 import { Box, Link, Popover, Stack, Text } from '@chakra-ui/react';
 
 import { MyPopover } from 'components/popover';
+import { languageToString } from 'constants/enumStrings';
 import { Language } from 'types/models/code';
 
 interface Props {
@@ -9,19 +10,19 @@ interface Props {
   setLanguage: (language: Language) => void;
 }
 
-const languageNames: { [key: string]: string } = {
-  [Language.JAVA]: 'Java',
-  [Language.JAVASCRIPT]: 'JavaScript',
-  [Language.PYTHON_THREE]: 'Python 3',
-};
+const supportedLanguages = [
+  Language.JAVA,
+  Language.JAVASCRIPT,
+  Language.PYTHON_THREE,
+];
 
 export const LanguagePopover = ({
   language,
   setLanguage,
 }: Props): ReactElement<Props, typeof Popover> | null => {
-  const items = Object.entries(languageNames).map(([languageEnum, name]) => ({
-    title: name,
-    onClick: () => setLanguage(languageEnum as Language),
+  const items = supportedLanguages.map((supportedLanguage) => ({
+    title: languageToString[supportedLanguage],
+    onClick: () => setLanguage(supportedLanguage),
   }));
 
   return (
@@ -47,7 +48,7 @@ export const LanguagePopover = ({
         </Stack>
       }
       popoverContentProps={{ p: 2, width: '32' }}
-      trigger={languageNames[language]}
+      trigger={languageToString[language]}
     />
   );
 };
