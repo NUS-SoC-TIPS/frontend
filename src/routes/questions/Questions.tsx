@@ -40,8 +40,6 @@ export const Questions = (): ReactElement<typeof Page> => {
     const fetchData = async (): Promise<void> => {
       try {
         const stats = await getQuestionStats();
-        // eslint-disable-next-line no-console
-        console.log(stats);
         if (!didCancel) {
           setState({
             isLoading: false,
