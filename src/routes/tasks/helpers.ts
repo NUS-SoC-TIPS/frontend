@@ -1,7 +1,7 @@
-import { TaskStats } from 'types/api/stats';
+import { TaskStatsWindow } from 'types/api/stats';
 
 export const computeSteps = (
-  steps: TaskStats['windows'],
+  steps: TaskStatsWindow[],
 ): { initialStep: number; maxStep: number } => {
   const currentTime = new Date();
   const maxStep = steps.length;
@@ -18,7 +18,7 @@ export const computeSteps = (
 };
 
 export const computeCompletion = (
-  steps: TaskStats['windows'],
+  steps: TaskStatsWindow[],
 ): { isSuccess: boolean; isFailure: boolean }[] => {
   const currentTime = new Date();
   return steps.map((step) => {

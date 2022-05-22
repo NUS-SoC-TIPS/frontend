@@ -18,16 +18,22 @@ export interface QuestionStats {
   closestWindow: Window;
 }
 
+export interface TaskStatsSubmissions {
+  submission: QuestionSubmission;
+  question: Question;
+}
+
+export interface TaskStatsInterviews {
+  record: RoomRecord;
+  partner: User;
+}
+
+export interface TaskStatsWindow {
+  window: Window;
+  submissions: TaskStatsSubmissions[];
+  interviews: TaskStatsInterviews[];
+}
+
 export interface TaskStats {
-  windows: {
-    window: Window;
-    submissions: {
-      submission: QuestionSubmission;
-      question: Question;
-    }[];
-    interviews: {
-      record: RoomRecord;
-      partner: User;
-    }[];
-  }[];
+  windows: TaskStatsWindow[];
 }
