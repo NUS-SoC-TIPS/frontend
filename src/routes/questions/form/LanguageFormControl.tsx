@@ -2,6 +2,7 @@ import { ReactElement } from 'react';
 import { FormControl, FormLabel, Stack } from '@chakra-ui/react';
 
 import { Select } from 'components/select';
+import { languageToString } from 'constants/enumStrings';
 import { Language } from 'types/models/code';
 import { Question, QuestionType } from 'types/models/question';
 
@@ -10,45 +11,43 @@ interface Props {
   onChangeLanguage: (language: Language | null) => void;
 }
 
-const algorithmLanguages: { [key: string]: string } = {
-  [Language.C_PLUS_PLUS]: 'C++',
-  [Language.JAVA]: 'Java',
-  [Language.PYTHON]: 'Python',
-  [Language.PYTHON_THREE]: 'Python 3',
-  [Language.C]: 'C',
-  [Language.C_SHARP]: 'C#',
-  [Language.JAVASCRIPT]: 'JavaScript',
-  [Language.RUBY]: 'Ruby',
-  [Language.SWIFT]: 'Swift',
-  [Language.GO]: 'Go',
-  [Language.SCALA]: 'Scala',
-  [Language.KOTLIN]: 'Kotlin',
-  [Language.RUST]: 'Rust',
-  [Language.PHP]: 'PHP',
-  [Language.TYPESCRIPT]: 'TypeScript',
-  [Language.RACKET]: 'Racket',
-  [Language.ERLANG]: 'Erlang',
-  [Language.ELIXIR]: 'Elixir',
-};
+const algorithmLanguages: Language[] = [
+  Language.C_PLUS_PLUS,
+  Language.JAVA,
+  Language.PYTHON,
+  Language.PYTHON_THREE,
+  Language.C,
+  Language.C_SHARP,
+  Language.JAVASCRIPT,
+  Language.RUBY,
+  Language.SWIFT,
+  Language.GO,
+  Language.SCALA,
+  Language.KOTLIN,
+  Language.RUST,
+  Language.PHP,
+  Language.TYPESCRIPT,
+  Language.RACKET,
+  Language.ERLANG,
+  Language.ELIXIR,
+];
 
-const databaseLanguages: { [key: string]: string } = {
-  [Language.MY_SQL]: 'MySQL',
-  [Language.MS_SQL_SERVER]: 'MS SQL Server',
-  [Language.ORACLE]: 'Oracle',
-};
+const databaseLanguages: Language[] = [
+  Language.MY_SQL,
+  Language.MS_SQL_SERVER,
+  Language.ORACLE,
+];
 
-const shellLanguages: { [key: string]: string } = {
-  [Language.BASH]: 'Bash',
-};
+const shellLanguages: Language[] = [Language.BASH];
 
-const concurrencyLanguages: { [key: string]: string } = {
-  [Language.C_PLUS_PLUS]: 'C++',
-  [Language.JAVA]: 'Java',
-  [Language.PYTHON]: 'Python',
-  [Language.PYTHON_THREE]: 'Python 3',
-  [Language.C]: 'C',
-  [Language.C_SHARP]: 'C#',
-};
+const concurrencyLanguages: Language[] = [
+  Language.C_PLUS_PLUS,
+  Language.JAVA,
+  Language.PYTHON,
+  Language.PYTHON_THREE,
+  Language.C,
+  Language.C_SHARP,
+];
 
 interface LanguageOption {
   label: string;
@@ -74,9 +73,9 @@ export const LanguageFormControl = ({
       case QuestionType.SHELL:
         languages = shellLanguages;
     }
-    return Object.entries(languages).map(([value, label]) => ({
-      label,
-      value: value as Language,
+    return languages.map((language) => ({
+      label: languageToString[language],
+      value: language,
     }));
   };
 

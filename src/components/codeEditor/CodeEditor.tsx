@@ -2,6 +2,7 @@ import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import AceEditor, { IMarker } from 'react-ace';
 import { Ace } from 'ace-builds';
 
+import { languageToMode } from 'constants/enumStrings';
 import { ChangeEvent } from 'types/automerge/ace';
 import { Cursor, Position } from 'types/cursor';
 import { Language } from 'types/models/code';
@@ -14,7 +15,6 @@ import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/ext-language_tools';
 import './theme-twilight';
 
-import { languagesMap } from './languagesMap';
 import './CodeEditor.scss';
 
 interface Props {
@@ -134,7 +134,7 @@ export const CodeEditor: FC<Props> = ({
       enableLiveAutocompletion={true}
       height={height}
       markers={markers}
-      mode={languagesMap[language]}
+      mode={languageToMode[language]}
       name="code-editor"
       onChange={(_value, event): void => onChange(event as ChangeEvent)}
       onCopy={(text: string): void => {

@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import AceEditor from 'react-ace';
 
+import { languageToMode } from 'constants/enumStrings';
 import { Language } from 'types/models/code';
 
 import 'ace-builds/webpack-resolver';
@@ -28,8 +29,6 @@ import 'ace-builds/src-noconflict/mode-typescript';
 import 'ace-builds/src-noconflict/ext-language_tools';
 import './theme-twilight';
 
-import { languagesMap } from './languagesMap';
-
 interface Props {
   language: Language | null;
   onChange: (code: string) => void;
@@ -50,7 +49,7 @@ export const SimpleCodeEditor: FC<Props> = ({
       enableBasicAutocompletion={true}
       enableLiveAutocompletion={true}
       height={height}
-      mode={language ? languagesMap[language] : 'plain_text'}
+      mode={language ? languageToMode[language] : 'plain_text'}
       name="code-editor"
       onChange={(value): void => onChange(value)}
       // Disable to standardise with the normal CodeEditor.tsx
