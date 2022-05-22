@@ -40,6 +40,7 @@ export const UrlFormControl = ({
             _active={{}}
             _focus={{}}
             _hover={{ cursor: 'not-allowed' }}
+            readOnly={true}
             value={getUrl()}
           />
         </InputGroup>
