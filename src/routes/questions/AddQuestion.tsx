@@ -15,7 +15,7 @@ import {
 
 import { Page } from 'components/page';
 import { QUESTIONS } from 'constants/routes';
-import { DEFAULT_TOAST_PROPS } from 'constants/toast';
+import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
 import { getQuestions } from 'lib/questions';
 import { createSubmission } from 'lib/submissions';
 import { Language } from 'types/models/code';
@@ -106,15 +106,20 @@ export const AddQuestion = (): ReactElement<typeof Page> => {
       questionSource: state.selectedQuestion!.source,
       languageUsed: state.languageUsed!,
       codeWritten: state.codeWritten,
-    }).then((): void => {
-      toast({
-        ...DEFAULT_TOAST_PROPS,
-        title: 'Question added!',
-        description: 'Awesome work with the question!',
-        status: 'success',
+    })
+      .then((): void => {
+        toast({
+          ...DEFAULT_TOAST_PROPS,
+          title: 'Question added!',
+          description: 'Awesome work with the question!',
+          status: 'success',
+        });
+        navigate(QUESTIONS);
+      })
+      .catch((): void => {
+        toast(ERROR_TOAST_PROPS);
+        setState({ isAdding: false });
       });
-      navigate(QUESTIONS);
-    });
   };
 
   return (
