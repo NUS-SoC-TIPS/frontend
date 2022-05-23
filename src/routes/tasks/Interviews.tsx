@@ -25,7 +25,9 @@ export const Interviews = ({
   interviews,
   requireInterview,
 }: Props): ReactElement<typeof Box> => {
-  const shownInterviews = interviews.slice(0, numInterviews);
+  const shownInterviews = interviews
+    .sort((a, b) => b.record.createdAt.getTime() - a.record.createdAt.getTime())
+    .slice(0, numInterviews);
   const hasEnoughInterviews = !requireInterview || interviews.length >= 1;
 
   return (

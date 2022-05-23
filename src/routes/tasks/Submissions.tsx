@@ -25,7 +25,12 @@ export const Submissions = ({
   submissions,
   numQuestions,
 }: Props): ReactElement<typeof Box> => {
-  const shownSubmissions = submissions.slice(0, numQuestions);
+  const shownSubmissions = submissions
+    .sort(
+      (a, b) =>
+        b.submission.createdAt.getTime() - a.submission.createdAt.getTime(),
+    )
+    .slice(0, numQuestions);
   const hasEnoughSubmissions = submissions.length >= numQuestions;
 
   return (
