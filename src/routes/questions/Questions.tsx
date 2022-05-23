@@ -163,7 +163,7 @@ export const Questions = (): ReactElement<typeof Page> => {
           </SimpleGrid>
           <Card>
             <Banner
-              message="Keep an eye on this section for an upcoming exciting feature!"
+              message="Keep an eye on this section for an exciting upcoming feature!"
               title="Coming soon."
             />
           </Card>
