@@ -95,9 +95,9 @@ const AuthProvider = (props: PropsWithChildren<unknown>): ReactElement => {
         fetchData();
         setIsLoggingIn(false);
       })
-      .catch((e: Error) => {
+      .catch((e) => {
         setIsLoggingIn(false);
-        Promise.reject(e);
+        throw e;
       });
   };
 
