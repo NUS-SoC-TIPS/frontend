@@ -7,3 +7,21 @@ export interface User {
   photoUrl: string;
   profileUrl: string;
 }
+
+export interface Settings {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  hasUpdatedName: boolean;
+  hasUpdatedPhoto: boolean;
+}
+
+export interface AppConfig {
+  coursemology: string;
+}
+
+export interface UserSettingsConfig extends User {
+  settings: Settings | null;
+  config: AppConfig;
+}

@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { FiLogOut, FiUser } from 'react-icons/fi';
+import { FiBookOpen, FiLogOut } from 'react-icons/fi';
 import {
   Avatar,
   Box,
@@ -12,12 +12,12 @@ import {
 } from '@chakra-ui/react';
 
 import { MyPopover } from 'components/popover';
-import { User } from 'types/models/user';
+import { UserSettingsConfig } from 'types/models/user';
 
 import { UserProfile } from '../userProfile';
 
 interface Props {
-  user: User;
+  user: UserSettingsConfig;
   logout: () => void | Promise<void>;
 }
 
@@ -27,9 +27,9 @@ export const UserPopover = ({
 }: Props): ReactElement<Props, typeof Popover> | null => {
   const items = [
     {
-      title: 'GitHub Profile',
-      onClick: () => window.open(user.profileUrl),
-      icon: FiUser,
+      title: 'Coursemology',
+      onClick: () => window.open(user.config.coursemology),
+      icon: FiBookOpen,
     },
     {
       title: 'Logout',

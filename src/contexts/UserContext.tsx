@@ -2,11 +2,13 @@ import { createContext, PropsWithChildren } from 'react';
 import { useContext } from 'react';
 import { ReactElement } from 'react';
 
-import { User } from 'types/models/user';
+import { UserSettingsConfig } from 'types/models/user';
 
 import { useAuth } from './AuthContext';
 
-export const UserContext = createContext<User | null | undefined>(undefined);
+export const UserContext = createContext<UserSettingsConfig | null | undefined>(
+  undefined,
+);
 
 // Allows user data to be accessible from everywhere
 const UserProvider = (props: PropsWithChildren<unknown>): ReactElement => {
@@ -14,7 +16,7 @@ const UserProvider = (props: PropsWithChildren<unknown>): ReactElement => {
   return <UserContext.Provider value={data} {...props} />;
 };
 
-const useUser = (): User | null => {
+const useUser = (): UserSettingsConfig | null => {
   const context = useContext(UserContext);
   if (context === undefined) {
     throw new Error('useUser must be used within a UserProvider');

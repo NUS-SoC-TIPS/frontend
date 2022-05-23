@@ -1,5 +1,5 @@
 import { AuthDto } from 'types/api/auth';
-import { User } from 'types/models/user';
+import { UserSettingsConfig } from 'types/models/user';
 import { api } from 'utils/apiUtils';
 import tokenUtils from 'utils/tokenUtils';
 
@@ -14,7 +14,7 @@ export const logout = (): Promise<void> => {
   return Promise.resolve();
 };
 
-export const getSelf = async (): Promise<User | null> => {
+export const getSelf = async (): Promise<UserSettingsConfig | null> => {
   const token = tokenUtils.getToken();
   if (token == null) {
     return Promise.resolve(null);
@@ -23,7 +23,7 @@ export const getSelf = async (): Promise<User | null> => {
   // Check with backend to see if token is still valid
   try {
     const response = await api.get('users/self');
-    return response.data as User;
+    return response.data as UserSettingsConfig;
   } catch (error) {
     logout();
     return Promise.reject(error);
