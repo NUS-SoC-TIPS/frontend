@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { Avatar, FormControl, FormLabel, Stack } from '@chakra-ui/react';
 
-import { Dropzone } from 'components/dropzone';
+import { ImageDropzone } from 'components/dropzone';
 
 interface Props {
   photoUrl: string;
@@ -12,7 +12,7 @@ interface Props {
 export const PhotoFormControl = ({
   photoUrl,
   name,
-  onChange: _onChange,
+  onChange,
 }: Props): ReactElement<Props, typeof FormControl> => {
   return (
     <FormControl id="name">
@@ -29,7 +29,7 @@ export const PhotoFormControl = ({
           width="full"
         >
           <Avatar name={name} size="lg" src={photoUrl} />
-          <Dropzone width="full" />
+          <ImageDropzone onChange={onChange} width="full" />
         </Stack>
       </Stack>
     </FormControl>
