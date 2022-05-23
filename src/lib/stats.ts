@@ -10,6 +10,15 @@ export const getQuestionStats = async (): Promise<QuestionStats> => {
       startAt: new Date(response.data.closestWindow.startAt),
       endAt: new Date(response.data.closestWindow.endAt),
     },
+    latestSubmission: {
+      ...response.data.latestSubmission,
+      submission: {
+        ...response.data.latestSubmission.submission,
+        createdAt: new Date(
+          response.data.latestSubmission.submission.createdAt,
+        ),
+      },
+    },
   };
 };
 

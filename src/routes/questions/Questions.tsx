@@ -12,6 +12,7 @@ import {
 
 import { Banner } from 'components/banner';
 import { Page } from 'components/page';
+import { SubmissionBox } from 'components/submission';
 import { ADD_QUESTION } from 'constants/routes';
 import { getQuestionStats } from 'lib/stats';
 import { QuestionStats } from 'types/api/stats';
@@ -125,20 +126,6 @@ export const Questions = (): ReactElement<typeof Page> => {
               <Stack>
                 <Skeleton isLoaded={!isFetchingData}>
                   <Text color="muted" fontSize="sm">
-                    Completed All Time
-                  </Text>
-                </Skeleton>
-                <Skeleton isLoaded={!isFetchingData}>
-                  <Heading size="sm">
-                    {state.stats?.numCompletedAllTime ?? 0} questions
-                  </Heading>
-                </Skeleton>
-              </Stack>
-            </Card>
-            <Card>
-              <Stack>
-                <Skeleton isLoaded={!isFetchingData}>
-                  <Text color="muted" fontSize="sm">
                     {isOngoingWindow
                       ? 'Current Window'
                       : (state.stats?.closestWindow.startAt ?? currentTime) >=
@@ -157,6 +144,27 @@ export const Questions = (): ReactElement<typeof Page> => {
                       state.stats?.closestWindow.endAt ?? currentTime,
                     )}
                   </Heading>
+                </Skeleton>
+              </Stack>
+            </Card>
+            <Card>
+              <Stack>
+                <Skeleton isLoaded={!isFetchingData}>
+                  <Text color="muted" fontSize="sm">
+                    Latest Submission
+                  </Text>
+                </Skeleton>
+                <Skeleton isLoaded={!isFetchingData}>
+                  {state.stats?.latestSubmission ? (
+                    <SubmissionBox
+                      noOfLines={1}
+                      question={state.stats.latestSubmission.question}
+                      submission={state.stats.latestSubmission.submission}
+                      withBox={false}
+                    />
+                  ) : (
+                    <Heading size="sm">-</Heading>
+                  )}
                 </Skeleton>
               </Stack>
             </Card>

@@ -9,7 +9,11 @@ export interface QuestionStats {
   // If currently in the middle of a window, the number will be returned
   // Else if not, it will be the number completed this week, with respect to SG time.
   numCompletedThisWindow: number;
-  numCompletedAllTime: number;
+
+  latestSubmission: {
+    submission: QuestionSubmission;
+    question: Question;
+  } | null;
 
   // Logic behind closest window:
   // - If currently in the middle of a window, that will be returned
