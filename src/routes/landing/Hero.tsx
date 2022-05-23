@@ -11,7 +11,7 @@ import {
   VisuallyHidden,
 } from '@chakra-ui/react';
 
-import demo from 'assets/images/demo.png';
+import addQuestion from 'assets/images/add_question.png';
 import { GitHubIcon } from 'components/icons/GitHubIcon';
 
 interface Props {
@@ -40,7 +40,7 @@ export const Hero = ({
           </Heading>
           <Text fontSize="xl" maxW="xl" mt="4" mx="auto">
             Ace your upcoming technical interviews by practicing mock interviews
-            and questions on TIPS.
+            and tracking questions on TIPS.
           </Text>
         </Box>
 
@@ -75,7 +75,7 @@ export const Hero = ({
           position="relative"
           rounded="lg"
         >
-          <Img alt="Screenshot of App" src={demo} />
+          <Img alt="Screenshot of App" src={addQuestion} />
           <Circle
             _groupHover={{
               transform: 'translate3d(-50%, -50%, 0) scale(1.05)',
