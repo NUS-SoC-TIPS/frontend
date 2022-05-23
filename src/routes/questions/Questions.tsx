@@ -10,6 +10,7 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react';
 
+import { Banner } from 'components/banner';
 import { Page } from 'components/page';
 import { ADD_QUESTION } from 'constants/routes';
 import { getQuestionStats } from 'lib/stats';
@@ -110,11 +111,12 @@ export const Questions = (): ReactElement<typeof Page> => {
                   </Text>
                 </Skeleton>
                 <Skeleton isLoaded={!isFetchingData}>
-                  <Heading size={useBreakpointValue({ base: 'sm', md: 'md' })}>
+                  <Heading size="sm">
                     {state.stats?.numCompletedThisWindow ?? 0}
                     {isOngoingWindow
                       ? `/${state.stats?.closestWindow.numQuestions ?? 7}`
-                      : ''}
+                      : ''}{' '}
+                    questions
                   </Heading>
                 </Skeleton>
               </Stack>
@@ -127,8 +129,8 @@ export const Questions = (): ReactElement<typeof Page> => {
                   </Text>
                 </Skeleton>
                 <Skeleton isLoaded={!isFetchingData}>
-                  <Heading size={useBreakpointValue({ base: 'sm', md: 'md' })}>
-                    {state.stats?.numCompletedAllTime ?? 0}
+                  <Heading size="sm">
+                    {state.stats?.numCompletedAllTime ?? 0} questions
                   </Heading>
                 </Skeleton>
               </Stack>
@@ -146,7 +148,7 @@ export const Questions = (): ReactElement<typeof Page> => {
                   </Text>
                 </Skeleton>
                 <Skeleton isLoaded={!isFetchingData}>
-                  <Heading size={useBreakpointValue({ base: 'sm' })}>
+                  <Heading size="sm">
                     {formatDate(
                       state.stats?.closestWindow.startAt ?? currentTime,
                     )}{' '}
@@ -159,8 +161,13 @@ export const Questions = (): ReactElement<typeof Page> => {
               </Stack>
             </Card>
           </SimpleGrid>
+          <Card>
+            <Banner
+              message="Do keep a look out for the upcoming leaderboards!"
+              title="Coming soon."
+            />
+          </Card>
         </Stack>
-        <Card minH="xs" />
       </Stack>
     </Page>
   );
