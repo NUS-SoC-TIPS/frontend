@@ -1,8 +1,10 @@
 import { UpdateSettingsDto } from 'types/api/users';
-import { User } from 'types/models/user';
+import { UserSettingsConfig } from 'types/models/user';
 import { api } from 'utils/apiUtils';
 
-export const updateSettings = async (dto: UpdateSettingsDto): Promise<User> => {
+export const updateSettings = async (
+  dto: UpdateSettingsDto,
+): Promise<UserSettingsConfig> => {
   const response = await api.patch('users/settings', dto);
-  return response.data;
+  return response.data as UserSettingsConfig;
 };

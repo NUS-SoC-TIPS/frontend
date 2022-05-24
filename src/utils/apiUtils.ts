@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { handleDates } from './dateUtils';
 import tokenUtils from './tokenUtils';
 
 const api = axios.create({
@@ -22,5 +23,10 @@ api.interceptors.request.use(
     return Promise.reject(new Error(error));
   },
 );
+
+api.interceptors.response.use((originalResponse) => {
+  originalResponse.data = handleDates(originalResponse.data);
+  return originalResponse;
+});
 
 export { api };
