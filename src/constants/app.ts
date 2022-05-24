@@ -1,1 +1,1 @@
-export const ARE_INTERVIEWS_DISABLED = true;
+export const ARE_INTERVIEWS_ENABLED = false;

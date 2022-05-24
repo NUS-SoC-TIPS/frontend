@@ -1,7 +1,7 @@
 import { ReactElement, useEffect, useMemo, useReducer } from 'react';
-import { Heading, Stack, Text, useBreakpointValue } from '@chakra-ui/react';
+import { Heading, Stack, useBreakpointValue } from '@chakra-ui/react';
 
-import { Page } from 'components/page';
+import { Dashboard, Page } from 'components/page';
 import { useStep } from 'components/steps';
 import { getTaskStats } from 'lib/stats';
 import { TaskStats } from 'types/api/stats';
@@ -70,19 +70,15 @@ export const Tasks = (): ReactElement<typeof Page> => {
 
   return (
     <Page>
-      <Stack spacing={{ base: '6', md: '8' }}>
-        <Stack spacing="1">
-          <Heading
-            fontWeight="medium"
-            size={useBreakpointValue({ base: 'xs', lg: 'sm' })}
-          >
-            Tasks
-          </Heading>
-          <Text color="muted">
-            Track your progress for the current window here!
-          </Text>
-        </Stack>
-        <Stack direction={{ base: 'column', md: 'row' }} spacing="0">
+      <Dashboard
+        heading="Tasks"
+        subheading="Track your progress for the current window here!"
+      >
+        <Stack
+          direction={{ base: 'column', md: 'row' }}
+          my={{ base: 0, md: 4 }}
+          spacing="0"
+        >
           {steps.map((step, id) => (
             <TaskStep
               completion={state.completion}
@@ -117,7 +113,7 @@ export const Tasks = (): ReactElement<typeof Page> => {
             </Stack>
           </Stack>
         )}
-      </Stack>
+      </Dashboard>
     </Page>
   );
 };
