@@ -1,7 +1,7 @@
 import { Language } from 'types/models/code';
 import { QuestionDifficulty } from 'types/models/question';
 
-export const languageToMode: { [key: string]: string } = {
+export const languageToMode = Object.freeze({
   [Language.C_PLUS_PLUS]: 'c_cpp',
   [Language.JAVA]: 'java',
   [Language.PYTHON]: 'python',
@@ -24,9 +24,9 @@ export const languageToMode: { [key: string]: string } = {
   [Language.MY_SQL]: 'mysql',
   [Language.MS_SQL_SERVER]: 'sqlserver',
   [Language.ORACLE]: 'sql',
-};
+});
 
-export const languageToString: { [key: string]: string } = {
+export const languageToString = Object.freeze({
   [Language.C_PLUS_PLUS]: 'C++',
   [Language.JAVA]: 'Java',
   [Language.PYTHON]: 'Python',
@@ -49,10 +49,10 @@ export const languageToString: { [key: string]: string } = {
   [Language.MY_SQL]: 'MySQL',
   [Language.MS_SQL_SERVER]: 'MS SQL Server',
   [Language.ORACLE]: 'Oracle',
-};
+});
 
-export const difficultyToString: { [key: string]: string } = {
+export const difficultyToString = Object.freeze({
   [QuestionDifficulty.EASY]: 'Easy',
   [QuestionDifficulty.MEDIUM]: 'Medium',
   [QuestionDifficulty.HARD]: 'Hard',
-};
+});
