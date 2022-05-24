@@ -7,7 +7,7 @@ export const Logo = (
   <chakra.svg
     color="accent"
     fill="accent"
-    height="6"
+    height={6}
     viewBox="0 0 400 92.823"
     width="auto"
     xmlns="http://www.w3.org/2000/svg"

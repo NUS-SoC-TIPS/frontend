@@ -85,7 +85,7 @@ export const Questions = (): ReactElement<typeof Page> => {
         heading="Questions"
         subheading="Add your questions here once you have completed them!"
       >
-        <SimpleGrid columns={{ base: 1, md: 3 }} gap="6">
+        <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
           <Card>
             <Stack>
               <Skeleton isLoaded={!isFetchingData}>

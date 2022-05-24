@@ -32,7 +32,7 @@ const UserDisplay = ({
   isDisconnected = false,
 }: UserDisplayProps): ReactElement<UserDisplayProps, typeof HStack> => {
   return (
-    <HStack opacity={isDisconnected ? '0.5' : undefined} spacing="2">
+    <HStack opacity={isDisconnected ? 0.5 : undefined} spacing={2}>
       <Circle bg={color} size="10px" />
       <Text fontSize="sm">
         {user.name}
@@ -121,8 +121,8 @@ export const BottomBar = ({
       boxShadow={useColorModeValue('sm', 'sm-dark')}
     >
       <Container maxWidth="100%" px={2} py={2}>
-        <HStack justify="space-between" spacing="10">
-          <HStack spacing="4">
+        <HStack justify="space-between" spacing={10}>
+          <HStack spacing={4}>
             <Button
               disabled={true}
               rightIcon={<FiLock />}

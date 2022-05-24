@@ -33,16 +33,16 @@ export const Sidebar = ({
     <Flex
       bg="bg-surface"
       boxShadow={useColorModeValue('sm', 'sm-dark')}
-      flex="1"
+      flex={1}
       maxW={{ base: 'full', sm: 'xs' }}
       overflowY="auto"
-      px={{ base: '4', sm: '6' }}
-      py={{ base: '6', sm: '8' }}
+      px={{ base: 4, sm: 6 }}
+      py={{ base: 6, sm: 8 }}
     >
-      <Stack justify="space-between" spacing="1" width="100%">
-        <Stack shouldWrapChildren={true} spacing={{ base: '5', sm: '6' }}>
+      <Stack justify="space-between" spacing={1} width="100%">
+        <Stack shouldWrapChildren={true} spacing={{ base: 5, sm: 6 }}>
           <Logo pl={4} />
-          <Stack spacing="2">
+          <Stack spacing={2}>
             <NavButton
               aria-current={pathname === QUESTIONS ? 'page' : undefined}
               icon={FiBook}
@@ -63,8 +63,8 @@ export const Sidebar = ({
             />
           </Stack>
         </Stack>
-        <Stack spacing={{ base: '5', sm: '6' }}>
-          <Stack spacing="2">
+        <Stack spacing={{ base: 5, sm: 6 }}>
+          <Stack spacing={2}>
             {/* <ColorModeSwitcher isSideBar={true} /> */}
             <NavButton
               aria-current={pathname === SETTINGS ? 'page' : undefined}

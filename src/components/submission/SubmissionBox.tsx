@@ -28,7 +28,7 @@ export const SubmissionBox = ({
           borderRadius="lg"
           borderWidth={{ base: '1px' }}
           key={submission.id}
-          p={{ base: '3', md: '4' }}
+          p={{ base: 3, md: 4 }}
         >
           {component}
         </Box>
@@ -38,7 +38,7 @@ export const SubmissionBox = ({
   };
 
   return wrapComponent(
-    <Stack align="center" direction="row" justify="space-between" spacing="5">
+    <Stack align="center" direction="row" justify="space-between" spacing={5}>
       <Box fontSize="sm">
         <Text color="empahsized" fontWeight="medium" noOfLines={noOfLines}>
           {question.name}

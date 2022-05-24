@@ -70,8 +70,8 @@ export const Settings = (): ReactElement<typeof Page> => {
 
   return (
     <Page>
-      <Stack spacing="5">
-        <Stack spacing="1">
+      <Stack spacing={5}>
+        <Stack spacing={1}>
           <Heading
             fontWeight="medium"
             size={useBreakpointValue({ base: 'xs', lg: 'sm' })}
@@ -81,7 +81,7 @@ export const Settings = (): ReactElement<typeof Page> => {
           <Text color="muted">Customise your experience here at TIPS!</Text>
         </Stack>
         <Divider />
-        <Stack divider={<StackDivider />} spacing="5">
+        <Stack divider={<StackDivider />} spacing={5}>
           <NameFormControl
             name={state.name}
             onChange={(name: string): void => setState({ name })}

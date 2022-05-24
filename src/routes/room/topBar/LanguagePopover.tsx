@@ -30,15 +30,15 @@ export const LanguagePopover = ({
       buttonProps={{
         variant: 'secondary',
         size: 'sm',
-        minWidth: '32',
+        minWidth: 32,
         display: 'flex',
         justifyContent: 'space-between',
       }}
       content={
-        <Stack direction="column" spacing="1">
+        <Stack direction="column" spacing={1}>
           {items.map((item, id) => (
             <Link key={id} onClick={item.onClick} variant="menu">
-              <Box p="1">
+              <Box p={1}>
                 <Text fontSize="sm" fontWeight="medium">
                   {item.title}
                 </Text>
@@ -47,7 +47,7 @@ export const LanguagePopover = ({
           ))}
         </Stack>
       }
-      popoverContentProps={{ p: 2, width: '32' }}
+      popoverContentProps={{ p: 2, width: 32 }}
       trigger={languageToString[language]}
     />
   );

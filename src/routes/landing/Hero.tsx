@@ -31,14 +31,14 @@ export const Hero = ({
             as="h1"
             fontWeight="extrabold"
             letterSpacing="tight"
-            lineHeight="1.2"
+            lineHeight={1.2}
             maxW="48rem"
             mx="auto"
             size="3xl"
           >
             Tech interview preparation made easier.
           </Heading>
-          <Text fontSize="xl" maxW="xl" mt="4" mx="auto">
+          <Text fontSize="xl" maxW="xl" mt={4} mx="auto">
             Ace your upcoming technical interviews by practicing mock interviews
             and tracking questions on TIPS.
           </Text>
@@ -47,20 +47,20 @@ export const Hero = ({
         <Stack
           direction={{ base: 'column', md: 'row' }}
           justify="center"
-          mb="20"
-          mt="10"
-          spacing="4"
+          mb={20}
+          mt={10}
+          spacing={4}
         >
           <Button
             as="a"
             fontSize="md"
             fontWeight="bold"
             href="#"
-            iconSpacing="3"
+            iconSpacing={3}
             isLoading={isGettingStarted}
-            leftIcon={<GitHubIcon boxSize="5" />}
+            leftIcon={<GitHubIcon boxSize={5} />}
             onClick={onGetStarted}
-            px="8"
+            px={8}
             size="lg"
             variant="primary"
           >
@@ -87,7 +87,7 @@ export const Hero = ({
             left="50%"
             position="absolute"
             shadow="lg"
-            size="20"
+            size={20}
             top="50%"
             transform="translate3d(-50%, -50%, 0)"
             transition="all 0.2s"

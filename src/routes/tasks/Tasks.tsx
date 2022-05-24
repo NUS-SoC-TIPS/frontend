@@ -77,7 +77,7 @@ export const Tasks = (): ReactElement<typeof Page> => {
         <Stack
           direction={{ base: 'column', md: 'row' }}
           my={{ base: 0, md: 4 }}
-          spacing="0"
+          spacing={0}
         >
           {steps.map((step, id) => (
             <TaskStep
@@ -92,14 +92,14 @@ export const Tasks = (): ReactElement<typeof Page> => {
           ))}
         </Stack>
         {selectedStep && (
-          <Stack spacing="4">
-            <Heading fontWeight="medium" mb="0" size={titleSize}>
+          <Stack spacing={4}>
+            <Heading fontWeight="medium" mb={0} size={titleSize}>
               Week {currentStep + 1} ({formatDate(selectedStep.window.startAt)}{' '}
               - {formatDate(selectedStep.window.endAt)})
             </Heading>
             <Stack
               direction={{ base: 'column', md: 'row' }}
-              spacing={{ base: '6', md: '6' }}
+              spacing={{ base: 6, md: 6 }}
             >
               <Submissions
                 numQuestions={selectedStep.window.numQuestions}

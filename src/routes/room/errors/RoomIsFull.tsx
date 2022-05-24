@@ -40,7 +40,7 @@ export const RoomIsFull = (): ReactElement<typeof RoomPage> => {
         onClose={(): void => undefined}
         title="This room is already full"
       >
-        <Stack direction="column" spacing="2">
+        <Stack direction="column" spacing={2}>
           <Text>There are already two users in this room:</Text>
           <UserButton user={usersInRoom[0]} />
           <UserButton user={usersInRoom[1]} />

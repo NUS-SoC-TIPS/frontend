@@ -42,12 +42,12 @@ export const Navbar = (): ReactElement<typeof Box> => {
       bg="bg-surface"
       boxShadow={useColorModeValue('sm', 'sm-dark')}
     >
-      <Container maxW="8xl" py={{ base: '3', lg: '4' }}>
+      <Container maxW="8xl" py={{ base: 3, lg: 4 }}>
         <Flex justify="space-between">
-          <HStack spacing="4">
+          <HStack spacing={4}>
             <Logo />
             {isDesktop && user && (
-              <ButtonGroup spacing="1" variant="ghost">
+              <ButtonGroup spacing={1} variant="ghost">
                 <Button
                   aria-current={pathname === QUESTIONS ? 'page' : undefined}
                   onClick={(): void => navigate(QUESTIONS)}
@@ -70,10 +70,10 @@ export const Navbar = (): ReactElement<typeof Box> => {
             )}
           </HStack>
           {isDesktop || !user ? (
-            <HStack spacing="4">
+            <HStack spacing={4}>
               {user ? (
                 <>
-                  <ButtonGroup spacing="1" variant="ghost">
+                  <ButtonGroup spacing={1} variant="ghost">
                     {/* <ColorModeSwitcher isSideBar={false} /> */}
                     <IconButton
                       aria-current={pathname === SETTINGS ? 'page' : undefined}

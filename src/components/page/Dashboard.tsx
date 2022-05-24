@@ -18,13 +18,13 @@ export const Dashboard = ({
 > => {
   const size = useBreakpointValue({ base: 'xs', lg: 'sm' });
   return (
-    <Stack spacing={{ base: '8', lg: '6' }}>
+    <Stack spacing={{ base: 8, lg: 6 }}>
       <Stack
         direction={{ base: 'column', lg: 'row' }}
         justify="space-between"
-        spacing="4"
+        spacing={4}
       >
-        <Stack spacing="1">
+        <Stack spacing={1}>
           <Heading fontWeight="medium" size={size}>
             {heading}
           </Heading>
@@ -32,7 +32,7 @@ export const Dashboard = ({
         </Stack>
         {actions}
       </Stack>
-      <Stack spacing={{ base: '5', lg: '6' }}>{children}</Stack>
+      <Stack spacing={{ base: 5, lg: 6 }}>{children}</Stack>
     </Stack>
   );
 };

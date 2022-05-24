@@ -20,7 +20,7 @@ export const Interviews = (): ReactElement => {
       <Dashboard
         actions={
           ARE_INTERVIEWS_ENABLED ? (
-            <Stack direction="row" spacing="3">
+            <Stack direction="row" spacing={3}>
               <Button
                 leftIcon={<FiHelpCircle fontSize="1.25rem" />}
                 variant="secondary"
@@ -35,8 +35,8 @@ export const Interviews = (): ReactElement => {
         subheading="Practice mock interviews with your peers!"
       >
         {ARE_INTERVIEWS_ENABLED ? (
-          <Stack spacing={{ base: '5', lg: '6' }}>
-            <SimpleGrid columns={{ base: 1, md: 3 }} gap="6">
+          <Stack spacing={{ base: 5, lg: 6 }}>
+            <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
               <Card minH="3xs" />
               <Card minH="3xs" />
               <Card minH="3xs" />

@@ -42,23 +42,23 @@ export const UserPopover = ({
     <MyPopover
       buttonProps={{ variant: 'link' }}
       content={
-        <Stack direction="column" spacing="2">
-          <Box mb="3">
+        <Stack direction="column" spacing={2}>
+          <Box mb={3}>
             <UserProfile user={user} />
           </Box>
           <Divider />
           {items.map((item, id) => (
             <Link key={id} onClick={item.onClick} variant="menu">
-              <Stack direction="row" p="3" spacing="4">
-                <Icon as={item.icon} boxSize="6" color="accent" />
+              <Stack direction="row" p={3} spacing={4}>
+                <Icon as={item.icon} boxSize={6} color="accent" />
                 <Text fontWeight="medium">{item.title}</Text>
               </Stack>
             </Link>
           ))}
         </Stack>
       }
-      popoverContentProps={{ p: '5', width: { base: 'xs' } }}
-      trigger={<Avatar boxSize="10" name={user.name} src={user.photoUrl} />}
+      popoverContentProps={{ p: 5, width: { base: 'xs' } }}
+      trigger={<Avatar boxSize={10} name={user.name} src={user.photoUrl} />}
     />
   );
 };

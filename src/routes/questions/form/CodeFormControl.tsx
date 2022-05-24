@@ -20,7 +20,7 @@ export const CodeFormControl = ({
       <Stack
         direction={{ base: 'column', md: 'row' }}
         justify="space-between"
-        spacing={{ base: '1.5', md: '8' }}
+        spacing={{ base: 1.5, md: 8 }}
       >
         <FormLabel variant="inline">Code Written</FormLabel>
         <Box maxW={{ md: '3xl' }} w="100%">

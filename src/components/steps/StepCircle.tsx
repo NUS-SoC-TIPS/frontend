@@ -16,16 +16,16 @@ export const StepCircle = (
     <Circle
       bg={isSuccess ? 'accent' : isFailure ? 'error' : 'inherit'}
       borderColor={isActive ? 'accent' : 'inherit'}
-      borderWidth={isSuccess || isFailure ? '0' : '2px'}
-      size="8"
+      borderWidth={isSuccess || isFailure ? 0 : '2px'}
+      size={8}
       {...props}
     >
       {isSuccess ? (
-        <Icon as={HiCheck} boxSize="5" color="inverted" />
+        <Icon as={HiCheck} boxSize={5} color="inverted" />
       ) : isFailure ? (
-        <Icon as={HiX} boxSize="5" color="on-accent" />
+        <Icon as={HiX} boxSize={5} color="on-accent" />
       ) : (
-        <Circle bg={isActive ? 'accent' : 'border'} size="3" />
+        <Circle bg={isActive ? 'accent' : 'border'} size={3} />
       )}
     </Circle>
   );

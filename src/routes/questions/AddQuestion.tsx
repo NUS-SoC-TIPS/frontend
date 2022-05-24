@@ -124,8 +124,8 @@ export const AddQuestion = (): ReactElement<typeof Page> => {
 
   return (
     <Page>
-      <Stack spacing="5">
-        <Stack spacing="1">
+      <Stack spacing={5}>
+        <Stack spacing={1}>
           <Heading
             fontWeight="medium"
             size={useBreakpointValue({ base: 'xs', lg: 'sm' })}
@@ -138,7 +138,7 @@ export const AddQuestion = (): ReactElement<typeof Page> => {
           </Text>
         </Stack>
         <Divider />
-        <Stack divider={<StackDivider />} spacing="5">
+        <Stack divider={<StackDivider />} spacing={5}>
           <NameFormControl {...state} onChange={onChangeAsyncSelect} />
           {state.selectedQuestion && (
             <UrlFormControl question={state.selectedQuestion} />

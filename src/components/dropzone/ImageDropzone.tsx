@@ -61,22 +61,22 @@ export const ImageDropzone = ({
       bg={useColorModeValue('white', 'gray.800')}
       borderRadius="lg"
       borderWidth="1px"
-      px="6"
-      py="4"
+      px={6}
+      py={4}
       {...props}
     >
-      <VStack spacing="3" w="100%" {...getRootProps()}>
+      <VStack spacing={3} w="100%" {...getRootProps()}>
         <input {...getInputProps()} />
-        <Square bg="bg-subtle" borderRadius="lg" size="10">
+        <Square bg="bg-subtle" borderRadius="lg" size={10}>
           {isUploading ? (
             <Spinner />
           ) : (
-            <Icon as={FiUploadCloud} boxSize="5" color="muted" />
+            <Icon as={FiUploadCloud} boxSize={5} color="muted" />
           )}
         </Square>
         {isDragActive ? (
-          <VStack spacing="1">
-            <HStack spacing="1" whiteSpace="nowrap">
+          <VStack spacing={1}>
+            <HStack spacing={1} whiteSpace="nowrap">
               <Text color="muted" fontSize="sm">
                 Release to upload file
               </Text>
@@ -86,8 +86,8 @@ export const ImageDropzone = ({
             </Text>
           </VStack>
         ) : (
-          <VStack spacing="1">
-            <HStack spacing="1" whiteSpace="nowrap">
+          <VStack spacing={1}>
+            <HStack spacing={1} whiteSpace="nowrap">
               {isUploading ? (
                 <Text color="muted" fontSize="sm">
                   Uploading...

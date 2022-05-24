@@ -45,7 +45,7 @@ export const TopBar = ({ socket }: Props): ReactElement<Props, typeof Box> => {
       boxShadow={useColorModeValue('sm', 'sm-dark')}
     >
       <Container maxWidth="100%" px={2} py={2}>
-        <HStack justify="space-between" spacing="10">
+        <HStack justify="space-between" spacing={10}>
           <Box>
             <LanguagePopover
               language={language}

@@ -31,7 +31,7 @@ export const UrlFormControl = ({
       <Stack
         direction={{ base: 'column', md: 'row' }}
         justify="space-between"
-        spacing={{ base: '1.5', md: '8' }}
+        spacing={{ base: 1.5, md: 8 }}
       >
         <FormLabel variant="inline">URL</FormLabel>
         <InputGroup maxW={{ md: '3xl' }}>

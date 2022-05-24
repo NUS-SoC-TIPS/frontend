@@ -17,7 +17,7 @@ export const Landing = (): ReactElement => {
 
   return (
     <Page>
-      <Stack spacing={{ base: '8', lg: '6' }}>
+      <Stack spacing={{ base: 8, lg: 6 }}>
         <Hero isGettingStarted={isLoggingIn} onGetStarted={onGetStarted} />
       </Stack>
     </Page>

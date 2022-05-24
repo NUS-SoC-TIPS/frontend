@@ -44,14 +44,14 @@ export const Step = (props: Props): ReactElement<Props, typeof Stack> => {
   return (
     <Stack
       direction={{ base: 'row', md: 'column' }}
-      flex="1"
-      spacing="4"
+      flex={1}
+      spacing={4}
       {...stackProps}
     >
       <Stack
         align="center"
         direction={{ base: 'column', md: 'row' }}
-        spacing="0"
+        spacing={0}
       >
         <Divider
           borderColor={isFirstStep ? 'transparent' : leftLineColor ?? 'inherit'}
@@ -71,9 +71,9 @@ export const Step = (props: Props): ReactElement<Props, typeof Stack> => {
       </Stack>
       <Stack
         align={{ base: 'start', md: 'center' }}
-        pb={isMobile ? '4' : '0'}
-        pt={isMobile ? '4' : '0'}
-        spacing="0.5"
+        pb={isMobile ? 4 : 0}
+        pt={isMobile ? 4 : 0}
+        spacing={0.5}
       >
         <Text color="emphasized" fontWeight="medium">
           {title}

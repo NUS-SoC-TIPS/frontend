@@ -14,11 +14,11 @@ export const Footer = (): ReactElement<typeof Container> => (
   <Container
     as="footer"
     maxW="8xl"
-    pb="4"
-    pt={{ base: '12', md: '16' }}
+    pb={4}
+    pt={{ base: 12, md: 16 }}
     role="contentinfo"
   >
-    <Stack spacing={{ base: '4', md: '5' }}>
+    <Stack spacing={{ base: 4, md: 5 }}>
       <Stack align="center" direction="row" justify="space-between">
         <Logo />
         <ButtonGroup variant="ghost">
