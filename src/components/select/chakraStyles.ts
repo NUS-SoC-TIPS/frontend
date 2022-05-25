@@ -1,13 +1,13 @@
-import { SystemStyleObject } from '@chakra-ui/react';
 import { ChakraStylesConfig, GroupBase } from 'chakra-react-select';
 
-export const getChakraStyles = (
-  containerStyles: SystemStyleObject = {},
-): ChakraStylesConfig<unknown, boolean, GroupBase<unknown>> => ({
+export const getChakraStyles = (): ChakraStylesConfig<
+  unknown,
+  boolean,
+  GroupBase<unknown>
+> => ({
   container: (styles) => ({
     ...styles,
     width: '100%',
-    ...containerStyles,
   }),
   control: (styles) => ({
     ...styles,

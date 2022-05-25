@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
-import { FormControl, FormLabel, Stack } from '@chakra-ui/react';
 
+import { FormControl } from 'components/formControl';
 import { Select } from 'components/select';
 import { languageToString } from 'constants/enumStrings';
 import { Language } from 'types/models/code';
@@ -84,20 +84,12 @@ export const LanguageFormControl = ({
   };
 
   return (
-    <FormControl id="language">
-      <Stack
-        direction={{ base: 'column', md: 'row' }}
-        justify="space-between"
-        spacing={{ base: 1.5, md: 8 }}
-      >
-        <FormLabel variant="inline">Language Used</FormLabel>
-        <Select
-          containerStyles={{ maxW: { md: '3xl' } }}
-          onChange={onChangeWrapper}
-          options={getOptions()}
-          placeholder="Select language used..."
-        />
-      </Stack>
+    <FormControl id="language" label="Language Used">
+      <Select
+        onChange={onChangeWrapper}
+        options={getOptions()}
+        placeholder="Select language used..."
+      />
     </FormControl>
   );
 };

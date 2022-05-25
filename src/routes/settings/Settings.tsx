@@ -16,8 +16,7 @@ import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
 import { useUser } from 'contexts/UserContext';
 import { updateSettings } from 'lib/users';
 
-import { NameFormControl } from './form/NameFormControl';
-import { PhotoFormControl } from './form/PhotoFormControl';
+import { NameFormControl, PhotoFormControl } from './form';
 
 interface State {
   name: string;
