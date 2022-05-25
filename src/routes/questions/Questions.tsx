@@ -1,23 +1,21 @@
 import { ReactElement, useEffect, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Button,
-  Heading,
-  SimpleGrid,
-  Skeleton,
-  Stack,
-  Text,
-} from '@chakra-ui/react';
+import { Button, SimpleGrid } from '@chakra-ui/react';
 
 import { Banner } from 'components/banner';
 import { Dashboard, Page } from 'components/page';
-import { SubmissionBox } from 'components/submission';
 import { ADD_QUESTION } from 'constants/routes';
 import { getQuestionStats } from 'lib/stats';
 import { QuestionStats } from 'types/api/stats';
-import { formatDate } from 'utils/dateUtils';
+import { computeWindowData } from 'utils/windowUtils';
 
 import { Card } from '../../components/card';
+
+import {
+  LatestSubmissionCard,
+  NumCompletedCard,
+  WindowPeriodCard,
+} from './stats';
 
 interface State {
   isLoading: boolean;
@@ -64,12 +62,9 @@ export const Questions = (): ReactElement<typeof Page> => {
     };
   }, []);
 
-  const currentTime = new Date();
-  const isFetchingData = state.isLoading || state.stats == null;
-  const isOngoingWindow = state.stats
-    ? state.stats.closestWindow.startAt <= currentTime &&
-      state.stats.closestWindow.endAt >= currentTime
-    : true;
+  const { stats } = state;
+  const isLoaded = !state.isLoading && stats != null;
+  const { status, startAt, endAt } = computeWindowData(stats?.closestWindow);
 
   return (
     <Page>
@@ -86,70 +81,22 @@ export const Questions = (): ReactElement<typeof Page> => {
         subheading="Add your questions here once you have completed them!"
       >
         <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
-          <Card>
-            <Stack>
-              <Skeleton isLoaded={!isFetchingData}>
-                <Text color="muted" fontSize="sm">
-                  {isOngoingWindow
-                    ? 'Completed This Window'
-                    : 'Completed This Week'}
-                </Text>
-              </Skeleton>
-              <Skeleton isLoaded={!isFetchingData}>
-                <Heading size="sm">
-                  {state.stats?.numCompletedThisWindow ?? 0}
-                  {isOngoingWindow
-                    ? `/${state.stats?.closestWindow.numQuestions ?? 7}`
-                    : ''}{' '}
-                  questions
-                </Heading>
-              </Skeleton>
-            </Stack>
-          </Card>
-          <Card>
-            <Stack>
-              <Skeleton isLoaded={!isFetchingData}>
-                <Text color="muted" fontSize="sm">
-                  {isOngoingWindow
-                    ? 'Current Window'
-                    : (state.stats?.closestWindow.startAt ?? currentTime) >=
-                      currentTime
-                    ? 'Upcoming Window'
-                    : 'Last Window'}
-                </Text>
-              </Skeleton>
-              <Skeleton isLoaded={!isFetchingData}>
-                <Heading size="sm">
-                  {formatDate(
-                    state.stats?.closestWindow.startAt ?? currentTime,
-                  )}{' '}
-                  -{' '}
-                  {formatDate(state.stats?.closestWindow.endAt ?? currentTime)}
-                </Heading>
-              </Skeleton>
-            </Stack>
-          </Card>
-          <Card>
-            <Stack>
-              <Skeleton isLoaded={!isFetchingData}>
-                <Text color="muted" fontSize="sm">
-                  Latest Submission
-                </Text>
-              </Skeleton>
-              <Skeleton isLoaded={!isFetchingData}>
-                {state.stats?.latestSubmission ? (
-                  <SubmissionBox
-                    noOfLines={1}
-                    question={state.stats.latestSubmission.question}
-                    submission={state.stats.latestSubmission.submission}
-                    withBox={false}
-                  />
-                ) : (
-                  <Heading size="sm">-</Heading>
-                )}
-              </Skeleton>
-            </Stack>
-          </Card>
+          <NumCompletedCard
+            isLoaded={isLoaded}
+            numCompleted={stats?.numCompletedThisWindow ?? 0}
+            numTarget={stats?.closestWindow.numQuestions ?? 7}
+            windowStatus={status}
+          />
+          <WindowPeriodCard
+            endAt={endAt}
+            isLoaded={isLoaded}
+            startAt={startAt}
+            windowStatus={status}
+          />
+          <LatestSubmissionCard
+            isLoaded={isLoaded}
+            submission={stats?.latestSubmission}
+          />
         </SimpleGrid>
         <Card>
           <Banner
