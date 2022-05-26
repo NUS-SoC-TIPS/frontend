@@ -1,5 +1,5 @@
 import { ReactElement, useEffect, useMemo, useReducer } from 'react';
-import { Heading, Stack, useBreakpointValue } from '@chakra-ui/react';
+import { Heading, Stack } from '@chakra-ui/react';
 
 import { Dashboard, Page } from 'components/page';
 import { useStep } from 'components/steps';
@@ -35,7 +35,6 @@ export const Tasks = (): ReactElement<typeof Page> => {
   );
   const { maxStep, initialStep } = useMemo(() => computeSteps(steps), [steps]);
   const [currentStep, { setStep }] = useStep({ maxStep, initialStep });
-  const titleSize = useBreakpointValue({ base: 'xxs' });
 
   useEffect(() => {
     let didCancel = false;
@@ -93,7 +92,7 @@ export const Tasks = (): ReactElement<typeof Page> => {
         </Stack>
         {selectedStep && (
           <Stack spacing={4}>
-            <Heading fontWeight="medium" mb={0} size={titleSize}>
+            <Heading fontWeight="medium" mb={0} size="xxs">
               Week {currentStep + 1} ({formatDate(selectedStep.window.startAt)}{' '}
               - {formatDate(selectedStep.window.endAt)})
             </Heading>

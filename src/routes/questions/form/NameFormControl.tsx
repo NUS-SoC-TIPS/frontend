@@ -67,7 +67,7 @@ export const NameFormControl = ({
             : 'Please be more specific with your search query'
         }
         onChange={onChangeWrapper}
-        placeholder="Search using the question name here..."
+        placeholder="Search question name here..."
       />
     </FormControl>
   );
