@@ -1,18 +1,16 @@
 import { ReactElement } from 'react';
-import { Heading, Skeleton, Stack, Text } from '@chakra-ui/react';
+import { Heading, Stack, Text } from '@chakra-ui/react';
 
 import { Card } from 'components/card';
 import { WindowStatus } from 'types/models/window';
 
 interface Props {
-  isLoaded: boolean;
   windowStatus: WindowStatus;
   numCompleted: number;
   numTarget: number;
 }
 
 export const NumCompletedCard = ({
-  isLoaded,
   windowStatus,
   numCompleted,
   numTarget,
@@ -24,14 +22,10 @@ export const NumCompletedCard = ({
   return (
     <Card>
       <Stack>
-        <Skeleton isLoaded={isLoaded}>
-          <Text color="muted" fontSize="sm">
-            {title}
-          </Text>
-        </Skeleton>
-        <Skeleton isLoaded={isLoaded}>
-          <Heading size="sm">{stat}</Heading>
-        </Skeleton>
+        <Text color="muted" fontSize="sm">
+          {title}
+        </Text>
+        <Heading size="sm">{stat}</Heading>
       </Stack>
     </Card>
   );

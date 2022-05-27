@@ -1,19 +1,17 @@
 import { ReactElement } from 'react';
-import { Heading, Skeleton, Stack, Text } from '@chakra-ui/react';
+import { Heading, Stack, Text } from '@chakra-ui/react';
 
 import { Card } from 'components/card';
 import { WindowStatus } from 'types/models/window';
 import { formatDate } from 'utils/dateUtils';
 
 interface Props {
-  isLoaded: boolean;
   windowStatus: WindowStatus;
   startAt: Date;
   endAt: Date;
 }
 
 export const WindowPeriodCard = ({
-  isLoaded,
   windowStatus,
   startAt,
   endAt,
@@ -32,16 +30,12 @@ export const WindowPeriodCard = ({
   return (
     <Card>
       <Stack>
-        <Skeleton isLoaded={isLoaded}>
-          <Text color="muted" fontSize="sm">
-            {getTitle()}
-          </Text>
-        </Skeleton>
-        <Skeleton isLoaded={isLoaded}>
-          <Heading size="sm">
-            {formatDate(startAt)} - {formatDate(endAt)}
-          </Heading>
-        </Skeleton>
+        <Text color="muted" fontSize="sm">
+          {getTitle()}
+        </Text>
+        <Heading size="sm">
+          {formatDate(startAt)} - {formatDate(endAt)}
+        </Heading>
       </Stack>
     </Card>
   );
