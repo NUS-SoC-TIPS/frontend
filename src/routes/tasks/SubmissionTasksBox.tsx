@@ -19,7 +19,7 @@ interface Props {
   submissions: TaskStatsSubmissions[];
 }
 
-export const Submissions = ({
+export const SubmissionTasksBox = ({
   submissions,
   numQuestions,
 }: Props): ReactElement<typeof Box> => {

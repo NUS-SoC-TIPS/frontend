@@ -1,22 +1,25 @@
-import { ReactElement, useEffect, useMemo, useReducer } from 'react';
+import { ReactElement, useEffect, useReducer } from 'react';
 import { Heading, Stack } from '@chakra-ui/react';
 
-import { Dashboard, Page } from 'components/page';
-import { useStep } from 'components/steps';
+import { ErrorBanner } from 'components/errorBanner';
+import { Page } from 'components/page';
 import { getTaskStats } from 'lib/stats';
 import { TaskStats } from 'types/api/stats';
 import { formatDate } from 'utils/dateUtils';
+import { computeWindowCompletion, findCurrentWindow } from 'utils/windowUtils';
 
-import { computeCompletion, computeSteps } from './helpers';
-import { Interviews } from './Interviews';
-import { Submissions } from './Submissions';
+import { InterviewTasksBox } from './InterviewTasksBox';
+import { SubmissionTasksBox } from './SubmissionTasksBox';
+import { TasksPage } from './TasksPage';
+import { TasksSkeleton } from './TasksSkeleton';
 import { TaskStep } from './TaskStep';
 
 interface State {
   isLoading: boolean;
   isError: boolean;
   stats: TaskStats | null;
-  completion: { isSuccess: boolean; isFailure: boolean }[];
+  step: number;
+  completion: { isCompleted: boolean; isFailure: boolean }[];
 }
 
 export const Tasks = (): ReactElement<typeof Page> => {
@@ -26,36 +29,36 @@ export const Tasks = (): ReactElement<typeof Page> => {
       isLoading: true,
       isError: false,
       stats: null,
+      step: 0,
       completion: [],
     } as State,
   );
-  const steps = useMemo(
-    () => state.stats?.windows ?? [],
-    [state.stats?.windows],
-  );
-  const { maxStep, initialStep } = useMemo(() => computeSteps(steps), [steps]);
-  const [currentStep, { setStep }] = useStep({ maxStep, initialStep });
 
   useEffect(() => {
     let didCancel = false;
-    const fetchData = async (): Promise<void> => {
-      try {
-        const stats = await getTaskStats();
-        if (!didCancel) {
-          setState({
-            isLoading: false,
-            stats,
-            completion: computeCompletion(stats.windows),
-          });
-        }
-      } catch {
-        if (!didCancel) {
-          setState({
-            isLoading: false,
-            isError: true,
-          });
-        }
-      }
+    const fetchData = (): Promise<void> => {
+      return getTaskStats()
+        .then((stats) => {
+          const { index } = findCurrentWindow(
+            stats.windows.map((w) => w.window),
+          );
+          if (!didCancel) {
+            setState({
+              isLoading: false,
+              stats,
+              step: index,
+              completion: stats.windows.map((w) => computeWindowCompletion(w)),
+            });
+          }
+        })
+        .catch(() => {
+          if (!didCancel) {
+            setState({
+              isLoading: false,
+              isError: true,
+            });
+          }
+        });
     };
 
     fetchData();
@@ -65,54 +68,65 @@ export const Tasks = (): ReactElement<typeof Page> => {
     };
   }, []);
 
-  const selectedStep = steps[currentStep];
+  const { stats, isLoading, isError, step, completion } = state;
+
+  if (isLoading) {
+    return <TasksSkeleton />;
+  }
+
+  if (isError || stats == null || stats.windows.length === 0) {
+    return (
+      <TasksPage>
+        <ErrorBanner maxW="100%" px={0} />
+      </TasksPage>
+    );
+  }
+
+  const setStep = (step: number): void => {
+    setState({ step });
+  };
+
+  const selectedWindow = stats.windows[step];
 
   return (
-    <Page>
-      <Dashboard
-        heading="Tasks"
-        subheading="Track your progress for the current window here!"
+    <TasksPage>
+      <Stack
+        direction={{ base: 'column', md: 'row' }}
+        my={{ base: 0, md: 4 }}
+        spacing={0}
       >
+        {stats.windows.map((window, id) => (
+          <TaskStep
+            completion={completion}
+            currentStep={step}
+            id={id}
+            isLastStep={stats.windows.length === id + 1}
+            key={id}
+            setStep={setStep}
+            taskWindow={window}
+          />
+        ))}
+      </Stack>
+      <Stack spacing={4}>
+        <Heading fontWeight="medium" mb={0} size="xxs">
+          Week {step + 1} ({formatDate(selectedWindow.window.startAt)} -{' '}
+          {formatDate(selectedWindow.window.endAt)})
+        </Heading>
         <Stack
           direction={{ base: 'column', md: 'row' }}
-          my={{ base: 0, md: 4 }}
-          spacing={0}
+          spacing={{ base: 6, md: 6 }}
         >
-          {steps.map((step, id) => (
-            <TaskStep
-              completion={state.completion}
-              currentStep={currentStep}
-              id={id}
-              isLastStep={steps.length === id + 1}
-              key={id}
-              setStep={setStep}
-              step={step}
-            />
-          ))}
+          <SubmissionTasksBox
+            numQuestions={selectedWindow.window.numQuestions}
+            submissions={selectedWindow.submissions}
+          />
+          <InterviewTasksBox
+            interviews={selectedWindow.interviews}
+            numInterviews={selectedWindow.window.numQuestions}
+            requireInterview={selectedWindow.window.requireInterview}
+          />
         </Stack>
-        {selectedStep && (
-          <Stack spacing={4}>
-            <Heading fontWeight="medium" mb={0} size="xxs">
-              Week {currentStep + 1} ({formatDate(selectedStep.window.startAt)}{' '}
-              - {formatDate(selectedStep.window.endAt)})
-            </Heading>
-            <Stack
-              direction={{ base: 'column', md: 'row' }}
-              spacing={{ base: 6, md: 6 }}
-            >
-              <Submissions
-                numQuestions={selectedStep.window.numQuestions}
-                submissions={selectedStep.submissions}
-              />
-              <Interviews
-                interviews={selectedStep.interviews}
-                numInterviews={selectedStep.window.numQuestions}
-                requireInterview={selectedStep.window.requireInterview}
-              />
-            </Stack>
-          </Stack>
-        )}
-      </Dashboard>
-    </Page>
+      </Stack>
+    </TasksPage>
   );
 };

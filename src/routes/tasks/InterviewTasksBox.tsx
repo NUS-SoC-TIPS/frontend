@@ -20,7 +20,7 @@ interface Props {
   interviews: TaskStatsInterviews[];
 }
 
-export const Interviews = ({
+export const InterviewTasksBox = ({
   numInterviews,
   interviews,
   requireInterview,
