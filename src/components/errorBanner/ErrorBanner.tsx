@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Container,
+  ContainerProps,
   Icon,
   Square,
   Stack,
@@ -11,10 +12,18 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react';
 
-export const ErrorBanner = (): ReactElement<typeof Container> => {
+export const ErrorBanner = (
+  props: ContainerProps,
+): ReactElement<ContainerProps, typeof Container> => {
   const isMobile = useBreakpointValue({ base: true, md: false });
+  const containerProps: ContainerProps = {
+    pb: { base: 12, md: 24 },
+    pt: { base: 4, md: 8 },
+    ...props,
+  };
+
   return (
-    <Container as="section" pb={{ base: 12, md: 24 }} pt={{ base: 4, md: 8 }}>
+    <Container as="section" {...containerProps}>
       <Box
         bg="error"
         borderRadius="xl"
