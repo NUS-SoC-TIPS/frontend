@@ -1,8 +1,7 @@
 import { Window, WindowStatus } from 'types/models/window';
 
-// If null is given, the return value will be { status: ONGOING, startAt: now, endAt: now }.
 export const computeWindowData = (
-  window: Window | undefined,
+  window: Window,
 ): { status: WindowStatus; startAt: Date; endAt: Date } => {
   const currentTime = new Date();
   const startAt = window?.startAt ?? currentTime;
