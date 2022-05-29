@@ -1,5 +1,5 @@
-import { PropsWithChildren, ReactElement } from 'react';
-import { Box, DarkMode } from '@chakra-ui/react';
+import { PropsWithChildren, ReactElement, useEffect } from 'react';
+import { Box, DarkMode, useColorMode } from '@chakra-ui/react';
 
 export const RoomPage = ({
   children,
@@ -7,17 +7,22 @@ export const RoomPage = ({
   PropsWithChildren<unknown>,
   typeof DarkMode
 > => {
+  const { setColorMode } = useColorMode();
+
+  useEffect(() => {
+    setColorMode('dark');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <DarkMode>
-      <Box
-        as="section"
-        display="flex"
-        flexDirection="column"
-        height="100vh"
-        width="100vw"
-      >
-        {children}
-      </Box>
-    </DarkMode>
+    <Box
+      as="section"
+      display="flex"
+      flexDirection="column"
+      height="100vh"
+      width="100vw"
+    >
+      {children}
+    </Box>
   );
 };
