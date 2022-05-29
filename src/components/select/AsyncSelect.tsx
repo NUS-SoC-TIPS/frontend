@@ -2,7 +2,8 @@ import { ReactElement } from 'react';
 import { PropsOf } from '@chakra-ui/react';
 import { AsyncSelect as ChakraAsyncSelect } from 'chakra-react-select';
 
-import { getChakraStyles } from './chakraStyles';
+import { customComponents } from './Option';
+import { useChakraSelectStyles } from './useChakraSelectStyles';
 
 interface Props
   extends Omit<PropsOf<typeof ChakraAsyncSelect>, 'noOptionsMessage'> {
@@ -15,7 +16,8 @@ export const AsyncSelect = ({
 }: Props): ReactElement<Props, typeof ChakraAsyncSelect> => {
   return (
     <ChakraAsyncSelect
-      chakraStyles={getChakraStyles()}
+      chakraStyles={useChakraSelectStyles()}
+      components={customComponents}
       isClearable={true}
       noOptionsMessage={
         noOptionsMessage ? (): string => noOptionsMessage : undefined
