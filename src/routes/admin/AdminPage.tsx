@@ -9,16 +9,18 @@ import { emptyFunction } from 'utils/functionUtils';
 
 interface Props {
   windows?: Window[];
-  onChangeWindow?: (window: Window) => void;
+  selectedIndex?: number;
+  onChangeWindow?: (index: number) => void;
 }
 
 interface WindowOption {
   label: string;
-  value: Window;
+  value: number;
 }
 
 export const AdminPage = ({
   windows = [],
+  selectedIndex = 0,
   onChangeWindow = emptyFunction,
   children,
 }: PropsWithChildren<Props>): ReactElement<
@@ -32,9 +34,9 @@ export const AdminPage = ({
     }
     onChangeWindow((option as WindowOption).value);
   };
-  const options = windows.map((w) => ({
+  const options: WindowOption[] = windows.map((w, index) => ({
     label: `${formatDate(w.startAt)} - ${formatDate(w.endAt)}`,
-    value: w,
+    value: index,
   }));
 
   return (
@@ -43,7 +45,9 @@ export const AdminPage = ({
         actions={
           <Box w={selectWidth}>
             <Select
-              defaultValue={options.length > 0 ? options[0] : undefined}
+              defaultValue={
+                options.length > 0 ? options[selectedIndex] : undefined
+              }
               isClearable={false}
               onChange={onChangeWrapper}
               options={options}

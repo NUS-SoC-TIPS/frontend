@@ -75,7 +75,13 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
   const selectedWindow = stats[selectedIndex];
 
   return (
-    <AdminPage windows={stats}>
+    <AdminPage
+      onChangeWindow={(index): void => {
+        setState({ selectedIndex: index });
+      }}
+      selectedIndex={selectedIndex}
+      windows={stats}
+    >
       <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
         <StatCard
           stat={selectedWindow.numStudents}

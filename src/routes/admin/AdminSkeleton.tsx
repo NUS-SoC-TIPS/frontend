@@ -13,6 +13,8 @@ export const AdminSkeleton = (): ReactElement<typeof AdminPage> => {
         <StatCardSkeleton />
         <StatCardSkeleton />
       </SimpleGrid>
+      <StatCardSkeleton />
+      <StatCardSkeleton />
     </AdminPage>
   );
 };
