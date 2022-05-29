@@ -1,12 +1,6 @@
 import { ReactElement } from 'react';
-import {
-  Box,
-  SystemStyleObject,
-  useColorModeValue,
-  useStyles,
-} from '@chakra-ui/react';
+import { Box, SystemStyleObject, useColorModeValue } from '@chakra-ui/react';
 import { GroupBase, OptionProps, SizeProps } from 'chakra-react-select';
-import { ThemeObject } from 'chakra-react-select/dist/types/types';
 
 const Option = <
   Option,
@@ -31,8 +25,6 @@ const Option = <
       chakraStyles,
     },
   } = props;
-
-  const itemStyles = useStyles().item as ThemeObject;
 
   const paddings: SizeProps = {
     sm: '0.3rem 0.6rem',
@@ -69,7 +61,6 @@ const Option = <
       color: selectedColor,
       _active: { bg: selectedBg },
     }),
-    ...(isDisabled && itemStyles._disabled),
     ...(isDisabled && { _active: {} }),
   };
 
