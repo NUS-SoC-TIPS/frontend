@@ -47,9 +47,6 @@ export const useChakraSelectStyles = (): ChakraStylesConfig<
     }),
     option: (styles) => ({
       ...styles,
-      _hover: {
-        background: foregroundColor,
-      },
     }),
   };
 };
