@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import {
   Box,
@@ -39,6 +39,12 @@ export const Table = ({
   const renderedColumns = columns.filter(
     (column) => column.options?.isVisible !== false,
   );
+
+  useEffect(() => {
+    if (page * 5 > maxPage) {
+      setPage(maxPage);
+    }
+  }, [page, maxPage]);
 
   const getBottomMessage = (): string => {
     if (rows.length === 0) {
