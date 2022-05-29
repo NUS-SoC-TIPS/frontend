@@ -5,8 +5,7 @@ import { Window } from 'types/models/window';
 
 import { RoomRecord } from './record';
 
-export interface SubmissionQuestionData {
-  submission: QuestionSubmission;
+export interface SubmissionQuestionData extends QuestionSubmission {
   question: Question;
 }
 
@@ -24,22 +23,26 @@ export interface QuestionStats {
   closestWindow: Window;
 }
 
-export interface TaskStatsSubmissions {
-  submission: QuestionSubmission;
+export interface TaskStatSubmission extends QuestionSubmission {
   question: Question;
 }
 
-export interface TaskStatsInterviews {
-  record: RoomRecord;
+export interface TaskStatInterview extends RoomRecord {
   partner: User;
 }
 
-export interface TaskStatsWindow {
-  window: Window;
-  submissions: TaskStatsSubmissions[];
-  interviews: TaskStatsInterviews[];
+export enum TaskStatWindowStatus {
+  COMPLETED = 'COMPLETED',
+  FAILED = 'FAILED',
+  NONE = 'NONE',
 }
 
-export interface TaskStats {
-  windows: TaskStatsWindow[];
+export interface TaskStatWindow extends Window {
+  submissions: TaskStatSubmission[];
+  interviews: TaskStatInterview[];
+  hasCompletedSubmissions: boolean;
+  hasCompletedInterview: boolean;
+  status: TaskStatWindowStatus;
 }
+
+export type TaskStats = TaskStatWindow[];

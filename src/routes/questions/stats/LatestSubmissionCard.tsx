@@ -22,7 +22,7 @@ export const LatestSubmissionCard = ({
           <SubmissionBox
             noOfLines={1}
             question={submission.question}
-            submission={submission.submission}
+            submission={submission}
             withBox={false}
           />
         ) : (

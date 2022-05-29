@@ -4,9 +4,9 @@ import { Heading, Stack } from '@chakra-ui/react';
 import { ErrorBanner } from 'components/errorBanner';
 import { Page } from 'components/page';
 import { getTaskStats } from 'lib/stats';
-import { TaskStats } from 'types/api/stats';
+import { TaskStats, TaskStatWindowStatus } from 'types/api/stats';
 import { formatDate } from 'utils/dateUtils';
-import { computeWindowCompletion, findCurrentWindow } from 'utils/windowUtils';
+import { findCurrentWindow } from 'utils/windowUtils';
 
 import { InterviewTasksBox } from './InterviewTasksBox';
 import { SubmissionTasksBox } from './SubmissionTasksBox';
@@ -17,9 +17,8 @@ import { TaskStep } from './TaskStep';
 interface State {
   isLoading: boolean;
   isError: boolean;
-  stats: TaskStats | null;
+  stats: TaskStats;
   step: number;
-  completion: { isCompleted: boolean; isFailure: boolean }[];
 }
 
 export const Tasks = (): ReactElement<typeof Page> => {
@@ -28,7 +27,7 @@ export const Tasks = (): ReactElement<typeof Page> => {
     {
       isLoading: true,
       isError: false,
-      stats: null,
+      stats: [],
       step: 0,
       completion: [],
     } as State,
@@ -39,15 +38,12 @@ export const Tasks = (): ReactElement<typeof Page> => {
     const fetchData = (): Promise<void> => {
       return getTaskStats()
         .then((stats) => {
-          const { index } = findCurrentWindow(
-            stats.windows.map((w) => w.window),
-          );
+          const { index } = findCurrentWindow(stats);
           if (!didCancel) {
             setState({
               isLoading: false,
               stats,
               step: index,
-              completion: stats.windows.map((w) => computeWindowCompletion(w)),
             });
           }
         })
@@ -68,13 +64,13 @@ export const Tasks = (): ReactElement<typeof Page> => {
     };
   }, []);
 
-  const { stats, isLoading, isError, step, completion } = state;
+  const { stats, isLoading, isError, step } = state;
 
   if (isLoading) {
     return <TasksSkeleton />;
   }
 
-  if (isError || stats == null || stats.windows.length === 0) {
+  if (isError || stats == null || stats.length === 0) {
     return (
       <TasksPage>
         <ErrorBanner maxW="100%" px={0} />
@@ -86,7 +82,7 @@ export const Tasks = (): ReactElement<typeof Page> => {
     setState({ step });
   };
 
-  const selectedWindow = stats.windows[step];
+  const selectedWindow = stats[step];
 
   return (
     <TasksPage>
@@ -95,35 +91,40 @@ export const Tasks = (): ReactElement<typeof Page> => {
         my={{ base: 0, md: 4 }}
         spacing={0}
       >
-        {stats.windows.map((window, id) => (
+        {stats.map((window, id) => (
           <TaskStep
-            completion={completion}
             currentStep={step}
             id={id}
-            isLastStep={stats.windows.length === id + 1}
+            isLastStep={stats.length === id + 1}
+            isPreviousStepFailure={
+              stats[Math.max(0, id - 1)].status === TaskStatWindowStatus.FAILED
+            }
             key={id}
             setStep={setStep}
-            taskWindow={window}
+            window={window}
           />
         ))}
       </Stack>
       <Stack spacing={4}>
         <Heading fontWeight="medium" mb={0} size="xxs">
-          Week {step + 1} ({formatDate(selectedWindow.window.startAt)} -{' '}
-          {formatDate(selectedWindow.window.endAt)})
+          Week {step + 1} ({formatDate(selectedWindow.startAt)} -{' '}
+          {formatDate(selectedWindow.endAt)})
         </Heading>
         <Stack
           direction={{ base: 'column', md: 'row' }}
           spacing={{ base: 6, md: 6 }}
         >
           <SubmissionTasksBox
-            numQuestions={selectedWindow.window.numQuestions}
+            hasCompletedSubmissions={selectedWindow.hasCompletedSubmissions}
+            numQuestions={selectedWindow.numQuestions}
+            numToShow={selectedWindow.numQuestions}
             submissions={selectedWindow.submissions}
           />
           <InterviewTasksBox
+            hasCompletedInterview={selectedWindow.hasCompletedInterview}
             interviews={selectedWindow.interviews}
-            numInterviews={selectedWindow.window.numQuestions}
-            requireInterview={selectedWindow.window.requireInterview}
+            numToShow={selectedWindow.numQuestions}
+            requireInterview={selectedWindow.requireInterview}
           />
         </Stack>
       </Stack>

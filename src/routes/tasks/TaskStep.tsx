@@ -1,35 +1,34 @@
 import { ReactElement } from 'react';
 
 import { Step } from 'components/steps';
-import { TaskStatsWindow } from 'types/api/stats';
+import { TaskStatWindow, TaskStatWindowStatus } from 'types/api/stats';
 import { formatDate } from 'utils/dateUtils';
 
 interface Props {
-  taskWindow: TaskStatsWindow;
+  window: TaskStatWindow;
   id: number;
   isLastStep: boolean;
   currentStep: number;
-  completion: { isCompleted: boolean; isFailure: boolean }[];
   setStep: (step: number) => void;
+  isPreviousStepFailure: boolean;
 }
 
 export const TaskStep = ({
-  taskWindow,
+  window,
   id,
   currentStep,
-  completion,
   isLastStep,
   setStep,
+  isPreviousStepFailure,
 }: Props): ReactElement<Props, typeof Step> => {
   const isActive = id <= currentStep;
-  const isFailure = completion[id].isFailure;
-  const isSuccess = completion[id].isCompleted;
-  const isPreviousStepFailure = completion[Math.max(0, id - 1)].isFailure;
+  const isFailure = window.status === TaskStatWindowStatus.FAILED;
+  const isSuccess = window.status === TaskStatWindowStatus.COMPLETED;
 
   return (
     <Step
       cursor="pointer"
-      description={formatDate(taskWindow.window.startAt)}
+      description={formatDate(window.startAt)}
       isActive={isActive}
       isFailure={isFailure}
       isFirstStep={id === 0}

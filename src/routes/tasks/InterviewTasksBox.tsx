@@ -12,23 +12,24 @@ import {
 } from '@chakra-ui/react';
 
 import { UserProfile } from 'components/userProfile';
-import { TaskStatsInterviews } from 'types/api/stats';
+import { TaskStatInterview } from 'types/api/stats';
 
 interface Props {
-  numInterviews: number;
+  numToShow: number;
   requireInterview: boolean;
-  interviews: TaskStatsInterviews[];
+  hasCompletedInterview: boolean;
+  interviews: TaskStatInterview[];
 }
 
 export const InterviewTasksBox = ({
-  numInterviews,
+  numToShow,
   interviews,
   requireInterview,
+  hasCompletedInterview,
 }: Props): ReactElement<typeof Box> => {
   const shownInterviews = interviews
-    .sort((a, b) => b.record.createdAt.getTime() - a.record.createdAt.getTime())
-    .slice(0, numInterviews);
-  const hasEnoughInterviews = !requireInterview || interviews.length >= 1;
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+    .slice(0, numToShow);
 
   return (
     <Box as="section" flex={1}>
@@ -52,7 +53,7 @@ export const InterviewTasksBox = ({
                   Completed
                 </Text>
               </Stack>
-              {hasEnoughInterviews ? (
+              {hasCompletedInterview ? (
                 <Circle bg="accent" size={8}>
                   <Icon as={HiCheck} boxSize={5} color="inverted" />
                 </Circle>
@@ -67,7 +68,7 @@ export const InterviewTasksBox = ({
                 <Box
                   borderRadius="lg"
                   borderWidth={{ base: '1px' }}
-                  key={interview.record.id}
+                  key={interview.id}
                   p={{ base: 3, md: 4 }}
                 >
                   <Stack
@@ -81,9 +82,9 @@ export const InterviewTasksBox = ({
                 </Box>
               );
             })}
-            {interviews.length > numInterviews && (
+            {interviews.length > numToShow && (
               <Text color="muted" fontSize="xs" textAlign="center">
-                Only the latest {numInterviews} interviews are shown.
+                Only the latest {numToShow} interviews are shown.
               </Text>
             )}
           </Stack>

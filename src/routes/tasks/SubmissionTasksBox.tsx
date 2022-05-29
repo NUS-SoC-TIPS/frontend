@@ -12,24 +12,24 @@ import {
 } from '@chakra-ui/react';
 
 import { SubmissionBox } from 'components/submission';
-import { TaskStatsSubmissions } from 'types/api/stats';
+import { TaskStatSubmission } from 'types/api/stats';
 
 interface Props {
+  numToShow: number;
   numQuestions: number;
-  submissions: TaskStatsSubmissions[];
+  submissions: TaskStatSubmission[];
+  hasCompletedSubmissions: boolean;
 }
 
 export const SubmissionTasksBox = ({
   submissions,
+  numToShow,
   numQuestions,
+  hasCompletedSubmissions,
 }: Props): ReactElement<typeof Box> => {
   const shownSubmissions = submissions
-    .sort(
-      (a, b) =>
-        b.submission.createdAt.getTime() - a.submission.createdAt.getTime(),
-    )
-    .slice(0, numQuestions);
-  const hasEnoughSubmissions = submissions.length >= numQuestions;
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+    .slice(0, numToShow);
 
   return (
     <Box as="section" flex={1}>
@@ -50,7 +50,7 @@ export const SubmissionTasksBox = ({
                   {submissions.length}/{numQuestions} Completed
                 </Text>
               </Stack>
-              {hasEnoughSubmissions ? (
+              {hasCompletedSubmissions ? (
                 <Circle bg="accent" size={8}>
                   <Icon as={HiCheck} boxSize={5} color="inverted" />
                 </Circle>
@@ -62,14 +62,14 @@ export const SubmissionTasksBox = ({
             </HStack>
             {shownSubmissions.map((sub) => (
               <SubmissionBox
-                key={sub.submission.id}
+                key={sub.id}
                 question={sub.question}
-                submission={sub.submission}
+                submission={sub}
               />
             ))}
-            {submissions.length > numQuestions && (
+            {submissions.length > numToShow && (
               <Text color="muted" fontSize="xs" textAlign="center">
-                Only the latest {numQuestions} submissions are shown.
+                Only the latest {numToShow} submissions are shown.
               </Text>
             )}
           </Stack>

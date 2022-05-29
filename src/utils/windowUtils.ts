@@ -1,4 +1,3 @@
-import { TaskStatsWindow } from 'types/api/stats';
 import { Window, WindowStatus } from 'types/models/window';
 
 export const computeWindowData = (
@@ -33,19 +32,4 @@ export const findCurrentWindow = (
   }
   const lastIndex = windows.length - 1;
   return { window: windows[lastIndex], index: lastIndex };
-};
-
-export const computeWindowCompletion = (
-  taskWindow: TaskStatsWindow,
-): { isCompleted: boolean; isFailure: boolean } => {
-  const windowHasEnded = new Date() > taskWindow.window.endAt;
-  const hasDoneEnoughQuestions =
-    taskWindow.submissions.length >= taskWindow.window.numQuestions;
-  const hasDoneEnoughInterviews =
-    !taskWindow.window.requireInterview || taskWindow.interviews.length >= 1;
-  const isCompleted = hasDoneEnoughQuestions && hasDoneEnoughInterviews;
-  return {
-    isCompleted,
-    isFailure: windowHasEnded && !isCompleted,
-  };
 };
