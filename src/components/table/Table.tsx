@@ -35,8 +35,32 @@ export const Table = ({
 }: Props): ReactElement<Props, typeof ChakraTable> => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [page, setPage] = useState(0);
-  const maxPage = Math.ceil(rows.length / 5) - 1;
+  const maxPage = Math.max(Math.ceil(rows.length / 5) - 1, 0);
   const renderedRows = rows.slice(page * 5, (page + 1) * 5);
+
+  const getBottomMessage = (): string => {
+    if (rows.length === 0) {
+      return 'Showing 0 results';
+    }
+    const lowerNumber = page * 5 + 1;
+    const upperNumber = Math.min((page + 1) * 5, rows.length);
+    const results = rows.length === 1 ? 'row' : 'rows';
+    return `Showing ${lowerNumber} to ${upperNumber} of ${rows.length} ${results}`;
+  };
+
+  const onPrevious = (): void => {
+    if (page === 0) {
+      return;
+    }
+    setPage(page - 1);
+  };
+
+  const onNext = (): void => {
+    if (page === maxPage) {
+      return;
+    }
+    setPage(page + 1);
+  };
 
   return (
     <Stack spacing="5">
@@ -80,9 +104,16 @@ export const Table = ({
               </Tr>
             ))}
             {rows.length === 0 && (
-              <Td>
-                <Text color="muted">{emptyMessage}</Text>
-              </Td>
+              <>
+                <Td>
+                  <Text color="muted">{emptyMessage}</Text>
+                </Td>
+                {Array(columns.length - 1)
+                  .fill(0)
+                  .map((_, index) => (
+                    <Td key={index}></Td>
+                  ))}
+              </>
             )}
           </Tbody>
         </ChakraTable>
@@ -91,8 +122,7 @@ export const Table = ({
         <HStack justify="space-between" spacing="3">
           {!isMobile && (
             <Text color="muted" fontSize="sm">
-              Showing {page * 5 + 1} to {Math.min((page + 1) * 5, rows.length)}{' '}
-              of {rows.length} result{rows.length === 1 ? '' : 's'}
+              {getBottomMessage()}
             </Text>
           )}
           <ButtonGroup
@@ -101,26 +131,10 @@ export const Table = ({
             variant="secondary"
             width={{ base: 'full', md: 'auto' }}
           >
-            <Button
-              disabled={page === 0}
-              onClick={(): void => {
-                if (page === 0) {
-                  return;
-                }
-                setPage(page - 1);
-              }}
-            >
+            <Button disabled={page === 0} onClick={onPrevious}>
               Previous
             </Button>
-            <Button
-              disabled={page === maxPage}
-              onClick={(): void => {
-                if (page === maxPage) {
-                  return;
-                }
-                setPage(page + 1);
-              }}
-            >
+            <Button disabled={page === maxPage} onClick={onNext}>
               Next
             </Button>
           </ButtonGroup>

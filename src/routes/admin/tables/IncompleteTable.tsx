@@ -108,7 +108,10 @@ const transformData = (users: UserWithIncompleteWindow[]): Row[] => {
   });
 };
 
-export const IncompleteTable = ({ users, window }: Props): ReactElement => {
+export const IncompleteTable = ({
+  users,
+  window,
+}: Props): ReactElement<Props, typeof Card> => {
   const columns = getColumns(window);
   const rows = transformData(users);
 

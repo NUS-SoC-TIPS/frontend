@@ -7,6 +7,7 @@ import { getAdminStats } from 'lib/stats';
 import { AdminStats } from 'types/api/stats/admin';
 
 import { IncompleteTable } from './tables/IncompleteTable';
+import { MissingTable } from './tables/MissingTable';
 import { AdminPage } from './AdminPage';
 import { AdminSkeleton } from './AdminSkeleton';
 
@@ -100,6 +101,7 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
         users={selectedWindow.studentsWithIncompleteWindow}
         window={selectedWindow}
       />
+      <MissingTable users={selectedWindow.studentsYetToJoin} />
     </AdminPage>
   );
 };
