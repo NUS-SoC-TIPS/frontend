@@ -41,7 +41,7 @@ export const Table = ({
   );
 
   useEffect(() => {
-    if (page * 5 > maxPage) {
+    if (page > maxPage) {
       setPage(maxPage);
     }
   }, [page, maxPage]);
