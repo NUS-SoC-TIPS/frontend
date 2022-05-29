@@ -1,4 +1,5 @@
 import { User } from 'types/models/user';
+import { Window } from 'types/models/window';
 
 export interface UserThatHasYetToJoin {
   name: string;
