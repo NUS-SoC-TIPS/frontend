@@ -6,6 +6,7 @@ import { ErrorBanner } from 'components/errorBanner';
 import { getAdminStats } from 'lib/stats';
 import { AdminStats } from 'types/api/stats/admin';
 
+import { IncompleteTable } from './tables/IncompleteTable';
 import { AdminPage } from './AdminPage';
 import { AdminSkeleton } from './AdminSkeleton';
 
@@ -89,6 +90,10 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
           title="Average Number of Submissions"
         />
       </SimpleGrid>
+      <IncompleteTable
+        users={selectedWindow.studentsWithIncompleteWindow}
+        window={selectedWindow}
+      />
     </AdminPage>
   );
 };
