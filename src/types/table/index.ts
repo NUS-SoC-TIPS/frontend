@@ -7,10 +7,18 @@ export interface TableColumnOptions {
   customCsvBodyRenderer?: (value: any) => string;
   customCsvHeaderRenderer?: (value: any) => string;
   isVisible?: boolean;
+  isDownloadable?: boolean;
 }
 
 export interface TableColumn {
   label: string;
   key: string;
   options?: TableColumnOptions;
+}
+
+export interface TableOptions {
+  title?: string;
+  noDataMessage?: string;
+  isDownloadable?: boolean;
+  downloadFileName?: string;
 }

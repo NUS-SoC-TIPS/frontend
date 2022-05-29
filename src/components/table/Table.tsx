@@ -16,27 +16,28 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react';
 
-import { TableColumn } from 'types/table';
+import { TableColumn, TableOptions } from 'types/table';
 
 interface Props extends TableProps {
-  title: string;
   columns: TableColumn[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rows: any[];
-  emptyMessage?: string;
+  options?: TableOptions;
 }
 
 export const Table = ({
-  title,
   columns,
   rows,
-  emptyMessage = 'No Data',
+  options,
   ...props
 }: Props): ReactElement<Props, typeof ChakraTable> => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [page, setPage] = useState(0);
   const maxPage = Math.max(Math.ceil(rows.length / 5) - 1, 0);
   const renderedRows = rows.slice(page * 5, (page + 1) * 5);
+  const renderedColumns = columns.filter(
+    (column) => column.options?.isVisible === false,
+  );
 
   const getBottomMessage = (): string => {
     if (rows.length === 0) {
@@ -70,7 +71,7 @@ export const Table = ({
           justify="space-between"
         >
           <Text fontSize="lg" fontWeight="medium">
-            {title}
+            {options?.title ?? 'Table'}
           </Text>
         </Stack>
       </Box>
@@ -78,7 +79,7 @@ export const Table = ({
         <ChakraTable {...props}>
           <Thead>
             <Tr>
-              {columns.map((column, index) => (
+              {renderedColumns.map((column, index) => (
                 <Th key={index}>
                   {column.options?.customHeaderRenderer ? (
                     column.options.customHeaderRenderer()
@@ -92,7 +93,7 @@ export const Table = ({
           <Tbody>
             {renderedRows.map((row, index) => (
               <Tr key={index}>
-                {columns.map((column, index) => (
+                {renderedColumns.map((column, index) => (
                   <Td key={index}>
                     {column.options?.customBodyRenderer ? (
                       column.options.customBodyRenderer(row[column.key])
@@ -106,9 +107,11 @@ export const Table = ({
             {rows.length === 0 && (
               <>
                 <Td>
-                  <Text color="muted">{emptyMessage}</Text>
+                  <Text color="muted">
+                    {options?.noDataMessage ?? 'No Data'}
+                  </Text>
                 </Td>
-                {Array(columns.length - 1)
+                {Array(renderedColumns.length - 1)
                   .fill(0)
                   .map((_, index) => (
                     <Td key={index}></Td>

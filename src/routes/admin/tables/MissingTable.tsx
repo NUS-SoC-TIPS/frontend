@@ -57,7 +57,7 @@ export const MissingTable = ({
 
   return (
     <Card px={0} py={0}>
-      <Table columns={columns} rows={users} title="Missing" />
+      <Table columns={columns} options={{ title: 'Missing' }} rows={users} />
     </Card>
   );
 };

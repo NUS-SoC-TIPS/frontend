@@ -117,7 +117,7 @@ export const IncompleteTable = ({
 
   return (
     <Card px={0} py={0}>
-      <Table columns={columns} rows={rows} title="Incomplete" />
+      <Table columns={columns} options={{ title: 'Incomplete' }} rows={rows} />
     </Card>
   );
 };
