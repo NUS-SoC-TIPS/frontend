@@ -81,11 +81,11 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
           title="Number of Students on Platform"
         />
         <StatCard
-          stat={selectedWindow.numStudents}
+          stat={selectedWindow.numStudentsCompleted}
           title="Number of Students Completed"
         />
         <StatCard
-          stat={selectedWindow.numStudents}
+          stat={selectedWindow.avgNumQuestions.toFixed(2)}
           title="Average Number of Submissions"
         />
       </SimpleGrid>
