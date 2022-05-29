@@ -1,7 +1,6 @@
 import { ReactElement } from 'react';
-import { Heading, Stack, Text } from '@chakra-ui/react';
 
-import { Card } from 'components/card';
+import { StatCard } from 'components/card';
 import { WindowStatus } from 'types/models/window';
 import { formatDate } from 'utils/dateUtils';
 
@@ -15,7 +14,7 @@ export const WindowPeriodCard = ({
   windowStatus,
   startAt,
   endAt,
-}: Props): ReactElement<typeof Card> => {
+}: Props): ReactElement<typeof StatCard> => {
   const getTitle = (): string => {
     switch (windowStatus) {
       case WindowStatus.ONGOING:
@@ -28,15 +27,9 @@ export const WindowPeriodCard = ({
   };
 
   return (
-    <Card>
-      <Stack>
-        <Text color="muted" fontSize="sm">
-          {getTitle()}
-        </Text>
-        <Heading size="sm">
-          {formatDate(startAt)} - {formatDate(endAt)}
-        </Heading>
-      </Stack>
-    </Card>
+    <StatCard
+      stat={`${formatDate(startAt)} - ${formatDate(endAt)}`}
+      title={getTitle()}
+    />
   );
 };

@@ -3,7 +3,7 @@ import { Heading, Skeleton, Stack, Text } from '@chakra-ui/react';
 
 import { Card } from 'components/card';
 
-export const SkeletonStatCard = (): ReactElement<typeof Card> => {
+export const StatCardSkeleton = (): ReactElement<typeof Card> => {
   return (
     <Card>
       <Stack>
