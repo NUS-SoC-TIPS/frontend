@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { memo, ReactElement } from 'react';
 import { Avatar, Box, HStack, Text } from '@chakra-ui/react';
 
 import { User } from 'types/models/user';
@@ -7,9 +7,9 @@ interface Props {
   user: User;
 }
 
-export const UserProfile = ({
+const RawUserProfile = ({
   user,
-}: Props): React.ReactElement<Props, typeof HStack> => {
+}: Props): ReactElement<Props, typeof HStack> => {
   return (
     <HStack ps={2} spacing={3}>
       <Avatar boxSize={10} name={user.name} src={user.photoUrl} />
@@ -24,3 +24,13 @@ export const UserProfile = ({
     </HStack>
   );
 };
+
+const propsAreEqual = (prevProps: Props, nextProps: Props): boolean => {
+  return (
+    prevProps.user.name === nextProps.user.name &&
+    prevProps.user.photoUrl === nextProps.user.photoUrl &&
+    prevProps.user.githubUsername === nextProps.user.githubUsername
+  );
+};
+
+export const UserProfile = memo(RawUserProfile, propsAreEqual);

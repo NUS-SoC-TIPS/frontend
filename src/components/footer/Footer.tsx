@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { memo, ReactElement } from 'react';
 import { FaGithub } from 'react-icons/fa';
 import {
   ButtonGroup,
@@ -10,7 +10,7 @@ import {
 
 import { Logo } from '../logo';
 
-export const Footer = (): ReactElement<typeof Container> => (
+const RawFooter = (): ReactElement<typeof Container> => (
   <Container
     as="footer"
     maxW="8xl"
@@ -37,3 +37,5 @@ export const Footer = (): ReactElement<typeof Container> => (
     </Stack>
   </Container>
 );
+
+export const Footer = memo(RawFooter);

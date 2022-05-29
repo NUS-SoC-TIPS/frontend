@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { memo, ReactElement } from 'react';
 import { HiCheck, HiX } from 'react-icons/hi';
 import { Circle, Icon, SquareProps } from '@chakra-ui/react';
 
@@ -8,9 +8,7 @@ interface Props extends SquareProps {
   isActive: boolean;
 }
 
-export const StepCircle = (
-  props: Props,
-): ReactElement<Props, typeof Circle> => {
+const RawStepCircle = (props: Props): ReactElement<Props, typeof Circle> => {
   const { isSuccess, isActive, isFailure } = props;
   return (
     <Circle
@@ -30,3 +28,5 @@ export const StepCircle = (
     </Circle>
   );
 };
+
+export const StepCircle = memo(RawStepCircle);

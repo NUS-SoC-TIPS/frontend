@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { memo, ReactElement } from 'react';
 import { FiInfo } from 'react-icons/fi';
 import {
   Box,
@@ -14,7 +14,7 @@ interface Props {
   message: string;
 }
 
-export const Banner = ({
+const RawBanner = ({
   title,
   message,
 }: Props): ReactElement<Props, typeof Box> => {
@@ -57,3 +57,5 @@ export const Banner = ({
     </Box>
   );
 };
+
+export const Banner = memo(RawBanner);

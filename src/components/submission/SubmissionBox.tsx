@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { memo, ReactElement } from 'react';
 import { Badge, Box, Stack, Text } from '@chakra-ui/react';
 
 import { difficultyToString } from 'constants/enumStrings';
@@ -13,7 +13,7 @@ interface Props {
   noOfLines?: number;
 }
 
-export const SubmissionBox = ({
+const RawSubmissionBox = ({
   submission,
   question,
   withBox = true,
@@ -51,3 +51,16 @@ export const SubmissionBox = ({
     </Stack>,
   );
 };
+
+const propsAreEqual = (prevProps: Props, nextProps: Props): boolean => {
+  return (
+    prevProps.submission.id === nextProps.submission.id &&
+    prevProps.noOfLines === nextProps.noOfLines &&
+    prevProps.submission.createdAt.getTime() ===
+      nextProps.submission.createdAt.getTime() &&
+    prevProps.question.name === nextProps.question.name &&
+    prevProps.question.difficulty === nextProps.question.difficulty
+  );
+};
+
+export const SubmissionBox = memo(RawSubmissionBox, propsAreEqual);

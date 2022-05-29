@@ -1,4 +1,4 @@
-import { ReactElement, useCallback, useState } from 'react';
+import { memo, ReactElement, useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { FiUploadCloud } from 'react-icons/fi';
 import {
@@ -20,7 +20,7 @@ interface Props extends Omit<CenterProps, 'onChange'> {
   onChange: (url: string) => void;
 }
 
-export const ImageDropzone = ({
+const RawImageDropzone = ({
   onChange,
   ...props
 }: Props): ReactElement<Props, typeof Center> => {
@@ -112,3 +112,5 @@ export const ImageDropzone = ({
     </Center>
   );
 };
+
+export const ImageDropzone = memo(RawImageDropzone);

@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { memo, ReactElement } from 'react';
 import {
   BoxProps,
   Divider,
@@ -21,7 +21,7 @@ interface Props extends BoxProps {
   rightLineColor?: string;
 }
 
-export const Step = (props: Props): ReactElement<Props, typeof Stack> => {
+const RawStep = (props: Props): ReactElement<Props, typeof Stack> => {
   const {
     isSuccess,
     isFailure,
@@ -83,3 +83,5 @@ export const Step = (props: Props): ReactElement<Props, typeof Stack> => {
     </Stack>
   );
 };
+
+export const Step = memo(RawStep);

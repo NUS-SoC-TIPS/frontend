@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { memo, ReactElement } from 'react';
 import { Box } from '@chakra-ui/react';
 import { useLottie } from 'lottie-react';
 
@@ -20,7 +20,7 @@ interface Props {
 /**
  * Height is in em.
  */
-const LoadingAnimation = ({
+const RawLoadingAnimation = ({
   width = 10,
 }: Props): ReactElement<Props, typeof Box> => {
   const { View } = useLottie(defaultOptions);
@@ -32,4 +32,4 @@ const LoadingAnimation = ({
   );
 };
 
-export default LoadingAnimation;
+export const LoadingAnimation = memo(RawLoadingAnimation);

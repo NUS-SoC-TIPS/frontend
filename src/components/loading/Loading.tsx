@@ -1,9 +1,9 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { memo, ReactElement, useEffect, useState } from 'react';
 import { Box, SlideFade } from '@chakra-ui/react';
 
-import LoadingAnimation from './LoadingAnimation';
+import { LoadingAnimation } from './LoadingAnimation';
 
-export const Loading = (): ReactElement<'div'> => {
+const RawLoading = (): ReactElement<'div'> => {
   const [isShown, setIsShown] = useState(false);
   useEffect(() => {
     setIsShown(true);
@@ -22,3 +22,5 @@ export const Loading = (): ReactElement<'div'> => {
     </Box>
   );
 };
+
+export const Loading = memo(RawLoading);
