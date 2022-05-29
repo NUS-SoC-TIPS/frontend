@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 
 import { Step } from 'components/steps';
-import { TaskStatWindow, TaskStatWindowStatus } from 'types/api/stats';
+import { TaskStatWindow, TaskStatWindowStatus } from 'types/api/stats/task';
 import { formatDate } from 'utils/dateUtils';
 
 interface Props {

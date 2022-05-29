@@ -4,7 +4,7 @@ import { Heading, Stack } from '@chakra-ui/react';
 import { ErrorBanner } from 'components/errorBanner';
 import { Page } from 'components/page';
 import { getTaskStats } from 'lib/stats';
-import { TaskStats, TaskStatWindowStatus } from 'types/api/stats';
+import { TaskStats, TaskStatWindowStatus } from 'types/api/stats/task';
 import { formatDate } from 'utils/dateUtils';
 import { findCurrentWindow } from 'utils/windowUtils';
 

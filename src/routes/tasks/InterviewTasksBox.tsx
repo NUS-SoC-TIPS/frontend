@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 
 import { UserProfile } from 'components/userProfile';
-import { TaskStatInterview } from 'types/api/stats';
+import { TaskStatInterview } from 'types/api/stats/task';
 
 interface Props {
   numToShow: number;

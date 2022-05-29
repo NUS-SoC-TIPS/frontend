@@ -1,5 +1,5 @@
-import { Language } from 'types/models/code';
-import { QuestionSource } from 'types/models/question';
+import { Language } from './code';
+import { QuestionSource } from './question';
 
 export interface RoomRecord {
   id: number;
@@ -13,4 +13,14 @@ export interface RoomRecord {
   roomId: number;
   questionSlug: string | null;
   questionSource: QuestionSource | null;
+}
+
+export interface RoomRecordUser {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  isInterviewer: boolean;
+  notes: string;
+  userId: string;
+  roomRecordId: number;
 }

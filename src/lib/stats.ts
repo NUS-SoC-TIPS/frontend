@@ -1,4 +1,5 @@
-import { QuestionStats, TaskStats } from 'types/api/stats';
+import { QuestionStats } from 'types/api/stats/question';
+import { TaskStats } from 'types/api/stats/task';
 import { api } from 'utils/apiUtils';
 
 export const getQuestionStats = async (): Promise<QuestionStats> => {

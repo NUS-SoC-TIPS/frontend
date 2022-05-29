@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 
 import { SubmissionBox } from 'components/submission';
-import { TaskStatSubmission } from 'types/api/stats';
+import { TaskStatSubmission } from 'types/api/stats/task';
 
 interface Props {
   numToShow: number;

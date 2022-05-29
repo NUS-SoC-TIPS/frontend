@@ -1,10 +1,12 @@
 export interface Question {
   slug: string;
+  source: QuestionSource;
+  createdAt: Date;
+  updatedAt: Date;
   id: number;
   name: string;
   difficulty: QuestionDifficulty;
   type: QuestionType;
-  source: QuestionSource;
   isPremium: boolean;
 }
 

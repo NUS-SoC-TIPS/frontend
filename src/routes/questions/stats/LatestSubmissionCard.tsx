@@ -3,10 +3,15 @@ import { Heading, Stack, Text } from '@chakra-ui/react';
 
 import { Card } from 'components/card';
 import { SubmissionBox } from 'components/submission';
-import { SubmissionQuestionData } from 'types/api/stats';
+import { Question } from 'types/models/question';
+import { QuestionSubmission } from 'types/models/submission';
 
 interface Props {
-  submission: SubmissionQuestionData | null;
+  submission:
+    | (QuestionSubmission & {
+        question: Question;
+      })
+    | null;
 }
 
 export const LatestSubmissionCard = ({
