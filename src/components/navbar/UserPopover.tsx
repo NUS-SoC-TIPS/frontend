@@ -12,12 +12,12 @@ import {
 } from '@chakra-ui/react';
 
 import { MyPopover } from 'components/popover';
-import { UserSettingsConfig } from 'types/models/user';
+import { UserWithSettingsAndConfig } from 'types/models/user';
 
 import { UserProfile } from '../userProfile';
 
 interface Props {
-  user: UserSettingsConfig;
+  user: UserWithSettingsAndConfig;
   logout: () => void | Promise<void>;
 }
 

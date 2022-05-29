@@ -27,7 +27,7 @@ export interface AppConfig {
   coursemology: string;
 }
 
-export interface UserSettingsConfig extends User {
+export interface UserWithSettingsAndConfig extends User {
   settings: Settings | null;
   config: AppConfig;
 }

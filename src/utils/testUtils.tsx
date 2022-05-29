@@ -5,12 +5,12 @@ import { render, RenderOptions, RenderResult } from '@testing-library/react';
 import { theme } from 'app/theme';
 import { AuthContext } from 'contexts/AuthContext';
 import { UserContext } from 'contexts/UserContext';
-import { UserSettingsConfig } from 'types/models/user';
+import { UserWithSettingsAndConfig } from 'types/models/user';
 
 import { emptyPromiseFunction } from './functionUtils';
 
 interface CustomRenderOptions extends RenderOptions {
-  data?: UserSettingsConfig | null;
+  data?: UserWithSettingsAndConfig | null;
   login?: () => Promise<void>;
   logout?: () => Promise<void>;
   isLoggingIn?: boolean;

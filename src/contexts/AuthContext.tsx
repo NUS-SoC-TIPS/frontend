@@ -13,10 +13,10 @@ import { ErrorBanner } from 'components/errorBanner';
 import { Loading } from 'components/loading';
 import { getSelf, login as apiLogin, logout as apiLogout } from 'lib/auth';
 import { signInWithFirebase } from 'lib/firebase';
-import { UserSettingsConfig } from 'types/models/user';
+import { UserWithSettingsAndConfig } from 'types/models/user';
 
 export interface AuthContextInterface {
-  data: UserSettingsConfig | null;
+  data: UserWithSettingsAndConfig | null;
   login(): Promise<void>;
   logout(): Promise<void>;
   isLoggingIn: boolean;
@@ -28,7 +28,7 @@ export const AuthContext = createContext<AuthContextInterface | undefined>(
 
 const AuthProvider = (props: PropsWithChildren<unknown>): ReactElement => {
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState<UserSettingsConfig | null>(null);
+  const [data, setData] = useState<UserWithSettingsAndConfig | null>(null);
   const [isError, setIsError] = useState(false);
   const [hasFetchedOnce, setHasFetchedOnce] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
