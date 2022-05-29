@@ -5,7 +5,7 @@ export interface TableColumnOptions {
   customBodyRenderer?: (value: any) => string | ReactNode;
   customHeaderRenderer?: () => string | ReactNode;
   customCsvBodyRenderer?: (value: any) => string;
-  customCsvHeaderRenderer?: (value: any) => string;
+  customCsvHeaderRenderer?: () => string;
   isVisible?: boolean;
   isDownloadable?: boolean;
 }

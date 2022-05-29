@@ -8,6 +8,7 @@ import { UserWithIncompleteWindow } from 'types/api/stats/admin';
 import { User } from 'types/models/user';
 import { Window } from 'types/models/window';
 import { TableColumn } from 'types/table';
+import { formatDate } from 'utils/dateUtils';
 
 import { Completion } from './Completion';
 
@@ -18,6 +19,8 @@ interface Props {
 
 interface Row {
   user: User;
+  name: string;
+  githubUsername: string;
   email: string;
   numQuestions: number;
   hasCompletedInterview: boolean;
@@ -33,6 +36,21 @@ const getColumns = (tipsWindow: Window): TableColumn[] => {
         customBodyRenderer: (user: User): ReactNode => (
           <UserProfile user={user} />
         ),
+        isDownloadable: false,
+      },
+    },
+    {
+      label: 'Name',
+      key: 'name',
+      options: {
+        isVisible: false,
+      },
+    },
+    {
+      label: 'GitHub Username',
+      key: 'githubUsername',
+      options: {
+        isVisible: false,
       },
     },
     {
@@ -56,6 +74,7 @@ const getColumns = (tipsWindow: Window): TableColumn[] => {
             max={tipsWindow.numQuestions}
           />
         ),
+        customCsvHeaderRenderer: (): string => 'Number of Questions Completed',
       },
     },
     {
@@ -68,6 +87,9 @@ const getColumns = (tipsWindow: Window): TableColumn[] => {
           ) : (
             <Text color="muted">-</Text>
           ),
+        customCsvHeaderRenderer: (): string => 'Interview Completed',
+        customCsvBodyRenderer: (hasCompletedInterview: boolean): string =>
+          hasCompletedInterview ? 'Yes' : 'No',
       },
     },
     {
@@ -84,6 +106,7 @@ const getColumns = (tipsWindow: Window): TableColumn[] => {
             View Profile
           </Button>
         ),
+        customCsvHeaderRenderer: (): string => 'Coursemology Profile Link',
       },
     },
   ];
@@ -100,6 +123,8 @@ const transformData = (users: UserWithIncompleteWindow[]): Row[] => {
     } = user;
     return {
       user: userData,
+      name: user.name,
+      githubUsername: user.githubUsername,
       email,
       numQuestions,
       hasCompletedInterview,
@@ -117,7 +142,16 @@ export const IncompleteTable = ({
 
   return (
     <Card px={0} py={0}>
-      <Table columns={columns} options={{ title: 'Incomplete' }} rows={rows} />
+      <Table
+        columns={columns}
+        options={{
+          title: 'Incomplete',
+          downloadFileName: `Incomplete for ${formatDate(
+            window.startAt,
+          )} - ${formatDate(window.endAt)}`,
+        }}
+        rows={rows}
+      />
     </Card>
   );
 };

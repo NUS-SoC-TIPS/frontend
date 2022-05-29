@@ -101,7 +101,10 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
         users={selectedWindow.studentsWithIncompleteWindow}
         window={selectedWindow}
       />
-      <MissingTable users={selectedWindow.studentsYetToJoin} />
+      <MissingTable
+        users={selectedWindow.studentsYetToJoin}
+        window={selectedWindow}
+      />
     </AdminPage>
   );
 };

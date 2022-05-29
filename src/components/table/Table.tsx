@@ -1,4 +1,5 @@
 import { ReactElement, useState } from 'react';
+import { CSVLink } from 'react-csv';
 import {
   Box,
   Button,
@@ -63,6 +64,25 @@ export const Table = ({
     setPage(page + 1);
   };
 
+  const getCsvData = (): string[][] => {
+    const downloadableColumns = columns.filter(
+      (c) => c.options?.isDownloadable !== false,
+    );
+    const headings = downloadableColumns.map((c) =>
+      c.options?.customCsvHeaderRenderer
+        ? c.options.customCsvHeaderRenderer()
+        : c.label,
+    );
+    const values = rows.map((r) =>
+      downloadableColumns.map((c) =>
+        c.options?.customCsvBodyRenderer
+          ? c.options.customCsvBodyRenderer(r[c.key])
+          : String(r[c.key]),
+      ),
+    );
+    return [headings, ...values];
+  };
+
   return (
     <Stack spacing="5">
       <Box pt="5" px={{ base: '4', md: '6' }}>
@@ -71,7 +91,12 @@ export const Table = ({
             {options?.title ?? 'Table'}
           </Text>
           {options?.isDownloadable !== false && !isMobile && (
-            <Button variant="primary">Download CSV</Button>
+            <CSVLink
+              data={getCsvData()}
+              filename={options?.downloadFileName ?? 'Table'}
+            >
+              <Button variant="primary">Download CSV</Button>
+            </CSVLink>
           )}
         </Stack>
       </Box>
