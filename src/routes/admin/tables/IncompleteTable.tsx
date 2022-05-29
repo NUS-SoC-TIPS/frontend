@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, useMemo } from 'react';
 import { Button, Link, Text } from '@chakra-ui/react';
 
 import { Card } from 'components/card';
@@ -79,7 +79,7 @@ const getColumns = (tipsWindow: Window): TableColumn[] => {
             onClick={(): void => {
               window.open(coursemologyProfile);
             }}
-            variant="primary"
+            variant="secondary"
           >
             View Profile
           </Button>
@@ -112,8 +112,8 @@ export const IncompleteTable = ({
   users,
   window,
 }: Props): ReactElement<Props, typeof Card> => {
-  const columns = getColumns(window);
-  const rows = transformData(users);
+  const columns = useMemo(() => getColumns(window), [window]);
+  const rows = useMemo(() => transformData(users), [users]);
 
   return (
     <Card px={0} py={0}>

@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, useMemo } from 'react';
 import { Button, Link, Text } from '@chakra-ui/react';
 
 import { Card } from 'components/card';
@@ -40,7 +40,7 @@ const getColumns = (): TableColumn[] => {
             onClick={(): void => {
               window.open(coursemologyProfile);
             }}
-            variant="primary"
+            variant="secondary"
           >
             View Profile
           </Button>
@@ -53,7 +53,7 @@ const getColumns = (): TableColumn[] => {
 export const MissingTable = ({
   users,
 }: Props): ReactElement<Props, typeof Card> => {
-  const columns = getColumns();
+  const columns = useMemo(() => getColumns(), []);
 
   return (
     <Card px={0} py={0}>
