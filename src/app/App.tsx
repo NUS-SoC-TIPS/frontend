@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { ReactElement } from 'react';
-import { ChakraProvider, useColorMode } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 
 import { Loading } from 'components/loading';
 import { useUser } from 'contexts/UserContext';
@@ -20,16 +20,10 @@ const AuthenticatedApp = lazy(
 const UnauthenticatedApp = lazy(() => import('./UnauthenticatedApp'));
 
 export const App = (): ReactElement<typeof ChakraProvider> => {
-  const { setColorMode } = useColorMode();
   const user = useUser();
 
   useEffect(() => {
     loadAuthenticatedApp();
-  }, []);
-
-  useEffect(() => {
-    setColorMode('dark');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
