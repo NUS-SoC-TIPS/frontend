@@ -1,5 +1,6 @@
 import { ReactElement } from 'react';
 import {
+  FiAperture,
   FiBook,
   FiCheckSquare,
   FiLogOut,
@@ -8,8 +9,14 @@ import {
 } from 'react-icons/fi';
 import { Divider, Flex, Stack, useColorModeValue } from '@chakra-ui/react';
 
-import { INTERVIEWS, QUESTIONS, SETTINGS, TASKS } from 'constants/routes';
-import { User } from 'types/models/user';
+import {
+  ADMIN,
+  INTERVIEWS,
+  QUESTIONS,
+  SETTINGS,
+  TASKS,
+} from 'constants/routes';
+import { User, UserRole } from 'types/models/user';
 
 import { Logo } from '../logo';
 import { UserProfile } from '../userProfile';
@@ -62,6 +69,14 @@ export const Sidebar = ({
               label="Tasks"
               onClick={(): void => navigate(TASKS)}
             />
+            {user.role === UserRole.ADMIN && (
+              <NavButton
+                aria-current={pathname === ADMIN ? 'page' : undefined}
+                icon={FiAperture}
+                label="Admin"
+                onClick={(): void => navigate(ADMIN)}
+              />
+            )}
           </Stack>
         </Stack>
         <Stack spacing={{ base: 5, sm: 6 }}>

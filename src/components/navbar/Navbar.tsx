@@ -17,9 +17,16 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-import { INTERVIEWS, QUESTIONS, SETTINGS, TASKS } from 'constants/routes';
+import {
+  ADMIN,
+  INTERVIEWS,
+  QUESTIONS,
+  SETTINGS,
+  TASKS,
+} from 'constants/routes';
 import { useAuth } from 'contexts/AuthContext';
 import { useUser } from 'contexts/UserContext';
+import { UserRole } from 'types/models/user';
 
 import { Logo } from '../logo';
 
@@ -67,6 +74,14 @@ export const Navbar = (): ReactElement<typeof Box> => {
                 >
                   Tasks
                 </Button>
+                {user.role === UserRole.ADMIN && (
+                  <Button
+                    aria-current={pathname === ADMIN ? 'page' : undefined}
+                    onClick={(): void => navigate(ADMIN)}
+                  >
+                    Admin
+                  </Button>
+                )}
               </ButtonGroup>
             )}
           </HStack>
