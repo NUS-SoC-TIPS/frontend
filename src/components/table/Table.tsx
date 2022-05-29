@@ -36,7 +36,7 @@ export const Table = ({
   const maxPage = Math.max(Math.ceil(rows.length / 5) - 1, 0);
   const renderedRows = rows.slice(page * 5, (page + 1) * 5);
   const renderedColumns = columns.filter(
-    (column) => column.options?.isVisible === false,
+    (column) => column.options?.isVisible !== false,
   );
 
   const getBottomMessage = (): string => {
@@ -66,13 +66,13 @@ export const Table = ({
   return (
     <Stack spacing="5">
       <Box pt="5" px={{ base: '4', md: '6' }}>
-        <Stack
-          direction={{ base: 'column', md: 'row' }}
-          justify="space-between"
-        >
+        <Stack alignItems="center" direction="row" justify="space-between">
           <Text fontSize="lg" fontWeight="medium">
             {options?.title ?? 'Table'}
           </Text>
+          {options?.isDownloadable !== false && !isMobile && (
+            <Button variant="primary">Download CSV</Button>
+          )}
         </Stack>
       </Box>
       <Box overflowX="auto">
