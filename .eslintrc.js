@@ -75,7 +75,6 @@ module.exports = {
     // =========== //
     curly: ['error', 'all'],
     'linebreak-style': ['error', 'unix'],
-    'no-mixed-operators': 'error',
     'no-console': 'error',
     'no-process-exit': 'error',
     'no-fallthrough': [
