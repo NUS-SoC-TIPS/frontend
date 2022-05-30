@@ -8,10 +8,11 @@ export interface UserThatHasYetToJoin {
   coursemologyProfile: string;
 }
 
-export interface UserWithIncompleteWindow extends User {
+export interface UserWithWindowData extends User {
   email: string;
   coursemologyProfile: string;
   numQuestions: number;
+  numInterviews: number;
   hasCompletedSubmissions: boolean;
   hasCompletedInterview: boolean;
 }
@@ -23,7 +24,9 @@ export interface AdminStatWindow extends Window {
   numStudentsCompleted: number; // Number of students who have completed the targets
   avgNumQuestions: number; // Average number of questions attempted by the students
   studentsYetToJoin: UserThatHasYetToJoin[];
-  studentsWithIncompleteWindow: UserWithIncompleteWindow[];
+  studentsWithIncompleteWindow: UserWithWindowData[];
+  studentsWithCompletedWindow: UserWithWindowData[];
+  nonStudents: UserWithWindowData[];
 }
 
 export type AdminStats = AdminStatWindow[];

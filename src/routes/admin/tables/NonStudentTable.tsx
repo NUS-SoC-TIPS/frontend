@@ -12,18 +12,21 @@ interface Props {
   window: Window;
 }
 
-export const IncompleteTable = ({
+export const NonStudentTable = ({
   users,
   window,
 }: Props): ReactElement<Props, typeof Card> => {
   return (
     <UserTable
       options={{
-        title: 'Incomplete',
-        downloadFileName: `Incomplete for ${formatDate(
+        title: 'Non-Students',
+        downloadFileName: `Non-Students for ${formatDate(
           window.startAt,
         )} - ${formatDate(window.endAt)}`,
       }}
+      showCoursemology={false}
+      showEmail={false}
+      showRawCount={true}
       users={users}
       window={window}
     />

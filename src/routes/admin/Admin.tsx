@@ -6,10 +6,14 @@ import { ErrorBanner } from 'components/errorBanner';
 import { getAdminStats } from 'lib/stats';
 import { AdminStats } from 'types/api/stats/admin';
 
-import { IncompleteTable } from './tables/IncompleteTable';
-import { MissingTable } from './tables/MissingTable';
 import { AdminPage } from './AdminPage';
 import { AdminSkeleton } from './AdminSkeleton';
+import {
+  CompletedTable,
+  IncompleteTable,
+  MissingTable,
+  NonStudentTable,
+} from './tables';
 
 interface State {
   isLoading: boolean;
@@ -97,12 +101,20 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
           title="Average Number of Submissions"
         />
       </SimpleGrid>
+      <CompletedTable
+        users={selectedWindow.studentsWithCompletedWindow}
+        window={selectedWindow}
+      />
       <IncompleteTable
         users={selectedWindow.studentsWithIncompleteWindow}
         window={selectedWindow}
       />
       <MissingTable
         users={selectedWindow.studentsYetToJoin}
+        window={selectedWindow}
+      />
+      <NonStudentTable
+        users={selectedWindow.nonStudents}
         window={selectedWindow}
       />
     </AdminPage>
