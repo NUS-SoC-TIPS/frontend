@@ -102,18 +102,22 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
         />
       </SimpleGrid>
       <CompletedTable
+        key={selectedIndex}
         users={selectedWindow.studentsWithCompletedWindow}
         window={selectedWindow}
       />
       <IncompleteTable
+        key={selectedIndex}
         users={selectedWindow.studentsWithIncompleteWindow}
         window={selectedWindow}
       />
       <MissingTable
+        key={selectedIndex}
         users={selectedWindow.studentsYetToJoin}
         window={selectedWindow}
       />
       <NonStudentTable
+        key={selectedIndex}
         users={selectedWindow.nonStudents}
         window={selectedWindow}
       />
