@@ -49,6 +49,7 @@ const getColumns = (): TableColumn[] => {
           </Button>
         ),
         customCsvHeaderRenderer: (): string => 'Coursemology Profile Link',
+        isSearchable: false,
       },
     },
   ];

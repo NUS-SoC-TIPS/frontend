@@ -1,10 +1,15 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { CSVLink } from 'react-csv';
+import { FiSearch } from 'react-icons/fi';
 import {
   Box,
   Button,
   ButtonGroup,
   HStack,
+  Icon,
+  Input,
+  InputGroup,
+  InputLeftElement,
   Stack,
   Table as ChakraTable,
   TableProps,
@@ -33,9 +38,10 @@ export const Table = ({
   ...props
 }: Props): ReactElement<Props, typeof ChakraTable> => {
   const isMobile = useBreakpointValue({ base: true, md: false });
+  const [allRows, setAllRows] = useState(rows);
   const [page, setPage] = useState(0);
-  const maxPage = Math.max(Math.ceil(rows.length / 5) - 1, 0);
-  const renderedRows = rows.slice(page * 5, (page + 1) * 5);
+  const maxPage = Math.max(Math.ceil(allRows.length / 5) - 1, 0);
+  const renderedRows = allRows.slice(page * 5, (page + 1) * 5);
   const renderedColumns = columns.filter(
     (column) => column.options?.isVisible !== false,
   );
@@ -47,13 +53,13 @@ export const Table = ({
   }, [page, maxPage]);
 
   const getBottomMessage = (): string => {
-    if (rows.length === 0) {
+    if (allRows.length === 0) {
       return 'Showing 0 results';
     }
     const lowerNumber = page * 5 + 1;
-    const upperNumber = Math.min((page + 1) * 5, rows.length);
-    const results = rows.length === 1 ? 'row' : 'rows';
-    return `Showing ${lowerNumber} to ${upperNumber} of ${rows.length} ${results}`;
+    const upperNumber = Math.min((page + 1) * 5, allRows.length);
+    const results = allRows.length === 1 ? 'row' : 'rows';
+    return `Showing ${lowerNumber} to ${upperNumber} of ${allRows.length} ${results}`;
   };
 
   const onPrevious = (): void => {
@@ -79,7 +85,7 @@ export const Table = ({
         ? c.options.customCsvHeaderRenderer()
         : c.label,
     );
-    const values = rows.map((r) =>
+    const values = allRows.map((r) =>
       downloadableColumns.map((c) =>
         c.options?.customCsvBodyRenderer
           ? c.options.customCsvBodyRenderer(r[c.key])
@@ -89,21 +95,63 @@ export const Table = ({
     return [headings, ...values];
   };
 
+  const onSearch = (value: string): void => {
+    const tokens = value.toLowerCase().split(' ');
+    const newRows = rows.filter((row) => {
+      const values = renderedColumns
+        .filter((column) => column.options?.isSearchable !== false)
+        .map((column) => {
+          let value = row[column.key];
+          if (column.options?.customSearchValueRenderer) {
+            value = column.options.customSearchValueRenderer(value);
+          } else if (
+            typeof value !== 'string' &&
+            typeof value !== 'number' &&
+            typeof value !== 'boolean'
+          ) {
+            value = '';
+          }
+          return value;
+        })
+        .join('')
+        .toLowerCase();
+      return tokens.every((token) => values.includes(token));
+    });
+    setAllRows(newRows);
+  };
+
   return (
     <Stack spacing="5">
       <Box pt="5" px={{ base: '4', md: '6' }}>
-        <Stack alignItems="center" direction="row" justify="space-between">
+        <Stack
+          alignItems={{ base: 'stretch', md: 'center' }}
+          direction={{ base: 'column', md: 'row' }}
+          justify="space-between"
+        >
           <Text fontSize="lg" fontWeight="medium">
             {options?.title ?? 'Table'}
           </Text>
-          {options?.isDownloadable !== false && !isMobile && (
-            <CSVLink
-              data={getCsvData()}
-              filename={options?.downloadFileName ?? 'Table'}
-            >
-              <Button variant="primary">Download CSV</Button>
-            </CSVLink>
-          )}
+          <HStack spacing={2}>
+            {options?.isDownloadable !== false && !isMobile && (
+              <CSVLink
+                data={getCsvData()}
+                filename={options?.downloadFileName ?? 'Table'}
+              >
+                <Button variant="secondary">Download</Button>
+              </CSVLink>
+            )}
+            {options?.isSearchable !== false && (
+              <InputGroup maxW={{ base: '100%', md: 'xs' }}>
+                <InputLeftElement pointerEvents="none">
+                  <Icon as={FiSearch} boxSize="5" color="muted" />
+                </InputLeftElement>
+                <Input
+                  onChange={(event): void => onSearch(event.target.value)}
+                  placeholder="Search"
+                />
+              </InputGroup>
+            )}
+          </HStack>
         </Stack>
       </Box>
       <Box overflowX="auto">
@@ -135,7 +183,7 @@ export const Table = ({
                 ))}
               </Tr>
             ))}
-            {rows.length === 0 && (
+            {allRows.length === 0 && (
               <>
                 <Td>
                   <Text color="muted">

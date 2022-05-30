@@ -45,6 +45,8 @@ const getColumns = (
         customBodyRenderer: (user: User): ReactNode => (
           <UserProfile user={user} />
         ),
+        customSearchValueRenderer: (user: User) =>
+          `${user.name} ${user.githubUsername}`,
         isDownloadable: false,
       },
     },
@@ -133,6 +135,7 @@ const getColumns = (
         customCsvHeaderRenderer: (): string => 'Coursemology Profile Link',
         isVisible: showCoursemology,
         isDownloadable: showCoursemology,
+        isSearchable: false,
       },
     },
   ];
