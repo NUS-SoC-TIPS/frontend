@@ -52,6 +52,10 @@ export const Table = ({
     }
   }, [page, maxPage]);
 
+  useEffect(() => {
+    setAllRows(rows);
+  }, [rows]);
+
   const getBottomMessage = (): string => {
     if (allRows.length === 0) {
       return 'Showing 0 results';
