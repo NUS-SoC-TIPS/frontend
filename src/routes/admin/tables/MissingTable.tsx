@@ -16,16 +16,12 @@ interface Props {
 const getColumns = (): TableColumn[] => {
   return [
     {
-      label: 'Name',
-      key: 'name',
+      label: 'Coursemology Name',
+      key: 'coursemologyName',
     },
     {
-      label: 'GitHub Username',
-      key: 'githubUsername',
-    },
-    {
-      label: 'Email',
-      key: 'email',
+      label: 'Coursemology Email',
+      key: 'coursemologyEmail',
       options: {
         customBodyRenderer: (email: string): ReactNode => (
           <Text color="muted">
@@ -35,13 +31,17 @@ const getColumns = (): TableColumn[] => {
       },
     },
     {
+      label: 'GitHub Username',
+      key: 'githubUsername',
+    },
+    {
       label: 'Coursemology',
-      key: 'coursemologyProfile',
+      key: 'coursemologyProfileLink',
       options: {
-        customBodyRenderer: (coursemologyProfile: string): ReactNode => (
+        customBodyRenderer: (coursemologyProfileLink: string): ReactNode => (
           <Button
             onClick={(): void => {
-              window.open(coursemologyProfile);
+              window.open(coursemologyProfileLink);
             }}
             variant="secondary"
           >

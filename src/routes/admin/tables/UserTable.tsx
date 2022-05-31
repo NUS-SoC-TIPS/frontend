@@ -24,11 +24,12 @@ interface Row {
   user: User;
   name: string;
   githubUsername: string;
-  email: string;
+  coursemologyName: string;
+  coursemologyEmail: string;
   numQuestions: number;
   numInterviews: number;
   hasCompletedInterview: boolean;
-  coursemologyProfile: string;
+  coursemologyProfileLink: string;
 }
 
 const getColumns = (
@@ -65,8 +66,15 @@ const getColumns = (
       },
     },
     {
-      label: 'Email',
-      key: 'email',
+      label: 'Coursemology Name',
+      key: 'coursemologyName',
+      options: {
+        isVisible: showCoursemology,
+      },
+    },
+    {
+      label: 'Coursemology Email',
+      key: 'coursemologyEmail',
       options: {
         customBodyRenderer: (email: string): ReactNode => (
           <Text color="muted">
@@ -120,12 +128,12 @@ const getColumns = (
     },
     {
       label: 'Coursemology',
-      key: 'coursemologyProfile',
+      key: 'coursemologyProfileLink',
       options: {
-        customBodyRenderer: (coursemologyProfile: string): ReactNode => (
+        customBodyRenderer: (coursemologyProfileLink: string): ReactNode => (
           <Button
             onClick={(): void => {
-              window.open(coursemologyProfile);
+              window.open(coursemologyProfileLink);
             }}
             variant="secondary"
           >
@@ -144,22 +152,24 @@ const getColumns = (
 const transformData = (users: UserWithWindowData[]): Row[] => {
   return users.map((user) => {
     const {
-      email,
       numQuestions,
       numInterviews,
       hasCompletedInterview,
-      coursemologyProfile,
+      coursemologyName,
+      coursemologyEmail,
+      coursemologyProfileLink,
       ...userData
     } = user;
     return {
       user: userData,
       name: user.name,
       githubUsername: user.githubUsername,
-      email,
+      coursemologyName,
+      coursemologyEmail,
       numQuestions,
       numInterviews,
       hasCompletedInterview,
-      coursemologyProfile,
+      coursemologyProfileLink,
     };
   });
 };
