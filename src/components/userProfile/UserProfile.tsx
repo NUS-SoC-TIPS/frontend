@@ -1,17 +1,23 @@
 import { memo, ReactElement } from 'react';
-import { Avatar, Box, HStack, Link, Text } from '@chakra-ui/react';
+import { Avatar, Box, HStack, Link, StackProps, Text } from '@chakra-ui/react';
 
 import { User } from 'types/models/user';
 
-interface Props {
+interface Props extends StackProps {
   user: User;
 }
 
 const RawUserProfile = ({
   user,
+  ...props
 }: Props): ReactElement<Props, typeof HStack> => {
+  const finalProps = {
+    ps: 2,
+    spacing: 3,
+    ...props,
+  };
   return (
-    <HStack ps={2} spacing={3}>
+    <HStack {...finalProps}>
       <Avatar boxSize={10} name={user.name} src={user.photoUrl} />
       <Box>
         <Link
