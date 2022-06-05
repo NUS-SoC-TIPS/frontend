@@ -16,21 +16,33 @@ export const Slider = ({ onDrag }: Props): ReactElement<Props, typeof Box> => {
 
   useEffect(() => {
     document.onmouseup = onMouseUp;
+    document.ontouchend = onMouseUp;
     return () => {
       document.onmouseup = null;
+      document.ontouchend = null;
     };
   }, []);
 
   useEffect(() => {
     const onMouseMove = (event: MouseEvent): void => {
       if (isDragging) {
-        onDrag(isTablet ? event.clientX : event.clientY);
+        onDrag(isTablet ? event.clientX : event.clientY - 48); // 48 px for the top bar
+      }
+    };
+    const onTouchMove = (event: TouchEvent): void => {
+      if (isDragging && event.touches[0]) {
+        onDrag(
+          // 48 px for the top bar
+          isTablet ? event.touches[0].clientX : event.touches[0].clientY - 48,
+        );
       }
     };
     document.onmousemove = onMouseMove;
+    document.ontouchmove = onTouchMove;
 
     return () => {
       document.onmousemove = null;
+      document.ontouchmove = null;
     };
   }, [isTablet, onDrag]);
 
@@ -49,6 +61,7 @@ export const Slider = ({ onDrag }: Props): ReactElement<Props, typeof Box> => {
       height={isTablet ? '100%' : 4}
       justifyContent="center"
       onMouseDown={onMouseDown}
+      onTouchStart={onMouseDown}
       userSelect="none"
       w={isTablet ? 4 : '100%'}
     >
