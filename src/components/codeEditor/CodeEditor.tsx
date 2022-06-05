@@ -53,6 +53,10 @@ export const CodeEditor: FC<Props> = ({
   const [markers, setMarkers] = useState<IMarker[]>([]);
   const ref = useRef<AceEditor | null>(null);
 
+  // Hacky fix for a bug where the code editor doesn't adhere to the width passed in
+  // and instead horizontally scrolls. This forces the width to re-render once.
+  const [firstLoadWidth, setFirstLoadWidth] = useState<string | null>('100%');
+
   useEffect(() => {
     if (hasNextPosition) {
       ref?.current?.editor.moveCursorTo(nextPosition.row, nextPosition.column);
@@ -64,6 +68,10 @@ export const CodeEditor: FC<Props> = ({
     nextPosition.column,
     nextPosition.row,
   ]);
+
+  useEffect(() => {
+    setFirstLoadWidth(null);
+  }, []);
 
   const updateMarkers = useCallback(() => {
     if (partnerCursor) {
@@ -200,7 +208,7 @@ export const CodeEditor: FC<Props> = ({
       showPrintMargin={false}
       theme="twilight"
       value={value}
-      width={width}
+      width={firstLoadWidth ?? width}
       wrapEnabled={true}
     />
   );
