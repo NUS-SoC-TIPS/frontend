@@ -1,8 +1,9 @@
 import { ReactElement } from 'react';
 
-import { StatCard } from 'components/card';
 import { WindowStatus } from 'types/models/window';
 import { formatDate } from 'utils/dateUtils';
+
+import { StatCard } from './StatCard';
 
 interface Props {
   windowStatus: WindowStatus;

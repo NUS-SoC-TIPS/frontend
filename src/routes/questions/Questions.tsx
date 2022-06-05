@@ -2,20 +2,15 @@ import { ReactElement, useEffect, useReducer } from 'react';
 import { SimpleGrid } from '@chakra-ui/react';
 
 import { Banner } from 'components/banner';
+import { Card, WindowPeriodCard } from 'components/card';
 import { ErrorBanner } from 'components/errorBanner';
 import { getQuestionStats } from 'lib/stats';
 import { QuestionStats } from 'types/api/stats/question';
 import { computeWindowData } from 'utils/windowUtils';
 
-import { Card } from '../../components/card';
-
 import { QuestionsPage } from './QuestionsPage';
 import { QuestionsSkeleton } from './QuestionsSkeleton';
-import {
-  LatestSubmissionCard,
-  NumCompletedCard,
-  WindowPeriodCard,
-} from './stats';
+import { LatestSubmissionCard, NumCompletedCard } from './stats';
 
 interface State {
   isLoading: boolean;
