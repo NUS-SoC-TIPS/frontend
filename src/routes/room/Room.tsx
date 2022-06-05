@@ -86,8 +86,8 @@ export const Room = (): ReactElement => {
   }
 
   const isPanelCollapsed = editorSize >= 1;
-  const fullLength = isTablet ? width : height - 112; // 48 + 48 + 16
-  const scaledLength = fullLength * editorSize;
+  const fullLength = isTablet ? width : height - 96; // 48 (top) + 48 (bottom)
+  const scaledLength = fullLength * editorSize - 16; // 16 is for the slider
 
   const onSliderDrag = (distance: number): void => {
     let ratio = Math.min(Math.max(distance / fullLength, 0.3), 1);
