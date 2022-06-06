@@ -23,6 +23,7 @@ import { Panel } from './panel';
 import { RoomPage } from './RoomPage';
 import { Slider } from './Slider';
 import { TopBar } from './topBar';
+import { VideoCollection } from './video';
 
 /**
  * The Room component contains stateful subcomponents. This is intentional, as the
@@ -39,7 +40,7 @@ export const Room = (): ReactElement => {
   const token = tokenUtils.getToken();
   const params = useParams();
   const [socket, setSocket] = useState<Socket | null>(null);
-  const { status } = useAppSelector((state) => state.room);
+  const { status, partner } = useAppSelector((state) => state.room);
   const dispatch = useAppDispatch();
   const isTablet = useBreakpointValue({ base: false, md: true });
   const { width, height } = useWindowDimensions();
@@ -105,7 +106,12 @@ export const Room = (): ReactElement => {
   return (
     <RoomPage>
       <TopBar socket={socket} />
-      <Box display="flex" flex={1} flexDirection={isTablet ? 'row' : 'column'}>
+      <Box
+        display="flex"
+        flex={1}
+        flexDirection={isTablet ? 'row' : 'column'}
+        position="relative"
+      >
         <Code
           height={isTablet ? '100%' : `${scaledLength}px`}
           socket={socket}
@@ -118,6 +124,7 @@ export const Room = (): ReactElement => {
             socket={socket}
           />
         )}
+        <VideoCollection partnerName={partner?.name} />
       </Box>
       <BottomBar socket={socket} />
     </RoomPage>
