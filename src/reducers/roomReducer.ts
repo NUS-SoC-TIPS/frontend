@@ -13,6 +13,7 @@ export enum RoomJoiningStatus {
 }
 
 export interface RoomState {
+  id: number;
   status: RoomJoiningStatus;
   partner: User | null;
   videoToken: string;
@@ -24,6 +25,7 @@ export interface RoomState {
 }
 
 const initialState: RoomState = {
+  id: 0,
   status: RoomJoiningStatus.LOADING,
   partner: null,
   videoToken: '',
@@ -43,6 +45,7 @@ export const roomSlice = createSlice({
       action: PayloadAction<Partial<RoomState>>,
     ) => {
       const {
+        id,
         status,
         partner,
         videoToken,
@@ -52,6 +55,7 @@ export const roomSlice = createSlice({
         userActualSlug,
         usersInRoom,
       } = action.payload;
+      state.id = id ?? state.id;
       state.status = status ?? state.status;
       state.partner = partner ?? state.partner;
       state.videoToken = videoToken ?? state.videoToken;
@@ -62,6 +66,7 @@ export const roomSlice = createSlice({
       state.usersInRoom = usersInRoom ?? state.usersInRoom;
     },
     resetRoomState: (state: RoomState) => {
+      state.id = 0;
       state.status = RoomJoiningStatus.LOADING;
       state.partner = null;
       state.videoToken = '';

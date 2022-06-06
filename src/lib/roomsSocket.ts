@@ -28,6 +28,7 @@ const handleJoinRoom = (socket: Socket): void => {
   socket.on(
     ROOM_EVENTS.JOIN_ROOM,
     (data: {
+      id: number;
       partner: User | null;
       videoToken: string;
       code: string[];
@@ -35,11 +36,19 @@ const handleJoinRoom = (socket: Socket): void => {
       language: Language;
       notes: string;
     }) => {
-      const { partner, videoToken, notes, code, language, isPartnerInRoom } =
-        data;
+      const {
+        id,
+        partner,
+        videoToken,
+        notes,
+        code,
+        language,
+        isPartnerInRoom,
+      } = data;
       const doc = applyChanges(initEmptyDoc(), code);
       store.dispatch(
         updateRoomState({
+          id,
           partner,
           videoToken,
           notes,
