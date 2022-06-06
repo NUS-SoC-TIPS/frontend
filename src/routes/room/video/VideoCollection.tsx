@@ -65,8 +65,9 @@ export const VideoCollection = ({
 
   useEffect(() => {
     if (!AGORA_APP_ID) {
-      return;
+      return () => {};
     }
+
     const init = async (channelName: string): Promise<void> => {
       client.on('user-published', async (user, mediaType) => {
         await client.subscribe(user, mediaType);
@@ -86,22 +87,24 @@ export const VideoCollection = ({
         }
         if (type === 'video') {
           setUsers((prevUsers) => {
-            return prevUsers.filter((User) => User.uid !== user.uid);
+            return prevUsers.filter((prevUser) => prevUser.uid !== user.uid);
           });
         }
       });
 
       client.on('user-left', (user) => {
         setUsers((prevUsers) => {
-          return prevUsers.filter((User) => User.uid !== user.uid);
+          return prevUsers.filter((prevUser) => prevUser.uid !== user.uid);
         });
       });
 
       await client.join(AGORA_APP_ID, channelName, videoToken, `${user!.id}`);
       setInCall(true);
+
       if (tracks) {
         await client.publish([tracks[0], tracks[1]]);
       }
+
       setStart(true);
     };
 
@@ -109,6 +112,13 @@ export const VideoCollection = ({
       setHasInitialised(true);
       init(`${id}`);
     }
+
+    return () => {
+      if (hasInitialised) {
+        client.unpublish();
+        client.leave();
+      }
+    };
   }, [client, hasInitialised, id, ready, tracks, user, videoToken]);
 
   if (!client || !user) {
