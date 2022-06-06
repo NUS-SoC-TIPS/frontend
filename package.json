@@ -10,6 +10,8 @@
     "@fontsource/inter": "^4.5.10",
     "@reduxjs/toolkit": "^1.8.2",
     "ace-builds": "^1.5.1",
+    "agora-rtc-react": "^1.1.2",
+    "agora-rtc-sdk-ng": "^4.11.1",
     "automerge": "1.0.1-preview.5",
     "autosize": "^5.0.1",
     "axios": "^0.27.2",
