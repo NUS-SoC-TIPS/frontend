@@ -77,7 +77,7 @@ export const InterviewTasksBox = ({
                     justify="space-between"
                     spacing={5}
                   >
-                    <UserProfile user={interview.partner} />
+                    <UserProfile ps={0} user={interview.partner} />
                   </Stack>
                 </Box>
               );
