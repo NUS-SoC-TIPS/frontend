@@ -1,5 +1,6 @@
 import { Language } from './code';
 import { QuestionSource } from './question';
+import { User } from './user';
 
 export interface RoomRecord {
   id: number;
@@ -23,4 +24,8 @@ export interface RoomRecordUser {
   notes: string;
   userId: string;
   roomRecordId: number;
+}
+
+export interface RecordWithPartner extends RoomRecord {
+  partner: User;
 }

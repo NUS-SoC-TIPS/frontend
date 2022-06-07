@@ -12,22 +12,22 @@ export interface UserWithWindowData extends User {
   coursemologyName: string;
   coursemologyEmail: string;
   coursemologyProfileLink: string;
-  numQuestions: number;
-  numInterviews: number;
-  hasCompletedSubmissions: boolean;
+  numberOfQuestions: number;
+  numberOfInterviews: number;
+  hasCompletedQuestions: boolean;
   hasCompletedInterview: boolean;
 }
 
 // If a user joins only in window 2, they will be present in
 // window 2's stats but under "yet to join" in window 1.
 export interface AdminStatWindow extends Window {
-  numStudents: number; // Number of students who are on the platform by the end of the window
-  numStudentsCompleted: number; // Number of students who have completed the targets
-  avgNumQuestions: number; // Average number of questions attempted by the students
+  numberOfStudents: number; // Number of students who are on the platform by the end of the window
+  numberOfCompletedStudents: number; // Number of students who have completed the targets
+  averageNumberOfQuestions: number; // Average number of questions attempted by the students
   studentsYetToJoin: UserThatHasYetToJoin[];
   studentsWithIncompleteWindow: UserWithWindowData[];
   studentsWithCompletedWindow: UserWithWindowData[];
   nonStudents: UserWithWindowData[];
 }
 
-export type AdminStats = AdminStatWindow[];
+export type AdminStatsEntity = AdminStatWindow[];

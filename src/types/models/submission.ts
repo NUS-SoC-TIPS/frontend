@@ -1,5 +1,5 @@
 import { Language } from './code';
-import { QuestionSource } from './question';
+import { Question, QuestionSource } from './question';
 
 export interface QuestionSubmission {
   id: number;
@@ -10,4 +10,8 @@ export interface QuestionSubmission {
   userId: string;
   questionSlug: string;
   questionSource: QuestionSource;
+}
+
+export interface SubmissionWithQuestion extends QuestionSubmission {
+  question: Question;
 }
