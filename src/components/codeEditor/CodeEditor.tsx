@@ -1,6 +1,5 @@
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import AceEditor, { IMarker } from 'react-ace';
-import { Ace } from 'ace-builds';
+import AceEditor, { ICommand, IMarker } from 'react-ace';
 
 import { languageToMode } from 'constants/enumStrings';
 import { ChangeEvent } from 'types/automerge/ace';
@@ -139,7 +138,7 @@ export const CodeEditor: FC<Props> = ({
           // This function is actually cached heavily, i.e. we cannot
           // refer to props within this function, because it is still
           // referencing the original props.
-          exec: (editor: Ace.Editor): void => {
+          exec: ((editor) => {
             const selection = editor.getCopyText();
             editor.execCommand('copy');
             if (!selection || selection === '') {
@@ -147,7 +146,7 @@ export const CodeEditor: FC<Props> = ({
             } else {
               editor.execCommand('del');
             }
-          },
+          }) as ICommand['exec'],
         },
       ]}
       enableBasicAutocompletion={true}
