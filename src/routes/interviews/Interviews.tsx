@@ -5,16 +5,20 @@ import { WindowPeriodCard } from 'components/card';
 import { ErrorBanner } from 'components/errorBanner';
 import { getRecordStats } from 'lib/records';
 import { RecordStatsEntity } from 'types/api/records';
+import { RecordWithPartner } from 'types/models/record';
 import { computeWindowData } from 'utils/windowUtils';
 
 import { InterviewsPage } from './InterviewsPage';
 import { InterviewsSkeleton } from './InterviewsSkeleton';
+import { PastInterview } from './PastInterview';
 import { LatestPartnerCard, NumCompletedCard } from './stats';
+import { PastInterviewsTable } from './tables';
 
 interface State {
   isLoading: boolean;
   isError: boolean;
   stats: RecordStatsEntity | null;
+  selectedInterview: RecordWithPartner | null;
 }
 
 /**
@@ -28,6 +32,7 @@ export const Interviews = (): ReactElement => {
       isLoading: true,
       isError: false,
       stats: null,
+      selectedInterview: null,
     } as State,
   );
 
@@ -60,7 +65,7 @@ export const Interviews = (): ReactElement => {
     };
   }, []);
 
-  const { stats, isLoading, isError } = state;
+  const { stats, isLoading, isError, selectedInterview } = state;
 
   if (isLoading) {
     return <InterviewsSkeleton />;
@@ -74,14 +79,29 @@ export const Interviews = (): ReactElement => {
     );
   }
 
+  if (selectedInterview) {
+    return (
+      <PastInterview
+        interview={selectedInterview}
+        onBack={(): void => setState({ selectedInterview: null })}
+      />
+    );
+  }
+
   const { status, startAt, endAt } = computeWindowData(stats.closestWindow);
+
+  const onView = (id: number): void => {
+    const selectedInterview =
+      stats.allRecords.find((interview) => interview.id === id) ?? null;
+    setState({ selectedInterview });
+  };
 
   return (
     <InterviewsPage>
       <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
         <NumCompletedCard
-          numCompleted={stats?.numberOfRecordsForThisWindowOrWeek ?? 0}
-          requireInterview={stats?.closestWindow.requireInterview}
+          numCompleted={stats.numberOfRecordsForThisWindowOrWeek}
+          requireInterview={stats.closestWindow.requireInterview}
           windowStatus={status}
         />
         <WindowPeriodCard
@@ -89,8 +109,9 @@ export const Interviews = (): ReactElement => {
           startAt={startAt}
           windowStatus={status}
         />
-        <LatestPartnerCard partner={stats?.latestRecord?.partner ?? null} />
+        <LatestPartnerCard partner={stats.latestRecord?.partner ?? null} />
       </SimpleGrid>
+      <PastInterviewsTable interviews={stats.allRecords} onView={onView} />
     </InterviewsPage>
   );
 };
