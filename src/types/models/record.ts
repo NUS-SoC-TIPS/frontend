@@ -28,4 +28,5 @@ export interface RoomRecordUser {
 
 export interface RecordWithPartner extends RoomRecord {
   partner: User;
+  notes: string;
 }

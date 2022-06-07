@@ -8,4 +8,5 @@ export interface RecordStatsEntity {
   latestRecord: RecordWithPartner | null;
   // TODO: Look into replacing this with something more meaningful
   closestWindow: Window;
+  allRecords: RecordWithPartner[];
 }
