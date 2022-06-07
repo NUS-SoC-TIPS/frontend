@@ -3,8 +3,8 @@ import { SimpleGrid } from '@chakra-ui/react';
 
 import { StatCard } from 'components/card';
 import { ErrorBanner } from 'components/errorBanner';
-import { getAdminStats } from 'lib/stats';
-import { AdminStats } from 'types/api/stats/admin';
+import { getAdminStats } from 'lib/admin';
+import { AdminStatsEntity } from 'types/api/admin';
 
 import { AdminPage } from './AdminPage';
 import { AdminSkeleton } from './AdminSkeleton';
@@ -18,7 +18,7 @@ import {
 interface State {
   isLoading: boolean;
   isError: boolean;
-  stats: AdminStats | null;
+  stats: AdminStatsEntity | null;
   selectedIndex: number;
 }
 
@@ -89,15 +89,15 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
     >
       <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
         <StatCard
-          stat={selectedWindow.numStudents}
+          stat={selectedWindow.numberOfStudents}
           title="Number of Students on Platform"
         />
         <StatCard
-          stat={selectedWindow.numStudentsCompleted}
+          stat={selectedWindow.numberOfCompletedStudents}
           title="Number of Students Completed"
         />
         <StatCard
-          stat={selectedWindow.avgNumQuestions.toFixed(2)}
+          stat={selectedWindow.averageNumberOfQuestions.toFixed(2)}
           title="Average Number of Submissions"
         />
       </SimpleGrid>

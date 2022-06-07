@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 
 import { Card } from 'components/card';
-import { UserWithWindowData } from 'types/api/stats/admin';
+import { UserWithWindowData } from 'types/api/admin';
 import { Window } from 'types/models/window';
 import { formatDate } from 'utils/dateUtils';
 

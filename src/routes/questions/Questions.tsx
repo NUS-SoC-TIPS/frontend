@@ -4,8 +4,8 @@ import { SimpleGrid } from '@chakra-ui/react';
 import { Banner } from 'components/banner';
 import { Card, WindowPeriodCard } from 'components/card';
 import { ErrorBanner } from 'components/errorBanner';
-import { getQuestionStats } from 'lib/stats';
-import { QuestionStats } from 'types/api/stats/question';
+import { getSubmissionStats } from 'lib/submissions';
+import { SubmissionStatsEntity } from 'types/api/submissions';
 import { computeWindowData } from 'utils/windowUtils';
 
 import { QuestionsPage } from './QuestionsPage';
@@ -15,7 +15,7 @@ import { LatestSubmissionCard, NumCompletedCard } from './stats';
 interface State {
   isLoading: boolean;
   isError: boolean;
-  stats: QuestionStats | null;
+  stats: SubmissionStatsEntity | null;
 }
 
 export const Questions = (): ReactElement<typeof QuestionsPage> => {
@@ -31,7 +31,7 @@ export const Questions = (): ReactElement<typeof QuestionsPage> => {
   useEffect(() => {
     let didCancel = false;
     const fetchData = (): Promise<void> => {
-      return getQuestionStats()
+      return getSubmissionStats()
         .then((stats) => {
           if (!didCancel) {
             setState({
@@ -77,7 +77,7 @@ export const Questions = (): ReactElement<typeof QuestionsPage> => {
     <QuestionsPage>
       <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
         <NumCompletedCard
-          numCompleted={stats?.numCompletedThisWindow ?? 0}
+          numCompleted={stats?.numberOfSubmissionsForThisWindowOrWeek ?? 0}
           numTarget={stats?.closestWindow.numQuestions ?? 7}
           windowStatus={status}
         />

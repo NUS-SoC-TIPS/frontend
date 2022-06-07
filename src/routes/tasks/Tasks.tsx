@@ -3,8 +3,8 @@ import { Heading, Stack } from '@chakra-ui/react';
 
 import { ErrorBanner } from 'components/errorBanner';
 import { Page } from 'components/page';
-import { getTaskStats } from 'lib/stats';
-import { TaskStats, TaskStatWindowStatus } from 'types/api/stats/task';
+import { getTaskStats } from 'lib/tasks';
+import { TaskStatsEntity, TaskStatWindowStatus } from 'types/api/tasks';
 import { formatDate } from 'utils/dateUtils';
 import { findCurrentWindow } from 'utils/windowUtils';
 
@@ -17,7 +17,7 @@ import { TaskStep } from './TaskStep';
 interface State {
   isLoading: boolean;
   isError: boolean;
-  stats: TaskStats;
+  stats: TaskStatsEntity;
   step: number;
 }
 
@@ -115,15 +115,15 @@ export const Tasks = (): ReactElement<typeof Page> => {
           spacing={{ base: 6, md: 6 }}
         >
           <SubmissionTasksBox
-            hasCompletedSubmissions={selectedWindow.hasCompletedSubmissions}
+            hasCompletedQuestions={selectedWindow.hasCompletedQuestions}
             numQuestions={selectedWindow.numQuestions}
             numToShow={selectedWindow.numQuestions}
             submissions={selectedWindow.submissions}
           />
           <InterviewTasksBox
             hasCompletedInterview={selectedWindow.hasCompletedInterview}
-            interviews={selectedWindow.interviews}
             numToShow={selectedWindow.numQuestions}
+            records={selectedWindow.records}
             requireInterview={selectedWindow.requireInterview}
           />
         </Stack>

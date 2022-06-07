@@ -4,7 +4,7 @@ import { Button, Link, Text } from '@chakra-ui/react';
 import { Card } from 'components/card';
 import { Table } from 'components/table';
 import { UserProfile } from 'components/userProfile';
-import { UserWithWindowData } from 'types/api/stats/admin';
+import { UserWithWindowData } from 'types/api/admin';
 import { User } from 'types/models/user';
 import { Window } from 'types/models/window';
 import { TableColumn, TableOptions } from 'types/table';
@@ -26,8 +26,8 @@ interface Row {
   githubUsername: string;
   coursemologyName: string;
   coursemologyEmail: string;
-  numQuestions: number;
-  numInterviews: number;
+  numberOfQuestions: number;
+  numberOfInterviews: number;
   hasCompletedInterview: boolean;
   coursemologyProfileLink: string;
 }
@@ -87,7 +87,7 @@ const getColumns = (
     },
     {
       label: showRawCount ? 'Number of Questions' : 'Questions',
-      key: 'numQuestions',
+      key: 'numberOfQuestions',
       options: {
         customBodyRenderer: (numQuestions: number): ReactNode =>
           showRawCount ? (
@@ -120,7 +120,7 @@ const getColumns = (
     },
     {
       label: 'Number of Interviews',
-      key: 'numInterviews',
+      key: 'numberOfInterviews',
       options: {
         isVisible: showRawCount,
         isDownloadable: showRawCount,
@@ -152,8 +152,8 @@ const getColumns = (
 const transformData = (users: UserWithWindowData[]): Row[] => {
   return users.map((user) => {
     const {
-      numQuestions,
-      numInterviews,
+      numberOfQuestions,
+      numberOfInterviews,
       hasCompletedInterview,
       coursemologyName,
       coursemologyEmail,
@@ -166,8 +166,8 @@ const transformData = (users: UserWithWindowData[]): Row[] => {
       githubUsername: user.githubUsername,
       coursemologyName,
       coursemologyEmail,
-      numQuestions,
-      numInterviews,
+      numberOfQuestions,
+      numberOfInterviews,
       hasCompletedInterview,
       coursemologyProfileLink,
     };

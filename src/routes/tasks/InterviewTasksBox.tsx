@@ -12,22 +12,22 @@ import {
 } from '@chakra-ui/react';
 
 import { UserProfile } from 'components/userProfile';
-import { TaskStatInterview } from 'types/api/stats/task';
+import { RecordWithPartner } from 'types/models/record';
 
 interface Props {
   numToShow: number;
   requireInterview: boolean;
   hasCompletedInterview: boolean;
-  interviews: TaskStatInterview[];
+  records: RecordWithPartner[];
 }
 
 export const InterviewTasksBox = ({
   numToShow,
-  interviews,
+  records,
   requireInterview,
   hasCompletedInterview,
 }: Props): ReactElement<typeof Box> => {
-  const shownInterviews = interviews
+  const shownRecords = records
     .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
     .slice(0, numToShow);
 
@@ -47,9 +47,7 @@ export const InterviewTasksBox = ({
                   Interviews
                 </Text>
                 <Text color="muted" fontSize="sm">
-                  {requireInterview
-                    ? `${interviews.length}/1`
-                    : interviews.length}{' '}
+                  {requireInterview ? `${records.length}/1` : records.length}{' '}
                   Completed
                 </Text>
               </Stack>
@@ -63,12 +61,12 @@ export const InterviewTasksBox = ({
                 </Circle>
               )}
             </HStack>
-            {shownInterviews.map((interview) => {
+            {shownRecords.map((record) => {
               return (
                 <Box
                   borderRadius="lg"
                   borderWidth={{ base: '1px' }}
-                  key={interview.id}
+                  key={record.id}
                   p={{ base: 3, md: 4 }}
                 >
                   <Stack
@@ -77,12 +75,12 @@ export const InterviewTasksBox = ({
                     justify="space-between"
                     spacing={5}
                   >
-                    <UserProfile ps={0} user={interview.partner} />
+                    <UserProfile ps={0} user={record.partner} />
                   </Stack>
                 </Box>
               );
             })}
-            {interviews.length > numToShow && (
+            {records.length > numToShow && (
               <Text color="muted" fontSize="xs" textAlign="center">
                 Only the latest {numToShow} interviews are shown.
               </Text>

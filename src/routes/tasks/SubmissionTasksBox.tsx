@@ -12,20 +12,20 @@ import {
 } from '@chakra-ui/react';
 
 import { SubmissionBox } from 'components/submission';
-import { TaskStatSubmission } from 'types/api/stats/task';
+import { SubmissionWithQuestion } from 'types/models/submission';
 
 interface Props {
   numToShow: number;
   numQuestions: number;
-  submissions: TaskStatSubmission[];
-  hasCompletedSubmissions: boolean;
+  submissions: SubmissionWithQuestion[];
+  hasCompletedQuestions: boolean;
 }
 
 export const SubmissionTasksBox = ({
   submissions,
   numToShow,
   numQuestions,
-  hasCompletedSubmissions,
+  hasCompletedQuestions,
 }: Props): ReactElement<typeof Box> => {
   const shownSubmissions = submissions
     .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
@@ -50,7 +50,7 @@ export const SubmissionTasksBox = ({
                   {submissions.length}/{numQuestions} Completed
                 </Text>
               </Stack>
-              {hasCompletedSubmissions ? (
+              {hasCompletedQuestions ? (
                 <Circle bg="accent" size={8}>
                   <Icon as={HiCheck} boxSize={5} color="inverted" />
                 </Circle>

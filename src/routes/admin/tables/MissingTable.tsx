@@ -3,7 +3,7 @@ import { Button, Link, Text } from '@chakra-ui/react';
 
 import { Card } from 'components/card';
 import { Table } from 'components/table';
-import { UserThatHasYetToJoin } from 'types/api/stats/admin';
+import { UserThatHasYetToJoin } from 'types/api/admin';
 import { Window } from 'types/models/window';
 import { TableColumn } from 'types/table';
 import { formatDate } from 'utils/dateUtils';
