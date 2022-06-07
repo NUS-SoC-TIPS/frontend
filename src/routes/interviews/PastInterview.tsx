@@ -32,6 +32,7 @@ export const PastInterview = ({
     duration,
   } = interview;
   const height = useBreakpointValue({ base: '20rem', md: '30rem' });
+  const trimmedNotes = notes.trim();
   return (
     <Page>
       <Dashboard
@@ -67,8 +68,8 @@ export const PastInterview = ({
               maxHeight={height}
               readOnly={true}
               value={
-                notes !== ''
-                  ? notes
+                trimmedNotes.trim() !== ''
+                  ? trimmedNotes
                   : 'Your partner did not leave any comments, unfortunately :('
               }
             />
