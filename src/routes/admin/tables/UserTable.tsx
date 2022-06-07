@@ -44,7 +44,7 @@ const getColumns = (
       key: 'user',
       options: {
         customBodyRenderer: (user: User): ReactNode => (
-          <UserProfile user={user} />
+          <UserProfile ps={0} user={user} />
         ),
         customSearchValueRenderer: (user: User) =>
           `${user.name} ${user.githubUsername}`,
