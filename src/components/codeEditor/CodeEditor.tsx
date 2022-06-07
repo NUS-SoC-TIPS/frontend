@@ -9,9 +9,21 @@ import { Language } from 'types/models/code';
 import { convertCursorToIMarker } from 'utils/cursorUtils';
 
 import 'ace-builds/webpack-resolver';
+import 'ace-builds/src-noconflict/mode-c_cpp'; // For both C and C++
+import 'ace-builds/src-noconflict/mode-csharp';
+import 'ace-builds/src-noconflict/mode-elixir';
+import 'ace-builds/src-noconflict/mode-erlang';
+import 'ace-builds/src-noconflict/mode-golang';
 import 'ace-builds/src-noconflict/mode-java';
-import 'ace-builds/src-noconflict/mode-python';
 import 'ace-builds/src-noconflict/mode-javascript';
+import 'ace-builds/src-noconflict/mode-kotlin';
+import 'ace-builds/src-noconflict/mode-php';
+import 'ace-builds/src-noconflict/mode-python';
+import 'ace-builds/src-noconflict/mode-ruby';
+import 'ace-builds/src-noconflict/mode-rust';
+import 'ace-builds/src-noconflict/mode-scala';
+import 'ace-builds/src-noconflict/mode-swift';
+import 'ace-builds/src-noconflict/mode-typescript';
 import 'ace-builds/src-noconflict/ext-language_tools';
 import './theme-twilight';
 

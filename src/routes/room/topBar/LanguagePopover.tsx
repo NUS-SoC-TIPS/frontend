@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { Box, Link, Popover, Stack, Text } from '@chakra-ui/react';
+import { Box, Link, Popover, SimpleGrid, Text } from '@chakra-ui/react';
 
 import { MyPopover } from 'components/popover';
 import { languageToString } from 'constants/enumStrings';
@@ -11,9 +11,22 @@ interface Props {
 }
 
 const supportedLanguages = [
+  Language.C,
+  Language.C_PLUS_PLUS,
+  Language.C_SHARP,
+  Language.ELIXIR,
+  Language.ERLANG,
+  Language.GO,
   Language.JAVA,
   Language.JAVASCRIPT,
+  Language.KOTLIN,
+  Language.PHP,
   Language.PYTHON_THREE,
+  Language.RUBY,
+  Language.RUST,
+  Language.SCALA,
+  Language.SWIFT,
+  Language.TYPESCRIPT,
 ];
 
 export const LanguagePopover = ({
@@ -35,19 +48,19 @@ export const LanguagePopover = ({
         justifyContent: 'space-between',
       }}
       content={
-        <Stack direction="column" spacing={1}>
+        <SimpleGrid columnGap={3} columns={2} rowGap={2}>
           {items.map((item, id) => (
             <Link key={id} onClick={item.onClick} variant="menu">
               <Box p={1}>
-                <Text fontSize="sm" fontWeight="medium">
+                <Text fontSize="sm" fontWeight="medium" ps={1}>
                   {item.title}
                 </Text>
               </Box>
             </Link>
           ))}
-        </Stack>
+        </SimpleGrid>
       }
-      popoverContentProps={{ p: 2, width: 32 }}
+      popoverContentProps={{ p: 2, maxWidth: 64 }}
       trigger={languageToString[language]}
     />
   );
