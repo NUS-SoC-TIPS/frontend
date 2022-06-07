@@ -1,13 +1,10 @@
 import { ReactElement, useEffect, useReducer } from 'react';
 import { SimpleGrid } from '@chakra-ui/react';
 
-import { Banner } from 'components/banner';
-import { Card, WindowPeriodCard } from 'components/card';
+import { WindowPeriodCard } from 'components/card';
 import { ErrorBanner } from 'components/errorBanner';
-import { useUser } from 'contexts/UserContext';
 import { getInterviewStats } from 'lib/stats';
 import { InterviewStats } from 'types/api/stats/interview';
-import { UserRole } from 'types/models/user';
 import { computeWindowData } from 'utils/windowUtils';
 
 import { InterviewsPage } from './InterviewsPage';
@@ -33,7 +30,6 @@ export const Interviews = (): ReactElement => {
       stats: null,
     } as State,
   );
-  const user = useUser();
 
   useEffect(() => {
     let didCancel = false;
@@ -82,28 +78,19 @@ export const Interviews = (): ReactElement => {
 
   return (
     <InterviewsPage>
-      {user?.role === UserRole.ADMIN ? (
-        <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
-          <NumCompletedCard
-            numCompleted={stats?.numCompletedThisWindow ?? 0}
-            requireInterview={stats?.closestWindow.requireInterview}
-            windowStatus={status}
-          />
-          <WindowPeriodCard
-            endAt={endAt}
-            startAt={startAt}
-            windowStatus={status}
-          />
-          <LatestPartnerCard partner={stats?.latestPartner ?? null} />
-        </SimpleGrid>
-      ) : (
-        <Card>
-          <Banner
-            message="We'll be starting on mock interviews in Week 3!"
-            title="Coming soon."
-          />
-        </Card>
-      )}
+      <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
+        <NumCompletedCard
+          numCompleted={stats?.numCompletedThisWindow ?? 0}
+          requireInterview={stats?.closestWindow.requireInterview}
+          windowStatus={status}
+        />
+        <WindowPeriodCard
+          endAt={endAt}
+          startAt={startAt}
+          windowStatus={status}
+        />
+        <LatestPartnerCard partner={stats?.latestPartner ?? null} />
+      </SimpleGrid>
     </InterviewsPage>
   );
 };
