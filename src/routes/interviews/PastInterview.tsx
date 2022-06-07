@@ -12,7 +12,7 @@ import { SimpleCodeEditor } from 'components/codeEditor';
 import { Dashboard, Page } from 'components/page';
 import { languageToString } from 'constants/enumStrings';
 import { RecordWithPartner } from 'types/models/record';
-import { formatDate } from 'utils/dateUtils';
+import { formatDate, formatDuration } from 'utils/dateUtils';
 
 interface Props {
   interview: RecordWithPartner;
@@ -29,6 +29,7 @@ export const PastInterview = ({
     createdAt,
     codeWritten,
     notes,
+    duration,
   } = interview;
   const height = useBreakpointValue({ base: '20rem', md: '30rem' });
   return (
@@ -40,7 +41,9 @@ export const PastInterview = ({
           </Button>
         }
         heading={`Interview with ${name}`}
-        subheading={`Completed on ${formatDate(createdAt)}`}
+        subheading={`Completed on ${formatDate(createdAt)} in ${formatDuration(
+          duration,
+        )}`}
       >
         <SimpleGrid columns={{ base: 1, md: 2 }} gap={8}>
           <Stack>

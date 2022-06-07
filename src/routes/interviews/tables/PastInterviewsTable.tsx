@@ -9,7 +9,7 @@ import { Language } from 'types/models/code';
 import { RecordWithPartner } from 'types/models/record';
 import { User } from 'types/models/user';
 import { TableColumn } from 'types/table';
-import { formatDate } from 'utils/dateUtils';
+import { formatDate, formatDuration } from 'utils/dateUtils';
 
 interface Props {
   interviews: RecordWithPartner[];
@@ -31,7 +31,7 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
       },
     },
     {
-      label: 'Date',
+      label: 'Completed On',
       key: 'createdAt',
       options: {
         customBodyRenderer: (createdAt: Date): string => formatDate(createdAt),
@@ -43,6 +43,14 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
     {
       label: 'Duration',
       key: 'duration',
+      options: {
+        customBodyRenderer: (duration: number): string =>
+          formatDuration(duration),
+        customSearchValueRenderer: (duration: number): string =>
+          formatDuration(duration),
+        customCsvBodyRenderer: (duration: number): string =>
+          formatDuration(duration),
+      },
     },
     {
       label: 'Language',

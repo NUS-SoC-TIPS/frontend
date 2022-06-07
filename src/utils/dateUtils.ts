@@ -7,6 +7,24 @@ export const formatDate = (date: Date): string => {
   return date.toLocaleDateString('en-US', options);
 };
 
+export const formatDuration = (duration: number): string => {
+  const date = new Date(duration);
+  const seconds = date.getUTCSeconds();
+  const minutes = date.getUTCMinutes();
+  const hours = date.getUTCHours();
+  const days = date.getUTCDate() - 1;
+  if (days > 0) {
+    return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+  if (hours > 0) {
+    return `${hours}h ${minutes}m ${seconds}s`;
+  }
+  if (minutes > 0) {
+    return `${minutes}m ${seconds}s`;
+  }
+  return `${seconds}s`;
+};
+
 const isoDateFormat =
   /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)((-(\d{2}):(\d{2})|Z)?)$/gm;
 
