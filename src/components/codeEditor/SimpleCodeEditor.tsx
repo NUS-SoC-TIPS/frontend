@@ -31,8 +31,8 @@ import './theme-twilight';
 
 interface Props {
   language: Language | null;
-  onChange: (code: string) => void;
   value: string;
+  onChange?: (code: string) => void;
   width?: string;
   height?: string;
 }
@@ -51,7 +51,8 @@ export const SimpleCodeEditor: FC<Props> = ({
       height={height}
       mode={language ? languageToMode[language] : 'plain_text'}
       name="code-editor"
-      onChange={(value): void => onChange(value)}
+      onChange={onChange ? (value): void => onChange(value) : undefined}
+      readOnly={onChange == null}
       // Disable to standardise with the normal CodeEditor.tsx
       setOptions={{
         enableMultiselect: false,
