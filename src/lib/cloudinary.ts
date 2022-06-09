@@ -8,8 +8,12 @@ export const uploadImageToCloudinary = async (image: File): Promise<string> => {
   });
   const formData = new FormData();
   formData.append('file', compressedFile);
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  formData.append('upload_preset', process.env.REACT_APP_UPLOAD_PRESET!);
+
+  formData.append(
+    'upload_preset',
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET!,
+  );
   const response = await fetch(CLOUDINARY_UPLOAD_URL, {
     method: 'POST',
     body: formData,
