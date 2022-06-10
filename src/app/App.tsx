@@ -12,10 +12,7 @@ type ModuleType = typeof import('./AuthenticatedApp');
 const loadAuthenticatedApp = (): Promise<ModuleType> =>
   import('./AuthenticatedApp');
 const AuthenticatedApp = lazy(
-  () =>
-    retryPromise(loadAuthenticatedApp) as Promise<
-      typeof import('./AuthenticatedApp')
-    >,
+  () => retryPromise(loadAuthenticatedApp) as Promise<ModuleType>,
 );
 const UnauthenticatedApp = lazy(() => import('./UnauthenticatedApp'));
 
