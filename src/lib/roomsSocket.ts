@@ -3,6 +3,7 @@ import { Socket } from 'socket.io-client';
 import { store } from 'app/store';
 import { AUTH_EVENTS, GENERAL_EVENTS, ROOM_EVENTS } from 'constants/events';
 import { setDoc, setLanguage } from 'reducers/codeReducer';
+import { setNotes } from 'reducers/panelReducer';
 import { RoomJoiningStatus, updateRoomState } from 'reducers/roomReducer';
 import { Language } from 'types/models/code';
 import { User } from 'types/models/user';
@@ -51,11 +52,11 @@ const handleJoinRoom = (socket: Socket): void => {
           id,
           partner,
           videoToken,
-          notes,
           isPartnerInRoom,
           status: RoomJoiningStatus.SUCCESS,
         }),
       );
+      store.dispatch(setNotes(notes));
       store.dispatch(setDoc(doc));
       store.dispatch(setLanguage(language));
     },

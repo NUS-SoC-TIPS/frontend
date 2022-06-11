@@ -17,7 +17,6 @@ export interface RoomState {
   status: RoomJoiningStatus;
   partner: User | null;
   videoToken: string;
-  notes: string;
   isPartnerInRoom: boolean; // the partner may be set, but they might have disconnected
   isRoomClosed: boolean; // this is for when the room was just closed by a user in the room
   userActualSlug: string; // only used if user is already in another room
@@ -29,7 +28,6 @@ const initialState: RoomState = {
   status: RoomJoiningStatus.LOADING,
   partner: null,
   videoToken: '',
-  notes: '',
   isPartnerInRoom: false,
   isRoomClosed: false,
   userActualSlug: '',
@@ -49,7 +47,6 @@ export const roomSlice = createSlice({
         status,
         partner,
         videoToken,
-        notes,
         isPartnerInRoom,
         isRoomClosed,
         userActualSlug,
@@ -59,7 +56,6 @@ export const roomSlice = createSlice({
       state.status = status ?? state.status;
       state.partner = partner ?? state.partner;
       state.videoToken = videoToken ?? state.videoToken;
-      state.notes = notes ?? state.notes;
       state.isPartnerInRoom = isPartnerInRoom ?? state.isPartnerInRoom;
       state.isRoomClosed = isRoomClosed ?? state.isRoomClosed;
       state.userActualSlug = userActualSlug ?? state.userActualSlug;
@@ -70,7 +66,6 @@ export const roomSlice = createSlice({
       state.status = RoomJoiningStatus.LOADING;
       state.partner = null;
       state.videoToken = '';
-      state.notes = '';
       state.isPartnerInRoom = false;
       state.isRoomClosed = false;
       state.userActualSlug = '';
