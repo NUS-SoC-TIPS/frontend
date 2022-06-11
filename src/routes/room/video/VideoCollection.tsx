@@ -81,18 +81,20 @@ export const VideoCollection = ({
         }
       });
 
-      client.on('user-unpublished', (user, type) => {
-        if (type === 'audio') {
+      client.on('user-unpublished', async (user, mediaType) => {
+        await client.unsubscribe(user, mediaType);
+        if (mediaType === 'audio') {
           user.audioTrack?.stop();
         }
-        if (type === 'video') {
+        if (mediaType === 'video') {
           setUsers((prevUsers) => {
             return prevUsers.filter((prevUser) => prevUser.uid !== user.uid);
           });
         }
       });
 
-      client.on('user-left', (user) => {
+      client.on('user-left', async (user) => {
+        await client.unsubscribe(user);
         setUsers((prevUsers) => {
           return prevUsers.filter((prevUser) => prevUser.uid !== user.uid);
         });
