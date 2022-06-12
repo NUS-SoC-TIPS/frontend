@@ -11,7 +11,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 
-import { SubmissionBox } from 'components/submission';
+import { QuestionBox } from 'components/question';
 import { SubmissionWithQuestion } from 'types/models/submission';
 
 interface Props {
@@ -61,7 +61,7 @@ export const SubmissionTasksBox = ({
               )}
             </HStack>
             {shownSubmissions.map((sub) => (
-              <SubmissionBox key={sub.id} question={sub.question} />
+              <QuestionBox key={sub.id} question={sub.question} />
             ))}
             {submissions.length > numToShow && (
               <Text color="muted" fontSize="xs" textAlign="center">

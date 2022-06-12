@@ -11,7 +11,7 @@ interface Props {
   noOfLines?: number;
 }
 
-const RawSubmissionBox = ({
+const RawQuestionBox = ({
   question,
   withBox = true,
   withDifficulty = true,
@@ -60,4 +60,4 @@ const propsAreEqual = (prevProps: Props, nextProps: Props): boolean => {
   );
 };
 
-export const SubmissionBox = memo(RawSubmissionBox, propsAreEqual);
+export const QuestionBox = memo(RawQuestionBox, propsAreEqual);
