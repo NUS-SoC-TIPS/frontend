@@ -83,9 +83,23 @@ export const Questions = (): ReactElement<typeof QuestionsPage> => {
     );
   }
 
+  const onCreate = (submission: SubmissionWithQuestion): void => {
+    const submissions = [submission, ...stats.allSubmissions];
+    setState({
+      stats: {
+        ...stats,
+        allSubmissions: submissions,
+        latestSubmission: submission,
+      },
+    });
+  };
+
   if (isAddingQuestion) {
     return (
-      <AddQuestion onBack={(): void => setState({ isAddingQuestion: false })} />
+      <AddQuestion
+        onBack={(): void => setState({ isAddingQuestion: false })}
+        onCreate={onCreate}
+      />
     );
   }
 

@@ -8,6 +8,7 @@ import { getQuestions } from 'lib/questions';
 import { createSubmission } from 'lib/submissions';
 import { Language } from 'types/models/code';
 import { Question } from 'types/models/question';
+import { SubmissionWithQuestion } from 'types/models/submission';
 
 import {
   CodeFormControl,
@@ -19,6 +20,7 @@ import {
 
 interface Props {
   onBack: () => void;
+  onCreate: (submission: SubmissionWithQuestion) => void;
 }
 
 interface State {
@@ -38,6 +40,7 @@ interface QuestionOption {
 
 export const AddQuestion = ({
   onBack,
+  onCreate,
 }: Props): ReactElement<Props, typeof Page> => {
   const [state, setState] = useReducer(
     (s: State, a: Partial<State>): State => ({ ...s, ...a }),
@@ -100,7 +103,8 @@ export const AddQuestion = ({
       languageUsed: state.languageUsed!,
       codeWritten: state.codeWritten,
     })
-      .then((): void => {
+      .then((data): void => {
+        onCreate({ ...data, question: state.selectedQuestion! });
         toast({
           ...DEFAULT_TOAST_PROPS,
           title: 'Question added!',
