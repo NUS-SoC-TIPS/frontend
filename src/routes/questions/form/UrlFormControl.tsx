@@ -26,7 +26,9 @@ export const UrlFormControl = ({
         <InputLeftAddon>https://</InputLeftAddon>
         <Input
           _active={{}}
-          _focus={{}}
+          _focus={{
+            borderColor: 'border',
+          }}
           _hover={{ cursor: 'not-allowed' }}
           readOnly={true}
           value={getUrl()}

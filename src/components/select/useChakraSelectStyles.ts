@@ -32,6 +32,10 @@ export const useChakraSelectStyles = (): ChakraStylesConfig<
         zIndex: 1,
         boxShadow: controlFocusBoxShadow,
       },
+      _disabled: {
+        borderColor: 'border',
+        cursor: 'not-allowed',
+      },
     }),
     dropdownIndicator: (styles) => ({
       ...styles,
