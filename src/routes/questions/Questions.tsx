@@ -6,9 +6,13 @@ import { Card, WindowPeriodCard } from 'components/card';
 import { ErrorBanner } from 'components/errorBanner';
 import { getSubmissionStats } from 'lib/submissions';
 import { SubmissionStatsEntity } from 'types/api/submissions';
-import { SubmissionWithQuestion } from 'types/models/submission';
+import {
+  QuestionSubmission,
+  SubmissionWithQuestion,
+} from 'types/models/submission';
 import { computeWindowData } from 'utils/windowUtils';
 
+import { AddQuestion } from './AddQuestion';
 import { PastSubmission } from './PastSubmission';
 import { QuestionsPage } from './QuestionsPage';
 import { QuestionsSkeleton } from './QuestionsSkeleton';
@@ -19,6 +23,7 @@ interface State {
   isLoading: boolean;
   isError: boolean;
   stats: SubmissionStatsEntity | null;
+  isAddingQuestion: boolean;
   selectedSubmission: SubmissionWithQuestion | null;
 }
 
@@ -29,6 +34,7 @@ export const Questions = (): ReactElement<typeof QuestionsPage> => {
       isLoading: true,
       isError: false,
       stats: null,
+      isAddingQuestion: false,
       selectedSubmission: null,
     } as State,
   );
@@ -62,7 +68,8 @@ export const Questions = (): ReactElement<typeof QuestionsPage> => {
     };
   }, []);
 
-  const { stats, isLoading, isError, selectedSubmission } = state;
+  const { stats, isLoading, isError, isAddingQuestion, selectedSubmission } =
+    state;
 
   if (isLoading) {
     return <QuestionsSkeleton />;
@@ -76,8 +83,31 @@ export const Questions = (): ReactElement<typeof QuestionsPage> => {
     );
   }
 
+  if (isAddingQuestion) {
+    return (
+      <AddQuestion onBack={(): void => setState({ isAddingQuestion: false })} />
+    );
+  }
+
+  const onUpdate = (updatedSubmission: QuestionSubmission): void => {
+    const submissions = stats.allSubmissions.slice();
+    const index = submissions.findIndex(
+      (submission) => submission.id === updatedSubmission.id,
+    );
+    if (index !== -1) {
+      submissions[index] = { ...submissions[index], ...updatedSubmission };
+    }
+    setState({ stats: { ...stats, allSubmissions: submissions } });
+  };
+
   if (selectedSubmission) {
-    return <PastSubmission submission={selectedSubmission} />;
+    return (
+      <PastSubmission
+        onBack={(): void => setState({ selectedSubmission: null })}
+        onUpdate={onUpdate}
+        submission={selectedSubmission}
+      />
+    );
   }
 
   const { status, startAt, endAt } = computeWindowData(stats.closestWindow);
@@ -89,7 +119,7 @@ export const Questions = (): ReactElement<typeof QuestionsPage> => {
   };
 
   return (
-    <QuestionsPage>
+    <QuestionsPage onAdd={(): void => setState({ isAddingQuestion: true })}>
       <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
         <NumCompletedCard
           numCompleted={stats?.numberOfSubmissionsForThisWindowOrWeek ?? 0}

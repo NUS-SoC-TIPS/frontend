@@ -1,25 +1,24 @@
 import { PropsWithChildren, ReactElement } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 
 import { Dashboard, Page } from 'components/page';
-import { ADD_QUESTION } from 'constants/routes';
+
+interface Props {
+  onAdd?: () => void;
+}
 
 export const QuestionsPage = ({
+  onAdd,
   children,
-}: PropsWithChildren<unknown>): ReactElement<
-  PropsWithChildren<unknown>,
+}: PropsWithChildren<Props>): ReactElement<
+  PropsWithChildren<Props>,
   typeof Page
 > => {
-  const navigate = useNavigate();
   return (
     <Page>
       <Dashboard
         actions={
-          <Button
-            onClick={(): void => navigate(ADD_QUESTION)}
-            variant="primary"
-          >
+          <Button onClick={onAdd} variant="primary">
             Add Question
           </Button>
         }

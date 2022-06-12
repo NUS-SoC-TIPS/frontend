@@ -1,20 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ReactElement, useEffect, useReducer } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {
-  Button,
-  Divider,
-  Flex,
-  Heading,
-  Stack,
-  StackDivider,
-  Text,
-  useBreakpointValue,
-  useToast,
-} from '@chakra-ui/react';
+import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 
-import { Page } from 'components/page';
-import { QUESTIONS } from 'constants/routes';
+import { Dashboard, Page } from 'components/page';
 import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
 import { getQuestions } from 'lib/questions';
 import { createSubmission } from 'lib/submissions';
@@ -28,6 +16,10 @@ import {
   NameFormControl,
   UrlFormControl,
 } from './form';
+
+interface Props {
+  onBack: () => void;
+}
 
 interface State {
   questions: Question[];
@@ -44,7 +36,9 @@ interface QuestionOption {
   label: string;
 }
 
-export const AddQuestion = (): ReactElement<typeof Page> => {
+export const AddQuestion = ({
+  onBack,
+}: Props): ReactElement<Props, typeof Page> => {
   const [state, setState] = useReducer(
     (s: State, a: Partial<State>): State => ({ ...s, ...a }),
     {
@@ -57,7 +51,6 @@ export const AddQuestion = (): ReactElement<typeof Page> => {
       codeWritten: '',
     } as State,
   );
-  const navigate = useNavigate();
   const toast = useToast();
 
   useEffect(() => {
@@ -114,7 +107,7 @@ export const AddQuestion = (): ReactElement<typeof Page> => {
           description: 'Awesome work with the question!',
           status: 'success',
         });
-        navigate(QUESTIONS);
+        onBack();
       })
       .catch((): void => {
         toast(ERROR_TOAST_PROPS);
@@ -124,20 +117,16 @@ export const AddQuestion = (): ReactElement<typeof Page> => {
 
   return (
     <Page>
-      <Stack spacing={5}>
-        <Stack spacing={1}>
-          <Heading
-            fontWeight="medium"
-            size={useBreakpointValue({ base: 'xs', lg: 'sm' })}
-          >
-            Add a Question
-          </Heading>
-          <Text color="muted">
-            Note: This should be done AFTER you complete the question on the
-            respective platform, e.g. LeetCode.
-          </Text>
-        </Stack>
-        <Divider />
+      <Dashboard
+        actions={
+          <Button onClick={onBack} variant="primary">
+            Back
+          </Button>
+        }
+        heading="Add a Question"
+        subheading="Note: This should be done AFTER you complete the question on the
+        respective platform, e.g. LeetCode."
+      >
         <Stack divider={<StackDivider />} spacing={5}>
           <NameFormControl {...state} onChange={onChangeAsyncSelect} />
           {state.selectedQuestion && (
@@ -174,7 +163,7 @@ export const AddQuestion = (): ReactElement<typeof Page> => {
             </Flex>
           )}
         </Stack>
-      </Stack>
+      </Dashboard>
     </Page>
   );
 };

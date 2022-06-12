@@ -1,20 +1,14 @@
 import { ReactElement, useReducer } from 'react';
-import {
-  Button,
-  Divider,
-  Flex,
-  Heading,
-  Stack,
-  StackDivider,
-  useBreakpointValue,
-  useToast,
-} from '@chakra-ui/react';
+import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 
-import { Page } from 'components/page';
+import { Dashboard, Page } from 'components/page';
 import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
 import { updateSubmission } from 'lib/submissions';
 import { Language } from 'types/models/code';
-import { SubmissionWithQuestion } from 'types/models/submission';
+import {
+  QuestionSubmission,
+  SubmissionWithQuestion,
+} from 'types/models/submission';
 import { formatDate } from 'utils/dateUtils';
 import { emptyFunction } from 'utils/functionUtils';
 
@@ -28,6 +22,8 @@ import {
 
 interface Props {
   submission: SubmissionWithQuestion;
+  onBack: () => void;
+  onUpdate: (submission: QuestionSubmission) => void;
 }
 
 interface State {
@@ -40,6 +36,8 @@ interface State {
 
 export const PastSubmission = ({
   submission,
+  onBack,
+  onUpdate: parentOnUpdate,
 }: Props): ReactElement<Props, typeof Page> => {
   const [state, setState] = useReducer(
     (s: State, a: Partial<State>): State => ({ ...s, ...a }),
@@ -70,6 +68,7 @@ export const PastSubmission = ({
       codeWritten: state.codeWritten,
     })
       .then((data): void => {
+        parentOnUpdate(data);
         setState({
           originalLanguageUsed: data.languageUsed,
           originalCodeWritten: data.codeWritten,
@@ -90,14 +89,15 @@ export const PastSubmission = ({
 
   return (
     <Page>
-      <Stack spacing={5}>
-        <Heading
-          fontWeight="medium"
-          size={useBreakpointValue({ base: 'xs', lg: 'sm' })}
-        >
-          Submission on {formatDate(submission.createdAt)}
-        </Heading>
-        <Divider />
+      <Dashboard
+        actions={
+          <Button onClick={onBack} variant="primary">
+            Back
+          </Button>
+        }
+        heading={`Submission for ${submission.question.name}`}
+        subheading={`Submitted on ${formatDate(submission.createdAt)}`}
+      >
         <Stack divider={<StackDivider />} spacing={5}>
           <NameFormControl
             defaultQuestion={submission.question}
@@ -133,7 +133,7 @@ export const PastSubmission = ({
             </Button>
           </Flex>
         </Stack>
-      </Stack>
+      </Dashboard>
     </Page>
   );
 };

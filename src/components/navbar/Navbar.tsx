@@ -18,7 +18,6 @@ import {
 } from '@chakra-ui/react';
 
 import {
-  ADD_QUESTION,
   ADMIN,
   INTERVIEWS,
   QUESTIONS,
@@ -42,7 +41,6 @@ export const Navbar = (): ReactElement<typeof Box> => {
   const user = useUser();
   const { logout } = useAuth();
   const { pathname } = useLocation();
-  const splitPathname = pathname.split('/').slice(0, 2).join('/');
   const navigate = useNavigate();
   const { isLoggingIn, login } = useAuth();
 
@@ -59,33 +57,26 @@ export const Navbar = (): ReactElement<typeof Box> => {
             {isDesktop && user && (
               <ButtonGroup spacing={1} variant="ghost">
                 <Button
-                  aria-current={
-                    splitPathname === QUESTIONS ||
-                    splitPathname === ADD_QUESTION
-                      ? 'page'
-                      : undefined
-                  }
+                  aria-current={pathname === QUESTIONS ? 'page' : undefined}
                   onClick={(): void => navigate(QUESTIONS)}
                 >
                   Questions
                 </Button>
                 <Button
-                  aria-current={
-                    splitPathname === INTERVIEWS ? 'page' : undefined
-                  }
+                  aria-current={pathname === INTERVIEWS ? 'page' : undefined}
                   onClick={(): void => navigate(INTERVIEWS)}
                 >
                   Interviews
                 </Button>
                 <Button
-                  aria-current={splitPathname === TASKS ? 'page' : undefined}
+                  aria-current={pathname === TASKS ? 'page' : undefined}
                   onClick={(): void => navigate(TASKS)}
                 >
                   Tasks
                 </Button>
                 {user.role === UserRole.ADMIN && (
                   <Button
-                    aria-current={splitPathname === ADMIN ? 'page' : undefined}
+                    aria-current={pathname === ADMIN ? 'page' : undefined}
                     onClick={(): void => navigate(ADMIN)}
                   >
                     Admin
@@ -101,9 +92,7 @@ export const Navbar = (): ReactElement<typeof Box> => {
                   <ButtonGroup spacing={1} variant="ghost">
                     <ColorModeSwitcher isSideBar={false} />
                     <IconButton
-                      aria-current={
-                        splitPathname === SETTINGS ? 'page' : undefined
-                      }
+                      aria-current={pathname === SETTINGS ? 'page' : undefined}
                       aria-label="Settings"
                       icon={<FiSettings fontSize="1.25rem" />}
                       onClick={(): void => navigate(SETTINGS)}

@@ -2,7 +2,6 @@ import { ReactElement } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import {
-  ADD_QUESTION,
   ADMIN,
   INTERVIEWS,
   QUESTIONS,
@@ -13,7 +12,7 @@ import {
 import { useUser } from 'contexts/UserContext';
 import { Admin } from 'routes/admin';
 import { Interviews } from 'routes/interviews';
-import { AddQuestion, Questions } from 'routes/questions';
+import { Questions } from 'routes/questions';
 import { Room } from 'routes/room';
 import { Settings } from 'routes/settings';
 import { Tasks } from 'routes/tasks';
@@ -24,7 +23,6 @@ const AuthenticatedApp = (): ReactElement<typeof Routes> => {
   return (
     <Routes>
       <Route element={<Questions />} path={QUESTIONS} />
-      <Route element={<AddQuestion />} path={ADD_QUESTION} />
       <Route element={<Interviews />} path={INTERVIEWS} />
       <Route element={<Tasks />} path={TASKS} />
       <Route element={<Settings />} path={SETTINGS} />
