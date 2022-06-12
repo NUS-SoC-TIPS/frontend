@@ -15,7 +15,7 @@ const RawQuestionBox = ({
   question,
   withBox = true,
   withDifficulty = true,
-  noOfLines,
+  noOfLines = 1,
 }: Props): ReactElement<Props, typeof Box | typeof Stack> => {
   const wrapComponent = (
     component: ReactElement<Props, typeof Stack>,
@@ -37,10 +37,18 @@ const RawQuestionBox = ({
   return wrapComponent(
     <Stack align="center" direction="row" justify="space-between" spacing={5}>
       <Box fontSize="sm">
-        <Text color="empahsized" fontWeight="medium" noOfLines={noOfLines}>
+        <Text
+          color="empahsized"
+          fontSize="sm"
+          fontWeight="medium"
+          noOfLines={noOfLines}
+          textAlign="left"
+        >
           {question.name}
         </Text>
-        <Text color="muted">{sourceToString[question.source]}</Text>
+        <Text color="muted" fontSize="sm" noOfLines={1} textAlign="left">
+          {sourceToString[question.source]}
+        </Text>
       </Box>
       {withDifficulty && (
         <Badge colorScheme="blue" variant="subtle">

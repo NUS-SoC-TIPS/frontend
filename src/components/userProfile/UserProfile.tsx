@@ -5,10 +5,12 @@ import { User } from 'types/models/user';
 
 interface Props extends StackProps {
   user: User;
+  noOfLines?: number;
 }
 
 const RawUserProfile = ({
   user,
+  noOfLines = 1,
   ...props
 }: Props): ReactElement<Props, typeof HStack> => {
   const finalProps = {
@@ -20,18 +22,25 @@ const RawUserProfile = ({
     <HStack {...finalProps}>
       <Avatar boxSize={10} name={user.name} src={user.photoUrl} />
       <Box>
-        <Link
+        <Text
+          color="empahsized"
           fontSize="sm"
           fontWeight="medium"
-          href={user.profileUrl}
-          isExternal={true}
+          noOfLines={noOfLines}
           textAlign="left"
         >
           {user.name}
-        </Link>
-        <Text color="muted" fontSize="sm" textAlign="left">
-          {user.githubUsername}
         </Text>
+        <Link
+          color="muted"
+          fontSize="sm"
+          href={user.profileUrl}
+          isExternal={true}
+          noOfLines={1}
+          textAlign="left"
+        >
+          {user.githubUsername}
+        </Link>
       </Box>
     </HStack>
   );
