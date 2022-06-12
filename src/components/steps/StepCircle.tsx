@@ -9,14 +9,14 @@ interface Props extends SquareProps {
 }
 
 const RawStepCircle = (props: Props): ReactElement<Props, typeof Circle> => {
-  const { isSuccess, isActive, isFailure } = props;
+  const { isSuccess, isActive, isFailure, ...rest } = props;
   return (
     <Circle
       bg={isSuccess ? 'accent' : isFailure ? 'error' : 'inherit'}
       borderColor={isActive ? 'accent' : 'inherit'}
       borderWidth={isSuccess || isFailure ? 0 : '2px'}
       size={8}
-      {...props}
+      {...rest}
     >
       {isSuccess ? (
         <Icon as={HiCheck} boxSize={5} color="inverted" />
