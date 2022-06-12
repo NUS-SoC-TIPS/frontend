@@ -13,6 +13,7 @@ import {
 
 import { UserProfile } from 'components/userProfile';
 import { RecordWithPartner } from 'types/models/record';
+import { compareCreatedAtsDescending } from 'utils/sortUtils';
 
 interface Props {
   numToShow: number;
@@ -28,7 +29,7 @@ export const InterviewTasksBox = ({
   hasCompletedInterview,
 }: Props): ReactElement<typeof Box> => {
   const shownRecords = records
-    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+    .sort(compareCreatedAtsDescending)
     .slice(0, numToShow);
 
   return (

@@ -13,6 +13,7 @@ import {
 
 import { QuestionBox } from 'components/question';
 import { SubmissionWithQuestion } from 'types/models/submission';
+import { compareCreatedAtsDescending } from 'utils/sortUtils';
 
 interface Props {
   numToShow: number;
@@ -28,7 +29,7 @@ export const SubmissionTasksBox = ({
   hasCompletedQuestions,
 }: Props): ReactElement<typeof Box> => {
   const shownSubmissions = submissions
-    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+    .sort(compareCreatedAtsDescending)
     .slice(0, numToShow);
 
   return (

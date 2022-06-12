@@ -9,6 +9,7 @@ import { createSubmission } from 'lib/submissions';
 import { Language } from 'types/models/code';
 import { Question } from 'types/models/question';
 import { SubmissionWithQuestion } from 'types/models/submission';
+import { compareIdsAscending } from 'utils/sortUtils';
 
 import {
   CodeFormControl,
@@ -61,7 +62,7 @@ export const AddQuestion = ({
     const fetchData = async (): Promise<void> => {
       try {
         const questions = await getQuestions();
-        questions.sort((a, b) => a.id - b.id);
+        questions.sort(compareIdsAscending);
         if (!didCancel) {
           setState({ questions, isLoading: false });
         }

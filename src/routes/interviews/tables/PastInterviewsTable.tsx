@@ -10,6 +10,11 @@ import { RecordWithPartner } from 'types/models/record';
 import { User } from 'types/models/user';
 import { TableColumn } from 'types/table';
 import { formatDate, formatDuration } from 'utils/dateUtils';
+import {
+  compareDatesAscending,
+  compareLanguagesAscending,
+  compareNamesAscending,
+} from 'utils/sortUtils';
 
 interface Props {
   interviews: RecordWithPartner[];
@@ -28,28 +33,37 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
         customSearchValueRenderer: (partner: User) =>
           `${partner.name} ${partner.githubUsername}`,
         customCsvBodyRenderer: (partner: User) => partner.name,
+        isSortable: true,
+        customSortComparator: compareNamesAscending,
+      },
+    },
+    {
+      label: 'GitHub Username',
+      key: 'githubUsername',
+      options: {
+        isVisible: false,
+        isSearchable: false,
       },
     },
     {
       label: 'Completed On',
       key: 'createdAt',
       options: {
-        customBodyRenderer: (createdAt: Date): string => formatDate(createdAt),
-        customSearchValueRenderer: (createdAt: Date): string =>
-          formatDate(createdAt),
-        customCsvBodyRenderer: (createdAt: Date) => formatDate(createdAt),
+        customBodyRenderer: formatDate,
+        customSearchValueRenderer: formatDate,
+        customCsvBodyRenderer: formatDate,
+        isSortable: true,
+        customSortComparator: compareDatesAscending,
       },
     },
     {
       label: 'Duration',
       key: 'duration',
       options: {
-        customBodyRenderer: (duration: number): string =>
-          formatDuration(duration),
-        customSearchValueRenderer: (duration: number): string =>
-          formatDuration(duration),
-        customCsvBodyRenderer: (duration: number): string =>
-          formatDuration(duration),
+        customBodyRenderer: formatDuration,
+        customSearchValueRenderer: formatDuration,
+        customCsvBodyRenderer: formatDuration,
+        isSortable: true,
       },
     },
     {
@@ -62,6 +76,8 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
           languageToString[language],
         customCsvBodyRenderer: (language: Language): string =>
           languageToString[language],
+        isSortable: true,
+        customSortComparator: compareLanguagesAscending,
       },
     },
     {

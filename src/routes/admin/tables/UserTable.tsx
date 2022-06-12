@@ -8,6 +8,10 @@ import { UserWithWindowData } from 'types/api/admin';
 import { User } from 'types/models/user';
 import { Window } from 'types/models/window';
 import { TableColumn, TableOptions } from 'types/table';
+import {
+  compareBooleansTrueFirst,
+  compareNamesAscending,
+} from 'utils/sortUtils';
 
 import { Completion } from './Completion';
 
@@ -50,8 +54,7 @@ const getColumns = (
           `${user.name} ${user.githubUsername}`,
         isDownloadable: false,
         isSortable: true,
-        customSortComparator: (a: User, b: User) =>
-          a.name.localeCompare(b.name),
+        customSortComparator: compareNamesAscending,
       },
     },
     {
@@ -128,8 +131,7 @@ const getColumns = (
         isSearchable: false,
         isDownloadable: !showRawCount,
         isSortable: true,
-        customSortComparator: (a: boolean, b: boolean) =>
-          String(b).localeCompare(String(a)),
+        customSortComparator: compareBooleansTrueFirst,
       },
     },
     {

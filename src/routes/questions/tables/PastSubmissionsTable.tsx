@@ -4,13 +4,26 @@ import { Button } from '@chakra-ui/react';
 import { Card } from 'components/card';
 import { QuestionBox } from 'components/question';
 import { Table } from 'components/table';
-import { difficultyToString, languageToString } from 'constants/enumStrings';
+import {
+  difficultyToString,
+  languageToString,
+  sourceToString,
+} from 'constants/enumStrings';
 import { Language } from 'types/models/code';
-import { Question, QuestionDifficulty } from 'types/models/question';
+import {
+  Question,
+  QuestionDifficulty,
+  QuestionSource,
+} from 'types/models/question';
 import { SubmissionWithQuestion } from 'types/models/submission';
-import { User } from 'types/models/user';
 import { TableColumn } from 'types/table';
 import { formatDate } from 'utils/dateUtils';
+import {
+  compareDatesAscending,
+  compareDifficultiesEasyFirst,
+  compareLanguagesAscending,
+  compareNamesAscending,
+} from 'utils/sortUtils';
 
 interface Props {
   submissions: SubmissionWithQuestion[];
@@ -20,6 +33,7 @@ interface Props {
 interface Row {
   id: number;
   question: Question;
+  source: QuestionSource;
   createdAt: Date;
   difficulty: QuestionDifficulty;
   languageUsed: Language;
@@ -40,17 +54,30 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
         ),
         customSearchValueRenderer: (question: Question) =>
           `${question.name} ${question.difficulty} ${question.source}`,
-        customCsvBodyRenderer: (partner: User) => partner.name,
+        customCsvBodyRenderer: (question: Question) => question.name,
+        isSortable: true,
+        customSortComparator: compareNamesAscending,
+      },
+    },
+    {
+      label: 'Source',
+      key: 'source',
+      options: {
+        isVisible: false,
+        isSearchable: false,
+        customCsvBodyRenderer: (source: QuestionSource) =>
+          sourceToString[source],
       },
     },
     {
       label: 'Submitted On',
       key: 'createdAt',
       options: {
-        customBodyRenderer: (createdAt: Date): string => formatDate(createdAt),
-        customSearchValueRenderer: (createdAt: Date): string =>
-          formatDate(createdAt),
-        customCsvBodyRenderer: (createdAt: Date) => formatDate(createdAt),
+        customBodyRenderer: formatDate,
+        customSearchValueRenderer: formatDate,
+        customCsvBodyRenderer: formatDate,
+        isSortable: true,
+        customSortComparator: compareDatesAscending,
       },
     },
     {
@@ -63,6 +90,8 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
           difficultyToString[difficulty],
         customCsvBodyRenderer: (difficulty: QuestionDifficulty): string =>
           difficultyToString[difficulty],
+        isSortable: true,
+        customSortComparator: compareDifficultiesEasyFirst,
       },
     },
     {
@@ -75,6 +104,8 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
           languageToString[language],
         customCsvBodyRenderer: (language: Language): string =>
           languageToString[language],
+        isSortable: true,
+        customSortComparator: compareLanguagesAscending,
       },
     },
     {
@@ -99,6 +130,7 @@ const transformData = (submissions: SubmissionWithQuestion[]): Row[] => {
     question: submission.question,
     createdAt: submission.createdAt,
     difficulty: submission.question.difficulty,
+    source: submission.question.source,
     languageUsed: submission.languageUsed,
   }));
 };
