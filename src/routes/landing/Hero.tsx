@@ -52,10 +52,8 @@ export const Hero = ({
           spacing={4}
         >
           <Button
-            as="a"
             fontSize="md"
             fontWeight="bold"
-            href="#"
             iconSpacing={3}
             isLoading={isGettingStarted}
             leftIcon={<GitHubIcon boxSize={5} />}
