@@ -3,7 +3,8 @@ import { ReactNode } from 'react';
 
 export interface TableColumnOptions {
   customBodyRenderer?: (value: any) => string | ReactNode;
-  customHeaderRenderer?: () => string | ReactNode;
+  /** To render a string, just use the label property on TableColumn */
+  customHeaderRenderer?: () => ReactNode;
   customCsvBodyRenderer?: (value: any) => string;
   customCsvHeaderRenderer?: () => string;
   /** Default is true */
@@ -13,6 +14,9 @@ export interface TableColumnOptions {
   /** Default is true */
   isSearchable?: boolean;
   customSearchValueRenderer?: (value: any) => string;
+  /** Default is false */
+  isSortable?: boolean;
+  customSortComparator?: (a: any, b: any) => number;
 }
 
 export interface TableColumn {

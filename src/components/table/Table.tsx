@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, ReactNode, useEffect, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { FiSearch } from 'react-icons/fi';
 import {
@@ -12,6 +12,7 @@ import {
   InputLeftElement,
   Stack,
   Table as ChakraTable,
+  TableColumnHeaderProps,
   TableProps,
   Tbody,
   Td,
@@ -23,6 +24,8 @@ import {
 } from '@chakra-ui/react';
 
 import { TableColumn, TableOptions } from 'types/table';
+
+import { SortIcon } from './SortIcon';
 
 interface Props extends TableProps {
   columns: TableColumn[];
@@ -40,11 +43,9 @@ export const Table = ({
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [allRows, setAllRows] = useState(rows);
   const [page, setPage] = useState(0);
+  const [sortedColumnKey, setSortedColumnKey] = useState<string | null>(null);
+  const [isAscending, setIsAscending] = useState(true);
   const maxPage = Math.max(Math.ceil(allRows.length / 5) - 1, 0);
-  const renderedRows = allRows.slice(page * 5, (page + 1) * 5);
-  const renderedColumns = columns.filter(
-    (column) => column.options?.isVisible !== false,
-  );
 
   useEffect(() => {
     if (page > maxPage) {
@@ -55,6 +56,31 @@ export const Table = ({
   useEffect(() => {
     setAllRows(rows);
   }, [rows]);
+
+  const sortedRows = allRows.slice();
+  if (sortedColumnKey) {
+    const comparator = columns.find((column) => column.key === sortedColumnKey)
+      ?.options?.customSortComparator;
+    sortedRows.sort((a, b): number => {
+      const valueA = a[sortedColumnKey];
+      const valueB = b[sortedColumnKey];
+      if (comparator) {
+        const result = comparator(valueA, valueB);
+        return isAscending ? result : -result;
+      }
+      if (typeof valueA === 'number' && typeof valueB === 'number') {
+        return isAscending ? valueA - valueB : valueB - valueA;
+      }
+      return isAscending
+        ? String(valueA).localeCompare(String(valueB))
+        : String(valueB).localeCompare(String(valueA));
+    });
+  }
+
+  const renderedRows = sortedRows.slice(page * 5, (page + 1) * 5);
+  const renderedColumns = columns.filter(
+    (column) => column.options?.isVisible !== false,
+  );
 
   const getBottomMessage = (): string => {
     if (allRows.length === 0) {
@@ -124,6 +150,42 @@ export const Table = ({
     setAllRows(newRows);
   };
 
+  const renderColumnHeader = (column: TableColumn): ReactNode => {
+    const isSortable = column.options?.isSortable === true;
+    const headerProps: TableColumnHeaderProps = isSortable
+      ? {
+          cursor: 'pointer',
+          onClick: (): void => {
+            if (sortedColumnKey === column.key) {
+              if (isAscending) {
+                setIsAscending(false);
+              } else {
+                setSortedColumnKey(null);
+              }
+            } else {
+              setSortedColumnKey(column.key);
+              setIsAscending(true);
+            }
+          },
+        }
+      : {};
+    const value = column.options?.customHeaderRenderer ? (
+      column.options.customHeaderRenderer()
+    ) : (
+      <Text>{column.label}</Text>
+    );
+    return (
+      <Th key={column.key} {...headerProps}>
+        <Box alignItems="center" display="flex">
+          {value}
+          {isSortable && sortedColumnKey === column.key && (
+            <SortIcon isAscending={isAscending} />
+          )}
+        </Box>
+      </Th>
+    );
+  };
+
   return (
     <Stack spacing="5">
       <Box pt="5" px={{ base: '4', md: '6' }}>
@@ -162,15 +224,7 @@ export const Table = ({
         <ChakraTable {...props}>
           <Thead>
             <Tr>
-              {renderedColumns.map((column, index) => (
-                <Th key={index}>
-                  {column.options?.customHeaderRenderer ? (
-                    column.options.customHeaderRenderer()
-                  ) : (
-                    <Text>{column.label}</Text>
-                  )}
-                </Th>
-              ))}
+              {renderedColumns.map((column) => renderColumnHeader(column))}
             </Tr>
           </Thead>
           <Tbody>
@@ -188,7 +242,7 @@ export const Table = ({
               </Tr>
             ))}
             {allRows.length === 0 && (
-              <>
+              <Tr>
                 <Td>
                   <Text color="muted">
                     {options?.noDataMessage ?? 'No Data'}
@@ -199,7 +253,7 @@ export const Table = ({
                   .map((_, index) => (
                     <Td key={index}></Td>
                   ))}
-              </>
+              </Tr>
             )}
           </Tbody>
         </ChakraTable>
