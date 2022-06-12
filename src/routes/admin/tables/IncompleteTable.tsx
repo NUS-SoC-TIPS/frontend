@@ -25,7 +25,6 @@ export const IncompleteTable = ({
         )} - ${formatDate(window.endAt)}`,
       }}
       users={users}
-      window={window}
     />
   );
 };

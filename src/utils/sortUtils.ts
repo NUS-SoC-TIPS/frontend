@@ -35,10 +35,6 @@ export const compareNamesAscending = <T extends { name: string }>(
   return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase());
 };
 
-export const compareBooleansTrueFirst = (a: boolean, b: boolean): number => {
-  return String(b).localeCompare(String(a));
-};
-
 export const compareDifficultiesEasyFirst = (
   a: QuestionDifficulty,
   b: QuestionDifficulty,

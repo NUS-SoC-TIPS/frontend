@@ -24,9 +24,7 @@ export const CompletedTable = ({
           window.startAt,
         )} - ${formatDate(window.endAt)}`,
       }}
-      showRawCount={true}
       users={users}
-      window={window}
     />
   );
 };

@@ -26,9 +26,7 @@ export const NonStudentTable = ({
       }}
       showCoursemology={false}
       showEmail={false}
-      showRawCount={true}
       users={users}
-      window={window}
     />
   );
 };

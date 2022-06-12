@@ -6,21 +6,13 @@ import { Table } from 'components/table';
 import { UserProfile } from 'components/userProfile';
 import { UserWithWindowData } from 'types/api/admin';
 import { User } from 'types/models/user';
-import { Window } from 'types/models/window';
 import { TableColumn, TableOptions } from 'types/table';
-import {
-  compareBooleansTrueFirst,
-  compareNamesAscending,
-} from 'utils/sortUtils';
-
-import { Completion } from './Completion';
+import { compareNamesAscending } from 'utils/sortUtils';
 
 interface Props {
   users: UserWithWindowData[];
-  window: Window;
   showEmail?: boolean;
   showCoursemology?: boolean;
-  showRawCount?: boolean;
   options?: TableOptions;
 }
 
@@ -37,10 +29,8 @@ interface Row {
 }
 
 const getColumns = (
-  tipsWindow: Window,
   showEmail: boolean,
   showCoursemology: boolean,
-  showRawCount: boolean,
 ): TableColumn[] => {
   return [
     {
@@ -98,49 +88,18 @@ const getColumns = (
       },
     },
     {
-      label: showRawCount ? 'Number of Questions' : 'Questions',
+      label: 'Number of Questions',
       key: 'numberOfQuestions',
       options: {
-        customBodyRenderer: (numQuestions: number): ReactNode =>
-          showRawCount ? (
-            numQuestions
-          ) : (
-            <Completion
-              defaultValue={Math.min(numQuestions, tipsWindow.numQuestions)}
-              max={tipsWindow.numQuestions}
-            />
-          ),
+        customBodyRenderer: (numQuestions: number): ReactNode => numQuestions,
         customCsvHeaderRenderer: (): string => 'Number of Questions Completed',
         isSortable: true,
-      },
-    },
-    {
-      label: 'Interviews',
-      key: 'hasCompletedInterview',
-      options: {
-        customBodyRenderer: (hasCompletedInterview: boolean): ReactNode =>
-          tipsWindow.requireInterview ? (
-            <Completion defaultValue={hasCompletedInterview ? 1 : 0} max={1} />
-          ) : (
-            <Text color="muted">-</Text>
-          ),
-        customCsvHeaderRenderer: (): string => 'Interview Completed',
-        customCsvBodyRenderer: (hasCompletedInterview: boolean): string =>
-          hasCompletedInterview ? 'Yes' : 'No',
-        isVisible: !showRawCount,
-        isSearchable: false,
-        isDownloadable: !showRawCount,
-        isSortable: true,
-        customSortComparator: compareBooleansTrueFirst,
       },
     },
     {
       label: 'Number of Interviews',
       key: 'numberOfInterviews',
       options: {
-        isVisible: showRawCount,
-        isSearchable: showRawCount,
-        isDownloadable: showRawCount,
         isSortable: true,
       },
     },
@@ -194,15 +153,13 @@ const transformData = (users: UserWithWindowData[]): Row[] => {
 
 export const UserTable = ({
   users,
-  window,
   showEmail = true,
   showCoursemology = true,
-  showRawCount = false,
   options = {},
 }: Props): ReactElement<Props, typeof Card> => {
   const columns = useMemo(
-    () => getColumns(window, showEmail, showCoursemology, showRawCount),
-    [window, showEmail, showCoursemology, showRawCount],
+    () => getColumns(showEmail, showCoursemology),
+    [showEmail, showCoursemology],
   );
   const rows = useMemo(() => transformData(users), [users]);
 
