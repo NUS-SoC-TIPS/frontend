@@ -55,6 +55,9 @@ export const Table = ({
 
   useEffect(() => {
     setAllRows(rows);
+    setSortedColumnKey(null);
+    setIsAscending(true);
+    setPage(0);
   }, [rows]);
 
   const sortedRows = allRows.slice();
