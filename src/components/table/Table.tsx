@@ -74,9 +74,11 @@ export const Table = ({
       if (typeof valueA === 'number' && typeof valueB === 'number') {
         return isAscending ? valueA - valueB : valueB - valueA;
       }
+      const stringA = String(valueA).toLocaleLowerCase();
+      const stringB = String(valueB).toLocaleLowerCase();
       return isAscending
-        ? String(valueA).localeCompare(String(valueB))
-        : String(valueB).localeCompare(String(valueA));
+        ? stringA.localeCompare(stringB)
+        : stringB.localeCompare(stringA);
     });
   }
 

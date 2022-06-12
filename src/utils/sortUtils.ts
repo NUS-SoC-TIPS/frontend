@@ -32,7 +32,7 @@ export const compareNamesAscending = <T extends { name: string }>(
   a: T,
   b: T,
 ): number => {
-  return a.name.localeCompare(b.name);
+  return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase());
 };
 
 export const compareBooleansTrueFirst = (a: boolean, b: boolean): number => {
