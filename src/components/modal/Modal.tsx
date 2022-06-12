@@ -16,6 +16,8 @@ interface Props extends ModalProps {
   onClose: () => void;
   title: string;
   actions?: ReactNode;
+  textAlignCentre?: boolean;
+  showActions?: boolean;
   showCloseIcon?: boolean;
 }
 
@@ -29,6 +31,8 @@ export const Modal = (props: Props): ReactElement<typeof ChakraModal> => {
     actions,
     children,
     showCloseIcon = false,
+    textAlignCentre = false,
+    showActions = true,
     ...modalProps
   } = props;
   const combinedProps = {
@@ -44,18 +48,24 @@ export const Modal = (props: Props): ReactElement<typeof ChakraModal> => {
       />
       <ModalContent borderRadius="2xl">
         <ModalBody p={{ base: 4, lg: 6 }}>
-          <ModalHeader p={2}>{title}</ModalHeader>
+          <ModalHeader p={2} textAlign={textAlignCentre ? 'center' : undefined}>
+            {title}
+          </ModalHeader>
           {showCloseIcon ?? <ModalCloseButton />}
-          <ModalBody p={2}>{children}</ModalBody>
-          <ModalFooter p={2}>
-            {actions ? (
-              actions
-            ) : (
-              <Button colorScheme="blue" onClick={props.onClose}>
-                Close
-              </Button>
-            )}
-          </ModalFooter>
+          <ModalBody p={2} textAlign={textAlignCentre ? 'center' : undefined}>
+            {children}
+          </ModalBody>
+          {showActions && (
+            <ModalFooter p={2}>
+              {actions ? (
+                actions
+              ) : (
+                <Button colorScheme="blue" onClick={props.onClose}>
+                  Close
+                </Button>
+              )}
+            </ModalFooter>
+          )}
         </ModalBody>
       </ModalContent>
     </ChakraModal>
