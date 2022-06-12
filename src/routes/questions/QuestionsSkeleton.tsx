@@ -14,6 +14,7 @@ export const QuestionsSkeleton = (): ReactElement<typeof QuestionsPage> => {
         <StatCardSkeleton />
       </SimpleGrid>
       <StatCardSkeleton />
+      <StatCardSkeleton />
     </QuestionsPage>
   );
 };

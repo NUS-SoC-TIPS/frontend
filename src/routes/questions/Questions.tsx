@@ -6,16 +6,20 @@ import { Card, WindowPeriodCard } from 'components/card';
 import { ErrorBanner } from 'components/errorBanner';
 import { getSubmissionStats } from 'lib/submissions';
 import { SubmissionStatsEntity } from 'types/api/submissions';
+import { SubmissionWithQuestion } from 'types/models/submission';
 import { computeWindowData } from 'utils/windowUtils';
 
+import { PastSubmission } from './PastSubmission';
 import { QuestionsPage } from './QuestionsPage';
 import { QuestionsSkeleton } from './QuestionsSkeleton';
 import { LatestSubmissionCard, NumCompletedCard } from './stats';
+import { PastSubmissionsTable } from './tables';
 
 interface State {
   isLoading: boolean;
   isError: boolean;
   stats: SubmissionStatsEntity | null;
+  selectedSubmission: SubmissionWithQuestion | null;
 }
 
 export const Questions = (): ReactElement<typeof QuestionsPage> => {
@@ -25,6 +29,7 @@ export const Questions = (): ReactElement<typeof QuestionsPage> => {
       isLoading: true,
       isError: false,
       stats: null,
+      selectedSubmission: null,
     } as State,
   );
 
@@ -57,7 +62,7 @@ export const Questions = (): ReactElement<typeof QuestionsPage> => {
     };
   }, []);
 
-  const { stats, isLoading, isError } = state;
+  const { stats, isLoading, isError, selectedSubmission } = state;
 
   if (isLoading) {
     return <QuestionsSkeleton />;
@@ -71,7 +76,17 @@ export const Questions = (): ReactElement<typeof QuestionsPage> => {
     );
   }
 
+  if (selectedSubmission) {
+    return <PastSubmission submission={selectedSubmission} />;
+  }
+
   const { status, startAt, endAt } = computeWindowData(stats.closestWindow);
+
+  const onView = (id: number): void => {
+    const selectedSubmission =
+      stats.allSubmissions.find((submission) => submission.id === id) ?? null;
+    setState({ selectedSubmission });
+  };
 
   return (
     <QuestionsPage>
@@ -88,6 +103,10 @@ export const Questions = (): ReactElement<typeof QuestionsPage> => {
         />
         <LatestSubmissionCard submission={stats?.latestSubmission} />
       </SimpleGrid>
+      <PastSubmissionsTable
+        onView={onView}
+        submissions={stats.allSubmissions}
+      />
       <Card>
         <Banner
           message="Keep an eye on this section for an exciting upcoming feature!"
