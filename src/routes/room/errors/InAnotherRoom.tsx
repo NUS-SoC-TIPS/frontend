@@ -25,7 +25,7 @@ export const InAnotherRoom = (): ReactElement<typeof RoomPage> => {
         }
         isOpen={true}
         onClose={(): void => undefined}
-        title="You are already in a room"
+        title="You are already in a room!"
       >
         You can only join one room at a time. You will need to complete your
         practice in your current room before you can start a new session.

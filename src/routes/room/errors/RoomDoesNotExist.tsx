@@ -19,7 +19,7 @@ export const RoomDoesNotExist = (): ReactElement<typeof RoomPage> => {
         }
         isOpen={true}
         onClose={(): void => undefined}
-        title="This room does not exist"
+        title="This room does not exist!"
       >
         Do create a new room back at the home page to get started with
         practicing!

@@ -38,7 +38,7 @@ export const RoomIsFull = (): ReactElement<typeof RoomPage> => {
         }
         isOpen={true}
         onClose={(): void => undefined}
-        title="This room is already full"
+        title="This room is already full!"
       >
         <Stack direction="column" spacing={2}>
           <Text>There are already two users in this room:</Text>

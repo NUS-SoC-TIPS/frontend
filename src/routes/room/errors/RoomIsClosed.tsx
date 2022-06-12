@@ -19,7 +19,7 @@ export const RoomIsClosed = (): ReactElement<typeof RoomPage> => {
         }
         isOpen={true}
         onClose={(): void => undefined}
-        title="This room has already been closed"
+        title="This room has already been closed!"
       >
         Do create a new room back at the home page to get started with
         practicing!
