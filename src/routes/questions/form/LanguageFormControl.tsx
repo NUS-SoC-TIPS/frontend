@@ -9,6 +9,7 @@ import { Question, QuestionType } from 'types/models/question';
 interface Props {
   question: Question;
   onChangeLanguage: (language: Language | null) => void;
+  defaultLanguage?: Language;
 }
 
 const algorithmLanguages: Language[] = [
@@ -57,6 +58,7 @@ interface LanguageOption {
 export const LanguageFormControl = ({
   question,
   onChangeLanguage,
+  defaultLanguage,
 }: Props): ReactElement<Props, typeof FormControl> => {
   const getOptions = (): LanguageOption[] => {
     let languages;
@@ -86,6 +88,14 @@ export const LanguageFormControl = ({
   return (
     <FormControl id="language" label="Language Used">
       <Select
+        defaultValue={
+          defaultLanguage
+            ? {
+                label: languageToString[defaultLanguage],
+                value: defaultLanguage,
+              }
+            : undefined
+        }
         onChange={onChangeWrapper}
         options={getOptions()}
         placeholder="Select language used..."

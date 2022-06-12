@@ -10,6 +10,8 @@ interface Props {
   isError: boolean;
   selectedQuestion: Question | null;
   onChange: (newValue: unknown) => void;
+  defaultQuestion?: Question;
+  isDisabled?: boolean;
 }
 
 // TODO: Write a custom component that combines react-select, virtualization and chakra-ui
@@ -22,6 +24,8 @@ export const NameFormControl = ({
   isError,
   selectedQuestion,
   onChange,
+  defaultQuestion,
+  isDisabled = false,
 }: Props): ReactElement<Props, typeof FormControl> => {
   const [isSufficientlySpecific, setIsSufficientlySpecific] = useState(false);
 
@@ -43,7 +47,15 @@ export const NameFormControl = ({
               ]
             : []
         }
-        isDisabled={isError}
+        defaultValue={
+          defaultQuestion
+            ? {
+                value: defaultQuestion.slug,
+                label: defaultQuestion.name,
+              }
+            : undefined
+        }
+        isDisabled={isError || isDisabled}
         isLoading={isLoading}
         loadOptions={(inputValue, callback): void => {
           const values = questions.filter((q) =>
