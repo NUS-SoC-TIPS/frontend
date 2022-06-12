@@ -18,6 +18,9 @@ const getColumns = (): TableColumn[] => {
     {
       label: 'Coursemology Name',
       key: 'coursemologyName',
+      options: {
+        isSortable: true,
+      },
     },
     {
       label: 'Coursemology Email',
@@ -28,11 +31,15 @@ const getColumns = (): TableColumn[] => {
             <Link href={`mailto:${email}`}>{email}</Link>
           </Text>
         ),
+        isSortable: true,
       },
     },
     {
       label: 'GitHub Username',
       key: 'githubUsername',
+      options: {
+        isSortable: true,
+      },
     },
     {
       label: 'Coursemology',

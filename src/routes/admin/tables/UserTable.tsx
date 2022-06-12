@@ -49,6 +49,9 @@ const getColumns = (
         customSearchValueRenderer: (user: User) =>
           `${user.name} ${user.githubUsername}`,
         isDownloadable: false,
+        isSortable: true,
+        customSortComparator: (a: User, b: User) =>
+          a.name.localeCompare(b.name),
       },
     },
     {
@@ -56,6 +59,7 @@ const getColumns = (
       key: 'name',
       options: {
         isVisible: false,
+        isSearchable: false,
       },
     },
     {
@@ -63,6 +67,7 @@ const getColumns = (
       key: 'githubUsername',
       options: {
         isVisible: false,
+        isSearchable: false,
       },
     },
     {
@@ -70,6 +75,8 @@ const getColumns = (
       key: 'coursemologyName',
       options: {
         isVisible: showCoursemology,
+        isSearchable: showCoursemology,
+        isSortable: true,
       },
     },
     {
@@ -82,7 +89,9 @@ const getColumns = (
           </Text>
         ),
         isVisible: showEmail,
+        isSearchable: showEmail,
         isDownloadable: showEmail,
+        isSortable: true,
       },
     },
     {
@@ -99,6 +108,7 @@ const getColumns = (
             />
           ),
         customCsvHeaderRenderer: (): string => 'Number of Questions Completed',
+        isSortable: true,
       },
     },
     {
@@ -115,7 +125,11 @@ const getColumns = (
         customCsvBodyRenderer: (hasCompletedInterview: boolean): string =>
           hasCompletedInterview ? 'Yes' : 'No',
         isVisible: !showRawCount,
+        isSearchable: false,
         isDownloadable: !showRawCount,
+        isSortable: true,
+        customSortComparator: (a: boolean, b: boolean) =>
+          String(b).localeCompare(String(a)),
       },
     },
     {
@@ -123,7 +137,9 @@ const getColumns = (
       key: 'numberOfInterviews',
       options: {
         isVisible: showRawCount,
+        isSearchable: showRawCount,
         isDownloadable: showRawCount,
+        isSortable: true,
       },
     },
     {
