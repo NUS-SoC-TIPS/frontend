@@ -123,6 +123,12 @@ export const VideoCollection = ({
     };
   }, [client, hasInitialised, id, ready, tracks, user, videoToken]);
 
+  useEffect(() => {
+    return () => {
+      tracks?.forEach((track) => track.close());
+    };
+  }, [tracks]);
+
   if (!client || !user) {
     return null;
   }
