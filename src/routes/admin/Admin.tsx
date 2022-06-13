@@ -3,8 +3,10 @@ import { SimpleGrid } from '@chakra-ui/react';
 
 import { StatCard } from 'components/card';
 import { ErrorBanner } from 'components/errorBanner';
-import { getAdminStats } from 'lib/admin';
+import { getAdminStats, getAdminWindows } from 'lib/admin';
 import { AdminStatsEntity } from 'types/api/admin';
+import { Window } from 'types/models/window';
+import { compareStartAtsDescending } from 'utils/sortUtils';
 
 import { AdminPage } from './AdminPage';
 import { AdminSkeleton } from './AdminSkeleton';
@@ -18,6 +20,7 @@ import {
 interface State {
   isLoading: boolean;
   isError: boolean;
+  windows: Window[];
   stats: AdminStatsEntity | null;
   selectedIndex: number;
 }
@@ -28,6 +31,7 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
     {
       isLoading: true,
       isError: false,
+      windows: [],
       stats: null,
       selectedIndex: 0,
     } as State,
@@ -36,10 +40,16 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
   useEffect(() => {
     let didCancel = false;
     const fetchData = (): Promise<void> => {
-      return getAdminStats()
+      return getAdminWindows()
+        .then((windows) => {
+          windows.sort(compareStartAtsDescending);
+          if (!didCancel) {
+            setState({ windows });
+          }
+          return getAdminStats(windows[0].id);
+        })
         .then((stats) => {
           if (!didCancel) {
-            stats.sort((a, b) => b.startAt.getTime() - a.startAt.getTime());
             setState({
               isLoading: false,
               stats,
@@ -63,13 +73,13 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
     };
   }, []);
 
-  const { stats, isLoading, isError, selectedIndex } = state;
+  const { windows, stats, isLoading, isError, selectedIndex } = state;
 
   if (isLoading) {
-    return <AdminSkeleton />;
+    return <AdminSkeleton selectedIndex={selectedIndex} windows={windows} />;
   }
 
-  if (isError || stats == null || stats.length === 0) {
+  if (isError || stats == null || windows.length === 0) {
     return (
       <AdminPage>
         <ErrorBanner maxW="100%" px={0} />
@@ -77,46 +87,41 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
     );
   }
 
-  const selectedWindow = stats[selectedIndex];
-
   return (
     <AdminPage
       onChangeWindow={(index): void => {
-        setState({ selectedIndex: index });
+        setState({ selectedIndex: index, isLoading: true });
+        getAdminStats(windows[index].id).then((stats) =>
+          setState({ stats, isLoading: false }),
+        );
       }}
       selectedIndex={selectedIndex}
-      windows={stats}
+      windows={windows}
     >
       <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
         <StatCard
-          stat={selectedWindow.numberOfStudents}
-          title="Number of Students on Platform"
+          stat={stats.numberOfStudents}
+          title="Number of Students This Window"
         />
         <StatCard
-          stat={selectedWindow.numberOfCompletedStudents}
+          stat={stats.numberOfCompletedStudents}
           title="Number of Students Completed"
         />
         <StatCard
-          stat={selectedWindow.averageNumberOfQuestions.toFixed(2)}
+          stat={stats.averageNumberOfQuestions.toFixed(2)}
           title="Average Number of Submissions"
         />
       </SimpleGrid>
       <CompletedTable
-        users={selectedWindow.studentsWithCompletedWindow}
-        window={selectedWindow}
+        users={stats.studentsWithCompletedWindow}
+        window={stats}
       />
       <IncompleteTable
-        users={selectedWindow.studentsWithIncompleteWindow}
-        window={selectedWindow}
+        users={stats.studentsWithIncompleteWindow}
+        window={stats}
       />
-      <MissingTable
-        users={selectedWindow.studentsYetToJoin}
-        window={selectedWindow}
-      />
-      <NonStudentTable
-        users={selectedWindow.nonStudents}
-        window={selectedWindow}
-      />
+      <MissingTable users={stats.studentsYetToJoin} window={stats} />
+      <NonStudentTable users={stats.nonStudents} window={stats} />
     </AdminPage>
   );
 };

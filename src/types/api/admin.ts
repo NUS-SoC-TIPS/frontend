@@ -1,3 +1,4 @@
+import { Exclusion } from 'types/models/exclusion';
 import { User } from 'types/models/user';
 import { Window } from 'types/models/window';
 
@@ -18,9 +19,13 @@ export interface UserWithWindowData extends User {
   hasCompletedInterview: boolean;
 }
 
+export interface ExcludedUserWithWindowData extends UserWithWindowData {
+  exclusion: Exclusion;
+}
+
 // If a user joins only in window 2, they will be present in
 // window 2's stats but under "yet to join" in window 1.
-export interface AdminStatWindow extends Window {
+export interface AdminStatsEntity extends Window {
   numberOfStudents: number; // Number of students who are on the platform by the end of the window
   numberOfCompletedStudents: number; // Number of students who have completed the targets
   averageNumberOfQuestions: number; // Average number of questions attempted by the students
@@ -28,6 +33,5 @@ export interface AdminStatWindow extends Window {
   studentsWithIncompleteWindow: UserWithWindowData[];
   studentsWithCompletedWindow: UserWithWindowData[];
   nonStudents: UserWithWindowData[];
+  excludedStudents: ExcludedUserWithWindowData[];
 }
-
-export type AdminStatsEntity = AdminStatWindow[];
