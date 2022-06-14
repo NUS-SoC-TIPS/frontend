@@ -8,13 +8,6 @@ export interface CreateExclusionDto {
   reason: string;
 }
 
-export interface UserThatHasYetToJoin {
-  coursemologyName: string;
-  coursemologyEmail: string;
-  coursemologyProfileLink: string;
-  githubUsername: string;
-}
-
 export interface UserWithWindowData extends User {
   coursemologyName: string;
   coursemologyEmail: string;
@@ -36,6 +29,5 @@ export interface AdminStatsEntity extends Window {
   averageNumberOfQuestions: number; // Average number of questions attempted by the students
   students: UserWithWindowData[];
   excludedStudents: ExcludedUserWithWindowData[];
-  studentsYetToJoin: UserThatHasYetToJoin[];
   nonStudents: UserWithWindowData[];
 }

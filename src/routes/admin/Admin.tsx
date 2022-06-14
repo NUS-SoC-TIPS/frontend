@@ -21,12 +21,7 @@ import { compareStartAtsDescending } from 'utils/sortUtils';
 import { AdminPage } from './AdminPage';
 import { AdminSkeleton } from './AdminSkeleton';
 import { ConfirmExclusion, ConfirmInclusion } from './modals';
-import {
-  ExcludedStudentTable,
-  MissingTable,
-  NonStudentTable,
-  StudentTable,
-} from './tables';
+import { ExcludedStudentTable, NonStudentTable, StudentTable } from './tables';
 
 interface State {
   isLoading: boolean;
@@ -232,7 +227,6 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
         users={stats.excludedStudents}
         window={stats}
       />
-      <MissingTable users={stats.studentsYetToJoin} window={stats} />
       <NonStudentTable users={stats.nonStudents} window={stats} />
       <ConfirmExclusion
         isOpen={studentBeingExcluded != null}
