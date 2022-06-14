@@ -111,7 +111,7 @@ const getColumns = (
           </Box>
         ),
         isVisible: usersAreStudents,
-        isSearchable: usersAreStudents,
+        isSearchable: false,
         isDownloadable: false,
         isSortable: true,
         customSortComparator: compareNamesAscending,
@@ -122,7 +122,7 @@ const getColumns = (
       key: 'coursemologyName',
       options: {
         isVisible: false,
-        isSearchable: false,
+        isSearchable: usersAreStudents,
         isDownloadable: usersAreStudents,
       },
     },
@@ -131,7 +131,7 @@ const getColumns = (
       key: 'coursemologyEmail',
       options: {
         isVisible: false,
-        isSearchable: false,
+        isSearchable: usersAreStudents,
         isDownloadable: usersAreStudents,
       },
     },
