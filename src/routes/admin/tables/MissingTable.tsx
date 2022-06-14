@@ -74,9 +74,9 @@ export const MissingTable = ({
         columns={columns}
         options={{
           title: 'Missing',
-          downloadFileName: `Missing for ${formatDate(
+          downloadFileName: `Missing Students (${formatDate(
             window.startAt,
-          )} - ${formatDate(window.endAt)}`,
+          )} - ${formatDate(window.endAt)})`,
         }}
         rows={users}
       />

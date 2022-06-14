@@ -1,20 +1,31 @@
 import { ReactElement, useEffect, useReducer } from 'react';
-import { SimpleGrid } from '@chakra-ui/react';
+import { SimpleGrid, useToast } from '@chakra-ui/react';
 
 import { StatCard } from 'components/card';
 import { ErrorBanner } from 'components/errorBanner';
-import { getAdminStats, getAdminWindows } from 'lib/admin';
-import { AdminStatsEntity } from 'types/api/admin';
+import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
+import {
+  createExclusion,
+  deleteExclusion,
+  getAdminStats,
+  getAdminWindows,
+} from 'lib/admin';
+import {
+  AdminStatsEntity,
+  ExcludedUserWithWindowData,
+  UserWithWindowData,
+} from 'types/api/admin';
 import { Window } from 'types/models/window';
 import { compareStartAtsDescending } from 'utils/sortUtils';
 
 import { AdminPage } from './AdminPage';
 import { AdminSkeleton } from './AdminSkeleton';
+import { ConfirmExclusion, ConfirmInclusion } from './modals';
 import {
-  CompletedTable,
-  IncompleteTable,
+  ExcludedStudentTable,
   MissingTable,
   NonStudentTable,
+  StudentTable,
 } from './tables';
 
 interface State {
@@ -23,6 +34,8 @@ interface State {
   windows: Window[];
   stats: AdminStatsEntity | null;
   selectedIndex: number;
+  studentBeingExcluded: UserWithWindowData | null;
+  studentBeingIncluded: ExcludedUserWithWindowData | null;
 }
 
 export const Admin = (): ReactElement<typeof AdminPage> => {
@@ -34,8 +47,11 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
       windows: [],
       stats: null,
       selectedIndex: 0,
+      studentBeingExcluded: null,
+      studentBeingIncluded: null,
     } as State,
   );
+  const toast = useToast();
 
   useEffect(() => {
     let didCancel = false;
@@ -73,7 +89,15 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
     };
   }, []);
 
-  const { windows, stats, isLoading, isError, selectedIndex } = state;
+  const {
+    windows,
+    stats,
+    isLoading,
+    isError,
+    selectedIndex,
+    studentBeingExcluded,
+    studentBeingIncluded,
+  } = state;
 
   if (isLoading) {
     return <AdminSkeleton selectedIndex={selectedIndex} windows={windows} />;
@@ -86,6 +110,92 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
       </AdminPage>
     );
   }
+
+  const onExclude = (id: string): void => {
+    const student = stats.students.find((student) => student.id === id);
+    if (!student) {
+      toast(ERROR_TOAST_PROPS);
+      return;
+    }
+    setState({ studentBeingExcluded: student });
+  };
+
+  const onConfirmExclude = async (reason: string): Promise<void> => {
+    if (!studentBeingExcluded) {
+      return;
+    }
+    createExclusion({
+      userId: studentBeingExcluded.id,
+      windowId: stats.id,
+      reason,
+    })
+      .then((exclusion) => {
+        const newStudents = stats.students.filter(
+          (student) => student.id !== studentBeingExcluded.id,
+        );
+        const newExcludedStudents = [
+          { ...studentBeingExcluded, exclusion },
+          ...stats.excludedStudents,
+        ];
+        setState({
+          stats: {
+            ...stats,
+            students: newStudents,
+            excludedStudents: newExcludedStudents,
+          },
+          studentBeingExcluded: null,
+        });
+        toast({
+          ...DEFAULT_TOAST_PROPS,
+          title: `${studentBeingExcluded.name} excluded.`,
+          description: 'What a pity...',
+          status: 'info',
+        });
+      })
+      .catch(() => {
+        toast(ERROR_TOAST_PROPS);
+      });
+  };
+
+  const onInclude = (id: string): void => {
+    const student = stats.excludedStudents.find((student) => student.id === id);
+    if (!student) {
+      toast(ERROR_TOAST_PROPS);
+      return;
+    }
+    setState({ studentBeingIncluded: student });
+  };
+
+  const onConfirmInclude = async (): Promise<void> => {
+    if (!studentBeingIncluded) {
+      return;
+    }
+    deleteExclusion(studentBeingIncluded.exclusion.id)
+      .then(() => {
+        const newExcludedStudents = stats.excludedStudents.filter(
+          (student) => student.id !== studentBeingIncluded.id,
+        );
+        const { exclusion: _exclusion, ...newStudent } = studentBeingIncluded;
+        const newStudents = [newStudent, ...stats.students];
+        setState({
+          stats: {
+            ...stats,
+            students: newStudents,
+            excludedStudents: newExcludedStudents,
+          },
+          studentBeingIncluded: null,
+        });
+        toast({
+          ...DEFAULT_TOAST_PROPS,
+          title: `${studentBeingIncluded.name} included!`,
+          description: 'Glad to have them back!',
+          status: 'success',
+        });
+      })
+      .catch(() => {
+        toast(ERROR_TOAST_PROPS);
+      });
+  };
 
   return (
     <AdminPage
@@ -112,16 +222,30 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
           title="Average Number of Submissions"
         />
       </SimpleGrid>
-      <CompletedTable
-        users={stats.studentsWithCompletedWindow}
+      <StudentTable
+        onExclude={onExclude}
+        users={stats.students}
         window={stats}
       />
-      <IncompleteTable
-        users={stats.studentsWithIncompleteWindow}
+      <ExcludedStudentTable
+        onInclude={onInclude}
+        users={stats.excludedStudents}
         window={stats}
       />
       <MissingTable users={stats.studentsYetToJoin} window={stats} />
       <NonStudentTable users={stats.nonStudents} window={stats} />
+      <ConfirmExclusion
+        isOpen={studentBeingExcluded != null}
+        name={studentBeingExcluded?.name ?? ''}
+        onClose={(): void => setState({ studentBeingExcluded: null })}
+        onConfirmExclude={onConfirmExclude}
+      />
+      <ConfirmInclusion
+        isOpen={studentBeingIncluded != null}
+        name={studentBeingIncluded?.name ?? ''}
+        onClose={(): void => setState({ studentBeingIncluded: null })}
+        onConfirmInclude={onConfirmInclude}
+      />
     </AdminPage>
   );
 };

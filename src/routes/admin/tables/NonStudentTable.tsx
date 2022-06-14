@@ -20,13 +20,12 @@ export const NonStudentTable = ({
     <UserTable
       options={{
         title: 'Non-Students',
-        downloadFileName: `Non-Students for ${formatDate(
+        downloadFileName: `Non-Students (${formatDate(
           window.startAt,
-        )} - ${formatDate(window.endAt)}`,
+        )} - ${formatDate(window.endAt)})`,
       }}
-      showCoursemology={false}
-      showEmail={false}
       users={users}
+      usersAreStudents={false}
     />
   );
 };

@@ -10,19 +10,23 @@ import { UserTable } from './UserTable';
 interface Props {
   users: UserWithWindowData[];
   window: Window;
+  onExclude: (id: string) => void;
 }
 
-export const IncompleteTable = ({
+export const StudentTable = ({
   users,
   window,
+  onExclude,
 }: Props): ReactElement<Props, typeof Card> => {
   return (
     <UserTable
+      isInclude={false}
+      onIncludeOrExclude={onExclude}
       options={{
-        title: 'Incomplete',
-        downloadFileName: `Incomplete for ${formatDate(
+        title: 'Students',
+        downloadFileName: `Students (${formatDate(
           window.startAt,
-        )} - ${formatDate(window.endAt)}`,
+        )} - ${formatDate(window.endAt)})`,
       }}
       users={users}
     />
