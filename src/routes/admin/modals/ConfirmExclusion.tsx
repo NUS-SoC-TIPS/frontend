@@ -43,6 +43,7 @@ export const ConfirmExclusion = ({
       return;
     }
     onConfirmExclude(reason);
+    setReason(null);
   };
 
   return (
@@ -53,7 +54,7 @@ export const ConfirmExclusion = ({
             Cancel
           </Button>
           <Button
-            isDisabled={reason == null}
+            isDisabled={reason == null || reason === ''}
             onClick={handleExclude}
             variant="primary"
           >
