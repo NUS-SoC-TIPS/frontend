@@ -2,6 +2,12 @@ import { Exclusion } from 'types/models/exclusion';
 import { User } from 'types/models/user';
 import { Window } from 'types/models/window';
 
+export interface CreateExclusionDto {
+  userId: string;
+  windowId: number;
+  reason: string;
+}
+
 export interface UserThatHasYetToJoin {
   coursemologyName: string;
   coursemologyEmail: string;
@@ -15,8 +21,7 @@ export interface UserWithWindowData extends User {
   coursemologyProfileLink: string;
   numberOfQuestions: number;
   numberOfInterviews: number;
-  hasCompletedQuestions: boolean;
-  hasCompletedInterview: boolean;
+  hasCompletedWindow: boolean;
 }
 
 export interface ExcludedUserWithWindowData extends UserWithWindowData {
@@ -29,9 +34,8 @@ export interface AdminStatsEntity extends Window {
   numberOfStudents: number; // Number of students who are on the platform by the end of the window
   numberOfCompletedStudents: number; // Number of students who have completed the targets
   averageNumberOfQuestions: number; // Average number of questions attempted by the students
-  studentsYetToJoin: UserThatHasYetToJoin[];
-  studentsWithIncompleteWindow: UserWithWindowData[];
-  studentsWithCompletedWindow: UserWithWindowData[];
-  nonStudents: UserWithWindowData[];
+  students: UserWithWindowData[];
   excludedStudents: ExcludedUserWithWindowData[];
+  studentsYetToJoin: UserThatHasYetToJoin[];
+  nonStudents: UserWithWindowData[];
 }
