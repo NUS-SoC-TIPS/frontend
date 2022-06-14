@@ -133,7 +133,7 @@ export const Table = ({
   const onSearch = (value: string): void => {
     const tokens = value.toLowerCase().split(' ');
     const newRows = rows.filter((row) => {
-      const values = renderedColumns
+      const values = columns
         .filter((column) => column.options?.isSearchable !== false)
         .map((column) => {
           let value = row[column.key];
