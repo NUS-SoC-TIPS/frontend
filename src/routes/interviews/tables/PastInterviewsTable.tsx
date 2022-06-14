@@ -4,8 +4,6 @@ import { Button } from '@chakra-ui/react';
 import { Card } from 'components/card';
 import { Table } from 'components/table';
 import { UserProfile } from 'components/userProfile';
-import { languageToString } from 'constants/enumStrings';
-import { Language } from 'types/models/code';
 import { RecordWithPartner } from 'types/models/record';
 import { User } from 'types/models/user';
 import { TableColumn } from 'types/table';
@@ -15,6 +13,7 @@ import {
   compareLanguagesAscending,
   compareNamesAscending,
 } from 'utils/sortUtils';
+import { languageRenderer } from 'utils/tableUtils';
 
 interface Props {
   interviews: RecordWithPartner[];
@@ -30,11 +29,10 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
         customBodyRenderer: (partner: User): ReactNode => (
           <UserProfile ps={0} user={partner} />
         ),
-        customSearchValueRenderer: (partner: User) =>
-          `${partner.name} ${partner.githubUsername}`,
+        customSearchValueRenderer: (partner: User) => partner.name,
         customCsvBodyRenderer: (partner: User) => partner.name,
-        isSortable: true,
         customSortComparator: compareNamesAscending,
+        isSortable: true,
       },
     },
     {
@@ -42,7 +40,6 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
       key: 'githubUsername',
       options: {
         isVisible: false,
-        isSearchable: false,
       },
     },
     {
@@ -52,8 +49,8 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
         customBodyRenderer: formatDate,
         customSearchValueRenderer: formatDate,
         customCsvBodyRenderer: formatDate,
-        isSortable: true,
         customSortComparator: compareDatesAscending,
+        isSortable: true,
       },
     },
     {
@@ -70,14 +67,11 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
       label: 'Language',
       key: 'language',
       options: {
-        customBodyRenderer: (language: Language): string =>
-          languageToString[language],
-        customSearchValueRenderer: (language: Language): string =>
-          languageToString[language],
-        customCsvBodyRenderer: (language: Language): string =>
-          languageToString[language],
-        isSortable: true,
+        customBodyRenderer: languageRenderer,
+        customSearchValueRenderer: languageRenderer,
+        customCsvBodyRenderer: languageRenderer,
         customSortComparator: compareLanguagesAscending,
+        isSortable: true,
       },
     },
     {

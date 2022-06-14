@@ -13,6 +13,7 @@ import {
   compareBooleansTrueFirst,
   compareNamesAscending,
 } from 'utils/sortUtils';
+import { booleanRenderer, exclusionRenderer } from 'utils/tableUtils';
 
 interface Props {
   users: UserWithWindowData[];
@@ -54,8 +55,7 @@ const getColumns = (
         customBodyRenderer: (user: User): ReactNode => (
           <UserProfile ps={0} user={user} />
         ),
-        customSearchValueRenderer: (user: User) =>
-          `${user.name} ${user.githubUsername}`,
+        isSearchable: false,
         isDownloadable: false,
         isSortable: true,
         customSortComparator: compareNamesAscending,
@@ -66,7 +66,6 @@ const getColumns = (
       key: 'name',
       options: {
         isVisible: false,
-        isSearchable: false,
       },
     },
     {
@@ -74,7 +73,6 @@ const getColumns = (
       key: 'githubUsername',
       options: {
         isVisible: false,
-        isSearchable: false,
       },
     },
     {
@@ -148,8 +146,6 @@ const getColumns = (
       label: 'Number of Questions',
       key: 'numberOfQuestions',
       options: {
-        customBodyRenderer: (numQuestions: number): ReactNode => numQuestions,
-        customCsvHeaderRenderer: (): string => 'Number of Questions Completed',
         isSortable: true,
       },
     },
@@ -164,23 +160,28 @@ const getColumns = (
       label: 'Completed Window',
       key: 'hasCompletedWindow',
       options: {
-        customBodyRenderer: (hasCompletedWindow: boolean) =>
-          hasCompletedWindow ? 'Yes' : 'No',
-        isSortable: true,
+        customBodyRenderer: booleanRenderer,
+        customSearchValueRenderer: booleanRenderer,
+        customCsvBodyRenderer: booleanRenderer,
         customSortComparator: compareBooleansTrueFirst,
-        customCsvBodyRenderer: (hasCompletedWindow: boolean) =>
-          hasCompletedWindow ? 'Yes' : 'No',
+        isSortable: true,
       },
     },
     {
       label: 'Reason for Exclusion',
       key: 'exclusion',
       options: {
-        customBodyRenderer: (exclusion: Exclusion | undefined) =>
-          exclusion?.reason ?? '-',
+        customBodyRenderer: exclusionRenderer,
+        customSearchValueRenderer: exclusionRenderer,
+        customCsvBodyRenderer: exclusionRenderer,
         isVisible: isInclude,
         isDownloadable: isInclude,
         isSearchable: isInclude,
+        customSortComparator: (
+          a: Exclusion | undefined,
+          b: Exclusion | undefined,
+        ) => exclusionRenderer(a).localeCompare(exclusionRenderer(b)),
+        isSortable: true,
       },
     },
     {

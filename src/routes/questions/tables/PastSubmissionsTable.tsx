@@ -4,11 +4,6 @@ import { Button } from '@chakra-ui/react';
 import { Card } from 'components/card';
 import { QuestionBox } from 'components/question';
 import { Table } from 'components/table';
-import {
-  difficultyToString,
-  languageToString,
-  sourceToString,
-} from 'constants/enumStrings';
 import { Language } from 'types/models/code';
 import {
   Question,
@@ -24,6 +19,11 @@ import {
   compareLanguagesAscending,
   compareNamesAscending,
 } from 'utils/sortUtils';
+import {
+  difficultyRenderer,
+  languageRenderer,
+  sourceRenderer,
+} from 'utils/tableUtils';
 
 interface Props {
   submissions: SubmissionWithQuestion[];
@@ -52,11 +52,10 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
             withDifficulty={false}
           />
         ),
-        customSearchValueRenderer: (question: Question) =>
-          `${question.name} ${question.difficulty} ${question.source}`,
+        customSearchValueRenderer: (question: Question) => question.name,
         customCsvBodyRenderer: (question: Question) => question.name,
-        isSortable: true,
         customSortComparator: compareNamesAscending,
+        isSortable: true,
       },
     },
     {
@@ -64,9 +63,8 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
       key: 'source',
       options: {
         isVisible: false,
-        isSearchable: false,
-        customCsvBodyRenderer: (source: QuestionSource) =>
-          sourceToString[source],
+        customCsvBodyRenderer: sourceRenderer,
+        customSearchValueRenderer: sourceRenderer,
       },
     },
     {
@@ -84,28 +82,22 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
       label: 'Difficulty',
       key: 'difficulty',
       options: {
-        customBodyRenderer: (difficulty: QuestionDifficulty): string =>
-          difficultyToString[difficulty],
-        customSearchValueRenderer: (difficulty: QuestionDifficulty): string =>
-          difficultyToString[difficulty],
-        customCsvBodyRenderer: (difficulty: QuestionDifficulty): string =>
-          difficultyToString[difficulty],
-        isSortable: true,
+        customBodyRenderer: difficultyRenderer,
+        customSearchValueRenderer: difficultyRenderer,
+        customCsvBodyRenderer: difficultyRenderer,
         customSortComparator: compareDifficultiesEasyFirst,
+        isSortable: true,
       },
     },
     {
       label: 'Language',
       key: 'languageUsed',
       options: {
-        customBodyRenderer: (language: Language): string =>
-          languageToString[language],
-        customSearchValueRenderer: (language: Language): string =>
-          languageToString[language],
-        customCsvBodyRenderer: (language: Language): string =>
-          languageToString[language],
-        isSortable: true,
+        customBodyRenderer: languageRenderer,
+        customSearchValueRenderer: languageRenderer,
+        customCsvBodyRenderer: languageRenderer,
         customSortComparator: compareLanguagesAscending,
+        isSortable: true,
       },
     },
     {
