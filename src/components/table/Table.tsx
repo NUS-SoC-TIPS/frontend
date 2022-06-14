@@ -43,28 +43,40 @@ export const Table = ({
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [allRows, setAllRows] = useState(rows);
   const [page, setPage] = useState(0);
+  const [searchValue, setSearchValue] = useState('');
   const [sortedColumnKey, setSortedColumnKey] = useState<string | null>(null);
   const [isAscending, setIsAscending] = useState(true);
-  const maxPage = Math.max(Math.ceil(allRows.length / 5) - 1, 0);
 
-  useEffect(() => {
-    if (page > maxPage) {
-      setPage(maxPage);
-    }
-  }, [page, maxPage]);
+  const tokens = searchValue.toLowerCase().split(' ');
+  const searchedRows =
+    searchValue === ''
+      ? allRows
+      : allRows.filter((row) => {
+          const values = columns
+            .filter((column) => column.options?.isSearchable !== false)
+            .map((column) => {
+              let value = row[column.key];
+              if (column.options?.customSearchValueRenderer) {
+                value = column.options.customSearchValueRenderer(value);
+              } else if (
+                typeof value !== 'string' &&
+                typeof value !== 'number' &&
+                typeof value !== 'boolean'
+              ) {
+                value = '';
+              }
+              return value;
+            })
+            .join('')
+            .toLowerCase();
+          return tokens.every((token) => values.includes(token));
+        });
 
-  useEffect(() => {
-    setAllRows(rows);
-    setSortedColumnKey(null);
-    setIsAscending(true);
-    setPage(0);
-  }, [rows]);
-
-  const sortedRows = allRows.slice();
+  const sortedSearchedRows = searchedRows;
   if (sortedColumnKey) {
     const comparator = columns.find((column) => column.key === sortedColumnKey)
       ?.options?.customSortComparator;
-    sortedRows.sort((a, b): number => {
+    sortedSearchedRows.sort((a, b): number => {
       const valueA = a[sortedColumnKey];
       const valueB = b[sortedColumnKey];
       if (comparator) {
@@ -82,19 +94,30 @@ export const Table = ({
     });
   }
 
-  const renderedRows = sortedRows.slice(page * 5, (page + 1) * 5);
+  const maxPage = Math.max(Math.ceil(sortedSearchedRows.length / 5) - 1, 0);
+  const renderedRows = sortedSearchedRows.slice(page * 5, (page + 1) * 5);
   const renderedColumns = columns.filter(
     (column) => column.options?.isVisible !== false,
   );
 
+  useEffect(() => {
+    if (page > maxPage) {
+      setPage(maxPage);
+    }
+  }, [page, maxPage]);
+
+  useEffect(() => {
+    setAllRows(rows);
+  }, [rows]);
+
   const getBottomMessage = (): string => {
-    if (allRows.length === 0) {
+    if (sortedSearchedRows.length === 0) {
       return 'Showing 0 results';
     }
     const lowerNumber = page * 5 + 1;
-    const upperNumber = Math.min((page + 1) * 5, allRows.length);
-    const results = allRows.length === 1 ? 'row' : 'rows';
-    return `Showing ${lowerNumber} to ${upperNumber} of ${allRows.length} ${results}`;
+    const upperNumber = Math.min((page + 1) * 5, sortedSearchedRows.length);
+    const results = sortedSearchedRows.length === 1 ? 'row' : 'rows';
+    return `Showing ${lowerNumber} to ${upperNumber} of ${sortedSearchedRows.length} ${results}`;
   };
 
   const onPrevious = (): void => {
@@ -128,31 +151,6 @@ export const Table = ({
       ),
     );
     return [headings, ...values];
-  };
-
-  const onSearch = (value: string): void => {
-    const tokens = value.toLowerCase().split(' ');
-    const newRows = rows.filter((row) => {
-      const values = columns
-        .filter((column) => column.options?.isSearchable !== false)
-        .map((column) => {
-          let value = row[column.key];
-          if (column.options?.customSearchValueRenderer) {
-            value = column.options.customSearchValueRenderer(value);
-          } else if (
-            typeof value !== 'string' &&
-            typeof value !== 'number' &&
-            typeof value !== 'boolean'
-          ) {
-            value = '';
-          }
-          return value;
-        })
-        .join('')
-        .toLowerCase();
-      return tokens.every((token) => values.includes(token));
-    });
-    setAllRows(newRows);
   };
 
   const renderColumnHeader = (column: TableColumn): ReactNode => {
@@ -217,7 +215,7 @@ export const Table = ({
                   <Icon as={FiSearch} boxSize="5" color="muted" />
                 </InputLeftElement>
                 <Input
-                  onChange={(event): void => onSearch(event.target.value)}
+                  onChange={(event): void => setSearchValue(event.target.value)}
                   placeholder="Search"
                 />
               </InputGroup>
