@@ -23,7 +23,7 @@ const RawUserProfile = ({
       <Avatar boxSize={10} name={user.name} src={user.photoUrl} />
       <Box>
         <Text
-          color="empahsized"
+          color="emphasized"
           fontSize="sm"
           fontWeight="medium"
           noOfLines={noOfLines}

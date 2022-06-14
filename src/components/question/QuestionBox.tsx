@@ -38,7 +38,7 @@ const RawQuestionBox = ({
     <Stack align="center" direction="row" justify="space-between" spacing={5}>
       <Box fontSize="sm">
         <Text
-          color="empahsized"
+          color="emphasized"
           fontSize="sm"
           fontWeight="medium"
           noOfLines={noOfLines}
