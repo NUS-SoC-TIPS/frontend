@@ -106,6 +106,10 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
     );
   }
 
+  const refetchStats = (): Promise<void> => {
+    return getAdminStats(stats.id).then((stats) => setState({ stats }));
+  };
+
   const onExclude = (id: string): void => {
     const student = stats.students.find((student) => student.id === id);
     if (!student) {
@@ -124,26 +128,13 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
       windowId: stats.id,
       reason,
     })
-      .then((exclusion) => {
-        const newStudents = stats.students.filter(
-          (student) => student.id !== studentBeingExcluded.id,
-        );
-        const newExcludedStudents = [
-          { ...studentBeingExcluded, exclusion },
-          ...stats.excludedStudents,
-        ];
-        setState({
-          stats: {
-            ...stats,
-            students: newStudents,
-            excludedStudents: newExcludedStudents,
-          },
-          studentBeingExcluded: null,
-        });
+      .then(refetchStats)
+      .then(() => {
+        setState({ studentBeingExcluded: null });
         toast({
           ...DEFAULT_TOAST_PROPS,
           title: `${studentBeingExcluded.name} excluded.`,
-          description: 'What a pity...',
+          description: 'What a bummer...',
           status: 'info',
         });
       })
@@ -166,20 +157,9 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
       return;
     }
     deleteExclusion(studentBeingIncluded.exclusion.id)
+      .then(refetchStats)
       .then(() => {
-        const newExcludedStudents = stats.excludedStudents.filter(
-          (student) => student.id !== studentBeingIncluded.id,
-        );
-        const { exclusion: _exclusion, ...newStudent } = studentBeingIncluded;
-        const newStudents = [newStudent, ...stats.students];
-        setState({
-          stats: {
-            ...stats,
-            students: newStudents,
-            excludedStudents: newExcludedStudents,
-          },
-          studentBeingIncluded: null,
-        });
+        setState({ studentBeingIncluded: null });
         toast({
           ...DEFAULT_TOAST_PROPS,
           title: `${studentBeingIncluded.name} included!`,

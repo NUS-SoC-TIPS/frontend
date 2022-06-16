@@ -6,10 +6,7 @@ import { Card, WindowPeriodCard } from 'components/card';
 import { ErrorBanner } from 'components/errorBanner';
 import { getSubmissionStats } from 'lib/submissions';
 import { SubmissionStatsEntity } from 'types/api/submissions';
-import {
-  QuestionSubmission,
-  SubmissionWithQuestion,
-} from 'types/models/submission';
+import { SubmissionWithQuestion } from 'types/models/submission';
 import { computeWindowData } from 'utils/windowUtils';
 
 import { AddQuestion } from './AddQuestion';
@@ -83,42 +80,37 @@ export const Questions = (): ReactElement<typeof QuestionsPage> => {
     );
   }
 
-  const onCreate = (submission: SubmissionWithQuestion): void => {
-    const submissions = [submission, ...stats.allSubmissions];
-    setState({
-      stats: {
-        ...stats,
-        allSubmissions: submissions,
-        latestSubmission: submission,
-      },
-    });
+  const refetchStats = (): void => {
+    setState({ isLoading: true });
+    getSubmissionStats()
+      .then((stats) => {
+        setState({
+          isLoading: false,
+          stats,
+        });
+      })
+      .catch(() => {
+        setState({
+          isLoading: false,
+          isError: true,
+        });
+      });
   };
 
   if (isAddingQuestion) {
     return (
       <AddQuestion
         onBack={(): void => setState({ isAddingQuestion: false })}
-        onCreate={onCreate}
+        onCreate={refetchStats}
       />
     );
   }
-
-  const onUpdate = (updatedSubmission: QuestionSubmission): void => {
-    const submissions = stats.allSubmissions.slice();
-    const index = submissions.findIndex(
-      (submission) => submission.id === updatedSubmission.id,
-    );
-    if (index !== -1) {
-      submissions[index] = { ...submissions[index], ...updatedSubmission };
-    }
-    setState({ stats: { ...stats, allSubmissions: submissions } });
-  };
 
   if (selectedSubmission) {
     return (
       <PastSubmission
         onBack={(): void => setState({ selectedSubmission: null })}
-        onUpdate={onUpdate}
+        onUpdate={refetchStats}
         submission={selectedSubmission}
       />
     );
