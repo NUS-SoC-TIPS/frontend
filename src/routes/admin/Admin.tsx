@@ -15,12 +15,19 @@ import {
   ExcludedUserWithWindowData,
   UserWithWindowData,
 } from 'types/api/admin';
+import { RecordWithPartner } from 'types/models/record';
+import { SubmissionWithQuestion } from 'types/models/submission';
 import { Window } from 'types/models/window';
 import { compareStartAtsDescending } from 'utils/sortUtils';
 
 import { AdminPage } from './AdminPage';
 import { AdminSkeleton } from './AdminSkeleton';
-import { ConfirmExclusion, ConfirmInclusion } from './modals';
+import {
+  ConfirmExclusion,
+  ConfirmInclusion,
+  InterviewsCompleted,
+  QuestionsCompleted,
+} from './modals';
 import { ExcludedStudentTable, NonStudentTable, StudentTable } from './tables';
 
 interface State {
@@ -31,6 +38,8 @@ interface State {
   selectedIndex: number;
   studentBeingExcluded: UserWithWindowData | null;
   studentBeingIncluded: ExcludedUserWithWindowData | null;
+  submissionsViewed: SubmissionWithQuestion[] | null;
+  recordsViewed: RecordWithPartner[] | null;
 }
 
 export const Admin = (): ReactElement<typeof AdminPage> => {
@@ -44,6 +53,8 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
       selectedIndex: 0,
       studentBeingExcluded: null,
       studentBeingIncluded: null,
+      submissionsViewed: null,
+      recordsViewed: null,
     } as State,
   );
   const toast = useToast();
@@ -92,6 +103,8 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
     selectedIndex,
     studentBeingExcluded,
     studentBeingIncluded,
+    submissionsViewed,
+    recordsViewed,
   } = state;
 
   if (isLoading) {
@@ -172,6 +185,13 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
       });
   };
 
+  const onViewSubmissions = (
+    submissionsViewed: SubmissionWithQuestion[],
+  ): void => setState({ submissionsViewed });
+
+  const onViewRecords = (recordsViewed: RecordWithPartner[]): void =>
+    setState({ recordsViewed });
+
   return (
     <AdminPage
       onChangeWindow={(index): void => {
@@ -199,15 +219,24 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
       </SimpleGrid>
       <StudentTable
         onExclude={onExclude}
+        onViewRecords={onViewRecords}
+        onViewSubmissions={onViewSubmissions}
         users={stats.students}
         window={stats}
       />
       <ExcludedStudentTable
         onInclude={onInclude}
+        onViewRecords={onViewRecords}
+        onViewSubmissions={onViewSubmissions}
         users={stats.excludedStudents}
         window={stats}
       />
-      <NonStudentTable users={stats.nonStudents} window={stats} />
+      <NonStudentTable
+        onViewRecords={onViewRecords}
+        onViewSubmissions={onViewSubmissions}
+        users={stats.nonStudents}
+        window={stats}
+      />
       <ConfirmExclusion
         isOpen={studentBeingExcluded != null}
         name={studentBeingExcluded?.name ?? ''}
@@ -219,6 +248,16 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
         name={studentBeingIncluded?.name ?? ''}
         onClose={(): void => setState({ studentBeingIncluded: null })}
         onConfirmInclude={onConfirmInclude}
+      />
+      <QuestionsCompleted
+        isOpen={submissionsViewed != null}
+        onClose={(): void => setState({ submissionsViewed: null })}
+        submissions={submissionsViewed ?? []}
+      />
+      <InterviewsCompleted
+        isOpen={recordsViewed != null}
+        onClose={(): void => setState({ recordsViewed: null })}
+        records={recordsViewed ?? []}
       />
     </AdminPage>
   );

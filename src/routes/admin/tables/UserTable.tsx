@@ -6,6 +6,8 @@ import { Table } from 'components/table';
 import { UserProfile } from 'components/userProfile';
 import { UserWithWindowData } from 'types/api/admin';
 import { Exclusion } from 'types/models/exclusion';
+import { RecordWithPartner } from 'types/models/record';
+import { SubmissionWithQuestion } from 'types/models/submission';
 import { User } from 'types/models/user';
 import { TableColumn, TableOptions } from 'types/table';
 import { emptyFunction } from 'utils/functionUtils';
@@ -21,6 +23,8 @@ interface Props {
   options?: TableOptions;
   isInclude?: boolean;
   onIncludeOrExclude?: (id: string) => void;
+  onViewSubmissions: (submissions: SubmissionWithQuestion[]) => void;
+  onViewRecords: (records: RecordWithPartner[]) => void;
 }
 
 interface Row {
@@ -35,8 +39,8 @@ interface Row {
   };
   coursemologyName: string;
   coursemologyEmail: string;
-  numberOfQuestions: number;
-  numberOfInterviews: number;
+  submissions: SubmissionWithQuestion[];
+  records: RecordWithPartner[];
   hasCompletedWindow: boolean;
   coursemologyProfileLink: string;
   exclusion?: Exclusion;
@@ -46,6 +50,8 @@ const getColumns = (
   usersAreStudents: boolean,
   isInclude: boolean,
   onIncludeOrExclude: (id: string) => void,
+  onViewSubmissions: (submissions: SubmissionWithQuestion[]) => void,
+  onViewRecords: (records: RecordWithPartner[]) => void,
 ): TableColumn[] => {
   return [
     {
@@ -144,15 +150,47 @@ const getColumns = (
     },
     {
       label: 'Number of Questions',
-      key: 'numberOfQuestions',
+      key: 'submissions',
       options: {
+        customBodyRenderer: (submissions: SubmissionWithQuestion[]) =>
+          submissions.length === 0 ? (
+            0
+          ) : (
+            <Link onClick={(): void => onViewSubmissions(submissions)}>
+              {submissions.length}
+            </Link>
+          ),
+        customSearchValueRenderer: (submissions: SubmissionWithQuestion[]) =>
+          `${submissions.length}`,
+        customCsvBodyRenderer: (submissions: SubmissionWithQuestion[]) =>
+          `${submissions.length}`,
+        customSortComparator: (
+          a: SubmissionWithQuestion[],
+          b: SubmissionWithQuestion[],
+        ) => a.length - b.length,
         isSortable: true,
       },
     },
     {
       label: 'Number of Interviews',
-      key: 'numberOfInterviews',
+      key: 'records',
       options: {
+        customBodyRenderer: (records: RecordWithPartner[]) =>
+          records.length === 0 ? (
+            0
+          ) : (
+            <Link onClick={(): void => onViewRecords(records)}>
+              {records.length}
+            </Link>
+          ),
+        customSearchValueRenderer: (records: RecordWithPartner[]) =>
+          `${records.length}`,
+        customCsvBodyRenderer: (records: RecordWithPartner[]) =>
+          `${records.length}`,
+        customSortComparator: (
+          a: RecordWithPartner[],
+          b: RecordWithPartner[],
+        ) => a.length - b.length,
         isSortable: true,
       },
     },
@@ -211,8 +249,8 @@ const transformData = (
 ): Row[] => {
   return users.map((user) => {
     const {
-      numberOfQuestions,
-      numberOfInterviews,
+      records,
+      submissions,
       hasCompletedWindow,
       coursemologyName,
       coursemologyEmail,
@@ -220,6 +258,7 @@ const transformData = (
       exclusion,
       ...userData
     } = user;
+
     return {
       id: user.id,
       user: userData,
@@ -232,8 +271,8 @@ const transformData = (
       },
       coursemologyName,
       coursemologyEmail,
-      numberOfQuestions,
-      numberOfInterviews,
+      records,
+      submissions,
       hasCompletedWindow,
       coursemologyProfileLink,
       exclusion,
@@ -246,11 +285,26 @@ export const UserTable = ({
   usersAreStudents = true,
   isInclude = false,
   options = {},
+  onViewSubmissions,
+  onViewRecords,
   onIncludeOrExclude = emptyFunction,
 }: Props): ReactElement<Props, typeof Card> => {
   const columns = useMemo(
-    () => getColumns(usersAreStudents, isInclude, onIncludeOrExclude),
-    [usersAreStudents, isInclude, onIncludeOrExclude],
+    () =>
+      getColumns(
+        usersAreStudents,
+        isInclude,
+        onIncludeOrExclude,
+        onViewSubmissions,
+        onViewRecords,
+      ),
+    [
+      usersAreStudents,
+      isInclude,
+      onIncludeOrExclude,
+      onViewSubmissions,
+      onViewRecords,
+    ],
   );
   const rows = useMemo(() => transformData(users), [users]);
 
