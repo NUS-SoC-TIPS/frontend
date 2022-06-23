@@ -1,4 +1,6 @@
 import { Exclusion } from 'types/models/exclusion';
+import { RecordWithPartner } from 'types/models/record';
+import { SubmissionWithQuestion } from 'types/models/submission';
 import { User } from 'types/models/user';
 import { Window } from 'types/models/window';
 
@@ -12,8 +14,8 @@ export interface UserWithWindowData extends User {
   coursemologyName: string;
   coursemologyEmail: string;
   coursemologyProfileLink: string;
-  numberOfQuestions: number;
-  numberOfInterviews: number;
+  submissions: SubmissionWithQuestion[];
+  records: RecordWithPartner[];
   hasCompletedWindow: boolean;
 }
 
