@@ -1,2 +1,2 @@
 export * from './QuestionBox';
-export * from './QuestionBoxButton';
+export * from './QuestionBoxHighlight';

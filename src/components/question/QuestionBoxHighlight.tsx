@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { Button } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 import { Question } from 'types/models/question';
 
@@ -9,18 +9,17 @@ interface Props {
   question: Question;
 }
 
-export const QuestionBoxButton = ({
+export const QuestionBoxHighlight = ({
   question,
-}: Props): ReactElement<Props, typeof Button> => {
+}: Props): ReactElement<Props, typeof Box> => {
   return (
-    <Button
-      cursor="default"
-      justifyContent="start"
-      px={{ base: 3, md: 4 }}
-      py={8}
-      w={'100%'}
+    <Box
+      _hover={{ bg: 'whiteAlpha.300' }}
+      bg="whiteAlpha.200"
+      borderRadius="lg"
+      p={3}
     >
       <QuestionBox question={question} withBox={false} />
-    </Button>
+    </Box>
   );
 };

@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import { Stack } from '@chakra-ui/react';
 
 import { Modal } from 'components/modal';
-import { QuestionBoxButton } from 'components/question';
+import { QuestionBoxHighlight } from 'components/question';
 import { SubmissionWithQuestion } from 'types/models/submission';
 
 interface Props {
@@ -26,7 +26,7 @@ export const QuestionsCompleted = ({
     >
       <Stack direction="column" spacing={2}>
         {submissions.map((submission) => (
-          <QuestionBoxButton
+          <QuestionBoxHighlight
             key={submission.id}
             question={submission.question}
           />

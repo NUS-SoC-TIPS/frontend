@@ -1,2 +1,2 @@
 export * from './UserProfile';
-export * from './UserProfileButton';
+export * from './UserProfileHighlight';

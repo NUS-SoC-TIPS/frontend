@@ -35,13 +35,7 @@ const RawQuestionBox = ({
   };
 
   return wrapComponent(
-    <Stack
-      align="center"
-      direction="row"
-      justify="space-between"
-      spacing={5}
-      w="100%"
-    >
+    <Stack align="center" direction="row" justify="space-between" spacing={5}>
       <Box fontSize="sm">
         <Text
           color="emphasized"

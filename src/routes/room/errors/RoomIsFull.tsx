@@ -4,7 +4,7 @@ import { Button, Stack, Text } from '@chakra-ui/react';
 
 import { useAppSelector } from 'app/hooks';
 import { Modal } from 'components/modal';
-import { UserProfileButton } from 'components/userProfile';
+import { UserProfileHighlight } from 'components/userProfile';
 import { INTERVIEWS } from 'constants/routes';
 
 import { RoomPage } from '../RoomPage';
@@ -27,8 +27,8 @@ export const RoomIsFull = (): ReactElement<typeof RoomPage> => {
       >
         <Stack direction="column" spacing={2}>
           <Text>There are already two users in this room:</Text>
-          <UserProfileButton user={usersInRoom[0]} />
-          <UserProfileButton user={usersInRoom[1]} />
+          <UserProfileHighlight user={usersInRoom[0]} />
+          <UserProfileHighlight user={usersInRoom[1]} />
         </Stack>
       </Modal>
     </RoomPage>

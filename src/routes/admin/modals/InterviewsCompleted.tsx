@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import { Stack } from '@chakra-ui/react';
 
 import { Modal } from 'components/modal';
-import { UserProfileButton } from 'components/userProfile';
+import { UserProfileHighlight } from 'components/userProfile';
 import { RecordWithPartner } from 'types/models/record';
 
 interface Props {
@@ -26,7 +26,7 @@ export const InterviewsCompleted = ({
     >
       <Stack direction="column" spacing={2}>
         {records.map((record) => (
-          <UserProfileButton key={record.id} user={record.partner} />
+          <UserProfileHighlight key={record.id} user={record.partner} />
         ))}
       </Stack>
     </Modal>
