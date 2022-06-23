@@ -4,25 +4,10 @@ import { Button, Stack, Text } from '@chakra-ui/react';
 
 import { useAppSelector } from 'app/hooks';
 import { Modal } from 'components/modal';
-import { UserProfile } from 'components/userProfile';
+import { UserProfileButton } from 'components/userProfile';
 import { INTERVIEWS } from 'constants/routes';
-import { User } from 'types/models/user';
 
 import { RoomPage } from '../RoomPage';
-
-interface UserButtonProps {
-  user: User;
-}
-
-const UserButton = ({
-  user,
-}: UserButtonProps): ReactElement<UserButtonProps, typeof Button> => {
-  return (
-    <Button cursor="default" justifyContent="start" px={1} py={8} w={'100%'}>
-      <UserProfile user={user} />
-    </Button>
-  );
-};
 
 export const RoomIsFull = (): ReactElement<typeof RoomPage> => {
   const navigate = useNavigate();
@@ -42,8 +27,8 @@ export const RoomIsFull = (): ReactElement<typeof RoomPage> => {
       >
         <Stack direction="column" spacing={2}>
           <Text>There are already two users in this room:</Text>
-          <UserButton user={usersInRoom[0]} />
-          <UserButton user={usersInRoom[1]} />
+          <UserProfileButton user={usersInRoom[0]} />
+          <UserProfileButton user={usersInRoom[1]} />
         </Stack>
       </Modal>
     </RoomPage>
