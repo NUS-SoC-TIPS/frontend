@@ -37,10 +37,12 @@ const VideoPanel = ({
 
 interface Props {
   partnerName?: string;
+  isPartnerInRoom: boolean;
 }
 
 export const VideoCollection = ({
   partnerName = '',
+  isPartnerInRoom,
 }: Props): ReactElement<Props, typeof Box> | null => {
   const [inCall, setInCall] = useState(true);
   const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
@@ -153,8 +155,8 @@ export const VideoCollection = ({
             <AgoraVideoPlayer className="agora-video" videoTrack={tracks[1]} />
             <Controls name={user.name} tracks={tracks} />
           </VideoPanel>
-          {users.length > 0 ? (
-            users[0].videoTrack ? (
+          {isPartnerInRoom ? (
+            users.length > 0 && users[0].videoTrack ? (
               <VideoPanel>
                 <AgoraVideoPlayer
                   className="agora-video"

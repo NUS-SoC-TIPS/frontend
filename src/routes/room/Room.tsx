@@ -40,7 +40,9 @@ export const Room = (): ReactElement => {
   const token = tokenUtils.getToken();
   const params = useParams();
   const [socket, setSocket] = useState<Socket | null>(null);
-  const { status, partner } = useAppSelector((state) => state.room);
+  const { status, partner, isPartnerInRoom } = useAppSelector(
+    (state) => state.room,
+  );
   const dispatch = useAppDispatch();
   const isTablet = useBreakpointValue({ base: false, md: true });
   const { width, height } = useWindowDimensions();
@@ -124,7 +126,10 @@ export const Room = (): ReactElement => {
             socket={socket}
           />
         )}
-        <VideoCollection partnerName={partner?.name} />
+        <VideoCollection
+          isPartnerInRoom={isPartnerInRoom}
+          partnerName={partner?.name}
+        />
       </Box>
       <BottomBar socket={socket} />
     </RoomPage>
