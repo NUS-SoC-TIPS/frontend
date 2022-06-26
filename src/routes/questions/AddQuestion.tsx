@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { ReactElement, useEffect, useReducer } from 'react';
+import { ReactElement, useCallback, useEffect, useReducer } from 'react';
 import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 
 import { Dashboard, Page } from 'components/page';
@@ -92,7 +92,7 @@ export const AddQuestion = ({
     return (
       state.selectedQuestion == null ||
       state.languageUsed == null ||
-      state.codeWritten === ''
+      state.codeWritten.trim() === ''
     );
   };
 
@@ -102,7 +102,7 @@ export const AddQuestion = ({
       questionSlug: state.selectedQuestion!.slug,
       questionSource: state.selectedQuestion!.source,
       languageUsed: state.languageUsed!,
-      codeWritten: state.codeWritten,
+      codeWritten: state.codeWritten.trim(),
     })
       .then((data): void => {
         onCreate({ ...data, question: state.selectedQuestion! });
@@ -119,6 +119,10 @@ export const AddQuestion = ({
         setState({ isAdding: false });
       });
   };
+
+  const onChangeCode = useCallback((codeWritten: string): void => {
+    setState({ codeWritten });
+  }, []);
 
   return (
     <Page>
@@ -152,7 +156,7 @@ export const AddQuestion = ({
             <CodeFormControl
               code={state.codeWritten}
               language={state.languageUsed}
-              onChange={(codeWritten): void => setState({ codeWritten })}
+              onChange={onChangeCode}
             />
           )}
           {state.selectedQuestion && (
