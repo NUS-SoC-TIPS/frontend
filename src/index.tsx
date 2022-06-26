@@ -12,6 +12,7 @@ import { App } from './app';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 import '@fontsource/inter/variable.css';
+import './index.scss';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
