@@ -30,7 +30,6 @@ export const ROOM_EVENTS = {
 export const CODE_EVENTS = {
   UPDATE_CODE: 'update_code',
   UPDATE_LANGUAGE: 'update_language',
-  UPDATE_CURSOR: 'update_cursor',
 };
 
 export const NOTES_EVENTS = {

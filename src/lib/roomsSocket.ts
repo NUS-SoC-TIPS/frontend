@@ -2,12 +2,11 @@ import { Socket } from 'socket.io-client';
 
 import { store } from 'app/store';
 import { AUTH_EVENTS, GENERAL_EVENTS, ROOM_EVENTS } from 'constants/events';
-import { setDoc, setLanguage } from 'reducers/codeReducer';
+import { setLanguage } from 'reducers/codeReducer';
 import { setNotes } from 'reducers/panelReducer';
 import { RoomJoiningStatus, updateRoomState } from 'reducers/roomReducer';
 import { Language } from 'types/models/code';
 import { User } from 'types/models/user';
-import { applyChanges, initEmptyDoc } from 'utils/automergeUtils';
 
 export const closeRoom = (socket: Socket): void => {
   socket.emit(ROOM_EVENTS.CLOSE_ROOM);
@@ -32,21 +31,12 @@ const handleJoinRoom = (socket: Socket): void => {
       id: number;
       partner: User | null;
       videoToken: string;
-      code: string[];
       isPartnerInRoom: boolean;
       language: Language;
       notes: string;
     }) => {
-      const {
-        id,
-        partner,
-        videoToken,
-        notes,
-        code,
-        language,
-        isPartnerInRoom,
-      } = data;
-      const doc = applyChanges(initEmptyDoc(), code);
+      const { id, partner, videoToken, notes, language, isPartnerInRoom } =
+        data;
       store.dispatch(
         updateRoomState({
           id,
@@ -57,7 +47,6 @@ const handleJoinRoom = (socket: Socket): void => {
         }),
       );
       store.dispatch(setNotes(notes));
-      store.dispatch(setDoc(doc));
       store.dispatch(setLanguage(language));
     },
   );
