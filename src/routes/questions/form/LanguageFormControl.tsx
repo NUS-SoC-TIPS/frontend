@@ -4,7 +4,7 @@ import { FormControl } from 'components/formControl';
 import { Select } from 'components/select';
 import { languageToString } from 'constants/enumStrings';
 import { Language } from 'types/models/code';
-import { Question, QuestionType } from 'types/models/question';
+import { Question, QuestionSource, QuestionType } from 'types/models/question';
 
 interface Props {
   question: Question;
@@ -50,6 +50,30 @@ const concurrencyLanguages: Language[] = [
   Language.C_SHARP,
 ];
 
+const kattisLanguages: Language[] = [
+  Language.C,
+  Language.C_SHARP,
+  Language.C_PLUS_PLUS,
+  Language.COBOL,
+  Language.LISP,
+  Language.F_SHARP,
+  Language.FORTRAN,
+  Language.GO,
+  Language.HASKELL,
+  Language.JAVA,
+  Language.JAVASCRIPT,
+  Language.KOTLIN,
+  Language.OBJECTIVE_C,
+  Language.OCAML,
+  Language.PASCAL,
+  Language.PHP,
+  Language.PROLOG,
+  Language.PYTHON,
+  Language.PYTHON_THREE,
+  Language.RUBY,
+  Language.RUST,
+];
+
 interface LanguageOption {
   label: string;
   value: Language;
@@ -62,18 +86,24 @@ export const LanguageFormControl = ({
 }: Props): ReactElement<Props, typeof FormControl> => {
   const getOptions = (): LanguageOption[] => {
     let languages;
-    switch (question.type) {
-      case QuestionType.ALGORITHMS:
-        languages = algorithmLanguages;
+    switch (question.source) {
+      case QuestionSource.KATTIS:
+        languages = kattisLanguages;
         break;
-      case QuestionType.DATABASE:
-        languages = databaseLanguages;
-        break;
-      case QuestionType.CONCURRENCY:
-        languages = concurrencyLanguages;
-        break;
-      case QuestionType.SHELL:
-        languages = shellLanguages;
+      default:
+        switch (question.type) {
+          case QuestionType.ALGORITHMS:
+            languages = algorithmLanguages;
+            break;
+          case QuestionType.DATABASE:
+            languages = databaseLanguages;
+            break;
+          case QuestionType.CONCURRENCY:
+            languages = concurrencyLanguages;
+            break;
+          case QuestionType.SHELL:
+            languages = shellLanguages;
+        }
     }
     return languages.map((language) => ({
       label: languageToString[language],
