@@ -6,14 +6,21 @@ import { Language } from 'types/models/code';
 
 import 'ace-builds/webpack-resolver';
 import 'ace-builds/src-noconflict/mode-c_cpp'; // For both C and C++
+import 'ace-builds/src-noconflict/mode-cobol';
 import 'ace-builds/src-noconflict/mode-csharp';
 import 'ace-builds/src-noconflict/mode-elixir';
 import 'ace-builds/src-noconflict/mode-erlang';
+import 'ace-builds/src-noconflict/mode-fortran';
+import 'ace-builds/src-noconflict/mode-fsharp';
 import 'ace-builds/src-noconflict/mode-golang';
+import 'ace-builds/src-noconflict/mode-haskell';
 import 'ace-builds/src-noconflict/mode-java';
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/mode-kotlin';
+import 'ace-builds/src-noconflict/mode-lisp';
 import 'ace-builds/src-noconflict/mode-mysql';
+import 'ace-builds/src-noconflict/mode-objectivec';
+import 'ace-builds/src-noconflict/mode-ocaml';
 import 'ace-builds/src-noconflict/mode-php';
 import 'ace-builds/src-noconflict/mode-plain_text'; // For when language is unspecified
 import 'ace-builds/src-noconflict/mode-python'; // For both Python and Python 3

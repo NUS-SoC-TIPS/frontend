@@ -21,4 +21,13 @@ export enum Language {
   MY_SQL = 'MY_SQL',
   MS_SQL_SERVER = 'MS_SQL_SERVER',
   ORACLE = 'ORACLE',
+  COBOL = 'COBOL',
+  LISP = 'LISP',
+  F_SHARP = 'F_SHARP',
+  FORTRAN = 'FORTRAN',
+  HASKELL = 'HASKELL',
+  OBJECTIVE_C = 'OBJECTIVE_C',
+  OCAML = 'OCAML',
+  PASCAL = 'PASCAL',
+  PROLOG = 'PROLOG',
 }
