@@ -33,6 +33,7 @@
     "codemirror-lang-elixir": "^2.0.0",
     "firebase": "^9.8.3",
     "framer-motion": "^6.3.11",
+    "lib0": "^0.2.51",
     "lottie-react": "^2.2.1",
     "node-sass": "^7.0.1",
     "react": "^18.1.0",
@@ -46,6 +47,7 @@
     "socket.io-client": "^4.5.1",
     "web-vitals": "^2.1.0",
     "y-codemirror.next": "^0.3.0",
+    "y-protocols": "^1.0.5",
     "y-websocket": "^1.4.3",
     "yjs": "^13.5.39"
   },
