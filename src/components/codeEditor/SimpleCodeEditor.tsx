@@ -21,8 +21,10 @@ import 'ace-builds/src-noconflict/mode-lisp';
 import 'ace-builds/src-noconflict/mode-mysql';
 import 'ace-builds/src-noconflict/mode-objectivec';
 import 'ace-builds/src-noconflict/mode-ocaml';
+import 'ace-builds/src-noconflict/mode-pascal';
 import 'ace-builds/src-noconflict/mode-php';
 import 'ace-builds/src-noconflict/mode-plain_text'; // For when language is unspecified
+import 'ace-builds/src-noconflict/mode-prolog'; // For when language is unspecified
 import 'ace-builds/src-noconflict/mode-python'; // For both Python and Python 3
 import 'ace-builds/src-noconflict/mode-ruby';
 import 'ace-builds/src-noconflict/mode-rust';
