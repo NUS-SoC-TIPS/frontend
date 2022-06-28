@@ -22,6 +22,7 @@ interface Props {
   language: Language | null;
   username: string;
   socket: Socket;
+  roomSlug: string;
   width?: string;
   height?: string;
 }
@@ -30,6 +31,7 @@ export const CodeEditor = ({
   height,
   width,
   socket,
+  roomSlug,
   language,
   username,
 }: Props): ReactElement<Props, 'div'> => {
@@ -54,7 +56,7 @@ export const CodeEditor = ({
 
     const yDoc = new Doc();
     const provider = new YjsProvider(socket, yDoc);
-    const yText = yDoc.getText('codemirror');
+    const yText = yDoc.getText(roomSlug);
 
     provider.awareness.setLocalStateField('user', {
       name: username,
@@ -98,7 +100,7 @@ export const CodeEditor = ({
       yDoc.destroy();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [element, isDark, username]);
+  }, [element, isDark, username, roomSlug]);
 
   useEffect(() => {
     if (view && language) {

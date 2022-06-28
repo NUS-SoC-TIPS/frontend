@@ -72,7 +72,7 @@ export const Room = (): ReactElement => {
     };
   }, [token, params.slug, dispatch]);
 
-  if (!socket || status === RoomJoiningStatus.LOADING) {
+  if (!socket || status === RoomJoiningStatus.LOADING || !params.slug) {
     return <Loading />;
   }
   if (status === RoomJoiningStatus.CLOSED) {
@@ -120,6 +120,7 @@ export const Room = (): ReactElement => {
         <CodeEditor
           height={isTablet ? `${height - 96}px` : `${scaledLength}px`}
           language={language}
+          roomSlug={params.slug}
           socket={socket}
           username={user?.name ?? ''}
           width={isTablet ? `${scaledLength}px` : '100%'}
