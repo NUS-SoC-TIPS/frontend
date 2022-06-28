@@ -1,6 +1,6 @@
 export const colors = [
-  { color: '#30bced', light: '#30bced33' },
   { color: '#6eeb83', light: '#6eeb8333' },
+  { color: '#30bced', light: '#30bced33' },
   { color: '#ffbc42', light: '#ffbc4233' },
   { color: '#ecd444', light: '#ecd44433' },
   { color: '#ee6352', light: '#ee635233' },
@@ -9,4 +9,6 @@ export const colors = [
   { color: '#1be7ff', light: '#1be7ff33' },
 ];
 
-export const oneDarkBackgroundColor = '#282c34';
+export const DEFAULT_CURSOR_COLOR = colors[0];
+
+export const ONE_DARK_BACKGROUND_COLOR = '#282c34';

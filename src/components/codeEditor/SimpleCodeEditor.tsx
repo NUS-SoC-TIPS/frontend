@@ -8,7 +8,7 @@ import { basicSetup, EditorView } from 'codemirror';
 
 import { Language } from 'types/models/code';
 
-import { oneDarkBackgroundColor } from './colors';
+import { ONE_DARK_BACKGROUND_COLOR } from './colors';
 import { getLanguageExtension } from './languages';
 import './CodeEditor.scss';
 
@@ -98,7 +98,7 @@ export const SimpleCodeEditor = ({
       style={{
         height,
         width,
-        backgroundColor: isDark ? oneDarkBackgroundColor : 'snow',
+        backgroundColor: isDark ? ONE_DARK_BACKGROUND_COLOR : 'snow',
       }}
     />
   );

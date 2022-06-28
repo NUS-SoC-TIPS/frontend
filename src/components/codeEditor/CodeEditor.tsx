@@ -11,12 +11,10 @@ import { Doc } from 'yjs';
 
 import { Language } from 'types/models/code';
 
-import { colors, oneDarkBackgroundColor } from './colors';
+import { DEFAULT_CURSOR_COLOR, ONE_DARK_BACKGROUND_COLOR } from './colors';
 import { getLanguageExtension } from './languages';
 import { YjsProvider } from './YjsProvider';
 import './CodeEditor.scss';
-
-const userColor = colors[0];
 
 interface Props {
   language: Language | null;
@@ -60,8 +58,8 @@ export const CodeEditor = ({
 
     provider.awareness.setLocalStateField('user', {
       name: username,
-      color: userColor.color,
-      colorLight: userColor.light,
+      color: DEFAULT_CURSOR_COLOR.color,
+      colorLight: DEFAULT_CURSOR_COLOR.light,
     });
 
     const view = new EditorView({
@@ -118,7 +116,7 @@ export const CodeEditor = ({
       style={{
         height,
         width,
-        backgroundColor: isDark ? oneDarkBackgroundColor : 'snow',
+        backgroundColor: isDark ? ONE_DARK_BACKGROUND_COLOR : 'snow',
       }}
     />
   );
