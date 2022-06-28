@@ -5,14 +5,15 @@ import { Compartment, EditorState } from '@codemirror/state';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { keymap } from '@codemirror/view';
 import { basicSetup, EditorView } from 'codemirror';
+import { Socket } from 'socket.io-client';
 import { yCollab, yUndoManagerKeymap } from 'y-codemirror.next';
-import { WebsocketProvider } from 'y-websocket';
 import { Doc } from 'yjs';
 
 import { Language } from 'types/models/code';
 
 import { colors, oneDarkBackgroundColor } from './colors';
 import { getLanguageExtension } from './languages';
+import { YjsProvider } from './YjsProvider';
 import './CodeEditor.scss';
 
 const userColor = colors[0];
@@ -20,6 +21,7 @@ const userColor = colors[0];
 interface Props {
   language: Language | null;
   username: string;
+  socket: Socket;
   width?: string;
   height?: string;
 }
@@ -27,6 +29,7 @@ interface Props {
 export const CodeEditor = ({
   height,
   width,
+  socket,
   language,
   username,
 }: Props): ReactElement<Props, 'div'> => {
@@ -50,11 +53,7 @@ export const CodeEditor = ({
     }
 
     const yDoc = new Doc();
-    const provider = new WebsocketProvider(
-      'wss://demos.yjs.dev',
-      'codemirror.next-demo',
-      yDoc,
-    );
+    const provider = new YjsProvider(socket, yDoc);
     const yText = yDoc.getText('codemirror');
 
     provider.awareness.setLocalStateField('user', {

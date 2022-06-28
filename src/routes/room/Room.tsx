@@ -120,6 +120,7 @@ export const Room = (): ReactElement => {
         <CodeEditor
           height={isTablet ? `${height - 96}px` : `${scaledLength}px`}
           language={language}
+          socket={socket}
           username={user?.name ?? ''}
           width={isTablet ? `${scaledLength}px` : '100%'}
         />
