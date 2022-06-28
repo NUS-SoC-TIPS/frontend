@@ -7,7 +7,7 @@ import * as awarenessProtocol from 'y-protocols/awareness';
 import * as syncProtocol from 'y-protocols/sync';
 import { Doc } from 'yjs';
 
-import { CODE_EVENTS } from 'constants/events';
+import { CODE_EVENTS, GENERAL_EVENTS } from 'constants/events';
 
 const MESSAGE_SYNC = 0;
 const MESSAGE_AWARENESS = 1;
@@ -18,8 +18,10 @@ export class YjsProvider extends Observable<string> {
   public awareness: awarenessProtocol.Awareness;
   public _synced = false;
   public _handleDocUpdate: (update: Uint8Array, origin: YjsProvider) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public _handleAwarenessUpdate: (update: any, origin: YjsProvider) => void;
+  public _handleAwarenessUpdate: (
+    update: { added: number[]; updated: number[]; removed: number[] },
+    origin: YjsProvider,
+  ) => void;
   public _handleUnload: () => void;
 
   constructor(public socket: Socket, public doc: Doc) {
@@ -68,6 +70,8 @@ export class YjsProvider extends Observable<string> {
     } else if (typeof process !== 'undefined') {
       process.on('exit', this._handleUnload);
     }
+
+    this.connect();
   }
 
   get synced(): boolean {
@@ -96,7 +100,7 @@ export class YjsProvider extends Observable<string> {
     });
 
     // So far, this is the only place where the disconnect event is handled.
-    this.socket.on('disconnect', (data) => {
+    this.socket.on(GENERAL_EVENTS.DISCONNECT, (data) => {
       this.emit('connection-close', [data, this]);
       this.synced = false;
       awarenessProtocol.removeAwarenessStates(
@@ -111,32 +115,37 @@ export class YjsProvider extends Observable<string> {
       // TODO: Come up with better error handling or some exponential backoff to retry connection
     });
 
-    this.socket.on('connect_error', (data) =>
+    this.socket.on(GENERAL_EVENTS.CONNECT_ERROR, (data) =>
       this.emit('connection-error', [data, this]),
     );
-    this.socket.on('connect_failed', (data) =>
+    this.socket.on(GENERAL_EVENTS.CONNECT_FAILED, (data) =>
       this.emit('connection-error', [data, this]),
     );
 
-    this.emit('status', [{ status: 'connected' }]);
-    const encoder = encoding.createEncoder();
-    encoding.writeVarUint(encoder, MESSAGE_SYNC);
-    syncProtocol.writeSyncStep1(encoder, this.doc);
-    this.socket.emit(CODE_EVENTS.UPDATE_YJS, encoding.toUint8Array(encoder));
-    if (this.awareness.getLocalState() !== null) {
-      const encoderAwarenessState = encoding.createEncoder();
-      encoding.writeVarUint(encoderAwarenessState, MESSAGE_AWARENESS);
-      encoding.writeVarUint8Array(
-        encoderAwarenessState,
-        awarenessProtocol.encodeAwarenessUpdate(this.awareness, [
-          this.doc.clientID,
-        ]),
-      );
-      this.socket.emit(
-        CODE_EVENTS.UPDATE_YJS,
-        encoding.toUint8Array(encoderAwarenessState),
-      );
-    }
+    this.socket.on(CODE_EVENTS.CONNECT_YJS, () => {
+      this.emit('status', [{ status: 'connected' }]);
+      const encoder = encoding.createEncoder();
+      encoding.writeVarUint(encoder, MESSAGE_SYNC);
+      syncProtocol.writeSyncStep1(encoder, this.doc);
+      this.socket.emit(CODE_EVENTS.UPDATE_YJS, encoding.toUint8Array(encoder));
+      if (this.awareness.getLocalState() !== null) {
+        const encoderAwarenessState = encoding.createEncoder();
+        encoding.writeVarUint(encoderAwarenessState, MESSAGE_AWARENESS);
+        encoding.writeVarUint8Array(
+          encoderAwarenessState,
+          awarenessProtocol.encodeAwarenessUpdate(this.awareness, [
+            this.doc.clientID,
+          ]),
+        );
+        this.socket.emit(
+          CODE_EVENTS.UPDATE_YJS,
+          encoding.toUint8Array(encoderAwarenessState),
+        );
+      }
+    });
+
+    this.emit('status', [{ status: 'connecting' }]);
+    this.socket.emit(CODE_EVENTS.CONNECT_YJS);
   }
 
   // Similar to connect, the socket disconnection will be handled by the room useEffect clean-up.

@@ -1,5 +1,8 @@
 export const GENERAL_EVENTS = {
   CONNECT: 'connect',
+  DISCONNECT: 'disconnect',
+  CONNECT_ERROR: 'connect_error',
+  CONNECT_FAILED: 'connect_failed',
 };
 
 export const AUTH_EVENTS = {
@@ -28,6 +31,7 @@ export const ROOM_EVENTS = {
 };
 
 export const CODE_EVENTS = {
+  CONNECT_YJS: 'connect_yjs',
   UPDATE_YJS: 'update_yjs',
   UPDATE_LANGUAGE: 'update_language',
 };
