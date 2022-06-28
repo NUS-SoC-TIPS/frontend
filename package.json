@@ -48,7 +48,6 @@
     "web-vitals": "^2.1.0",
     "y-codemirror.next": "^0.3.0",
     "y-protocols": "^1.0.5",
-    "y-websocket": "^1.4.3",
     "yjs": "^13.5.39"
   },
   "scripts": {
