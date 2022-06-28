@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { ReactElement, useEffect, useReducer } from 'react';
+import { ReactElement, useCallback, useEffect, useReducer } from 'react';
 import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 
 import { Dashboard, Page } from 'components/page';
@@ -120,6 +120,10 @@ export const AddQuestion = ({
       });
   };
 
+  const onChangeCode = useCallback((codeWritten: string): void => {
+    setState({ codeWritten });
+  }, []);
+
   return (
     <Page>
       <Dashboard
@@ -152,7 +156,7 @@ export const AddQuestion = ({
             <CodeFormControl
               code={state.codeWritten}
               language={state.languageUsed}
-              onChange={(codeWritten): void => setState({ codeWritten })}
+              onChange={onChangeCode}
             />
           )}
           {state.selectedQuestion && (

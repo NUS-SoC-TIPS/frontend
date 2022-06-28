@@ -1,226 +1,126 @@
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import AceEditor, { ICommand, IMarker } from 'react-ace';
+import { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
+import { useColorMode } from '@chakra-ui/react';
+import { defaultKeymap, indentLess, indentMore } from '@codemirror/commands';
+import { Compartment, EditorState } from '@codemirror/state';
+import { oneDark } from '@codemirror/theme-one-dark';
+import { keymap } from '@codemirror/view';
+import { basicSetup, EditorView } from 'codemirror';
+import { Socket } from 'socket.io-client';
+import { yCollab, yUndoManagerKeymap } from 'y-codemirror.next';
+import { Doc } from 'yjs';
 
-import { languageToMode } from 'constants/enumStrings';
-import { ChangeEvent } from 'types/automerge/ace';
-import { Cursor, Position } from 'types/cursor';
 import { Language } from 'types/models/code';
-import { convertCursorToIMarker } from 'utils/cursorUtils';
 
-import 'ace-builds/webpack-resolver';
-import 'ace-builds/src-noconflict/mode-c_cpp'; // For both C and C++
-import 'ace-builds/src-noconflict/mode-csharp';
-import 'ace-builds/src-noconflict/mode-elixir';
-import 'ace-builds/src-noconflict/mode-erlang';
-import 'ace-builds/src-noconflict/mode-golang';
-import 'ace-builds/src-noconflict/mode-java';
-import 'ace-builds/src-noconflict/mode-javascript';
-import 'ace-builds/src-noconflict/mode-kotlin';
-import 'ace-builds/src-noconflict/mode-php';
-import 'ace-builds/src-noconflict/mode-python';
-import 'ace-builds/src-noconflict/mode-ruby';
-import 'ace-builds/src-noconflict/mode-rust';
-import 'ace-builds/src-noconflict/mode-scala';
-import 'ace-builds/src-noconflict/mode-swift';
-import 'ace-builds/src-noconflict/mode-typescript';
-import 'ace-builds/src-noconflict/ext-language_tools';
-import './theme-twilight';
-
+import {
+  CURSOR_COLOR_TO_SEND_PARTNER,
+  ONE_DARK_BACKGROUND_COLOR,
+} from './colors';
+import { getLanguageExtension } from './languages';
+import { YjsProvider } from './YjsProvider';
 import './CodeEditor.scss';
 
 interface Props {
-  language: Language;
-  onChange: (change: ChangeEvent) => void;
-  onCursorChange: (data: Cursor) => void;
-  value: string;
+  language: Language | null;
+  username: string;
+  socket: Socket;
+  roomSlug: string;
   width?: string;
   height?: string;
-
-  // CRDT
-  hasNextPosition: boolean;
-  clearNextPosition: () => void;
-  nextPosition: Position;
-  position: Position;
-  setPosition: (position: Position) => void;
-  partnerCursor?: Cursor;
 }
 
-export const CodeEditor: FC<Props> = ({
-  language,
-  onChange,
-  onCursorChange,
-  value,
-  width,
+export const CodeEditor = ({
   height,
-  hasNextPosition,
-  clearNextPosition,
-  nextPosition,
-  position,
-  setPosition,
-  partnerCursor,
-}) => {
-  const [hasJustCopiedLine, setHasJustCopiedLine] = useState(false);
-  const [lineCopied, setLineCopied] = useState('');
-  const [markers, setMarkers] = useState<IMarker[]>([]);
-  const ref = useRef<AceEditor | null>(null);
+  width,
+  socket,
+  roomSlug,
+  language,
+  username,
+}: Props): ReactElement<Props, 'div'> => {
+  const { colorMode } = useColorMode();
+  const isDark = colorMode === 'dark';
+  const [element, setElement] = useState<HTMLElement>();
+  const [view, setView] = useState<EditorView>();
+  const languageCompartment = useMemo(() => new Compartment(), []);
 
-  // Hacky fix for a bug where the code editor doesn't adhere to the width passed in
-  // and instead horizontally scrolls. This forces the width to re-render once.
-  const [firstLoadWidth, setFirstLoadWidth] = useState<string | null>('100%');
-
-  useEffect(() => {
-    if (hasNextPosition) {
-      ref?.current?.editor.moveCursorTo(nextPosition.row, nextPosition.column);
-      clearNextPosition();
+  const ref = useCallback((node: HTMLElement | null): void => {
+    if (!node) {
+      return;
     }
-  }, [
-    clearNextPosition,
-    hasNextPosition,
-    nextPosition.column,
-    nextPosition.row,
-  ]);
 
-  useEffect(() => {
-    setFirstLoadWidth(null);
+    setElement(node);
   }, []);
 
-  const updateMarkers = useCallback(() => {
-    if (partnerCursor) {
-      const isNotSelection =
-        partnerCursor.start.row === partnerCursor.end.row &&
-        partnerCursor.start.column === partnerCursor.end.column;
-      const markerCursor: Cursor = {
-        ...partnerCursor,
-        end: {
-          ...partnerCursor.end,
-          column: isNotSelection
-            ? partnerCursor.end.column + 1
-            : partnerCursor.end.column,
-        },
-      };
-      setMarkers([
-        convertCursorToIMarker(
-          markerCursor,
-          `marker${isNotSelection ? ' is-single' : ''}`,
-          'text',
-        ),
-      ]);
-    } else {
-      setMarkers([]);
+  useEffect(() => {
+    if (!element) {
+      return;
     }
-  }, [partnerCursor]);
+
+    const yDoc = new Doc();
+    const provider = new YjsProvider(socket, yDoc);
+    const yText = yDoc.getText(roomSlug);
+
+    provider.awareness.setLocalStateField('user', {
+      name: username,
+      color: CURSOR_COLOR_TO_SEND_PARTNER.color,
+      colorLight: CURSOR_COLOR_TO_SEND_PARTNER.light,
+    });
+
+    const view = new EditorView({
+      state: EditorState.create({
+        doc: yText.toString(),
+        extensions: [
+          keymap.of([
+            ...defaultKeymap,
+            ...yUndoManagerKeymap,
+            {
+              key: 'Tab',
+              preventDefault: true,
+              run: indentMore,
+            },
+            {
+              key: 'Shift-Tab',
+              preventDefault: true,
+              run: indentLess,
+            },
+          ]),
+          basicSetup,
+          languageCompartment.of(getLanguageExtension(language)),
+          EditorView.lineWrapping,
+          yCollab(yText, provider.awareness),
+          ...(isDark ? [oneDark] : []),
+          EditorView.theme({}, { dark: isDark }),
+        ],
+      }),
+      parent: element,
+    });
+    setView(view);
+
+    return (): void => {
+      view?.destroy();
+      provider.disconnect();
+      yDoc.destroy();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [element, isDark, username, roomSlug]);
 
   useEffect(() => {
-    updateMarkers();
-  }, [updateMarkers]);
+    if (view && language) {
+      view.dispatch({
+        effects: languageCompartment.reconfigure(
+          getLanguageExtension(language),
+        ),
+      });
+    }
+  }, [language, languageCompartment, view]);
 
   return (
-    <AceEditor
-      commands={[
-        {
-          name: 'customcopylinesdown',
-          bindKey: { win: 'Shift-Alt-Down', mac: 'Shift-Option-Down' },
-          exec: 'copylinesdown',
-        },
-        {
-          name: 'customcopylinesup',
-          bindKey: { win: 'Shift-Alt-Up', mac: 'Shift-Option-Up' },
-          exec: 'copylinesup',
-        },
-        {
-          name: 'custompaste',
-          bindKey: { win: 'Ctrl-V', mac: 'Cmd-V' },
-          exec: 'paste',
-        },
-        {
-          name: 'customcut',
-          bindKey: { win: 'Ctrl-X', mac: 'Cmd-X' },
-          // This function is actually cached heavily, i.e. we cannot
-          // refer to props within this function, because it is still
-          // referencing the original props.
-          exec: ((editor) => {
-            const selection = editor.getCopyText();
-            editor.execCommand('copy');
-            if (!selection || selection === '') {
-              editor.execCommand('removeline');
-            } else {
-              editor.execCommand('del');
-            }
-          }) as ICommand['exec'],
-        },
-      ]}
-      enableBasicAutocompletion={true}
-      enableLiveAutocompletion={true}
-      height={height}
-      markers={markers}
-      mode={languageToMode[language]}
-      name="code-editor"
-      onChange={(_value, event): void => onChange(event as ChangeEvent)}
-      onCopy={(text: string): void => {
-        if (!text || text === '') {
-          navigator.clipboard.writeText('');
-          setHasJustCopiedLine(true);
-          const row = position.row;
-          const lines = value.split('\n');
-          setLineCopied(lines[row]);
-        } else {
-          navigator.clipboard.writeText(text);
-          setHasJustCopiedLine(false);
-          setLineCopied('');
-        }
-      }}
-      onCursorChange={(value): void => {
-        setPosition({ row: value.cursor.row, column: value.cursor.column });
-        onCursorChange({
-          start: {
-            row: value.cursor.row,
-            column: value.cursor.column,
-          },
-          end: {
-            row: value.cursor.row,
-            column: value.cursor.column,
-          },
-        });
-      }}
-      onPaste={(text: string): void => {
-        if ((!text || text === '') && hasJustCopiedLine) {
-          const row = position.row + 1;
-          onChange({
-            action: 'insert' as const,
-            start: {
-              row,
-              column: 0,
-            },
-            lines: [`${lineCopied}\n`],
-          });
-          ref?.current?.editor.execCommand('golinedown');
-        }
-      }}
-      onSelectionChange={(value): void => {
-        const { anchor, cursor } = value;
-        onCursorChange({
-          start: {
-            row: Math.min(anchor.row, cursor.row),
-            column: Math.min(anchor.column, cursor.column),
-          },
-          end: {
-            row: Math.max(cursor.row, anchor.row),
-            column: Math.max(cursor.column, anchor.column),
-          },
-        });
-      }}
+    <div
       ref={ref}
-      // Disable so that we can efficiently compute the line changes
-      setOptions={{
-        enableMultiselect: false,
-        showFoldWidgets: false,
-        useSoftTabs: false,
+      style={{
+        height,
+        width,
+        backgroundColor: isDark ? ONE_DARK_BACKGROUND_COLOR : 'snow',
       }}
-      showPrintMargin={false}
-      theme="twilight"
-      value={value}
-      width={firstLoadWidth ?? width}
-      wrapEnabled={true}
     />
   );
 };

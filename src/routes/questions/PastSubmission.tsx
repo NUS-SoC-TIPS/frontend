@@ -1,4 +1,4 @@
-import { ReactElement, useReducer } from 'react';
+import { ReactElement, useCallback, useReducer } from 'react';
 import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 
 import { Dashboard, Page } from 'components/page';
@@ -27,6 +27,7 @@ interface Props {
 }
 
 interface State {
+  id: number; // Used to force the re-rendering of the code input upon save
   isUpdating: boolean;
   originalLanguageUsed: Language;
   languageUsed: Language | null;
@@ -42,6 +43,7 @@ export const PastSubmission = ({
   const [state, setState] = useReducer(
     (s: State, a: Partial<State>): State => ({ ...s, ...a }),
     {
+      id: 0,
       isUpdating: false,
       originalLanguageUsed: submission.languageUsed,
       languageUsed: submission.languageUsed,
@@ -70,10 +72,11 @@ export const PastSubmission = ({
       .then((data): void => {
         parentOnUpdate(data);
         setState({
+          id: state.id + 1,
           originalLanguageUsed: data.languageUsed,
           originalCodeWritten: data.codeWritten,
-          // We also update codeWritten, since the saved value may be trimmed and hence differ
-          // from the existing value in the field
+          // We update this as string trimming may occur upon saving, which causes the
+          // codeWritten to differ from the originalCodeWritten.
           codeWritten: data.codeWritten,
           isUpdating: false,
         });
@@ -89,6 +92,10 @@ export const PastSubmission = ({
         setState({ isUpdating: false });
       });
   };
+
+  const onChangeCode = useCallback((codeWritten: string): void => {
+    setState({ codeWritten });
+  }, []);
 
   return (
     <Page>
@@ -122,8 +129,9 @@ export const PastSubmission = ({
           />
           <CodeFormControl
             code={state.codeWritten}
+            key={state.id}
             language={state.languageUsed}
-            onChange={(codeWritten): void => setState({ codeWritten })}
+            onChange={onChangeCode}
           />
           <Flex direction="row-reverse">
             <Button

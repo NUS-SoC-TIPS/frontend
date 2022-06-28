@@ -4,7 +4,9 @@ import { Box, useBreakpointValue } from '@chakra-ui/react';
 import { io, Socket } from 'socket.io-client';
 
 import { useAppDispatch, useAppSelector } from 'app/hooks';
+import { CodeEditor } from 'components/codeEditor';
 import { Loading } from 'components/loading';
+import { useUser } from 'contexts/UserContext';
 import { initSocketForCode } from 'lib/codeSocket';
 import { initSocketForRoom } from 'lib/roomsSocket';
 import { resetPanelState } from 'reducers/panelReducer';
@@ -18,7 +20,6 @@ import { RoomDoesNotExist } from './errors/RoomDoesNotExist';
 import { RoomIsClosed } from './errors/RoomIsClosed';
 import { RoomIsFull } from './errors/RoomIsFull';
 import { BottomBar } from './BottomBar';
-import { Code } from './Code';
 import { Panel } from './panel';
 import { RoomPage } from './RoomPage';
 import { Slider } from './Slider';
@@ -43,10 +44,12 @@ export const Room = (): ReactElement => {
   const { status, partner, isPartnerInRoom } = useAppSelector(
     (state) => state.room,
   );
+  const { language } = useAppSelector((state) => state.code);
   const dispatch = useAppDispatch();
   const isTablet = useBreakpointValue({ base: false, md: true });
   const { width, height } = useWindowDimensions();
   const [editorSize, setEditorSize] = useState(0.5);
+  const user = useUser();
 
   useEffect(() => {
     let newSocket: Socket | null = null;
@@ -69,7 +72,7 @@ export const Room = (): ReactElement => {
     };
   }, [token, params.slug, dispatch]);
 
-  if (!socket || status === RoomJoiningStatus.LOADING) {
+  if (!socket || status === RoomJoiningStatus.LOADING || !params.slug) {
     return <Loading />;
   }
   if (status === RoomJoiningStatus.CLOSED) {
@@ -114,9 +117,12 @@ export const Room = (): ReactElement => {
         flexDirection={isTablet ? 'row' : 'column'}
         position="relative"
       >
-        <Code
-          height={isTablet ? '100%' : `${scaledLength}px`}
+        <CodeEditor
+          height={isTablet ? `${height - 96}px` : `${scaledLength}px`}
+          language={language}
+          roomSlug={params.slug}
           socket={socket}
+          username={user?.name ?? ''}
           width={isTablet ? `${scaledLength}px` : '100%'}
         />
         <Slider onDrag={onSliderDrag} />

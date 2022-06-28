@@ -1,50 +1,32 @@
-@mixin cursor {
-  border-bottom-right-radius: 0;
-  border-right: 2.5px solid #5f9d50;
-  border-top-right-radius: 0;
-
-  &::before {
-    background-color: #5f9d50;
-    content: ' ';
-    height: 6px;
-    position: absolute;
-    right: -5px;
-    top: -3px;
-    width: 6px;
-  }
+.cm-editor {
+  height: 100%;
+  width: 100%;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.marker {
-  background-color: #609d5062;
-  position: absolute;
-
-  &:last-of-type {
-    @include cursor;
-  }
-
-  &.is-single {
-    @include cursor;
-    background-color: transparent;
-    width: 0 !important;
-  }
+.cm-scroller {
+  overflow: auto;
 }
 
-.ace_editor,
-.ace_gutter {
-  background-color: #191a1c;
+.cm-scroller,
+.cm-tooltip.cm-tooltip-autocomplete > ul {
+  font-family: 'Fira Code', monospace !important;
+  font-variant-ligatures: contextual;
 }
 
-.ace_scrollbar::-webkit-scrollbar {
-  appearance: none;
-  width: 10px;
+.cm-completionIcon {
+  width: 1rem !important;
 }
 
-.ace_scrollbar::-webkit-scrollbar-corner {
-  background: transparent;
+.cm-lineWrapping {
+  word-break: break-all !important;
 }
 
-.ace_scrollbar::-webkit-scrollbar-thumb {
-  background-color: #4c5057;
-  border-radius: 5px;
-  box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+.cm-editor.cm-focused {
+  outline: none !important;
+}
+
+.cm-ySelectionInfo {
+  font-family: inherit !important;
 }

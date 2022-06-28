@@ -81,7 +81,7 @@ export const Questions = (): ReactElement<typeof QuestionsPage> => {
   }
 
   const refetchStats = (): void => {
-    setState({ isLoading: true });
+    setState({ isLoading: state.selectedSubmission ? false : true });
     getSubmissionStats()
       .then((stats) => {
         setState({

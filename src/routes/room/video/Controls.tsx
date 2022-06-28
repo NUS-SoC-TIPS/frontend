@@ -1,6 +1,6 @@
 import { ReactElement, useState } from 'react';
 import { FiMic, FiMicOff, FiVideo, FiVideoOff } from 'react-icons/fi';
-import { HStack, IconButton, Text } from '@chakra-ui/react';
+import { DarkMode, HStack, IconButton, Text } from '@chakra-ui/react';
 import { ICameraVideoTrack, IMicrophoneAudioTrack } from 'agora-rtc-sdk-ng';
 
 interface Props {
@@ -31,34 +31,38 @@ export const Controls = ({
   };
 
   return (
-    <HStack
-      backgroundColor="rgba(0, 0, 0, 0.4)"
-      bottom={0}
-      justifyContent="space-between"
-      position="absolute"
-      px={2}
-      py={0.5}
-      width="100%"
-    >
-      <Text fontSize="xs" noOfLines={1}>
-        {name}
-      </Text>
-      {tracks && (
-        <HStack>
-          <IconButton
-            aria-label="Audio"
-            icon={trackState.audio ? <FiMic /> : <FiMicOff />}
-            onClick={(): Promise<void> => toggle('audio')}
-            size="xs"
-          />
-          <IconButton
-            aria-label="Video"
-            icon={trackState.video ? <FiVideo /> : <FiVideoOff />}
-            onClick={(): Promise<void> => toggle('video')}
-            size="xs"
-          />
-        </HStack>
-      )}
-    </HStack>
+    <DarkMode>
+      <HStack
+        backgroundColor="rgba(0, 0, 0, 0.4)"
+        bottom={0}
+        justifyContent="space-between"
+        position="absolute"
+        px={2}
+        py={0.5}
+        width="100%"
+      >
+        <Text color="white" fontSize="xs" noOfLines={1}>
+          {name}
+        </Text>
+        {tracks && (
+          <HStack>
+            <IconButton
+              aria-label="Audio"
+              color="white"
+              icon={trackState.audio ? <FiMic /> : <FiMicOff />}
+              onClick={(): Promise<void> => toggle('audio')}
+              size="xs"
+            />
+            <IconButton
+              aria-label="Video"
+              color="white"
+              icon={trackState.video ? <FiVideo /> : <FiVideoOff />}
+              onClick={(): Promise<void> => toggle('video')}
+              size="xs"
+            />
+          </HStack>
+        )}
+      </HStack>
+    </DarkMode>
   );
 };
