@@ -36,6 +36,7 @@ export const Controls = ({
         backgroundColor="rgba(0, 0, 0, 0.4)"
         bottom={0}
         justifyContent="space-between"
+        minH={28}
         position="absolute"
         px={2}
         py={0.5}
