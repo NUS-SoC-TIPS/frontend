@@ -2,6 +2,7 @@ import { ReactElement, useState } from 'react';
 
 import { FormControl } from 'components/formControl';
 import { AsyncSelect } from 'components/select';
+import { sourceToString } from 'constants/enumStrings';
 import { Question } from 'types/models/question';
 
 interface Props {
@@ -18,6 +19,15 @@ interface Props {
 // Until then, we will prevent the menu from showing too many options at once, as it lags.
 const NUM_QUERIES_TO_SHOW = 50;
 
+const questionToOption = (
+  question: Question,
+): { label: string; value: string } => {
+  return {
+    label: `${question.name} [${sourceToString[question.source]}]`,
+    value: question.slug,
+  };
+};
+
 export const NameFormControl = ({
   questions,
   isLoading,
@@ -28,6 +38,7 @@ export const NameFormControl = ({
   isDisabled = false,
 }: Props): ReactElement<Props, typeof FormControl> => {
   const [isSufficientlySpecific, setIsSufficientlySpecific] = useState(false);
+  const questionOptions = questions.map(questionToOption);
 
   const onChangeWrapper = (newValue: unknown): void => {
     onChange(newValue);
@@ -38,38 +49,22 @@ export const NameFormControl = ({
     <FormControl id="name" label="Name">
       <AsyncSelect
         defaultOptions={
-          selectedQuestion
-            ? [
-                {
-                  label: selectedQuestion.name,
-                  value: selectedQuestion.slug,
-                },
-              ]
-            : []
+          selectedQuestion ? [questionToOption(selectedQuestion)] : []
         }
         defaultValue={
-          defaultQuestion
-            ? {
-                value: defaultQuestion.slug,
-                label: defaultQuestion.name,
-              }
-            : undefined
+          defaultQuestion ? questionToOption(defaultQuestion) : undefined
         }
         isDisabled={isError || isDisabled}
         isLoading={isLoading}
         loadOptions={(inputValue, callback): void => {
-          const values = questions.filter((q) =>
-            q.name.toLowerCase().includes(inputValue.toLowerCase()),
+          const options = questionOptions.filter((o) =>
+            o.label.toLowerCase().includes(inputValue.toLowerCase()),
           );
-          if (values.length > NUM_QUERIES_TO_SHOW) {
+          if (options.length > NUM_QUERIES_TO_SHOW) {
             setIsSufficientlySpecific(false);
             callback([]);
             return;
           }
-          const options = values.map((q) => ({
-            value: q.slug,
-            label: q.name,
-          }));
           setIsSufficientlySpecific(true);
           callback(options);
         }}
