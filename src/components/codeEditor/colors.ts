@@ -9,6 +9,7 @@ export const colors = [
   { color: '#1be7ff', light: '#1be7ff33' },
 ];
 
-export const DEFAULT_CURSOR_COLOR = colors[0];
+export const OWN_CURSOR_COLOR = '#528bff';
+export const CURSOR_COLOR_TO_SEND_PARTNER = colors[0];
 
 export const ONE_DARK_BACKGROUND_COLOR = '#282c34';

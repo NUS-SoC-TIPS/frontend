@@ -14,7 +14,10 @@ import {
 import { Socket } from 'socket.io-client';
 
 import { useAppSelector } from 'app/hooks';
-import { DEFAULT_CURSOR_COLOR } from 'components/codeEditor/colors';
+import {
+  CURSOR_COLOR_TO_SEND_PARTNER,
+  OWN_CURSOR_COLOR,
+} from 'components/codeEditor/colors';
 import { Modal } from 'components/modal';
 import { INTERVIEWS } from 'constants/routes';
 import { useUser } from 'contexts/UserContext';
@@ -29,7 +32,7 @@ interface UserDisplayProps {
 
 const UserDisplay = ({
   user,
-  color = '#528bff',
+  color = OWN_CURSOR_COLOR,
   isDisconnected = false,
 }: UserDisplayProps): ReactElement<UserDisplayProps, typeof HStack> => {
   return (
@@ -137,7 +140,7 @@ export const BottomBar = ({
                 <UserDisplay user={user} />
                 {partner && (
                   <UserDisplay
-                    color={DEFAULT_CURSOR_COLOR.color}
+                    color={CURSOR_COLOR_TO_SEND_PARTNER.color}
                     isDisconnected={!isPartnerInRoom}
                     user={partner}
                   />

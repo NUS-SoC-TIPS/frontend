@@ -11,7 +11,10 @@ import { Doc } from 'yjs';
 
 import { Language } from 'types/models/code';
 
-import { DEFAULT_CURSOR_COLOR, ONE_DARK_BACKGROUND_COLOR } from './colors';
+import {
+  CURSOR_COLOR_TO_SEND_PARTNER,
+  ONE_DARK_BACKGROUND_COLOR,
+} from './colors';
 import { getLanguageExtension } from './languages';
 import { YjsProvider } from './YjsProvider';
 import './CodeEditor.scss';
@@ -58,8 +61,8 @@ export const CodeEditor = ({
 
     provider.awareness.setLocalStateField('user', {
       name: username,
-      color: DEFAULT_CURSOR_COLOR.color,
-      colorLight: DEFAULT_CURSOR_COLOR.light,
+      color: CURSOR_COLOR_TO_SEND_PARTNER.color,
+      colorLight: CURSOR_COLOR_TO_SEND_PARTNER.light,
     });
 
     const view = new EditorView({
