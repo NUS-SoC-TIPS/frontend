@@ -71,6 +71,7 @@ export const SimpleCodeEditor = ({
           EditorView.updateListener.of((e) => {
             onChange?.(e.state.doc.toJSON().join('\n'));
           }),
+          EditorView.editable.of(onChange != null),
         ],
       }),
       parent: element,
