@@ -7,6 +7,8 @@ import * as awarenessProtocol from 'y-protocols/awareness';
 import * as syncProtocol from 'y-protocols/sync';
 import { Doc } from 'yjs';
 
+import { CODE_EVENTS } from 'constants/events';
+
 const MESSAGE_SYNC = 0;
 const MESSAGE_AWARENESS = 1;
 const MESSAGE_AUTH = 2;
@@ -30,8 +32,10 @@ export class YjsProvider extends Observable<string> {
         const encoder = encoding.createEncoder();
         encoding.writeVarUint(encoder, MESSAGE_SYNC);
         syncProtocol.writeUpdate(encoder, update);
-        // TODO: Change into constant
-        this.socket.emit('YJS_UPDATE', encoding.toUint8Array(encoder));
+        this.socket.emit(
+          CODE_EVENTS.UPDATE_YJS,
+          encoding.toUint8Array(encoder),
+        );
       }
     };
     this.doc.on('update', this._handleDocUpdate);
@@ -47,8 +51,7 @@ export class YjsProvider extends Observable<string> {
         encoder,
         awarenessProtocol.encodeAwarenessUpdate(this.awareness, changedClients),
       );
-      // TODO: Change into constant
-      this.socket.emit('YJS_UPDATE', encoding.toUint8Array(encoder));
+      this.socket.emit(CODE_EVENTS.UPDATE_YJS, encoding.toUint8Array(encoder));
     };
     this.awareness.on('update', this._handleAwarenessUpdate);
 
@@ -82,10 +85,13 @@ export class YjsProvider extends Observable<string> {
   // Our passed in socket should already be connected + have a room associated with it on the backend.
   // Here, we'll just set up the listeners.
   connect(): void {
-    this.socket.on('YJS_UPDATE', (data) => {
+    this.socket.on(CODE_EVENTS.UPDATE_YJS, (data) => {
       const encoder = this.readMessage(new Uint8Array(data));
       if (encoding.length(encoder) > 1) {
-        this.socket.emit('YJS_UPDATE', encoding.toUint8Array(encoder));
+        this.socket.emit(
+          CODE_EVENTS.UPDATE_YJS,
+          encoding.toUint8Array(encoder),
+        );
       }
     });
 
@@ -116,7 +122,7 @@ export class YjsProvider extends Observable<string> {
     const encoder = encoding.createEncoder();
     encoding.writeVarUint(encoder, MESSAGE_SYNC);
     syncProtocol.writeSyncStep1(encoder, this.doc);
-    this.socket.emit('YJS_UPDATE', encoding.toUint8Array(encoder));
+    this.socket.emit(CODE_EVENTS.UPDATE_YJS, encoding.toUint8Array(encoder));
     if (this.awareness.getLocalState() !== null) {
       const encoderAwarenessState = encoding.createEncoder();
       encoding.writeVarUint(encoderAwarenessState, MESSAGE_AWARENESS);
@@ -127,7 +133,7 @@ export class YjsProvider extends Observable<string> {
         ]),
       );
       this.socket.emit(
-        'YJS_UPDATE',
+        CODE_EVENTS.UPDATE_YJS,
         encoding.toUint8Array(encoderAwarenessState),
       );
     }
@@ -146,7 +152,7 @@ export class YjsProvider extends Observable<string> {
         new Map(),
       ),
     );
-    this.socket.emit('YJS_UPDATE', encoding.toUint8Array(encoder));
+    this.socket.emit(CODE_EVENTS.UPDATE_YJS, encoding.toUint8Array(encoder));
   }
 
   override destroy(): void {

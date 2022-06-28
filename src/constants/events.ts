@@ -28,7 +28,7 @@ export const ROOM_EVENTS = {
 };
 
 export const CODE_EVENTS = {
-  UPDATE_CODE: 'update_code',
+  UPDATE_YJS: 'update_yjs',
   UPDATE_LANGUAGE: 'update_language',
 };
 
