@@ -20,6 +20,7 @@ export const InterviewsCompleted = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
+      scrollBehavior="inside"
       title={`${records.length} ${
         records.length === 1 ? 'Interview' : 'Interviews'
       } Completed`}

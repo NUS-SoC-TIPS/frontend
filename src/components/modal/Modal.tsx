@@ -23,7 +23,6 @@ interface Props extends ModalProps {
 
 const DEFAULT_PROPS: Partial<ModalProps> = {
   isCentered: true,
-  scrollBehavior: 'inside',
 };
 
 export const Modal = (props: Props): ReactElement<typeof ChakraModal> => {

@@ -15,6 +15,8 @@ export const UrlFormControl = ({
     switch (question.source) {
       case QuestionSource.LEETCODE:
         return `leetcode.com/problems/${question.slug}`;
+      case QuestionSource.KATTIS:
+        return `open.kattis.com/problems/${question.slug}`;
       default:
         return '';
     }

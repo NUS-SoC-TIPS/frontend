@@ -20,6 +20,7 @@ export const QuestionsCompleted = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
+      scrollBehavior="inside"
       title={`${submissions.length} ${
         submissions.length === 1 ? 'Question' : 'Questions'
       } Completed`}

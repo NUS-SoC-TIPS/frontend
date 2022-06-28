@@ -24,6 +24,15 @@ export const languageToString = Object.freeze({
   [Language.MY_SQL]: 'MySQL',
   [Language.MS_SQL_SERVER]: 'MS SQL Server',
   [Language.ORACLE]: 'Oracle',
+  [Language.COBOL]: 'COBOL',
+  [Language.LISP]: 'Lisp',
+  [Language.F_SHARP]: 'F#',
+  [Language.FORTRAN]: 'Fortran',
+  [Language.HASKELL]: 'Haskell',
+  [Language.OBJECTIVE_C]: 'Objective-C',
+  [Language.OCAML]: 'OCaml',
+  [Language.PASCAL]: 'Pascal',
+  [Language.PROLOG]: 'Prolog',
 });
 
 export const difficultyToString = Object.freeze({
