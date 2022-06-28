@@ -92,7 +92,7 @@ export const AddQuestion = ({
     return (
       state.selectedQuestion == null ||
       state.languageUsed == null ||
-      state.codeWritten === ''
+      state.codeWritten.trim() === ''
     );
   };
 
@@ -102,7 +102,7 @@ export const AddQuestion = ({
       questionSlug: state.selectedQuestion!.slug,
       questionSource: state.selectedQuestion!.source,
       languageUsed: state.languageUsed!,
-      codeWritten: state.codeWritten,
+      codeWritten: state.codeWritten.trim(),
     })
       .then((data): void => {
         onCreate({ ...data, question: state.selectedQuestion! });

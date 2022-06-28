@@ -38,8 +38,8 @@ export const Settings = (): ReactElement<typeof Page> => {
 
   const cannotSave = (): boolean => {
     return (
-      state.name === '' ||
-      state.photoUrl === '' ||
+      state.name.trim() === '' ||
+      state.photoUrl.trim() === '' ||
       (state.name === user?.name && state.photoUrl === user?.githubUsername)
     );
   };
@@ -47,8 +47,8 @@ export const Settings = (): ReactElement<typeof Page> => {
   const onSave = async (): Promise<void> => {
     setState({ isSaving: true });
     return updateSettings({
-      name: state.name,
-      photoUrl: state.photoUrl,
+      name: state.name.trim(),
+      photoUrl: state.photoUrl.trim(),
     })
       .then((): void => {
         toast({

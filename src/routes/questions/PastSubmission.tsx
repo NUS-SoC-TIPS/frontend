@@ -54,9 +54,9 @@ export const PastSubmission = ({
   const cannotUpdate = (): boolean => {
     return (
       state.languageUsed == null ||
-      state.codeWritten === '' ||
+      state.codeWritten.trim() === '' ||
       (state.languageUsed === state.originalLanguageUsed &&
-        state.codeWritten === state.originalCodeWritten)
+        state.codeWritten.trim() === state.originalCodeWritten.trim())
     );
   };
 
@@ -65,13 +65,16 @@ export const PastSubmission = ({
     return updateSubmission(submission.id, {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       languageUsed: state.languageUsed!,
-      codeWritten: state.codeWritten,
+      codeWritten: state.codeWritten.trim(),
     })
       .then((data): void => {
         parentOnUpdate(data);
         setState({
           originalLanguageUsed: data.languageUsed,
           originalCodeWritten: data.codeWritten,
+          // We also update codeWritten, since the saved value may be trimmed and hence differ
+          // from the existing value in the field
+          codeWritten: data.codeWritten,
           isUpdating: false,
         });
         toast({
