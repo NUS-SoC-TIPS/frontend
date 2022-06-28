@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useCallback } from 'react';
 
 import { FormControl } from 'components/formControl';
 import { Select } from 'components/select';
@@ -111,9 +111,12 @@ export const LanguageFormControl = ({
     }));
   };
 
-  const onChangeWrapper = (language: unknown): void => {
-    onChangeLanguage(language ? (language as LanguageOption).value : null);
-  };
+  const onChangeWrapper = useCallback(
+    (language: unknown): void => {
+      onChangeLanguage(language ? (language as LanguageOption).value : null);
+    },
+    [onChangeLanguage],
+  );
 
   return (
     <FormControl id="language" label="Language Used">

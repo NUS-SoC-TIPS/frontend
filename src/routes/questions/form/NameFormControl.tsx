@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useCallback, useMemo, useState } from 'react';
 
 import { FormControl } from 'components/formControl';
 import { AsyncSelect } from 'components/select';
@@ -38,12 +38,18 @@ export const NameFormControl = ({
   isDisabled = false,
 }: Props): ReactElement<Props, typeof FormControl> => {
   const [isSufficientlySpecific, setIsSufficientlySpecific] = useState(false);
-  const questionOptions = questions.map(questionToOption);
+  const questionOptions = useMemo(
+    () => questions.map(questionToOption),
+    [questions],
+  );
 
-  const onChangeWrapper = (newValue: unknown): void => {
-    onChange(newValue);
-    setIsSufficientlySpecific(false);
-  };
+  const onChangeWrapper = useCallback(
+    (newValue: unknown): void => {
+      onChange(newValue);
+      setIsSufficientlySpecific(false);
+    },
+    [onChange],
+  );
 
   return (
     <FormControl id="name" label="Name">
