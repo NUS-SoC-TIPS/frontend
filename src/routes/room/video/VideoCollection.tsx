@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { PropsWithChildren, ReactElement, useEffect, useState } from 'react';
 import { Box, useBreakpointValue } from '@chakra-ui/react';
-import { AgoraVideoPlayer } from 'agora-rtc-react';
-import { IAgoraRTCRemoteUser } from 'agora-rtc-sdk-ng';
+import { AgoraVideoPlayer, IAgoraRTCRemoteUser } from 'agora-rtc-react';
 
 import { useAppSelector } from 'app/hooks';
 import { useUser } from 'contexts/UserContext';

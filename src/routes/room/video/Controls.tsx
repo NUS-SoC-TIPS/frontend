@@ -1,7 +1,7 @@
 import { ReactElement, useState } from 'react';
 import { FiMic, FiMicOff, FiVideo, FiVideoOff } from 'react-icons/fi';
 import { DarkMode, HStack, IconButton, Text } from '@chakra-ui/react';
-import { ICameraVideoTrack, IMicrophoneAudioTrack } from 'agora-rtc-sdk-ng';
+import { ICameraVideoTrack, IMicrophoneAudioTrack } from 'agora-rtc-react';
 
 interface Props {
   tracks?: [IMicrophoneAudioTrack, ICameraVideoTrack];
