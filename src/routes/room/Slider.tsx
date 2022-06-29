@@ -15,34 +15,36 @@ export const Slider = ({ onDrag }: Props): ReactElement<Props, typeof Box> => {
   const isTablet = useBreakpointValue({ base: false, md: true });
 
   useEffect(() => {
-    document.onmouseup = onMouseUp;
-    document.ontouchend = onMouseUp;
+    document.addEventListener('mouseup', onMouseUp, { passive: false });
+    document.addEventListener('touchend', onMouseUp, { passive: false });
     return () => {
-      document.onmouseup = null;
-      document.ontouchend = null;
+      document.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('touchend', onMouseUp);
     };
   }, []);
 
   useEffect(() => {
     const onMouseMove = (event: MouseEvent): void => {
       if (isDragging) {
+        event.preventDefault();
         onDrag(isTablet ? event.clientX : event.clientY - 48); // 48 px for the top bar
       }
     };
     const onTouchMove = (event: TouchEvent): void => {
       if (isDragging && event.touches[0]) {
+        event.preventDefault();
         onDrag(
           // 48 px for the top bar
           isTablet ? event.touches[0].clientX : event.touches[0].clientY - 48,
         );
       }
     };
-    document.onmousemove = onMouseMove;
-    document.ontouchmove = onTouchMove;
+    document.addEventListener('mousemove', onMouseMove, { passive: false });
+    document.addEventListener('touchmove', onTouchMove, { passive: false });
 
     return () => {
-      document.onmousemove = null;
-      document.ontouchmove = null;
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('touchmove', onTouchMove);
     };
   }, [isTablet, onDrag]);
 

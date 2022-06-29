@@ -25,6 +25,7 @@ import { RoomPage } from './RoomPage';
 import { Slider } from './Slider';
 import { TopBar } from './topBar';
 import { VideoCollection } from './video';
+import './Room.scss';
 
 /**
  * The Room component contains stateful subcomponents. This is intentional, as the
@@ -91,13 +92,15 @@ export const Room = (): ReactElement => {
     return <RoomIsFull />;
   }
 
-  const isPanelCollapsed = editorSize >= 1;
+  const isPanelCollapsed = editorSize >= 1 && isTablet;
   const fullLength = isTablet ? width : height - 96; // 48 (top) + 48 (bottom)
   const scaledLength = fullLength * editorSize - 16; // 16 is for the slider
 
   const onSliderDrag = (distance: number): void => {
     let ratio = Math.min(Math.max(distance / fullLength, 0.3), 1);
-    if (ratio > 0.9) {
+    if (!isTablet && ratio > 0.8) {
+      ratio = 0.8;
+    } else if (ratio > 0.9) {
       ratio = 1;
     } else if (
       (!isPanelCollapsed && ratio >= 0.8) ||
