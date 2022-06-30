@@ -73,6 +73,12 @@ export const Room = (): ReactElement => {
     };
   }, [token, params.slug, dispatch]);
 
+  useEffect(() => {
+    if (!isTablet && editorSize > 0.8) {
+      setEditorSize(0.8);
+    }
+  }, [isTablet, editorSize]);
+
   if (!socket || status === RoomJoiningStatus.LOADING || !params.slug) {
     return <Loading />;
   }
