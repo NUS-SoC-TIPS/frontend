@@ -1,17 +1,13 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, useBreakpointValue } from '@chakra-ui/react';
 import { io, Socket } from 'socket.io-client';
 
 import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { CodeEditor } from 'components/codeEditor';
 import { Loading } from 'components/loading';
-import { useUser } from 'contexts/UserContext';
 import { initSocketForCode } from 'lib/codeSocket';
 import { initSocketForRoom } from 'lib/roomsSocket';
 import { resetPanelState } from 'reducers/panelReducer';
 import { resetRoomState, RoomJoiningStatus } from 'reducers/roomReducer';
-import { useWindowDimensions } from 'utils/hookUtils';
 import tokenUtils from 'utils/tokenUtils';
 
 import { InAnotherRoom } from './errors/InAnotherRoom';
@@ -20,11 +16,9 @@ import { RoomDoesNotExist } from './errors/RoomDoesNotExist';
 import { RoomIsClosed } from './errors/RoomIsClosed';
 import { RoomIsFull } from './errors/RoomIsFull';
 import { BottomBar } from './BottomBar';
-import { Panel } from './panel';
+import { MiddleSection } from './MiddleSection';
 import { RoomPage } from './RoomPage';
-import { Slider } from './Slider';
 import { TopBar } from './topBar';
-import { VideoCollection } from './video';
 import './Room.scss';
 
 /**
@@ -42,15 +36,8 @@ export const Room = (): ReactElement => {
   const token = tokenUtils.getToken();
   const params = useParams();
   const [socket, setSocket] = useState<Socket | null>(null);
-  const { status, partner, isPartnerInRoom } = useAppSelector(
-    (state) => state.room,
-  );
-  const { language } = useAppSelector((state) => state.code);
+  const { status } = useAppSelector((state) => state.room);
   const dispatch = useAppDispatch();
-  const isTablet = useBreakpointValue({ base: false, md: true });
-  const { width, height } = useWindowDimensions();
-  const [editorSize, setEditorSize] = useState(0.5);
-  const user = useUser();
 
   useEffect(() => {
     let newSocket: Socket | null = null;
@@ -73,12 +60,6 @@ export const Room = (): ReactElement => {
     };
   }, [token, params.slug, dispatch]);
 
-  useEffect(() => {
-    if (!isTablet && editorSize > 0.8) {
-      setEditorSize(0.8);
-    }
-  }, [isTablet, editorSize]);
-
   if (!socket || status === RoomJoiningStatus.LOADING || !params.slug) {
     return <Loading />;
   }
@@ -98,54 +79,10 @@ export const Room = (): ReactElement => {
     return <RoomIsFull />;
   }
 
-  const isPanelCollapsed = editorSize >= 1 && isTablet;
-  const fullLength = isTablet ? width : height - 96; // 48 (top) + 48 (bottom)
-  const scaledLength = fullLength * editorSize - 16; // 16 is for the slider
-
-  const onSliderDrag = (distance: number): void => {
-    let ratio = Math.min(Math.max(distance / fullLength, 0.3), 1);
-    if (!isTablet && ratio > 0.8) {
-      ratio = 0.8;
-    } else if (ratio > 0.9) {
-      ratio = 1;
-    } else if (
-      (!isPanelCollapsed && ratio >= 0.8) ||
-      (isPanelCollapsed && ratio <= 0.9)
-    ) {
-      ratio = 0.8;
-    }
-    setEditorSize(ratio);
-  };
-
   return (
     <RoomPage>
       <TopBar socket={socket} />
-      <Box
-        display="flex"
-        flex={1}
-        flexDirection={isTablet ? 'row' : 'column'}
-        position="relative"
-      >
-        <CodeEditor
-          height={isTablet ? `${height - 96}px` : `${scaledLength}px`}
-          language={language}
-          roomSlug={params.slug}
-          socket={socket}
-          username={user?.name ?? ''}
-          width={isTablet ? `${scaledLength}px` : '100%'}
-        />
-        <Slider onDrag={onSliderDrag} />
-        {!isPanelCollapsed && (
-          <Panel
-            height={isTablet ? height - 96 : height - 112 - scaledLength}
-            socket={socket}
-          />
-        )}
-        <VideoCollection
-          isPartnerInRoom={isPartnerInRoom}
-          partnerName={partner?.name}
-        />
-      </Box>
+      <MiddleSection slug={params.slug} socket={socket} />
       <BottomBar socket={socket} />
     </RoomPage>
   );
