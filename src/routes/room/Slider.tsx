@@ -4,6 +4,7 @@ import { Box, Icon, useBreakpointValue } from '@chakra-ui/react';
 
 interface Props {
   onDrag: (distance: number) => void;
+  height: string;
 }
 
 let isDragging = false;
@@ -11,7 +12,10 @@ const onMouseUp = (): void => {
   isDragging = false;
 };
 
-export const Slider = ({ onDrag }: Props): ReactElement<Props, typeof Box> => {
+export const Slider = ({
+  onDrag,
+  height,
+}: Props): ReactElement<Props, typeof Box> => {
   const isTablet = useBreakpointValue({ base: false, md: true });
 
   useEffect(() => {
@@ -60,7 +64,7 @@ export const Slider = ({ onDrag }: Props): ReactElement<Props, typeof Box> => {
       display="flex"
       flexGrow={0}
       flexShrink={0}
-      height={isTablet ? '100%' : 4}
+      height={isTablet ? height : 4}
       justifyContent="center"
       onMouseDown={onMouseDown}
       onTouchStart={onMouseDown}

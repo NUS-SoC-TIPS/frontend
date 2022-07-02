@@ -10,9 +10,10 @@ export const RoomPage = ({
   return (
     <Box
       as="section"
+      className="room-page"
       display="flex"
       flexDirection="column"
-      height="100vh"
+      height="100%"
       width="100vw"
     >
       {children}

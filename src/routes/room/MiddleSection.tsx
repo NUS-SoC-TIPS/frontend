@@ -52,6 +52,9 @@ export const MiddleSection = ({
     setEditorSize(ratio);
   };
 
+  const finalHeight = isTablet ? `${height - 96}px` : `${scaledLength}px`;
+  const finalWidth = isTablet ? `${scaledLength}px` : '100%';
+
   return (
     <Box
       display="flex"
@@ -60,14 +63,14 @@ export const MiddleSection = ({
       position="relative"
     >
       <CodeEditor
-        height={isTablet ? `${height - 96}px` : `${scaledLength}px`}
+        height={finalHeight}
         language={language}
         roomSlug={slug}
         socket={socket}
         username={user?.name ?? ''}
-        width={isTablet ? `${scaledLength}px` : '100%'}
+        width={finalWidth}
       />
-      <Slider onDrag={onSliderDrag} />
+      <Slider height={finalHeight} onDrag={onSliderDrag} />
       {!isPanelCollapsed && (
         <Panel
           height={isTablet ? height - 96 : height - 112 - scaledLength}

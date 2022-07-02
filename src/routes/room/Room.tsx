@@ -1,5 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useBreakpointValue } from '@chakra-ui/react';
 import { io, Socket } from 'socket.io-client';
 
 import { useAppDispatch, useAppSelector } from 'app/hooks';
@@ -38,6 +39,7 @@ export const Room = (): ReactElement => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const { status } = useAppSelector((state) => state.room);
   const dispatch = useAppDispatch();
+  const isTablet = useBreakpointValue({ base: false, md: true });
 
   useEffect(() => {
     let newSocket: Socket | null = null;
@@ -59,6 +61,16 @@ export const Room = (): ReactElement => {
       setSocket(null);
     };
   }, [token, params.slug, dispatch]);
+
+  useEffect(() => {
+    if (!isTablet) {
+      screen.orientation.lock('portrait');
+    }
+
+    return () => {
+      screen.orientation.unlock();
+    };
+  }, [isTablet]);
 
   if (!socket || status === RoomJoiningStatus.LOADING || !params.slug) {
     return <Loading />;
