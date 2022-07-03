@@ -20,6 +20,7 @@ export const Dashboard = ({
   return (
     <Stack spacing={{ base: 8, lg: 6 }}>
       <Stack
+        alignItems="flex-start"
         direction={{ base: 'column', lg: 'row' }}
         justify="space-between"
         spacing={4}
