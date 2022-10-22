@@ -1,5 +1,4 @@
 <!-- markdownlint-disable MD033 MD041 -->
-<p align="center"><img src="cover.png" width="80%"/></p>
 
 <h1 align="center">Frontend for TIPS</h1>
 
@@ -9,7 +8,7 @@ TIPS is a monolithic rewrite of Code2Gather to support the technical interview p
 
 - Collaborative Code Editor with Mock Interview Support
 - LeetCode Question Tracking with Telegram Integration
-- Interview Roleplay with Partner Matching and Question Generation
+- (WIP) Interview Roleplay with Partner Matching and Question Generation
 
 ## Contributors
 
