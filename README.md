@@ -1,5 +1,4 @@
 <!-- markdownlint-disable MD033 MD041 -->
-
 <h1 align="center">Frontend for TIPS</h1>
 
 ## Overview
