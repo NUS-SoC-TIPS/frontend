@@ -73,7 +73,10 @@ export const Settings = (): ReactElement<typeof Page> => {
         <Stack spacing={1}>
           <Heading
             fontWeight="medium"
-            size={useBreakpointValue({ base: 'xs', lg: 'sm' })}
+            size={useBreakpointValue(
+              { base: 'xs', lg: 'sm' },
+              { fallback: 'lg' },
+            )}
           >
             Settings
           </Heading>

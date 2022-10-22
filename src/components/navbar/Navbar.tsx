@@ -36,7 +36,10 @@ import { ToggleButton } from './ToggleButton';
 import { UserPopover } from './UserPopover';
 
 export const Navbar = (): ReactElement<typeof Box> => {
-  const isDesktop = useBreakpointValue({ base: false, lg: true });
+  const isDesktop = useBreakpointValue(
+    { base: false, lg: true },
+    { fallback: 'lg' },
+  );
   const { isOpen, onToggle, onClose } = useDisclosure();
   const user = useUser();
   const { logout } = useAuth();

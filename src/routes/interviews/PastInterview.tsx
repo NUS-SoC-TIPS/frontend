@@ -31,7 +31,10 @@ export const PastInterview = ({
     notes,
     duration,
   } = interview;
-  const height = useBreakpointValue({ base: '20rem', md: '30rem' });
+  const height = useBreakpointValue(
+    { base: '20rem', md: '30rem' },
+    { fallback: 'md' },
+  );
   const trimmedNotes = notes.trim();
   return (
     <Page>

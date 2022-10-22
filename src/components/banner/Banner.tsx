@@ -18,7 +18,10 @@ const RawBanner = ({
   title,
   message,
 }: Props): ReactElement<Props, typeof Box> => {
-  const isMobile = useBreakpointValue({ base: true, md: false });
+  const isMobile = useBreakpointValue(
+    { base: true, md: false },
+    { fallback: 'md' },
+  );
   return (
     <Box
       bg="bg-accent"

@@ -16,7 +16,10 @@ export const Slider = ({
   onDrag,
   height,
 }: Props): ReactElement<Props, typeof Box> => {
-  const isTablet = useBreakpointValue({ base: false, md: true });
+  const isTablet = useBreakpointValue(
+    { base: false, md: true },
+    { fallback: 'md' },
+  );
 
   useEffect(() => {
     document.addEventListener('mouseup', onMouseUp, { passive: false });

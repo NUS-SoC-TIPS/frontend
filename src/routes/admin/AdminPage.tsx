@@ -27,7 +27,10 @@ export const AdminPage = ({
   PropsWithChildren<Props>,
   typeof Page
 > => {
-  const selectWidth = useBreakpointValue({ base: '100%', lg: 'md' });
+  const selectWidth = useBreakpointValue(
+    { base: '100%', lg: 'md' },
+    { fallback: 'lg' },
+  );
   const onChangeWrapper = (option: unknown): void => {
     if (!option) {
       return;

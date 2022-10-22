@@ -34,12 +34,18 @@ const RawStep = (props: Props): ReactElement<Props, typeof Stack> => {
     description,
     ...stackProps
   } = props;
-  const isMobile = useBreakpointValue({ base: true, md: false });
+  const isMobile = useBreakpointValue(
+    { base: true, md: false },
+    { fallback: 'md' },
+  );
 
-  const orientation = useBreakpointValue<'horizontal' | 'vertical'>({
-    base: 'vertical',
-    md: 'horizontal',
-  });
+  const orientation = useBreakpointValue<'horizontal' | 'vertical'>(
+    {
+      base: 'vertical',
+      md: 'horizontal',
+    },
+    { fallback: 'md' },
+  );
 
   return (
     <Stack

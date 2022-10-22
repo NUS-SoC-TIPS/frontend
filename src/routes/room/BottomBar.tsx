@@ -53,7 +53,10 @@ interface Props {
 export const BottomBar = ({
   socket,
 }: Props): ReactElement<Props, typeof Box> => {
-  const isDesktop = useBreakpointValue({ base: false, lg: true });
+  const isDesktop = useBreakpointValue(
+    { base: false, lg: true },
+    { fallback: 'lg' },
+  );
   const [isCloseRoomModalOpen, setIsCloseRoomModalOpen] = useState(false);
   const [isClosingRoom, setIsClosingRoom] = useState(false);
   const user = useUser() as User;

@@ -15,7 +15,10 @@ import {
 export const ErrorBanner = (
   props: ContainerProps,
 ): ReactElement<ContainerProps, typeof Container> => {
-  const isMobile = useBreakpointValue({ base: true, md: false });
+  const isMobile = useBreakpointValue(
+    { base: true, md: false },
+    { fallback: 'md' },
+  );
   const containerProps: ContainerProps = {
     pb: { base: 12, md: 24 },
     pt: { base: 4, md: 8 },

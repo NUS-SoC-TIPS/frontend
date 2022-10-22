@@ -22,7 +22,10 @@ export const MiddleSection = ({
 }: Props): ReactElement<Props, typeof Box> => {
   const { language } = useAppSelector((state) => state.code);
   const { partner, isPartnerInRoom } = useAppSelector((state) => state.room);
-  const isTablet = useBreakpointValue({ base: false, md: true });
+  const isTablet = useBreakpointValue(
+    { base: false, md: true },
+    { fallback: 'md' },
+  );
   const { width, height } = useWindowDimensions();
   const [editorSize, setEditorSize] = useState(0.5);
   const user = useUser();

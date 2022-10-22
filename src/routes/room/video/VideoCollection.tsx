@@ -51,18 +51,24 @@ export const VideoCollection = ({
   const { ready, tracks } = useMicrophoneAndCameraTracks();
   const user = useUser();
   const { id, videoToken } = useAppSelector((state) => state.room);
-  const height = useBreakpointValue({
-    base: '25vw',
-    sm: '15vw',
-    md: '10vw',
-    lg: '8vw',
-  });
-  const width = useBreakpointValue({
-    base: 'calc(100vw - 1rem)',
-    sm: '50vw',
-    md: '33vw',
-    lg: '27vw',
-  });
+  const height = useBreakpointValue(
+    {
+      base: '25vw',
+      sm: '15vw',
+      md: '10vw',
+      lg: '8vw',
+    },
+    { fallback: 'lg' },
+  );
+  const width = useBreakpointValue(
+    {
+      base: 'calc(100vw - 1rem)',
+      sm: '50vw',
+      md: '33vw',
+      lg: '27vw',
+    },
+    { fallback: 'lg' },
+  );
 
   useEffect(() => {
     if (!AGORA_APP_ID) {
