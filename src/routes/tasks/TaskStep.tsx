@@ -21,15 +21,16 @@ export const TaskStep = ({
   setStep,
   isPreviousStepFailure,
 }: Props): ReactElement<Props, typeof Step> => {
-  const isActive = id <= currentStep;
+  const isDisabled = id > currentStep;
+  const isActive = id === currentStep;
   const isFailure = window.status === TaskStatWindowStatus.FAILED;
   const isSuccess = window.status === TaskStatWindowStatus.COMPLETED;
 
   return (
     <Step
-      cursor="pointer"
       description={formatDate(window.startAt)}
       isActive={isActive}
+      isDisabled={isDisabled}
       isFailure={isFailure}
       isFirstStep={id === 0}
       isLastStep={isLastStep}

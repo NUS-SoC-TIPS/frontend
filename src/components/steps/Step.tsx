@@ -1,6 +1,8 @@
 import { memo, ReactElement } from 'react';
 import {
+  Box,
   BoxProps,
+  Button,
   Divider,
   Stack,
   Text,
@@ -12,9 +14,10 @@ import { StepCircle } from './StepCircle';
 interface Props extends BoxProps {
   title: string;
   description: string;
+  isActive: boolean;
   isSuccess: boolean;
   isFailure: boolean;
-  isActive: boolean; // May not necessarily be success nor failure, just active
+  isDisabled: boolean;
   isFirstStep: boolean;
   isLastStep: boolean;
   leftLineColor?: string;
@@ -23,22 +26,18 @@ interface Props extends BoxProps {
 
 const RawStep = (props: Props): ReactElement<Props, typeof Stack> => {
   const {
+    isActive,
     isSuccess,
     isFailure,
-    isActive,
+    isDisabled,
     isFirstStep,
     isLastStep,
     leftLineColor,
     rightLineColor,
     title,
     description,
-    ...stackProps
+    ...boxProps
   } = props;
-  const isMobile = useBreakpointValue(
-    { base: true, md: false },
-    { fallback: 'md' },
-  );
-
   const orientation = useBreakpointValue<'horizontal' | 'vertical'>(
     {
       base: 'vertical',
@@ -46,47 +45,81 @@ const RawStep = (props: Props): ReactElement<Props, typeof Stack> => {
     },
     { fallback: 'md' },
   );
+  const buttonPadding = useBreakpointValue(
+    { base: 2, lg: 4 },
+    { fallback: 'lg' },
+  );
 
   return (
-    <Stack
-      direction={{ base: 'row', md: 'column' }}
-      flex={1}
-      spacing={4}
-      {...stackProps}
-    >
+    <Box height="100%" position="relative" width="100%" {...boxProps}>
       <Stack
         align="center"
-        direction={{ base: 'column', md: 'row' }}
-        spacing={0}
+        direction={{ base: 'row', md: 'column' }}
+        flex={1}
+        spacing={4}
       >
-        <Divider
-          borderColor={isFirstStep ? 'transparent' : leftLineColor ?? 'inherit'}
-          borderWidth="1px"
-          orientation={orientation}
-        />
-        <StepCircle
+        <Button
+          height="auto"
           isActive={isActive}
-          isFailure={isFailure}
-          isSuccess={isSuccess}
-        />
-        <Divider
-          borderColor={isLastStep ? 'transparent' : rightLineColor ?? 'inherit'}
-          borderWidth="1px"
-          orientation={orientation}
-        />
+          justifyContent={{ base: 'start', md: 'center' }}
+          marginY={{ base: 1, md: 0 }}
+          padding={buttonPadding}
+          variant="ghost"
+          width={{ base: '100%', md: 'fit-content' }}
+        >
+          <Stack
+            align="center"
+            direction={{ base: 'row', md: 'column' }}
+            spacing={4}
+          >
+            <Box boxSize={8} opacity={0} />
+            <Stack align={{ base: 'start', md: 'center' }} spacing={1}>
+              <Text color="emphasized" fontWeight="medium">
+                {title}
+              </Text>
+              <Text color="muted">{description}</Text>
+            </Stack>
+          </Stack>
+        </Button>
       </Stack>
       <Stack
-        align={{ base: 'start', md: 'center' }}
-        pb={isMobile ? 4 : 0}
-        pt={isMobile ? 4 : 0}
-        spacing={0.5}
+        direction={{ base: 'row', md: 'column' }}
+        height="100%"
+        paddingX={{ base: 2, md: 0 }}
+        paddingY={{ base: 0, md: buttonPadding }}
+        pointerEvents="none"
+        position="absolute"
+        spacing={4}
+        top={0}
+        width="100%"
       >
-        <Text color="emphasized" fontWeight="medium">
-          {title}
-        </Text>
-        <Text color="muted">{description}</Text>
+        <Stack
+          align="center"
+          direction={{ base: 'column', md: 'row' }}
+          spacing={0}
+        >
+          <Divider
+            borderColor={
+              isFirstStep ? 'transparent' : leftLineColor ?? 'inherit'
+            }
+            borderWidth="1px"
+            orientation={orientation}
+          />
+          <StepCircle
+            isDisabled={isDisabled}
+            isFailure={isFailure}
+            isSuccess={isSuccess}
+          />
+          <Divider
+            borderColor={
+              isLastStep ? 'transparent' : rightLineColor ?? 'inherit'
+            }
+            borderWidth="1px"
+            orientation={orientation}
+          />
+        </Stack>
       </Stack>
-    </Stack>
+    </Box>
   );
 };
 

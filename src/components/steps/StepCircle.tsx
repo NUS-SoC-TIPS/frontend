@@ -5,15 +5,15 @@ import { Circle, Icon, SquareProps } from '@chakra-ui/react';
 interface Props extends SquareProps {
   isSuccess: boolean;
   isFailure: boolean;
-  isActive: boolean;
+  isDisabled: boolean;
 }
 
 const RawStepCircle = (props: Props): ReactElement<Props, typeof Circle> => {
-  const { isSuccess, isActive, isFailure, ...rest } = props;
+  const { isSuccess, isDisabled, isFailure, ...rest } = props;
   return (
     <Circle
       bg={isSuccess ? 'accent' : isFailure ? 'error' : 'inherit'}
-      borderColor={isActive ? 'accent' : 'inherit'}
+      borderColor={isDisabled ? 'inherit' : 'accent'}
       borderWidth={isSuccess || isFailure ? 0 : '2px'}
       size={8}
       {...rest}
@@ -23,7 +23,7 @@ const RawStepCircle = (props: Props): ReactElement<Props, typeof Circle> => {
       ) : isFailure ? (
         <Icon as={HiX} boxSize={5} color="on-accent" />
       ) : (
-        <Circle bg={isActive ? 'accent' : 'border'} size={3} />
+        <Circle bg={isDisabled ? 'border' : 'accent'} size={3} />
       )}
     </Circle>
   );
