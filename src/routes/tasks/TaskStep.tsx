@@ -38,7 +38,7 @@ export const TaskStep = ({
       leftLineColor={
         isPreviousStepFailure && currentStep >= id
           ? 'error'
-          : isActive
+          : !isDisabled
           ? 'accent'
           : undefined
       }
