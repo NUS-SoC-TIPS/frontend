@@ -47,6 +47,7 @@ const AuthProvider = (props: PropsWithChildren<unknown>): ReactElement => {
       .catch(() => {
         setIsError(true);
         setIsLoading(false);
+        setHasFetchedOnce(true);
       });
   }, []);
 
