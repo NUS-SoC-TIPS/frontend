@@ -10,7 +10,7 @@ import {
 
 import { SimpleCodeEditor } from 'components/codeEditor';
 import { Dashboard, Page } from 'components/page';
-import { languageToString } from 'constants/enumStrings';
+import { LANGUAGE_TO_STRING } from 'constants/enumStrings';
 import { RecordWithPartner } from 'types/models/record';
 import { formatDate, formatDuration } from 'utils/dateUtils';
 
@@ -52,7 +52,7 @@ export const PastInterview = ({
         <SimpleGrid columns={{ base: 1, md: 2 }} gap={8}>
           <Stack>
             <Heading fontWeight="medium" mb={0} size="xxs">
-              Code Written in {languageToString[language]}
+              Code Written in {LANGUAGE_TO_STRING[language]}
             </Heading>
             <SimpleCodeEditor
               height={height}

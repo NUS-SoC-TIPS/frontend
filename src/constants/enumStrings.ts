@@ -1,7 +1,7 @@
 import { Language } from 'types/models/code';
 import { QuestionDifficulty, QuestionSource } from 'types/models/question';
 
-export const languageToString = Object.freeze({
+export const LANGUAGE_TO_STRING = Object.freeze({
   [Language.C_PLUS_PLUS]: 'C++',
   [Language.JAVA]: 'Java',
   [Language.PYTHON]: 'Python',
@@ -35,13 +35,13 @@ export const languageToString = Object.freeze({
   [Language.PROLOG]: 'Prolog',
 });
 
-export const difficultyToString = Object.freeze({
+export const DIFFICULTY_TO_STRING = Object.freeze({
   [QuestionDifficulty.EASY]: 'Easy',
   [QuestionDifficulty.MEDIUM]: 'Medium',
   [QuestionDifficulty.HARD]: 'Hard',
 });
 
-export const sourceToString = Object.freeze({
+export const SOURCE_TO_STRING = Object.freeze({
   [QuestionSource.LEETCODE]: 'LeetCode',
   [QuestionSource.HACKERRANK]: 'HackerRank',
   [QuestionSource.KATTIS]: 'Kattis',

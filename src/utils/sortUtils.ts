@@ -1,5 +1,5 @@
-import { difficultyToOrder } from 'constants/enumOrders';
-import { languageToString } from 'constants/enumStrings';
+import { DIFFICULTY_TO_ORDER } from 'constants/enumOrders';
+import { LANGUAGE_TO_STRING } from 'constants/enumStrings';
 import { Language } from 'types/models/code';
 import { QuestionDifficulty } from 'types/models/question';
 
@@ -50,9 +50,9 @@ export const compareDifficultiesEasyFirst = (
   a: QuestionDifficulty,
   b: QuestionDifficulty,
 ): number => {
-  return difficultyToOrder[a] - difficultyToOrder[b];
+  return DIFFICULTY_TO_ORDER[a] - DIFFICULTY_TO_ORDER[b];
 };
 
 export const compareLanguagesAscending = (a: Language, b: Language): number => {
-  return languageToString[a].localeCompare(languageToString[b]);
+  return LANGUAGE_TO_STRING[a].localeCompare(LANGUAGE_TO_STRING[b]);
 };

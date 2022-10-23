@@ -2,7 +2,7 @@ import { ReactElement, useCallback, useMemo, useState } from 'react';
 
 import { FormControl } from 'components/formControl';
 import { AsyncSelect } from 'components/select';
-import { sourceToString } from 'constants/enumStrings';
+import { SOURCE_TO_STRING } from 'constants/enumStrings';
 import { Question } from 'types/models/question';
 
 interface Props {
@@ -23,7 +23,7 @@ const questionToOption = (
   question: Question,
 ): { label: string; value: string } => {
   return {
-    label: `${question.name} [${sourceToString[question.source]}]`,
+    label: `${question.name} [${SOURCE_TO_STRING[question.source]}]`,
     value: question.slug,
   };
 };

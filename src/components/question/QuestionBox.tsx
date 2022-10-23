@@ -1,7 +1,7 @@
 import { memo, ReactElement } from 'react';
 import { Badge, Box, Stack, Text } from '@chakra-ui/react';
 
-import { difficultyToString, sourceToString } from 'constants/enumStrings';
+import { DIFFICULTY_TO_STRING, SOURCE_TO_STRING } from 'constants/enumStrings';
 import { Question } from 'types/models/question';
 
 interface Props {
@@ -47,12 +47,12 @@ const RawQuestionBox = ({
           {question.name}
         </Text>
         <Text color="muted" fontSize="sm" noOfLines={1} textAlign="left">
-          {sourceToString[question.source]}
+          {SOURCE_TO_STRING[question.source]}
         </Text>
       </Box>
       {withDifficulty && (
         <Badge colorScheme="blue" variant="subtle">
-          {difficultyToString[question.difficulty]}
+          {DIFFICULTY_TO_STRING[question.difficulty]}
         </Badge>
       )}
     </Stack>,
