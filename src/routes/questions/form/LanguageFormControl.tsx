@@ -2,7 +2,14 @@ import { ReactElement, useCallback } from 'react';
 
 import { FormControl } from 'components/formControl';
 import { Select } from 'components/select';
-import { languageToString } from 'constants/enumStrings';
+import { LANGUAGE_TO_STRING } from 'constants/enumStrings';
+import {
+  ALGORITHM_LANGUAGES,
+  CONCURRENCY_LANGUAGES,
+  DATABASE_LANGUAGES,
+  KATTIS_LANGUAGES,
+  SHELL_LANGUAGES,
+} from 'constants/languages';
 import { Language } from 'types/models/code';
 import { Question, QuestionSource, QuestionType } from 'types/models/question';
 
@@ -11,68 +18,6 @@ interface Props {
   onChangeLanguage: (language: Language | null) => void;
   defaultLanguage?: Language;
 }
-
-const algorithmLanguages: Language[] = [
-  Language.C_PLUS_PLUS,
-  Language.JAVA,
-  Language.PYTHON,
-  Language.PYTHON_THREE,
-  Language.C,
-  Language.C_SHARP,
-  Language.JAVASCRIPT,
-  Language.RUBY,
-  Language.SWIFT,
-  Language.GO,
-  Language.SCALA,
-  Language.KOTLIN,
-  Language.RUST,
-  Language.PHP,
-  Language.TYPESCRIPT,
-  Language.RACKET,
-  Language.ERLANG,
-  Language.ELIXIR,
-];
-
-const databaseLanguages: Language[] = [
-  Language.MY_SQL,
-  Language.MS_SQL_SERVER,
-  Language.ORACLE,
-];
-
-const shellLanguages: Language[] = [Language.BASH];
-
-const concurrencyLanguages: Language[] = [
-  Language.C_PLUS_PLUS,
-  Language.JAVA,
-  Language.PYTHON,
-  Language.PYTHON_THREE,
-  Language.C,
-  Language.C_SHARP,
-];
-
-const kattisLanguages: Language[] = [
-  Language.C,
-  Language.C_SHARP,
-  Language.C_PLUS_PLUS,
-  Language.COBOL,
-  Language.LISP,
-  Language.F_SHARP,
-  Language.FORTRAN,
-  Language.GO,
-  Language.HASKELL,
-  Language.JAVA,
-  Language.JAVASCRIPT,
-  Language.KOTLIN,
-  Language.OBJECTIVE_C,
-  Language.OCAML,
-  Language.PASCAL,
-  Language.PHP,
-  Language.PROLOG,
-  Language.PYTHON,
-  Language.PYTHON_THREE,
-  Language.RUBY,
-  Language.RUST,
-];
 
 interface LanguageOption {
   label: string;
@@ -88,25 +33,25 @@ export const LanguageFormControl = ({
     let languages;
     switch (question.source) {
       case QuestionSource.KATTIS:
-        languages = kattisLanguages;
+        languages = KATTIS_LANGUAGES;
         break;
       default:
         switch (question.type) {
           case QuestionType.ALGORITHMS:
-            languages = algorithmLanguages;
+            languages = ALGORITHM_LANGUAGES;
             break;
           case QuestionType.DATABASE:
-            languages = databaseLanguages;
+            languages = DATABASE_LANGUAGES;
             break;
           case QuestionType.CONCURRENCY:
-            languages = concurrencyLanguages;
+            languages = CONCURRENCY_LANGUAGES;
             break;
           case QuestionType.SHELL:
-            languages = shellLanguages;
+            languages = SHELL_LANGUAGES;
         }
     }
     return languages.map((language) => ({
-      label: languageToString[language],
+      label: LANGUAGE_TO_STRING[language],
       value: language,
     }));
   };
@@ -124,7 +69,7 @@ export const LanguageFormControl = ({
         defaultValue={
           defaultLanguage
             ? {
-                label: languageToString[defaultLanguage],
+                label: LANGUAGE_TO_STRING[defaultLanguage],
                 value: defaultLanguage,
               }
             : undefined

@@ -2,7 +2,8 @@ import { ReactElement } from 'react';
 import { Box, Link, Popover, SimpleGrid, Text } from '@chakra-ui/react';
 
 import { MyPopover } from 'components/popover';
-import { languageToString } from 'constants/enumStrings';
+import { LANGUAGE_TO_STRING } from 'constants/enumStrings';
+import { INTERVIEW_LANGUAGES } from 'constants/languages';
 import { Language } from 'types/models/code';
 
 interface Props {
@@ -10,31 +11,12 @@ interface Props {
   setLanguage: (language: Language) => void;
 }
 
-const supportedLanguages = [
-  Language.C,
-  Language.C_PLUS_PLUS,
-  Language.C_SHARP,
-  Language.ELIXIR,
-  Language.ERLANG,
-  Language.GO,
-  Language.JAVA,
-  Language.JAVASCRIPT,
-  Language.KOTLIN,
-  Language.PHP,
-  Language.PYTHON_THREE,
-  Language.RUBY,
-  Language.RUST,
-  Language.SCALA,
-  Language.SWIFT,
-  Language.TYPESCRIPT,
-];
-
 export const LanguagePopover = ({
   language,
   setLanguage,
 }: Props): ReactElement<Props, typeof Popover> | null => {
-  const items = supportedLanguages.map((supportedLanguage) => ({
-    title: languageToString[supportedLanguage],
+  const items = INTERVIEW_LANGUAGES.map((supportedLanguage) => ({
+    title: LANGUAGE_TO_STRING[supportedLanguage],
     onClick: () => setLanguage(supportedLanguage),
   }));
 
@@ -61,7 +43,7 @@ export const LanguagePopover = ({
         </SimpleGrid>
       }
       popoverContentProps={{ p: 2, maxWidth: 64 }}
-      trigger={languageToString[language]}
+      trigger={LANGUAGE_TO_STRING[language]}
     />
   );
 };
