@@ -7,7 +7,7 @@ export interface CodeState {
 }
 
 const initialState: CodeState = {
-  language: Language.PYTHON,
+  language: Language.PYTHON_THREE,
 };
 
 const codeSlice = createSlice({
