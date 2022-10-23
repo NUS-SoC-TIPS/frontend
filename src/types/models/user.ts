@@ -1,3 +1,5 @@
+import { Language } from './code';
+
 export interface User {
   id: string;
   createdAt: Date;
@@ -21,6 +23,7 @@ export interface Settings {
   userId: string;
   hasUpdatedName: boolean;
   hasUpdatedPhoto: boolean;
+  preferredInterviewLanguage?: Language;
 }
 
 export interface AppConfig {

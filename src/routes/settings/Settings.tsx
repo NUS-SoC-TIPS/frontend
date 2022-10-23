@@ -15,12 +15,14 @@ import { Page } from 'components/page';
 import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
 import { useUser } from 'contexts/UserContext';
 import { updateSettings } from 'lib/users';
+import { Language } from 'types/models/code';
 
-import { NameFormControl, PhotoFormControl } from './form';
+import { LanguageFormControl, NameFormControl, PhotoFormControl } from './form';
 
 interface State {
   name: string;
   photoUrl: string;
+  preferredInterviewLanguage: Language | null;
   isSaving: boolean;
 }
 
@@ -32,6 +34,8 @@ export const Settings = (): ReactElement<typeof Page> => {
     {
       name: user?.name ?? '',
       photoUrl: user?.photoUrl ?? '',
+      preferredInterviewLanguage:
+        user?.settings?.preferredInterviewLanguage ?? null,
       isSaving: false,
     } as State,
   );
@@ -40,7 +44,10 @@ export const Settings = (): ReactElement<typeof Page> => {
     return (
       state.name.trim() === '' ||
       state.photoUrl.trim() === '' ||
-      (state.name === user?.name && state.photoUrl === user?.githubUsername)
+      (state.name === user?.name &&
+        state.photoUrl === user?.photoUrl &&
+        state.preferredInterviewLanguage ===
+          (user?.settings?.preferredInterviewLanguage ?? null))
     );
   };
 
@@ -49,6 +56,7 @@ export const Settings = (): ReactElement<typeof Page> => {
     return updateSettings({
       name: state.name.trim(),
       photoUrl: state.photoUrl.trim(),
+      preferredInterviewLanguage: state.preferredInterviewLanguage,
     })
       .then((): void => {
         toast({
@@ -92,6 +100,12 @@ export const Settings = (): ReactElement<typeof Page> => {
             name={state.name}
             onChange={(photoUrl: string): void => setState({ photoUrl })}
             photoUrl={state.photoUrl}
+          />
+          <LanguageFormControl
+            onChangePreferredInterviewLanguage={(
+              preferredInterviewLanguage: Language | null,
+            ): void => setState({ preferredInterviewLanguage })}
+            preferredInterviewLanguage={state.preferredInterviewLanguage}
           />
           <Flex direction="row-reverse">
             <Button
