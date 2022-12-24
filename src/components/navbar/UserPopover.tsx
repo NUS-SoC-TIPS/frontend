@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { memo, ReactElement } from 'react';
 import { FiBookOpen, FiLogOut } from 'react-icons/fi';
 import {
   Avatar,
@@ -12,19 +12,19 @@ import {
 } from '@chakra-ui/react';
 
 import { MyPopover } from 'components/popover';
+import { useAuth } from 'contexts/AuthContext';
 import { UserWithSettingsAndConfig } from 'types/models/user';
 
 import { UserProfile } from '../userProfile';
 
 interface Props {
   user: UserWithSettingsAndConfig;
-  logout: () => void | Promise<void>;
 }
 
-export const UserPopover = ({
+const RawUserPopover = ({
   user,
-  logout,
 }: Props): ReactElement<Props, typeof Popover> | null => {
+  const { logout } = useAuth();
   const items = [
     {
       title: 'Coursemology',
@@ -62,3 +62,12 @@ export const UserPopover = ({
     />
   );
 };
+
+export const UserPopover = memo(RawUserPopover, (prevProps, newProps) => {
+  return (
+    prevProps.user.config.coursemology === newProps.user.config.coursemology &&
+    prevProps.user.name === newProps.user.name &&
+    prevProps.user.photoUrl === newProps.user.photoUrl &&
+    prevProps.user.githubUsername === newProps.user.githubUsername // This is for UserProfile
+  );
+});

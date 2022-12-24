@@ -101,7 +101,7 @@ export const Navbar = (): ReactElement<typeof Box> => {
                       onClick={(): void => navigate(SETTINGS)}
                     />
                   </ButtonGroup>
-                  <UserPopover logout={logout} user={user} />
+                  <UserPopover user={user} />
                 </>
               ) : (
                 <>
