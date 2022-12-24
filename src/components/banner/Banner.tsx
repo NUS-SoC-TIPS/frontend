@@ -20,7 +20,7 @@ const RawBanner = ({
 }: Props): ReactElement<Props, typeof Box> => {
   const isMobile = useBreakpointValue(
     { base: true, md: false },
-    { fallback: 'md' },
+    { ssr: false },
   );
   return (
     <Box

@@ -33,7 +33,7 @@ export const PastInterview = ({
   } = interview;
   const height = useBreakpointValue(
     { base: '20rem', md: '30rem' },
-    { fallback: 'md' },
+    { ssr: false },
   );
   const trimmedNotes = notes.trim();
   return (

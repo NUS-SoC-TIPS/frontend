@@ -55,7 +55,7 @@ export const BottomBar = ({
 }: Props): ReactElement<Props, typeof Box> => {
   const isDesktop = useBreakpointValue(
     { base: false, lg: true },
-    { fallback: 'lg' },
+    { ssr: false },
   );
   const [isCloseRoomModalOpen, setIsCloseRoomModalOpen] = useState(false);
   const [isClosingRoom, setIsClosingRoom] = useState(false);

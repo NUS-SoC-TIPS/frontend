@@ -42,7 +42,7 @@ export const Table = ({
 }: Props): ReactElement<Props, typeof ChakraTable> => {
   const isMobile = useBreakpointValue(
     { base: true, md: false },
-    { fallback: 'md' },
+    { ssr: false },
   );
   const [allRows, setAllRows] = useState(rows);
   const [page, setPage] = useState(0);

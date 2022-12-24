@@ -24,7 +24,7 @@ export const MiddleSection = ({
   const { partner, isPartnerInRoom } = useAppSelector((state) => state.room);
   const isTablet = useBreakpointValue(
     { base: false, md: true },
-    { fallback: 'md' },
+    { ssr: false },
   );
   const { width, height } = useWindowDimensions();
   const [editorSize, setEditorSize] = useState(0.5);

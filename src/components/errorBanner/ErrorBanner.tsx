@@ -17,7 +17,7 @@ export const ErrorBanner = (
 ): ReactElement<ContainerProps, typeof Container> => {
   const isMobile = useBreakpointValue(
     { base: true, md: false },
-    { fallback: 'md' },
+    { ssr: false },
   );
   const containerProps: ContainerProps = {
     pb: { base: 12, md: 24 },

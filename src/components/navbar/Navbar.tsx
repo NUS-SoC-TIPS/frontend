@@ -38,7 +38,7 @@ import { UserPopover } from './UserPopover';
 export const Navbar = (): ReactElement<typeof Box> => {
   const isDesktop = useBreakpointValue(
     { base: false, lg: true },
-    { fallback: 'lg' },
+    { ssr: false },
   );
   const { isOpen, onToggle, onClose } = useDisclosure();
   const user = useUser();

@@ -18,7 +18,7 @@ export const Slider = ({
 }: Props): ReactElement<Props, typeof Box> => {
   const isTablet = useBreakpointValue(
     { base: false, md: true },
-    { fallback: 'md' },
+    { ssr: false },
   );
 
   useEffect(() => {

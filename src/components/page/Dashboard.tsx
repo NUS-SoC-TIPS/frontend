@@ -16,7 +16,7 @@ export const Dashboard = ({
   PropsWithChildren<Props>,
   typeof Stack
 > => {
-  const size = useBreakpointValue({ base: 'xs', lg: 'sm' }, { fallback: 'lg' });
+  const size = useBreakpointValue({ base: 'xs', lg: 'sm' }, { ssr: false });
   return (
     <Stack spacing={{ base: 8, lg: 6 }}>
       <Stack

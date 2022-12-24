@@ -58,7 +58,7 @@ export const VideoCollection = ({
       md: '10vw',
       lg: '8vw',
     },
-    { fallback: 'lg' },
+    { ssr: false },
   );
   const width = useBreakpointValue(
     {
@@ -67,7 +67,7 @@ export const VideoCollection = ({
       md: '33vw',
       lg: '27vw',
     },
-    { fallback: 'lg' },
+    { ssr: false },
   );
 
   useEffect(() => {

@@ -29,7 +29,7 @@ export const AdminPage = ({
 > => {
   const selectWidth = useBreakpointValue(
     { base: '100%', lg: 'md' },
-    { fallback: 'lg' },
+    { ssr: false },
   );
   const onChangeWrapper = (option: unknown): void => {
     if (!option) {

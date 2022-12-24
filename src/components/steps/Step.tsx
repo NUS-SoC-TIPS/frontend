@@ -43,12 +43,9 @@ const RawStep = (props: Props): ReactElement<Props, typeof Stack> => {
       base: 'vertical',
       md: 'horizontal',
     },
-    { fallback: 'md' },
+    { ssr: false },
   );
-  const buttonPadding = useBreakpointValue(
-    { base: 2, lg: 4 },
-    { fallback: 'lg' },
-  );
+  const buttonPadding = useBreakpointValue({ base: 2, lg: 4 }, { ssr: false });
 
   return (
     <Box height="100%" position="relative" width="100%" {...boxProps}>
