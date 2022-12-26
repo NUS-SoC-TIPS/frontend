@@ -2,7 +2,7 @@ import { Socket } from 'socket.io-client';
 
 import { store } from 'app/store';
 import { AUTH_EVENTS, GENERAL_EVENTS, ROOM_EVENTS } from 'constants/events';
-import { setLanguage } from 'reducers/codeReducer';
+import { setExecutableLanguages, setLanguage } from 'reducers/codeReducer';
 import { setNotes } from 'reducers/panelReducer';
 import { RoomJoiningStatus, updateRoomState } from 'reducers/roomReducer';
 import { Language } from 'types/models/code';
@@ -34,9 +34,17 @@ const handleJoinRoom = (socket: Socket): void => {
       isPartnerInRoom: boolean;
       language: Language;
       notes: string;
+      executableLanguages: { [language: string]: string };
     }) => {
-      const { id, partner, videoToken, notes, language, isPartnerInRoom } =
-        data;
+      const {
+        id,
+        partner,
+        videoToken,
+        notes,
+        language,
+        isPartnerInRoom,
+        executableLanguages,
+      } = data;
       store.dispatch(
         updateRoomState({
           id,
@@ -48,6 +56,7 @@ const handleJoinRoom = (socket: Socket): void => {
       );
       store.dispatch(setNotes(notes));
       store.dispatch(setLanguage(language));
+      store.dispatch(setExecutableLanguages(executableLanguages));
     },
   );
 };
