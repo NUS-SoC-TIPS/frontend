@@ -1,19 +1,46 @@
-import { ReactElement } from 'react';
+import { forwardRef, ReactElement, Ref, useEffect, useState } from 'react';
 import {
   Box,
+  Button,
+  Circle,
   Code,
-  Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
   Textarea,
+  useMultiStyleConfig,
+  useTab,
+  UseTabProps,
 } from '@chakra-ui/react';
 import autosize from 'autosize';
 import { Socket } from 'socket.io-client';
 
 import { useAppSelector } from 'app/hooks';
 import { updateNotes } from 'lib/notesSocket';
+
+const CustomTab = forwardRef(
+  <P extends UseTabProps & { showCircle?: boolean }>(
+    props: P,
+    ref: Ref<HTMLElement>,
+  ) => {
+    const { showCircle, ...useTabProps } = props;
+    const tabProps = useTab({ ...useTabProps, ref });
+    const styles = useMultiStyleConfig('Tabs', tabProps);
+
+    return (
+      <Button
+        __css={{ ...styles.tab, display: 'flex', alignItems: 'center' }}
+        {...tabProps}
+      >
+        {tabProps.children}
+        {!!showCircle && <Circle bg="accent" ml={2} size={2} />}
+      </Button>
+    );
+  },
+);
+
+CustomTab.displayName = 'CustomTab';
 
 interface Props {
   socket: Socket;
@@ -24,14 +51,30 @@ export const Panel = ({
   socket,
   height,
 }: Props): ReactElement<Props, typeof Box> => {
-  const { notes } = useAppSelector((state) => state.panel);
+  const [tabIndex, setTabIndex] = useState(0);
+  const [hasUnviewedOutput, setHasUnviewedOutput] = useState(false);
+  const { notes, executionOutput } = useAppSelector((state) => state.panel);
+
+  useEffect(() => {
+    if (executionOutput != null && tabIndex !== 1) {
+      setHasUnviewedOutput(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [executionOutput]);
+
+  const handleTabsChange = (index: number): void => {
+    setTabIndex(index);
+    if (index === 1) {
+      setHasUnviewedOutput(false);
+    }
+  };
 
   return (
     <Box flex={1}>
-      <Tabs>
+      <Tabs index={tabIndex} onChange={handleTabsChange}>
         <TabList>
-          <Tab>Notes</Tab>
-          <Tab>Output</Tab>
+          <CustomTab>Notes</CustomTab>
+          <CustomTab showCircle={hasUnviewedOutput}>Output</CustomTab>
         </TabList>
         <TabPanels height={`${height - 39}px`} overflow="scroll">
           <TabPanel>
@@ -51,7 +94,11 @@ export const Panel = ({
             />
           </TabPanel>
           <TabPanel>
-            <Code>Execute the code to see its output!</Code>
+            <Code>
+              {executionOutput == null
+                ? 'Execute the code to see its output!'
+                : executionOutput}
+            </Code>
           </TabPanel>
         </TabPanels>
       </Tabs>
