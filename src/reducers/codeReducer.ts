@@ -44,6 +44,12 @@ const codeSlice = createSlice({
       state.isExecuting = action.payload.isExecuting;
       state.executionError = action.payload.executionError;
     },
+    resetCodeState: (state: CodeState) => {
+      state.language = Language.PYTHON_THREE;
+      state.executableLanguageToVersionMap = {};
+      state.isExecuting = false;
+      state.executionError = null;
+    },
   },
 });
 
@@ -51,6 +57,7 @@ export const {
   setLanguage,
   setExecutableLanguageToVersionMap,
   setIsExecuting,
+  resetCodeState,
 } = codeSlice.actions;
 
 export default codeSlice.reducer;

@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { Loading } from 'components/loading';
 import { initSocketForCode } from 'lib/codeSocket';
 import { initSocketForRoom } from 'lib/roomsSocket';
+import { resetCodeState } from 'reducers/codeReducer';
 import { resetPanelState } from 'reducers/panelReducer';
 import { resetRoomState, RoomJoiningStatus } from 'reducers/roomReducer';
 import tokenUtils from 'utils/tokenUtils';
@@ -44,6 +45,7 @@ export const Room = (): ReactElement => {
     if (token && params.slug) {
       dispatch(resetRoomState());
       dispatch(resetPanelState());
+      dispatch(resetCodeState());
       newSocket = io(`${process.env.REACT_APP_BACKEND_WS}`, {
         reconnection: true,
         reconnectionDelay: 1000,
