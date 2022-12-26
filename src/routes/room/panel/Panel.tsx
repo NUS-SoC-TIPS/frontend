@@ -142,8 +142,12 @@ export const Panel = ({
                 wordBreak="break-all"
               >
                 {lines.map((line, index) => {
-                  if (line === '' && index === lines.length - 1) {
-                    // If it's the last line and it's empty, we don't want to render it
+                  if (
+                    line === '' &&
+                    index === lines.length - 1 &&
+                    lines.length !== 1
+                  ) {
+                    // If it's the last line of many lines and it's empty, we don't want to render it
                     return <></>;
                   }
                   if (line === '') {
