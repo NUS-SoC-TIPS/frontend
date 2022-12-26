@@ -131,10 +131,11 @@ export const Panel = ({
           </TabPanel>
           <TabPanel>
             {executionOutput == null ? (
-              <Code size="sm">Execute the code to see its output!</Code>
+              <Code fontSize="sm">Execute the code to see its output!</Code>
             ) : (
               <Code
-                colorScheme={isErrorOutput ? 'red' : undefined}
+                colorScheme={isErrorOutput ? 'red' : 'green'}
+                fontSize="sm"
                 height="100%"
                 whiteSpace="pre-wrap"
                 width="100%"
