@@ -23,7 +23,7 @@ interface Props {
 
 export const TopBar = ({ socket }: Props): ReactElement<Props, typeof Box> => {
   const params = useParams();
-  const { language } = useAppSelector((state) => state.code);
+  const { language, isExecuting } = useAppSelector((state) => state.code);
   const [hasCopied, setHasCopied] = useState(false);
 
   const onCopyInviteLink = async (): Promise<void> => {
@@ -48,6 +48,7 @@ export const TopBar = ({ socket }: Props): ReactElement<Props, typeof Box> => {
         <HStack justify="space-between" spacing={10}>
           <Box>
             <LanguagePopover
+              isDisabled={isExecuting}
               language={language}
               setLanguage={onChangeLanguage}
             />

@@ -9,11 +9,13 @@ import { Language } from 'types/models/code';
 interface Props {
   language: Language;
   setLanguage: (language: Language) => void;
+  isDisabled?: boolean;
 }
 
 export const LanguagePopover = ({
   language,
   setLanguage,
+  isDisabled = false,
 }: Props): ReactElement<Props, typeof Popover> | null => {
   const items = INTERVIEW_LANGUAGES.map((supportedLanguage) => ({
     title: LANGUAGE_TO_STRING[supportedLanguage],
@@ -50,6 +52,7 @@ export const LanguagePopover = ({
           ))}
         </SimpleGrid>
       }
+      isDisabled={isDisabled}
       popoverContentProps={{ p: 2, maxWidth: 64 }}
       trigger={LANGUAGE_TO_STRING[language]}
     />
