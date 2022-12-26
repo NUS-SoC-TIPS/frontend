@@ -64,9 +64,6 @@ export const BottomBar = ({
   const { partner, isRoomClosed, isPartnerInRoom } = useAppSelector(
     (state) => state.room,
   );
-  const { language, executableLanguageToVersionMap } = useAppSelector(
-    (state) => state.code,
-  );
   const navigate = useNavigate();
 
   const onCloseModal = (): void => {
@@ -134,10 +131,7 @@ export const BottomBar = ({
       <Container maxWidth="100%" px={2} py={2}>
         <HStack justify="space-between" spacing={10}>
           <HStack spacing={4}>
-            <CodeExecutionButton
-              executableLanguageToVersionMap={executableLanguageToVersionMap}
-              language={language}
-            />
+            <CodeExecutionButton socket={socket} />
             {isDesktop && (
               <>
                 <UserDisplay user={user} />

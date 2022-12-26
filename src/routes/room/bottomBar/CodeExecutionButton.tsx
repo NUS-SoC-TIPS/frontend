@@ -1,17 +1,19 @@
 import { ReactElement } from 'react';
 import { Button, Tooltip } from '@chakra-ui/react';
+import { Socket } from 'socket.io-client';
 
-import { Language } from 'types/models/code';
+import { useAppSelector } from 'app/hooks';
+import { executeCode } from 'lib/codeSocket';
 
 interface Props {
-  language: Language;
-  executableLanguageToVersionMap: { [language: string]: string };
+  socket: Socket;
 }
 
 export const CodeExecutionButton = ({
-  language,
-  executableLanguageToVersionMap,
+  socket,
 }: Props): ReactElement<Props, typeof Button> => {
+  const { language, executableLanguageToVersionMap, isExecuting } =
+    useAppSelector((state) => state.code);
   const versionName = executableLanguageToVersionMap[language];
   if (versionName == null) {
     return (
@@ -26,7 +28,8 @@ export const CodeExecutionButton = ({
   return (
     <Tooltip label={versionName}>
       <Button
-        onClick={undefined} // TODO: Define this
+        isLoading={isExecuting}
+        onClick={(): void => executeCode(socket)}
         size="sm"
         variant="secondary"
       >
