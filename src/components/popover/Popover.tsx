@@ -13,6 +13,7 @@ import { PopoverIcon } from './PopoverIcon';
 interface Props {
   trigger: ReactElement | string;
   content: ReactElement;
+  isDisabled?: boolean;
   buttonProps?: ButtonProps;
   popoverContentProps?: PopoverContentProps;
 }
@@ -20,15 +21,23 @@ interface Props {
 export const MyPopover = ({
   trigger,
   content,
+  isDisabled = false,
   buttonProps = {},
   popoverContentProps = {},
 }: Props): ReactElement<Props, typeof Popover> | null => {
   return (
-    <Popover gutter={12} openDelay={0} placement="bottom" trigger="hover">
+    <Popover
+      gutter={12}
+      isOpen={isDisabled ? false : undefined}
+      openDelay={0}
+      placement="bottom"
+      trigger="hover"
+    >
       {({ isOpen }): ReactElement => (
         <>
           <PopoverTrigger>
             <Button
+              disabled={isDisabled}
               rightIcon={<PopoverIcon isOpen={isOpen} />}
               {...buttonProps}
             >
