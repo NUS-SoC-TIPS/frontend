@@ -1,5 +1,4 @@
 import { ReactElement, ReactNode, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -64,7 +63,6 @@ export const BottomBar = ({
   const { partner, isRoomClosed, isPartnerInRoom } = useAppSelector(
     (state) => state.room,
   );
-  const navigate = useNavigate();
 
   const onCloseModal = (): void => {
     if (isRoomClosed || isClosingRoom) {
@@ -81,7 +79,22 @@ export const BottomBar = ({
   const getModalActions = (): ReactNode => {
     if (isRoomClosed) {
       return (
-        <Button onClick={(): void => navigate(INTERVIEWS)} variant="primary">
+        <Button
+          onClick={async (): Promise<void> =>
+            navigator.mediaDevices
+              .getUserMedia({
+                audio: true,
+                video: true,
+              })
+              .then((stream) => {
+                stream.getTracks().forEach((track) => {
+                  track.stop();
+                });
+                window.location.href = INTERVIEWS;
+              })
+          }
+          variant="primary"
+        >
           Back to Home
         </Button>
       );
