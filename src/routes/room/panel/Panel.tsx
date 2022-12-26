@@ -56,13 +56,19 @@ export const Panel = ({
   const { notes, executionOutput, isErrorOutput } = useAppSelector(
     (state) => state.panel,
   );
+  const { isExecuting, executionError } = useAppSelector((state) => state.code);
 
   useEffect(() => {
-    if (executionOutput != null && tabIndex !== 1) {
+    if (
+      !isExecuting &&
+      executionError == null &&
+      executionOutput != null &&
+      tabIndex !== 1
+    ) {
       setHasUnviewedOutput(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [executionOutput]);
+  }, [executionOutput, isExecuting, executionError]);
 
   const handleTabsChange = (index: number): void => {
     setTabIndex(index);
