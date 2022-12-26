@@ -2,16 +2,23 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Language } from 'types/models/code';
 
+export enum CodeExecutionError {
+  FAILED_TO_START_EXECUTION,
+  EXECUTION_TIMED_OUT,
+}
+
 export interface CodeState {
   language: Language;
   executableLanguageToVersionMap: { [language: string]: string };
   isExecuting: boolean;
+  executionError: CodeExecutionError | null;
 }
 
 const initialState: CodeState = {
   language: Language.PYTHON_THREE,
   executableLanguageToVersionMap: {},
   isExecuting: false,
+  executionError: null,
 };
 
 const codeSlice = createSlice({
@@ -29,9 +36,13 @@ const codeSlice = createSlice({
     },
     setIsExecuting: (
       state: CodeState,
-      action: PayloadAction<boolean>,
+      action: PayloadAction<{
+        isExecuting: boolean;
+        executionError: CodeExecutionError | null;
+      }>,
     ): void => {
-      state.isExecuting = action.payload;
+      state.isExecuting = action.payload.isExecuting;
+      state.executionError = action.payload.executionError;
     },
   },
 });
