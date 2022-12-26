@@ -57,16 +57,10 @@ const handleExecutionCompleted = (socket: Socket): void => {
   socket.on(
     CODE_EVENTS.EXECUTION_COMPLETED,
     (data: { isError: boolean; output: string; statusDescription: string }) => {
-      const { isError, output, statusDescription } = data;
       store.dispatch(
         setIsExecuting({ isExecuting: false, executionError: null }),
       );
-      store.dispatch(
-        setExecutionOutput({
-          output: isError ? `${statusDescription}\n${output}` : output,
-          isError,
-        }),
-      );
+      store.dispatch(setExecutionOutput(data));
     },
   );
 };

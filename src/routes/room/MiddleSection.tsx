@@ -78,6 +78,7 @@ export const MiddleSection = ({
         <Panel
           height={isTablet ? height - 96 : height - 112 - scaledLength}
           socket={socket}
+          width={isTablet ? width - scaledLength - 16 : width}
         />
       )}
       <VideoCollection

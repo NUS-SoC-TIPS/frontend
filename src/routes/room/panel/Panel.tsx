@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react';
 import {
+  Badge,
   Box,
   Button,
   Circle,
@@ -49,20 +50,23 @@ const CustomTab = forwardRef(
 
 CustomTab.displayName = 'CustomTab';
 
+const MIN_WIDTH_FOR_BADGE = 250;
+
 interface Props {
   socket: Socket;
   height: number;
+  width: number;
 }
 
 export const Panel = ({
   socket,
   height,
+  width,
 }: Props): ReactElement<Props, typeof Box> => {
   const [tabIndex, setTabIndex] = useState(0);
   const [hasUnviewedOutput, setHasUnviewedOutput] = useState(false);
-  const { notes, executionOutput, isErrorOutput } = useAppSelector(
-    (state) => state.panel,
-  );
+  const { notes, executionOutput, statusDescription, isErrorOutput } =
+    useAppSelector((state) => state.panel);
   const { isExecuting, executionError } = useAppSelector((state) => state.code);
   const ref = useRef<HTMLTextAreaElement>(null);
 
@@ -102,10 +106,22 @@ export const Panel = ({
   return (
     <Box flex={1}>
       <Tabs index={tabIndex} onChange={handleTabsChange}>
-        <TabList>
+        <TabList position="relative">
           <CustomTab>Notes</CustomTab>
           <CustomTab showCircle={hasUnviewedOutput}>Output</CustomTab>
-          Test
+          {statusDescription != null && width >= MIN_WIDTH_FOR_BADGE && (
+            <Badge
+              colorScheme={isErrorOutput ? 'red' : 'green'}
+              fontSize="xs"
+              position="absolute"
+              right={2}
+              top="50%"
+              transform="auto"
+              translateY="-50%"
+            >
+              {statusDescription}
+            </Badge>
+          )}
         </TabList>
         <TabPanels
           cursor={tabIndex === 0 ? 'text' : undefined}
@@ -131,6 +147,15 @@ export const Panel = ({
             />
           </TabPanel>
           <TabPanel>
+            {statusDescription != null && width < MIN_WIDTH_FOR_BADGE && (
+              <Badge
+                colorScheme={isErrorOutput ? 'red' : 'green'}
+                fontSize="xs"
+                mb={2}
+              >
+                {statusDescription}
+              </Badge>
+            )}
             {executionOutput == null ? (
               <Code fontSize="sm">Execute the code to see its output!</Code>
             ) : lines.length === 1 && lines[0] === '' ? (
