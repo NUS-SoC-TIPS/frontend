@@ -105,6 +105,7 @@ export const Panel = ({
         <TabList>
           <CustomTab>Notes</CustomTab>
           <CustomTab showCircle={hasUnviewedOutput}>Output</CustomTab>
+          Test
         </TabList>
         <TabPanels
           cursor={tabIndex === 0 ? 'text' : undefined}
@@ -132,21 +133,20 @@ export const Panel = ({
           <TabPanel>
             {executionOutput == null ? (
               <Code fontSize="sm">Execute the code to see its output!</Code>
+            ) : lines.length === 1 && lines[0] === '' ? (
+              <Code fontSize="sm" width="100%">
+                No output
+              </Code>
             ) : (
               <Code
                 colorScheme={isErrorOutput ? 'red' : 'green'}
                 fontSize="sm"
-                height="100%"
                 whiteSpace="pre-wrap"
                 width="100%"
                 wordBreak="break-all"
               >
                 {lines.map((line, index) => {
-                  if (
-                    line === '' &&
-                    index === lines.length - 1 &&
-                    lines.length !== 1
-                  ) {
+                  if (line === '' && index === lines.length - 1) {
                     // If it's the last line of many lines and it's empty, we don't want to render it
                     return <></>;
                   }
