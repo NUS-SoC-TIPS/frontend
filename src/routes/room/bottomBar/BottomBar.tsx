@@ -1,5 +1,4 @@
 import { ReactElement, ReactNode, useState } from 'react';
-import { FiLock } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -23,6 +22,8 @@ import { INTERVIEWS } from 'constants/routes';
 import { useUser } from 'contexts/UserContext';
 import { closeRoom } from 'lib/roomsSocket';
 import { User } from 'types/models/user';
+
+import { CodeExecutionButton } from './CodeExecutionButton';
 
 interface UserDisplayProps {
   user: User;
@@ -62,6 +63,9 @@ export const BottomBar = ({
   const user = useUser() as User;
   const { partner, isRoomClosed, isPartnerInRoom } = useAppSelector(
     (state) => state.room,
+  );
+  const { language, executableLanguageToVersionMap } = useAppSelector(
+    (state) => state.code,
   );
   const navigate = useNavigate();
 
@@ -130,14 +134,10 @@ export const BottomBar = ({
       <Container maxWidth="100%" px={2} py={2}>
         <HStack justify="space-between" spacing={10}>
           <HStack spacing={4}>
-            <Button
-              disabled={true}
-              rightIcon={<FiLock />}
-              size="sm"
-              variant="secondary"
-            >
-              Execute Code
-            </Button>
+            <CodeExecutionButton
+              executableLanguageToVersionMap={executableLanguageToVersionMap}
+              language={language}
+            />
             {isDesktop && (
               <>
                 <UserDisplay user={user} />

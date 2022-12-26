@@ -10,12 +10,12 @@ import { resetPanelState } from 'reducers/panelReducer';
 import { resetRoomState, RoomJoiningStatus } from 'reducers/roomReducer';
 import tokenUtils from 'utils/tokenUtils';
 
+import { BottomBar } from './bottomBar/BottomBar';
 import { InAnotherRoom } from './errors/InAnotherRoom';
 import { InAnotherTab } from './errors/InAnotherTab';
 import { RoomDoesNotExist } from './errors/RoomDoesNotExist';
 import { RoomIsClosed } from './errors/RoomIsClosed';
 import { RoomIsFull } from './errors/RoomIsFull';
-import { BottomBar } from './BottomBar';
 import { MiddleSection } from './MiddleSection';
 import { RoomPage } from './RoomPage';
 import { TopBar } from './topBar';
