@@ -53,7 +53,7 @@ export const Panel = ({
 }: Props): ReactElement<Props, typeof Box> => {
   const [tabIndex, setTabIndex] = useState(0);
   const [hasUnviewedOutput, setHasUnviewedOutput] = useState(false);
-  const { notes, executionOutput, isExecutionError } = useAppSelector(
+  const { notes, executionOutput, isErrorOutput } = useAppSelector(
     (state) => state.panel,
   );
 
@@ -96,7 +96,7 @@ export const Panel = ({
             />
           </TabPanel>
           <TabPanel>
-            <Code colorScheme={isExecutionError ? 'red' : undefined}>
+            <Code colorScheme={isErrorOutput ? 'red' : undefined}>
               {executionOutput == null
                 ? 'Execute the code to see its output!'
                 : executionOutput}

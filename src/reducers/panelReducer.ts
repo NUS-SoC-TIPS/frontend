@@ -3,13 +3,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export interface PanelState {
   notes: string;
   executionOutput: string | null;
-  isExecutionError: boolean;
+  isErrorOutput: boolean;
 }
 
 const initialState: PanelState = {
   notes: '',
   executionOutput: null,
-  isExecutionError: false,
+  isErrorOutput: false,
 };
 
 export const panelSlice = createSlice({
@@ -24,12 +24,12 @@ export const panelSlice = createSlice({
       action: PayloadAction<{ output: string; isError: boolean }>,
     ) => {
       state.executionOutput = action.payload.output;
-      state.isExecutionError = action.payload.isError;
+      state.isErrorOutput = action.payload.isError;
     },
     resetPanelState: (state: PanelState) => {
       state.notes = '';
       state.executionOutput = null;
-      state.isExecutionError = false;
+      state.isErrorOutput = false;
     },
   },
 });
