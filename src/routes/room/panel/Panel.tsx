@@ -71,6 +71,8 @@ export const Panel = ({
     }
   };
 
+  const lines = executionOutput != null ? executionOutput.split('\n') : [];
+
   return (
     <Box flex={1}>
       <Tabs index={tabIndex} onChange={handleTabsChange}>
@@ -96,11 +98,28 @@ export const Panel = ({
             />
           </TabPanel>
           <TabPanel>
-            <Code colorScheme={isErrorOutput ? 'red' : undefined}>
-              {executionOutput == null
-                ? 'Execute the code to see its output!'
-                : executionOutput}
-            </Code>
+            {executionOutput == null ? (
+              <Code>Execute the code to see its output!</Code>
+            ) : (
+              <Code
+                colorScheme={isErrorOutput ? 'red' : undefined}
+                height="100%"
+                whiteSpace="pre-wrap"
+                width="100%"
+                wordBreak="break-all"
+              >
+                {lines.map((line, index) => {
+                  if (line === '' && index === lines.length - 1) {
+                    // If it's the last line and it's empty, we don't want to render it
+                    return <></>;
+                  }
+                  if (line === '') {
+                    return <p key={index}>&nbsp;</p>;
+                  }
+                  return <p key={index}>{line}</p>;
+                })}
+              </Code>
+            )}
           </TabPanel>
         </TabPanels>
       </Tabs>
