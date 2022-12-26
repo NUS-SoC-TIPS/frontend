@@ -18,6 +18,7 @@ export const LanguagePopover = ({
   const items = INTERVIEW_LANGUAGES.map((supportedLanguage) => ({
     title: LANGUAGE_TO_STRING[supportedLanguage],
     onClick: () => setLanguage(supportedLanguage),
+    value: supportedLanguage,
   }));
 
   return (
@@ -32,7 +33,14 @@ export const LanguagePopover = ({
       content={
         <SimpleGrid columnGap={3} columns={2} rowGap={2}>
           {items.map((item, id) => (
-            <Link key={id} onClick={item.onClick} variant="menu">
+            <Link
+              backgroundColor={
+                language === item.value ? 'bg-subtle' : undefined
+              }
+              key={id}
+              onClick={item.onClick}
+              variant="menu"
+            >
               <Box p={1}>
                 <Text fontSize="sm" fontWeight="medium" ps={1}>
                   {item.title}
