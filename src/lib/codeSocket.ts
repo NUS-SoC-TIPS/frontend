@@ -28,14 +28,14 @@ const handleExecuteCode = (socket: Socket): void => {
 };
 
 const handleFailedToStartExecution = (socket: Socket): void => {
-  socket.on(CODE_EVENTS.EXECUTE_CODE, () => {
+  socket.on(CODE_EVENTS.FAILED_TO_START_EXECUTION, () => {
     store.dispatch(setIsExecuting(false));
     // TODO: Show an error dialog
   });
 };
 
 const handleExecutionTimedOut = (socket: Socket): void => {
-  socket.on(CODE_EVENTS.EXECUTE_CODE, () => {
+  socket.on(CODE_EVENTS.EXECUTION_TIMED_OUT, () => {
     store.dispatch(setIsExecuting(false));
     // TODO: Show an error dialog
   });
@@ -43,7 +43,7 @@ const handleExecutionTimedOut = (socket: Socket): void => {
 
 const handleExecutionCompleted = (socket: Socket): void => {
   socket.on(
-    CODE_EVENTS.EXECUTE_CODE,
+    CODE_EVENTS.EXECUTION_COMPLETED,
     (data: { isError: boolean; output: string; statusDescription: string }) => {
       const { isError, output, statusDescription } = data;
       store.dispatch(setIsExecuting(false));
