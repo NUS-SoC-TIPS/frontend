@@ -2,7 +2,10 @@ import { Socket } from 'socket.io-client';
 
 import { store } from 'app/store';
 import { AUTH_EVENTS, GENERAL_EVENTS, ROOM_EVENTS } from 'constants/events';
-import { setExecutableLanguages, setLanguage } from 'reducers/codeReducer';
+import {
+  setExecutableLanguageToVersionMap,
+  setLanguage,
+} from 'reducers/codeReducer';
 import { setNotes } from 'reducers/panelReducer';
 import { RoomJoiningStatus, updateRoomState } from 'reducers/roomReducer';
 import { Language } from 'types/models/code';
@@ -34,7 +37,7 @@ const handleJoinRoom = (socket: Socket): void => {
       isPartnerInRoom: boolean;
       language: Language;
       notes: string;
-      executableLanguages: { [language: string]: string };
+      executableLanguageToVersionMap: { [language: string]: string };
     }) => {
       const {
         id,
@@ -43,7 +46,7 @@ const handleJoinRoom = (socket: Socket): void => {
         notes,
         language,
         isPartnerInRoom,
-        executableLanguages,
+        executableLanguageToVersionMap,
       } = data;
       store.dispatch(
         updateRoomState({
@@ -56,7 +59,9 @@ const handleJoinRoom = (socket: Socket): void => {
       );
       store.dispatch(setNotes(notes));
       store.dispatch(setLanguage(language));
-      store.dispatch(setExecutableLanguages(executableLanguages));
+      store.dispatch(
+        setExecutableLanguageToVersionMap(executableLanguageToVersionMap),
+      );
     },
   );
 };

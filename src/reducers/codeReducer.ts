@@ -4,12 +4,12 @@ import { Language } from 'types/models/code';
 
 export interface CodeState {
   language: Language;
-  executableLanguages: { [language: string]: string };
+  executableLanguageToVersionMap: { [language: string]: string };
 }
 
 const initialState: CodeState = {
   language: Language.PYTHON_THREE,
-  executableLanguages: {},
+  executableLanguageToVersionMap: {},
 };
 
 const codeSlice = createSlice({
@@ -19,15 +19,16 @@ const codeSlice = createSlice({
     setLanguage: (state, action: PayloadAction<Language>): void => {
       state.language = action.payload;
     },
-    setExecutableLanguages: (
+    setExecutableLanguageToVersionMap: (
       state,
       action: PayloadAction<{ [language: string]: string }>,
     ): void => {
-      state.executableLanguages = action.payload;
+      state.executableLanguageToVersionMap = action.payload;
     },
   },
 });
 
-export const { setLanguage, setExecutableLanguages } = codeSlice.actions;
+export const { setLanguage, setExecutableLanguageToVersionMap } =
+  codeSlice.actions;
 
 export default codeSlice.reducer;
