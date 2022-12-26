@@ -1,4 +1,11 @@
-import { forwardRef, ReactElement, Ref, useEffect, useState } from 'react';
+import {
+  forwardRef,
+  ReactElement,
+  Ref,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {
   Box,
   Button,
@@ -57,6 +64,7 @@ export const Panel = ({
     (state) => state.panel,
   );
   const { isExecuting, executionError } = useAppSelector((state) => state.code);
+  const ref = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (
@@ -69,6 +77,18 @@ export const Panel = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [executionOutput, isExecuting, executionError]);
+
+  useEffect(() => {
+    const textarea = ref.current;
+    if (textarea) {
+      autosize(textarea);
+    }
+    return () => {
+      if (textarea) {
+        autosize.destroy(textarea);
+      }
+    };
+  }, []);
 
   const handleTabsChange = (index: number): void => {
     setTabIndex(index);
@@ -86,26 +106,32 @@ export const Panel = ({
           <CustomTab>Notes</CustomTab>
           <CustomTab showCircle={hasUnviewedOutput}>Output</CustomTab>
         </TabList>
-        <TabPanels height={`${height - 39}px`} overflow="scroll">
+        <TabPanels
+          cursor={tabIndex === 0 ? 'text' : undefined}
+          height={`${height - 39}px`}
+          onClick={(): void => ref.current?.focus()}
+          overflow="scroll"
+        >
           <TabPanel>
             <Textarea
               borderColor="transparent"
               focusBorderColor="transparent"
-              onChange={(event): void => {
-                updateNotes(socket, event.target.value);
-                autosize(document.querySelectorAll('textarea'));
-              }}
+              onChange={(event): void =>
+                updateNotes(socket, event.target.value)
+              }
               placeholder="Enter notes here for your partner. Your partner will only see these notes at the end of the session."
               pt={0}
+              ref={ref}
               resize="none"
               rows={4}
+              size="sm"
               value={notes}
               variant="flushed"
             />
           </TabPanel>
           <TabPanel>
             {executionOutput == null ? (
-              <Code>Execute the code to see its output!</Code>
+              <Code size="sm">Execute the code to see its output!</Code>
             ) : (
               <Code
                 colorScheme={isErrorOutput ? 'red' : undefined}
