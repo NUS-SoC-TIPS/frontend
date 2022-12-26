@@ -24,8 +24,9 @@ import {
 import autosize from 'autosize';
 import { Socket } from 'socket.io-client';
 
-import { useAppSelector } from 'app/hooks';
+import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { updateNotes } from 'lib/notesSocket';
+import { viewOutput } from 'reducers/panelReducer';
 
 const CustomTab = forwardRef(
   <P extends UseTabProps & { showCircle?: boolean }>(
@@ -64,23 +65,21 @@ export const Panel = ({
   width,
 }: Props): ReactElement<Props, typeof Box> => {
   const [tabIndex, setTabIndex] = useState(0);
-  const [hasUnviewedOutput, setHasUnviewedOutput] = useState(false);
-  const { notes, executionOutput, statusDescription, isErrorOutput } =
-    useAppSelector((state) => state.panel);
-  const { isExecuting, executionError } = useAppSelector((state) => state.code);
+  const {
+    notes,
+    executionOutput,
+    statusDescription,
+    isErrorOutput,
+    hasUnviewedOutput,
+  } = useAppSelector((state) => state.panel);
   const ref = useRef<HTMLTextAreaElement>(null);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (
-      !isExecuting &&
-      executionError == null &&
-      executionOutput != null &&
-      tabIndex !== 1
-    ) {
-      setHasUnviewedOutput(true);
+    if (hasUnviewedOutput && tabIndex === 1) {
+      dispatch(viewOutput());
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [executionOutput, isExecuting, executionError]);
+  }, [hasUnviewedOutput, tabIndex, dispatch]);
 
   useEffect(() => {
     const textarea = ref.current;
@@ -96,9 +95,6 @@ export const Panel = ({
 
   const handleTabsChange = (index: number): void => {
     setTabIndex(index);
-    if (index === 1) {
-      setHasUnviewedOutput(false);
-    }
   };
 
   const lines = executionOutput != null ? executionOutput.split('\n') : [];
