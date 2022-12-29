@@ -7,7 +7,11 @@ import {
   setLanguage,
 } from 'reducers/codeReducer';
 import { setNotes } from 'reducers/panelReducer';
-import { RoomJoiningStatus, updateRoomState } from 'reducers/roomReducer';
+import {
+  RoomClosingStatus,
+  RoomJoiningStatus,
+  updateRoomState,
+} from 'reducers/roomReducer';
 import { Language } from 'types/models/code';
 import { User } from 'types/models/user';
 
@@ -130,9 +134,34 @@ const handlePartnerDisconnected = (socket: Socket): void => {
   });
 };
 
+const handleClosingRoom = (socket: Socket): void => {
+  socket.on(ROOM_EVENTS.CLOSING_ROOM, () => {
+    store.dispatch(
+      updateRoomState({
+        closingStatus: RoomClosingStatus.CLOSING,
+      }),
+    );
+  });
+};
+
 const handleCloseRoom = (socket: Socket): void => {
   socket.on(ROOM_EVENTS.CLOSE_ROOM, () => {
-    store.dispatch(updateRoomState({ isRoomClosed: true }));
+    store.dispatch(
+      updateRoomState({
+        isRoomClosed: true,
+        closingStatus: RoomClosingStatus.NOT_CLOSING,
+      }),
+    );
+  });
+};
+
+const handleCloseRoomFailed = (socket: Socket): void => {
+  socket.on(ROOM_EVENTS.CLOSE_ROOM_FAILED, () => {
+    store.dispatch(
+      updateRoomState({
+        closingStatus: RoomClosingStatus.FAILED,
+      }),
+    );
   });
 };
 
@@ -152,5 +181,7 @@ export const initSocketForRoom = (
   handleRoomIsFull(socket);
   handlePartnerJoinedRoom(socket);
   handlePartnerDisconnected(socket);
+  handleClosingRoom(socket);
   handleCloseRoom(socket);
+  handleCloseRoomFailed(socket);
 };

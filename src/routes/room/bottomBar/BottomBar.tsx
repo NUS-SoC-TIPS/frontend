@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode, useState } from 'react';
+import { ReactElement, ReactNode, useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -8,6 +8,7 @@ import {
   Text,
   useBreakpointValue,
   useColorModeValue,
+  useToast,
 } from '@chakra-ui/react';
 import { Socket } from 'socket.io-client';
 
@@ -18,8 +19,10 @@ import {
 } from 'components/codeEditor/colors';
 import { Modal } from 'components/modal';
 import { INTERVIEWS } from 'constants/routes';
+import { ERROR_TOAST_PROPS } from 'constants/toast';
 import { useUser } from 'contexts/UserContext';
 import { closeRoom } from 'lib/roomsSocket';
+import { RoomClosingStatus } from 'reducers/roomReducer';
 import { User } from 'types/models/user';
 
 import { CodeExecutionButton } from './CodeExecutionButton';
@@ -58,20 +61,30 @@ export const BottomBar = ({
     { ssr: false },
   );
   const [isCloseRoomModalOpen, setIsCloseRoomModalOpen] = useState(false);
-  const [isClosingRoom, setIsClosingRoom] = useState(false);
   const user = useUser() as User;
-  const { partner, isRoomClosed, isPartnerInRoom } = useAppSelector(
-    (state) => state.room,
-  );
+  const { partner, isRoomClosed, isPartnerInRoom, closingStatus } =
+    useAppSelector((state) => state.room);
+  const toast = useToast();
+  const [isClosingRoom, setIsClosingRoom] = useState(false); // Used to identify who is the one closing the room
+
+  useEffect(() => {
+    if (closingStatus === RoomClosingStatus.FAILED && isClosingRoom) {
+      toast({ ...ERROR_TOAST_PROPS, title: 'Failed to close room!' });
+      setIsClosingRoom(false);
+    }
+  }, [closingStatus, toast, isClosingRoom]);
 
   const onCloseModal = (): void => {
-    if (isRoomClosed || isClosingRoom) {
+    if (isRoomClosed || closingStatus === RoomClosingStatus.CLOSING) {
       return;
     }
     setIsCloseRoomModalOpen(false);
   };
 
   const onCloseRoom = (): void => {
+    if (isRoomClosed || closingStatus === RoomClosingStatus.CLOSING) {
+      return;
+    }
     setIsClosingRoom(true);
     closeRoom(socket);
   };
@@ -103,7 +116,7 @@ export const BottomBar = ({
     return (
       <>
         <Button
-          disabled={isClosingRoom}
+          disabled={closingStatus === RoomClosingStatus.CLOSING}
           mr={2}
           onClick={onCloseModal}
           variant="secondary"
@@ -111,7 +124,7 @@ export const BottomBar = ({
           Cancel
         </Button>
         <Button
-          isLoading={isClosingRoom}
+          isLoading={closingStatus === RoomClosingStatus.CLOSING}
           onClick={onCloseRoom}
           variant="primary"
         >
@@ -160,6 +173,7 @@ export const BottomBar = ({
           </HStack>
           <Button
             colorScheme="red"
+            disabled={closingStatus === RoomClosingStatus.CLOSING}
             onClick={(): void => setIsCloseRoomModalOpen(true)}
             size="sm"
           >

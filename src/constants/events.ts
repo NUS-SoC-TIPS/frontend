@@ -25,6 +25,7 @@ export const ROOM_EVENTS = {
 
   // To end the session. Also sent back upon successful closure.
   CLOSE_ROOM: 'close_room',
+  CLOSING_ROOM: 'closing_room', // To trigger loading state
 
   // When the partner disconnects
   PARTNER_DISCONNECTED: 'partner_disconnected',

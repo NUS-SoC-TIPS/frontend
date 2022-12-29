@@ -13,6 +13,12 @@ export enum RoomJoiningStatus {
   FULL,
 }
 
+export enum RoomClosingStatus {
+  NOT_CLOSING,
+  CLOSING,
+  FAILED,
+}
+
 export interface RoomState {
   id: number;
   status: RoomJoiningStatus;
@@ -22,6 +28,7 @@ export interface RoomState {
   isRoomClosed: boolean; // this is for when the room was just closed by a user in the room
   userActualSlug: string; // only used if user is already in another room
   usersInRoom: User[]; // only used if room is full
+  closingStatus: RoomClosingStatus;
 }
 
 const initialState: RoomState = {
@@ -33,6 +40,7 @@ const initialState: RoomState = {
   isRoomClosed: false,
   userActualSlug: '',
   usersInRoom: [],
+  closingStatus: RoomClosingStatus.NOT_CLOSING,
 };
 
 export const roomSlice = createSlice({
@@ -52,6 +60,7 @@ export const roomSlice = createSlice({
         isRoomClosed,
         userActualSlug,
         usersInRoom,
+        closingStatus,
       } = action.payload;
       state.id = id ?? state.id;
       state.status = status ?? state.status;
@@ -62,6 +71,7 @@ export const roomSlice = createSlice({
       state.isRoomClosed = isRoomClosed ?? state.isRoomClosed;
       state.userActualSlug = userActualSlug ?? state.userActualSlug;
       state.usersInRoom = usersInRoom ?? state.usersInRoom;
+      state.closingStatus = closingStatus ?? state.closingStatus;
     },
     resetRoomState: (state: RoomState) => {
       state.id = 0;
@@ -72,6 +82,7 @@ export const roomSlice = createSlice({
       state.isRoomClosed = false;
       state.userActualSlug = '';
       state.usersInRoom = [];
+      state.closingStatus = RoomClosingStatus.NOT_CLOSING;
     },
   },
 });
