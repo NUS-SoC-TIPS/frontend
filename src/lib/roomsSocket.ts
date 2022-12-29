@@ -66,6 +66,12 @@ const handleJoinRoom = (socket: Socket): void => {
   );
 };
 
+const handleJoinRoomFailed = (socket: Socket): void => {
+  socket.on(ROOM_EVENTS.JOIN_ROOM_FAILED, () =>
+    store.dispatch(updateRoomState({ status: RoomJoiningStatus.FAILED })),
+  );
+};
+
 const handleRoomDoesNotExist = (socket: Socket): void => {
   socket.on(ROOM_EVENTS.ROOM_DOES_NOT_EXIST, () =>
     store.dispatch(
@@ -139,6 +145,7 @@ export const initSocketForRoom = (
   handleAuthenticate(socket, slug);
   handleJoinRoom(socket);
   handleRoomDoesNotExist(socket);
+  handleJoinRoomFailed(socket);
   handleAlreadyInRoom(socket);
   handleInAnotherTab(socket);
   handleRoomIsClosed(socket);

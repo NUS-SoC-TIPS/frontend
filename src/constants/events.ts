@@ -28,6 +28,10 @@ export const ROOM_EVENTS = {
 
   // When the partner disconnects
   PARTNER_DISCONNECTED: 'partner_disconnected',
+
+  // General errors, sent from server
+  JOIN_ROOM_FAILED: 'join_room_failed',
+  CLOSE_ROOM_FAILED: 'close_room_failed',
 };
 
 export const CODE_EVENTS = {

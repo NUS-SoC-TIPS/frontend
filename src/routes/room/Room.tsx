@@ -12,6 +12,7 @@ import { resetRoomState, RoomJoiningStatus } from 'reducers/roomReducer';
 import tokenUtils from 'utils/tokenUtils';
 
 import { BottomBar } from './bottomBar/BottomBar';
+import { FailedToJoinRoom } from './errors/FailedToJoinRoom';
 import { InAnotherRoom } from './errors/InAnotherRoom';
 import { InAnotherTab } from './errors/InAnotherTab';
 import { RoomDoesNotExist } from './errors/RoomDoesNotExist';
@@ -64,6 +65,9 @@ export const Room = (): ReactElement => {
 
   if (!socket || status === RoomJoiningStatus.LOADING || !params.slug) {
     return <Loading />;
+  }
+  if (status === RoomJoiningStatus.FAILED) {
+    return <FailedToJoinRoom />;
   }
   if (status === RoomJoiningStatus.CLOSED) {
     return <RoomIsClosed />;

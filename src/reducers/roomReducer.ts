@@ -5,6 +5,7 @@ import { User } from 'types/models/user';
 export enum RoomJoiningStatus {
   LOADING,
   SUCCESS,
+  FAILED,
   CLOSED,
   IN_ANOTHER_ROOM,
   IN_ANOTHER_TAB,
