@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { PropsWithChildren, ReactElement, useEffect, useState } from 'react';
-import { Box, useBreakpointValue } from '@chakra-ui/react';
+import { Box, useBreakpointValue, useToast } from '@chakra-ui/react';
 import { AgoraVideoPlayer, IAgoraRTCRemoteUser } from 'agora-rtc-react';
 
 import { useAppSelector } from 'app/hooks';
+import { ERROR_TOAST_PROPS } from 'constants/toast';
 import { useUser } from 'contexts/UserContext';
 import {
   AGORA_APP_ID,
@@ -69,9 +70,10 @@ export const VideoCollection = ({
     },
     { ssr: false },
   );
+  const toast = useToast();
 
   useEffect(() => {
-    if (!AGORA_APP_ID) {
+    if (!AGORA_APP_ID || !videoToken) {
       return () => {};
     }
 
@@ -136,7 +138,19 @@ export const VideoCollection = ({
     };
   }, [tracks]);
 
-  if (!client || !user) {
+  useEffect(() => {
+    // We want to check for null specifically
+    if (videoToken === null && !toast.isActive('video_token_error_toast')) {
+      toast({
+        ...ERROR_TOAST_PROPS,
+        id: 'video_token_error_toast',
+        title: 'Failed to start video communication!',
+        description: 'Please refresh the page to try again.',
+      });
+    }
+  }, [videoToken, toast]);
+
+  if (!client || !user || !videoToken) {
     return null;
   }
 

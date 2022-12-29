@@ -16,7 +16,7 @@ export interface RoomState {
   id: number;
   status: RoomJoiningStatus;
   partner: User | null;
-  videoToken: string;
+  videoToken: string | null; // empty string = not set yet, null = video token failed to generate
   isPartnerInRoom: boolean; // the partner may be set, but they might have disconnected
   isRoomClosed: boolean; // this is for when the room was just closed by a user in the room
   userActualSlug: string; // only used if user is already in another room
@@ -55,7 +55,8 @@ export const roomSlice = createSlice({
       state.id = id ?? state.id;
       state.status = status ?? state.status;
       state.partner = partner ?? state.partner;
-      state.videoToken = videoToken ?? state.videoToken;
+      state.videoToken =
+        videoToken !== undefined ? videoToken : state.videoToken;
       state.isPartnerInRoom = isPartnerInRoom ?? state.isPartnerInRoom;
       state.isRoomClosed = isRoomClosed ?? state.isRoomClosed;
       state.userActualSlug = userActualSlug ?? state.userActualSlug;
