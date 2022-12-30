@@ -101,7 +101,7 @@ export const CodeEditor = ({
       yDoc.destroy();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [element, isDark, username, roomSlug]);
+  }, [element, isDark, username, roomSlug, socket]);
 
   useEffect(() => {
     if (view && language) {
