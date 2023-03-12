@@ -54,7 +54,7 @@ const Option = <
     textAlign: 'start',
     fontSize: size,
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    padding: paddings[size!],
+    padding: paddings[size! as keyof SizeProps],
     bg: isFocused ? focusBg : 'transparent',
     ...(shouldHighlight && {
       bg: selectedBg,
