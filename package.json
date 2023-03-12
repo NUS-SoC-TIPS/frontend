@@ -123,5 +123,6 @@
   },
   "resolutions": {
     "agora-rtc-sdk-ng": "^4.15.1"
-  }
+  },
+  "packageManager": "yarn@3.4.1"
 }
