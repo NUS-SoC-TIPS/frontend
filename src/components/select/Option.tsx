@@ -19,9 +19,9 @@ const Option = <
     isDisabled,
     isSelected,
     selectProps: {
-      size,
+      size = 'md',
       selectedOptionStyle,
-      selectedOptionColor,
+      selectedOptionColorScheme,
       chakraStyles,
     },
   } = props;
@@ -38,8 +38,8 @@ const Option = <
    * @see {@link https://github.com/chakra-ui/chakra-ui/blob/13c6d2e08b61e179773be4722bb81173dd599306/packages/theme/src/components/input.ts#L73}
    */
   const selectedBg = useColorModeValue(
-    `${selectedOptionColor}.500`,
-    `${selectedOptionColor}.300`,
+    `${selectedOptionColorScheme}.500`,
+    `${selectedOptionColorScheme}.300`,
   );
   const selectedColor = useColorModeValue('white', 'black');
   const focusBg = useColorModeValue('gray.50', 'gray.700');
