@@ -24,9 +24,7 @@ export const theme = extendTheme(
     },
     components: {
       Menu: {
-        ...(proTheme.components?.Menu ?? {}),
         baseStyle: {
-          ...(proTheme.components?.Menu?.baseStyle ?? {}),
           item: {
             _focus: { bg: 'gray.700' },
           },
@@ -35,4 +33,13 @@ export const theme = extendTheme(
     },
   },
   proTheme,
+  {
+    components: {
+      Button: {
+        baseStyle: {
+          fontWeight: 'medium',
+        },
+      },
+    },
+  },
 );
