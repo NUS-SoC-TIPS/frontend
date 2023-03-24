@@ -16,11 +16,13 @@ import { GitHubIcon } from 'components/icons/GitHubIcon';
 
 interface Props {
   onGetStarted: () => void | Promise<void>;
+  onDevelopmentLogin: () => void | Promise<void>;
   isGettingStarted: boolean;
 }
 
 export const Hero = ({
   onGetStarted,
+  onDevelopmentLogin,
   isGettingStarted,
 }: Props): ReactElement<Props, typeof Box> => {
   return (
@@ -47,7 +49,7 @@ export const Hero = ({
         <Stack
           direction={{ base: 'column', md: 'row' }}
           justify="center"
-          mb={20}
+          mb={4}
           mt={10}
           spacing={4}
         >
@@ -66,9 +68,23 @@ export const Hero = ({
           </Button>
         </Stack>
 
+        {process.env.NODE_ENV === 'development' && (
+          <Stack direction={{ base: 'column', md: 'row' }} justify="center">
+            <Button
+              fontSize="sm"
+              fontWeight="medium"
+              onClick={onDevelopmentLogin}
+              variant="link"
+            >
+              Development Login
+            </Button>
+          </Stack>
+        )}
+
         <Box
           className="group"
           cursor="pointer"
+          mt={16}
           overflow="hidden"
           position="relative"
           rounded="lg"

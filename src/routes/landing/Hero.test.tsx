@@ -6,7 +6,13 @@ import { render } from 'utils/testUtils';
 import { Hero } from './Hero';
 
 test('renders page title', () => {
-  render(<Hero isGettingStarted={false} onGetStarted={emptyFunction} />);
+  render(
+    <Hero
+      isGettingStarted={false}
+      onDevelopmentLogin={emptyFunction}
+      onGetStarted={emptyFunction}
+    />,
+  );
   const titleElement = screen.getByText(
     /Tech interview preparation made easier/i,
   );

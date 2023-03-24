@@ -8,17 +8,25 @@ import { useAuth } from 'contexts/AuthContext';
 import { Hero } from './Hero';
 
 export const Landing = (): ReactElement => {
-  const { login, isLoggingIn } = useAuth();
+  const { login, loginDev, isLoggingIn } = useAuth();
   const toast = useToast();
 
   const onGetStarted = async (): Promise<void> => {
     login().catch(() => toast(ERROR_TOAST_PROPS));
   };
 
+  const onDevelopmentLogin = async (): Promise<void> => {
+    loginDev().catch(() => toast(ERROR_TOAST_PROPS));
+  };
+
   return (
     <Page>
       <Stack spacing={{ base: 8, lg: 6 }}>
-        <Hero isGettingStarted={isLoggingIn} onGetStarted={onGetStarted} />
+        <Hero
+          isGettingStarted={isLoggingIn}
+          onDevelopmentLogin={onDevelopmentLogin}
+          onGetStarted={onGetStarted}
+        />
       </Stack>
     </Page>
   );

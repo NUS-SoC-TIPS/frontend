@@ -31,6 +31,7 @@ const AllProviders = ({
         data,
         logout,
         login,
+        loginDev: emptyPromiseFunction,
         isLoggingIn,
       }}
     >

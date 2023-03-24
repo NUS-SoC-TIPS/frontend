@@ -11,13 +11,19 @@ import { getAdditionalUserInfo } from 'firebase/auth';
 
 import { ErrorBanner } from 'components/errorBanner';
 import { Loading } from 'components/loading';
-import { getSelf, login as apiLogin, logout as apiLogout } from 'lib/auth';
+import {
+  getSelf,
+  login as apiLogin,
+  loginDev as apiLoginDev,
+  logout as apiLogout,
+} from 'lib/auth';
 import { signInWithFirebase } from 'lib/firebase';
 import { UserWithSettingsAndConfig } from 'types/models/user';
 
 export interface AuthContextInterface {
   data: UserWithSettingsAndConfig | null;
   login(): Promise<void>;
+  loginDev(): Promise<void>;
   logout(): Promise<void>;
   isLoggingIn: boolean;
 }
@@ -105,11 +111,27 @@ const AuthProvider = (props: PropsWithChildren<unknown>): ReactElement => {
       });
   };
 
+  const loginDev = async (): Promise<void> => {
+    if (process.env.NODE_ENV !== 'development') {
+      throw new Error('Should only be called in development');
+    }
+    setIsLoggingIn(true);
+    return apiLoginDev()
+      .then(() => {
+        fetchData();
+        setIsLoggingIn(false);
+      })
+      .catch((e) => {
+        setIsLoggingIn(false);
+        return Promise.reject(e);
+      });
+  };
+
   const logout = (): Promise<void> => apiLogout().then(fetchData);
 
   return (
     <AuthContext.Provider
-      value={{ data, login, logout, isLoggingIn }}
+      value={{ data, login, loginDev, logout, isLoggingIn }}
       {...props}
     />
   );

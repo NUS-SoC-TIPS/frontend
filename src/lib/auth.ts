@@ -9,6 +9,15 @@ export const login = async (data: AuthDto): Promise<void> => {
   tokenUtils.storeToken(token);
 };
 
+export const loginDev = async (): Promise<void> => {
+  if (process.env.NODE_ENV !== 'development') {
+    throw new Error('Should only be called in development');
+  }
+  const response = await api.post('dev/login');
+  const { token } = response.data;
+  tokenUtils.storeToken(token);
+};
+
 export const logout = (): Promise<void> => {
   tokenUtils.removeToken();
   return Promise.resolve();
