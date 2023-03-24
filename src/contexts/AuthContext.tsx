@@ -66,7 +66,10 @@ const AuthProvider = (props: PropsWithChildren<unknown>): ReactElement => {
 
   const login = async (): Promise<void> => {
     setIsLoggingIn(true);
-    const response = await signInWithFirebase();
+    const response = await signInWithFirebase().catch((e: Error) => {
+      setIsLoggingIn(false);
+      return Promise.reject(e);
+    });
     if (!response) {
       setIsLoggingIn(false);
       return Promise.reject(new Error('Failed to sign in'));
@@ -98,7 +101,7 @@ const AuthProvider = (props: PropsWithChildren<unknown>): ReactElement => {
       })
       .catch((e) => {
         setIsLoggingIn(false);
-        throw e;
+        return Promise.reject(e);
       });
   };
 
