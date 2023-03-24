@@ -15,14 +15,20 @@ import { Page } from 'components/page';
 import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
 import { useUser } from 'contexts/UserContext';
 import { updateSettings } from 'lib/users';
-import { Language } from 'types/models/code';
+import { KeyBinding, Language } from 'types/models/code';
 
-import { LanguageFormControl, NameFormControl, PhotoFormControl } from './form';
+import {
+  KeyBindingFormControl,
+  LanguageFormControl,
+  NameFormControl,
+  PhotoFormControl,
+} from './form';
 
 interface State {
   name: string;
   photoUrl: string;
   preferredInterviewLanguage: Language | null;
+  preferredKeyBinding: KeyBinding;
   isSaving: boolean;
 }
 
@@ -36,6 +42,8 @@ export const Settings = (): ReactElement<typeof Page> => {
       photoUrl: user?.photoUrl ?? '',
       preferredInterviewLanguage:
         user?.settings?.preferredInterviewLanguage ?? null,
+      preferredKeyBinding:
+        user?.settings?.preferredKeyBinding ?? KeyBinding.STANDARD,
       isSaving: false,
     } as State,
   );
@@ -47,7 +55,9 @@ export const Settings = (): ReactElement<typeof Page> => {
       (state.name === user?.name &&
         state.photoUrl === user?.photoUrl &&
         state.preferredInterviewLanguage ===
-          (user?.settings?.preferredInterviewLanguage ?? null))
+          (user?.settings?.preferredInterviewLanguage ?? null) &&
+        state.preferredKeyBinding ===
+          (user?.settings?.preferredKeyBinding ?? KeyBinding.STANDARD))
     );
   };
 
@@ -57,6 +67,7 @@ export const Settings = (): ReactElement<typeof Page> => {
       name: state.name.trim(),
       photoUrl: state.photoUrl.trim(),
       preferredInterviewLanguage: state.preferredInterviewLanguage,
+      preferredKeyBinding: state.preferredKeyBinding,
     })
       .then((): void => {
         toast({
@@ -103,6 +114,12 @@ export const Settings = (): ReactElement<typeof Page> => {
               preferredInterviewLanguage: Language | null,
             ): void => setState({ preferredInterviewLanguage })}
             preferredInterviewLanguage={state.preferredInterviewLanguage}
+          />
+          <KeyBindingFormControl
+            onChangePreferredKeyBinding={(
+              preferredKeyBinding: KeyBinding,
+            ): void => setState({ preferredKeyBinding })}
+            preferredKeyBinding={state.preferredKeyBinding}
           />
           <Flex direction="row-reverse">
             <Button

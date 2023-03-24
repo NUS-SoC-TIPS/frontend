@@ -13,16 +13,19 @@ export const Select = ({
   noOptionsMessage,
   ...props
 }: Props): ReactElement<Props, typeof ChakraSelect> => {
+  const finalProps = {
+    isClearable: true,
+    ...props,
+  };
   return (
     <ChakraSelect
       chakraStyles={useChakraSelectStyles()}
       components={customComponents}
-      isClearable={true}
       noOptionsMessage={
         noOptionsMessage ? (): string => noOptionsMessage : undefined
       }
       selectedOptionColor="blue"
-      {...props}
+      {...finalProps}
     />
   );
 };

@@ -31,3 +31,10 @@ export enum Language {
   PASCAL = 'PASCAL',
   PROLOG = 'PROLOG',
 }
+
+export enum KeyBinding {
+  STANDARD = 'STANDARD',
+  VIM = 'VIM',
+  EMACS = 'EMACS',
+  SUBLIME = 'SUBLIME',
+}

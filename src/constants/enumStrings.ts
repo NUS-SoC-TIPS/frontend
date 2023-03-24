@@ -1,4 +1,4 @@
-import { Language } from 'types/models/code';
+import { KeyBinding, Language } from 'types/models/code';
 import { QuestionDifficulty, QuestionSource } from 'types/models/question';
 
 export const LANGUAGE_TO_STRING = Object.freeze({
@@ -33,6 +33,13 @@ export const LANGUAGE_TO_STRING = Object.freeze({
   [Language.OCAML]: 'OCaml',
   [Language.PASCAL]: 'Pascal',
   [Language.PROLOG]: 'Prolog',
+});
+
+export const KEY_BINDING_TO_STRING = Object.freeze({
+  [KeyBinding.STANDARD]: 'Standard',
+  [KeyBinding.VIM]: 'Vim',
+  [KeyBinding.EMACS]: 'Emacs',
+  [KeyBinding.SUBLIME]: 'Sublime',
 });
 
 export const DIFFICULTY_TO_STRING = Object.freeze({

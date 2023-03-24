@@ -1,4 +1,4 @@
-import { Language } from './code';
+import { KeyBinding, Language } from './code';
 
 export interface User {
   id: string;
@@ -24,6 +24,7 @@ export interface Settings {
   hasUpdatedName: boolean;
   hasUpdatedPhoto: boolean;
   preferredInterviewLanguage?: Language;
+  preferredKeyBinding: KeyBinding;
 }
 
 export interface AppConfig {
