@@ -25,7 +25,7 @@ export const KeyBindingFormControl = ({
         KeyBinding.STANDARD,
         KeyBinding.VIM,
         KeyBinding.EMACS,
-        KeyBinding.SUBLIME,
+        KeyBinding.VS_CODE,
       ].map((keyBinding) => ({
         label: KEY_BINDING_TO_STRING[keyBinding],
         value: keyBinding,

@@ -36,5 +36,5 @@ export enum KeyBinding {
   STANDARD = 'STANDARD',
   VIM = 'VIM',
   EMACS = 'EMACS',
-  SUBLIME = 'SUBLIME',
+  VS_CODE = 'VS_CODE',
 }

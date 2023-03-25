@@ -39,7 +39,7 @@ export const KEY_BINDING_TO_STRING = Object.freeze({
   [KeyBinding.STANDARD]: 'Standard',
   [KeyBinding.VIM]: 'Vim',
   [KeyBinding.EMACS]: 'Emacs',
-  [KeyBinding.SUBLIME]: 'Sublime',
+  [KeyBinding.VS_CODE]: 'VSCode',
 });
 
 export const DIFFICULTY_TO_STRING = Object.freeze({
