@@ -2729,7 +2729,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@codemirror/autocomplete@npm:^6.0.0, @codemirror/autocomplete@npm:^6.3.2":
+"@codemirror/autocomplete@npm:^6.0.0, @codemirror/autocomplete@npm:^6.3.2, @codemirror/autocomplete@npm:^6.4.2":
   version: 6.4.2
   resolution: "@codemirror/autocomplete@npm:6.4.2"
   dependencies:
@@ -2904,7 +2904,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@codemirror/lint@npm:^6.0.0":
+"@codemirror/lint@npm:^6.0.0, @codemirror/lint@npm:^6.2.0":
   version: 6.2.0
   resolution: "@codemirror/lint@npm:6.2.0"
   dependencies:
@@ -2915,7 +2915,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@codemirror/search@npm:^6.0.0":
+"@codemirror/search@npm:^6.0.0, @codemirror/search@npm:^6.3.0":
   version: 6.3.0
   resolution: "@codemirror/search@npm:6.3.0"
   dependencies:
@@ -4874,6 +4874,47 @@ __metadata:
   version: 1.4.0
   resolution: "@remix-run/router@npm:1.4.0"
   checksum: 707dce35a2b8138005cf19e63f6fd3c4da05b4b892e9e9118e8b727c3b95953efe27307ca2df35084044df30fa1fc367cf0bbc98d1ded9020c82e61e6242caaf
+  languageName: node
+  linkType: hard
+
+"@replit/codemirror-emacs@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "@replit/codemirror-emacs@npm:6.0.1"
+  peerDependencies:
+    "@codemirror/autocomplete": ^6.0.2
+    "@codemirror/commands": ^6.0.0
+    "@codemirror/search": ^6.0.0
+    "@codemirror/state": ^6.0.1
+    "@codemirror/view": ^6.3.0
+  checksum: 991e77209887ed9078ac6e67b83d9ddfbbb4654367e8d36aa2e1197a03ff10aa59d811514f3e0f84d69d0b1da00ea40c57ccb348ea8cf0e7a6198459bb7d3506
+  languageName: node
+  linkType: hard
+
+"@replit/codemirror-vim@npm:^6.0.11":
+  version: 6.0.11
+  resolution: "@replit/codemirror-vim@npm:6.0.11"
+  peerDependencies:
+    "@codemirror/commands": ^6.0.0
+    "@codemirror/language": ^6.1.0
+    "@codemirror/search": ^6.2.0
+    "@codemirror/state": ^6.0.1
+    "@codemirror/view": ^6.0.3
+  checksum: b6111032745c646f2d1e049785b76af1cb347717dc0048940a3b63bf6d1f2fad3b2ac920aa687e365764e9412ad460047597faed93b19e9f37096a74ce04f658
+  languageName: node
+  linkType: hard
+
+"@replit/codemirror-vscode-keymap@npm:^6.0.2":
+  version: 6.0.2
+  resolution: "@replit/codemirror-vscode-keymap@npm:6.0.2"
+  peerDependencies:
+    "@codemirror/autocomplete": ^6.0.0
+    "@codemirror/commands": ^6.0.0
+    "@codemirror/language": ^6.0.0
+    "@codemirror/lint": ^6.0.0
+    "@codemirror/search": ^6.0.0
+    "@codemirror/state": ^6.0.0
+    "@codemirror/view": ^6.0.0
+  checksum: 977166c5f691c001749a422148ff0d86bfd353840346887d7a012265adc26ab5fbe997df883be12023a899409bed48ef8fe3cd78b948807770b118355fcfd90a
   languageName: node
   linkType: hard
 
@@ -17152,6 +17193,7 @@ __metadata:
     "@chakra-ui/react": ^2.5.3
     "@chakra-ui/spinner": ^2.0.13
     "@chakra-ui/system": ^2.5.3
+    "@codemirror/autocomplete": ^6.4.2
     "@codemirror/commands": ^6.2.2
     "@codemirror/lang-cpp": ^6.0.2
     "@codemirror/lang-java": ^6.0.1
@@ -17163,6 +17205,8 @@ __metadata:
     "@codemirror/lang-sql": ^6.4.0
     "@codemirror/language": ^6.6.0
     "@codemirror/legacy-modes": ^6.3.2
+    "@codemirror/lint": ^6.2.0
+    "@codemirror/search": ^6.3.0
     "@codemirror/state": ^6.2.0
     "@codemirror/theme-one-dark": ^6.1.1
     "@codemirror/view": ^6.9.3
@@ -17174,6 +17218,9 @@ __metadata:
     "@fontsource/inter": ^4.5.15
     "@lezer/common": ^1.0.2
     "@reduxjs/toolkit": ^1.9.3
+    "@replit/codemirror-emacs": ^6.0.1
+    "@replit/codemirror-vim": ^6.0.11
+    "@replit/codemirror-vscode-keymap": ^6.0.2
     "@testing-library/jest-dom": ^5.16.5
     "@testing-library/react": ^14.0.0
     "@testing-library/user-event": ^14.4.3
