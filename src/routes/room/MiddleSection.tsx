@@ -5,6 +5,7 @@ import { Socket } from 'socket.io-client';
 import { useAppSelector } from 'app/hooks';
 import { CodeEditor } from 'components/codeEditor';
 import { useUser } from 'contexts/UserContext';
+import { KeyBinding } from 'types/models/code';
 import { useWindowDimensions } from 'utils/hookUtils';
 
 import { Panel } from './panel';
@@ -67,6 +68,7 @@ export const MiddleSection = ({
     >
       <CodeEditor
         height={finalHeight}
+        keyBinding={user?.settings?.preferredKeyBinding ?? KeyBinding.STANDARD}
         language={language}
         roomSlug={slug}
         socket={socket}

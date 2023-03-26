@@ -1,26 +1,26 @@
 import { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { useColorMode } from '@chakra-ui/react';
-import { defaultKeymap, indentLess, indentMore } from '@codemirror/commands';
 import { Compartment, EditorState } from '@codemirror/state';
 import { oneDark } from '@codemirror/theme-one-dark';
-import { keymap } from '@codemirror/view';
-import { basicSetup, EditorView } from 'codemirror';
+import { EditorView } from '@codemirror/view';
 import { Socket } from 'socket.io-client';
-import { yCollab, yUndoManagerKeymap } from 'y-codemirror.next';
+import { yCollab } from 'y-codemirror.next';
 import { Doc } from 'yjs';
 
-import { Language } from 'types/models/code';
+import { KeyBinding, Language } from 'types/models/code';
 
 import {
   CURSOR_COLOR_TO_SEND_PARTNER,
   ONE_DARK_BACKGROUND_COLOR,
 } from './colors';
+import { getKeyBindingExtensions } from './keyBindings';
 import { getLanguageExtension } from './languages';
 import { YjsProvider } from './YjsProvider';
 import './CodeEditor.scss';
 
 interface Props {
   language: Language | null;
+  keyBinding: KeyBinding;
   username: string;
   socket: Socket;
   roomSlug: string;
@@ -34,6 +34,7 @@ export const CodeEditor = ({
   socket,
   roomSlug,
   language,
+  keyBinding,
   username,
 }: Props): ReactElement<Props, 'div'> => {
   const { colorMode } = useColorMode();
@@ -69,21 +70,7 @@ export const CodeEditor = ({
       state: EditorState.create({
         doc: yText.toString(),
         extensions: [
-          keymap.of([
-            ...defaultKeymap,
-            ...yUndoManagerKeymap,
-            {
-              key: 'Tab',
-              preventDefault: true,
-              run: indentMore,
-            },
-            {
-              key: 'Shift-Tab',
-              preventDefault: true,
-              run: indentLess,
-            },
-          ]),
-          basicSetup,
+          ...getKeyBindingExtensions(keyBinding),
           languageCompartment.of(getLanguageExtension(language)),
           EditorView.lineWrapping,
           yCollab(yText, provider.awareness),
