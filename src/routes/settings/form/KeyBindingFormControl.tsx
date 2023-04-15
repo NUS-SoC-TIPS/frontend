@@ -21,15 +21,12 @@ export const KeyBindingFormControl = ({
 }: Props): ReactElement<Props, typeof FormControl> => {
   const options: KeyBindingOption[] = useMemo(
     () =>
-      [
-        KeyBinding.STANDARD,
-        KeyBinding.VIM,
-        KeyBinding.EMACS,
-        KeyBinding.VS_CODE,
-      ].map((keyBinding) => ({
-        label: KEY_BINDING_TO_STRING[keyBinding],
-        value: keyBinding,
-      })),
+      [KeyBinding.STANDARD, KeyBinding.VIM, KeyBinding.VS_CODE].map(
+        (keyBinding) => ({
+          label: KEY_BINDING_TO_STRING[keyBinding],
+          value: keyBinding,
+        }),
+      ),
     [],
   );
 

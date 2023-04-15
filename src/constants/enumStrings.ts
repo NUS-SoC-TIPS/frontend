@@ -38,7 +38,6 @@ export const LANGUAGE_TO_STRING = Object.freeze({
 export const KEY_BINDING_TO_STRING = Object.freeze({
   [KeyBinding.STANDARD]: 'Standard',
   [KeyBinding.VIM]: 'Vim',
-  [KeyBinding.EMACS]: 'Emacs',
   [KeyBinding.VS_CODE]: 'VSCode',
 });
 

@@ -62,7 +62,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@fontsource/inter", "npm:4.5.15"],\
             ["@lezer/common", "npm:1.0.2"],\
             ["@reduxjs/toolkit", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:1.9.3"],\
-            ["@replit/codemirror-emacs", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:6.0.1"],\
             ["@replit/codemirror-vim", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:6.0.11"],\
             ["@replit/codemirror-vscode-keymap", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:6.0.2"],\
             ["@testing-library/jest-dom", "npm:5.16.5"],\
@@ -8334,44 +8333,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@remix-run-router-npm-1.4.0-0d516afd34-707dce35a2.zip/node_modules/@remix-run/router/",\
           "packageDependencies": [\
             ["@remix-run/router", "npm:1.4.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@replit/codemirror-emacs", [\
-        ["npm:6.0.1", {\
-          "packageLocation": "./.yarn/cache/@replit-codemirror-emacs-npm-6.0.1-3ff7dc2651-991e772098.zip/node_modules/@replit/codemirror-emacs/",\
-          "packageDependencies": [\
-            ["@replit/codemirror-emacs", "npm:6.0.1"]\
-          ],\
-          "linkType": "SOFT"\
-        }],\
-        ["virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:6.0.1", {\
-          "packageLocation": "./.yarn/__virtual__/@replit-codemirror-emacs-virtual-bd5c7971ee/0/cache/@replit-codemirror-emacs-npm-6.0.1-3ff7dc2651-991e772098.zip/node_modules/@replit/codemirror-emacs/",\
-          "packageDependencies": [\
-            ["@replit/codemirror-emacs", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:6.0.1"],\
-            ["@codemirror/autocomplete", "virtual:1a94b59150ddcd8d4f7412c397490b67b9bde135285c9d8741569e8c724be0bbbb7570669632225c1b419ad8355b829fade38ca1cc2532fb6a00342167c2bc8d#npm:6.4.2"],\
-            ["@codemirror/commands", "npm:6.2.2"],\
-            ["@codemirror/search", "npm:6.3.0"],\
-            ["@codemirror/state", "npm:6.2.0"],\
-            ["@codemirror/view", "npm:6.9.3"],\
-            ["@types/codemirror__autocomplete", null],\
-            ["@types/codemirror__commands", null],\
-            ["@types/codemirror__search", null],\
-            ["@types/codemirror__state", null],\
-            ["@types/codemirror__view", null]\
-          ],\
-          "packagePeers": [\
-            "@codemirror/autocomplete",\
-            "@codemirror/commands",\
-            "@codemirror/search",\
-            "@codemirror/state",\
-            "@codemirror/view",\
-            "@types/codemirror__autocomplete",\
-            "@types/codemirror__commands",\
-            "@types/codemirror__search",\
-            "@types/codemirror__state",\
-            "@types/codemirror__view"\
           ],\
           "linkType": "HARD"\
         }]\
@@ -23927,7 +23888,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@fontsource/inter", "npm:4.5.15"],\
             ["@lezer/common", "npm:1.0.2"],\
             ["@reduxjs/toolkit", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:1.9.3"],\
-            ["@replit/codemirror-emacs", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:6.0.1"],\
             ["@replit/codemirror-vim", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:6.0.11"],\
             ["@replit/codemirror-vscode-keymap", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:6.0.2"],\
             ["@testing-library/jest-dom", "npm:5.16.5"],\

@@ -19,7 +19,6 @@ import {
   lineNumbers,
   rectangularSelection,
 } from '@codemirror/view';
-import { emacs } from '@replit/codemirror-emacs';
 import { CodeMirror, Vim, vim } from '@replit/codemirror-vim';
 import { vscodeKeymap } from '@replit/codemirror-vscode-keymap';
 import { basicSetup } from 'codemirror';
@@ -35,8 +34,6 @@ export const getKeyBindingExtensions = (
       return getDefaultKeyBindingExtensions();
     case KeyBinding.VIM:
       return getVimKeyBindingExtensions();
-    case KeyBinding.EMACS:
-      return getEmacsKeyBindingExtensions();
     case KeyBinding.VS_CODE:
       return getVsCodeKeyBindingExtensions();
   }
@@ -57,11 +54,6 @@ const getVimKeyBindingExtensions = (): Extension[] => {
     keymap.of([...yUndoManagerKeymap, indentWithTab]),
     basicSetup,
   ];
-};
-
-const getEmacsKeyBindingExtensions = (): Extension[] => {
-  // TODO: Handle indents + undo + redo
-  return [emacs(), basicSetup];
 };
 
 const getVsCodeKeyBindingExtensions = (): Extension[] => {

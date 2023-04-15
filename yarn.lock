@@ -4877,19 +4877,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@replit/codemirror-emacs@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "@replit/codemirror-emacs@npm:6.0.1"
-  peerDependencies:
-    "@codemirror/autocomplete": ^6.0.2
-    "@codemirror/commands": ^6.0.0
-    "@codemirror/search": ^6.0.0
-    "@codemirror/state": ^6.0.1
-    "@codemirror/view": ^6.3.0
-  checksum: 991e77209887ed9078ac6e67b83d9ddfbbb4654367e8d36aa2e1197a03ff10aa59d811514f3e0f84d69d0b1da00ea40c57ccb348ea8cf0e7a6198459bb7d3506
-  languageName: node
-  linkType: hard
-
 "@replit/codemirror-vim@npm:^6.0.11":
   version: 6.0.11
   resolution: "@replit/codemirror-vim@npm:6.0.11"
@@ -17218,7 +17205,6 @@ __metadata:
     "@fontsource/inter": ^4.5.15
     "@lezer/common": ^1.0.2
     "@reduxjs/toolkit": ^1.9.3
-    "@replit/codemirror-emacs": ^6.0.1
     "@replit/codemirror-vim": ^6.0.11
     "@replit/codemirror-vscode-keymap": ^6.0.2
     "@testing-library/jest-dom": ^5.16.5
