@@ -10,6 +10,7 @@ import { StreamLanguage } from '@codemirror/language';
 import {
   c,
   csharp,
+  dart,
   kotlin,
   objectiveC,
   scala,
@@ -64,12 +65,13 @@ export const getLanguageExtension = (language: Language | null): Extension => {
       return javascript({ typescript: true });
     case Language.RACKET:
       return StreamLanguage.define(scheme);
+
     case Language.ERLANG:
       return StreamLanguage.define(erlang);
     case Language.ELIXIR:
       return StreamLanguage.define(elixir);
     case Language.DART:
-      break; // no support for now
+      return StreamLanguage.define(dart);
     case Language.MY_SQL:
     case Language.MS_SQL_SERVER:
     case Language.ORACLE:

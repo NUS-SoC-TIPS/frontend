@@ -5,6 +5,7 @@ export const INTERVIEW_LANGUAGES = Object.freeze([
   Language.C_PLUS_PLUS,
   Language.C_SHARP,
   Language.COBOL,
+  Language.DART,
   Language.ELIXIR,
   Language.ERLANG,
   Language.F_SHARP,
