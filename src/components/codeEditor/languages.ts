@@ -35,13 +35,13 @@ export const getLanguageExtension = (language: Language | null): Extension => {
   switch (language) {
     case Language.C_PLUS_PLUS:
       return cpp();
-    case Language.C:
-      return StreamLanguage.define(c);
     case Language.JAVA:
       return java();
     case Language.PYTHON:
     case Language.PYTHON_THREE:
       return python();
+    case Language.C:
+      return StreamLanguage.define(c);
     case Language.C_SHARP:
       return StreamLanguage.define(csharp);
     case Language.JAVASCRIPT:
@@ -68,12 +68,16 @@ export const getLanguageExtension = (language: Language | null): Extension => {
       return StreamLanguage.define(erlang);
     case Language.ELIXIR:
       return StreamLanguage.define(elixir);
-    case Language.BASH:
-      return StreamLanguage.define(shell);
+    case Language.DART:
+      break; // no support for now
     case Language.MY_SQL:
     case Language.MS_SQL_SERVER:
     case Language.ORACLE:
       return sql();
+    case Language.BASH:
+      return StreamLanguage.define(shell);
+    case Language.APL:
+      break; // no support for now
     case Language.COBOL:
       return StreamLanguage.define(cobol);
     case Language.LISP:
@@ -82,8 +86,12 @@ export const getLanguageExtension = (language: Language | null): Extension => {
       return StreamLanguage.define(fSharp);
     case Language.FORTRAN:
       return StreamLanguage.define(fortran);
+    case Language.GERBIL:
+      break; // no support for now
     case Language.HASKELL:
       return StreamLanguage.define(haskell);
+    case Language.JULIA:
+      break; // no support for now
     case Language.OBJECTIVE_C:
       return StreamLanguage.define(objectiveC);
     case Language.OCAML:
@@ -91,7 +99,7 @@ export const getLanguageExtension = (language: Language | null): Extension => {
     case Language.PASCAL:
       return StreamLanguage.define(pascal);
     case Language.PROLOG:
-    // no-op as no support for Prolog :(
+    // no-op as no support for now
   }
   return lezer();
 };

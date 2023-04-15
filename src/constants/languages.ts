@@ -73,6 +73,8 @@ export const CONCURRENCY_LANGUAGES = Object.freeze([
 ]);
 
 export const KATTIS_LANGUAGES = Object.freeze([
+  Language.APL,
+  Language.BASH,
   Language.C,
   Language.C_SHARP,
   Language.C_PLUS_PLUS,
@@ -80,10 +82,12 @@ export const KATTIS_LANGUAGES = Object.freeze([
   Language.LISP,
   Language.F_SHARP,
   Language.FORTRAN,
+  Language.GERBIL,
   Language.GO,
   Language.HASKELL,
   Language.JAVA,
   Language.JAVASCRIPT,
+  Language.JULIA,
   Language.KOTLIN,
   Language.OBJECTIVE_C,
   Language.OCAML,
@@ -94,4 +98,5 @@ export const KATTIS_LANGUAGES = Object.freeze([
   Language.PYTHON_THREE,
   Language.RUBY,
   Language.RUST,
+  Language.TYPESCRIPT,
 ]);
