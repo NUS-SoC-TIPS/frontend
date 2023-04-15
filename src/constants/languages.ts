@@ -49,6 +49,7 @@ export const ALGORITHM_LANGUAGES = Object.freeze([
   Language.RACKET,
   Language.ERLANG,
   Language.ELIXIR,
+  Language.DART,
 ]);
 
 export const DATABASE_LANGUAGES = Object.freeze([
