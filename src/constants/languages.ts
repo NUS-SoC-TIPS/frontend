@@ -56,6 +56,11 @@ export const DATABASE_LANGUAGES = Object.freeze([
   Language.ORACLE,
 ]);
 
+export const JAVASCRIPT_LANGUAGES = Object.freeze([
+  Language.JAVASCRIPT,
+  Language.TYPESCRIPT,
+]);
+
 export const SHELL_LANGUAGES = Object.freeze([Language.BASH]);
 
 export const CONCURRENCY_LANGUAGES = Object.freeze([

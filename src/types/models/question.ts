@@ -16,9 +16,11 @@ export enum QuestionDifficulty {
   HARD = 'HARD',
 }
 
+// Mainly used for LeetCode questions, which are categorised by types
 export enum QuestionType {
   ALGORITHMS = 'ALGORITHMS',
   DATABASE = 'DATABASE',
+  JAVASCRIPT = 'JAVASCRIPT',
   SHELL = 'SHELL',
   CONCURRENCY = 'CONCURRENCY',
 }

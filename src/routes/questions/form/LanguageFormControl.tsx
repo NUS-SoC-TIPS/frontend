@@ -7,6 +7,7 @@ import {
   ALGORITHM_LANGUAGES,
   CONCURRENCY_LANGUAGES,
   DATABASE_LANGUAGES,
+  JAVASCRIPT_LANGUAGES,
   KATTIS_LANGUAGES,
   SHELL_LANGUAGES,
 } from 'constants/languages';
@@ -43,11 +44,14 @@ export const LanguageFormControl = ({
           case QuestionType.DATABASE:
             languages = DATABASE_LANGUAGES;
             break;
-          case QuestionType.CONCURRENCY:
-            languages = CONCURRENCY_LANGUAGES;
+          case QuestionType.JAVASCRIPT:
+            languages = JAVASCRIPT_LANGUAGES;
             break;
           case QuestionType.SHELL:
             languages = SHELL_LANGUAGES;
+            break;
+          case QuestionType.CONCURRENCY:
+            languages = CONCURRENCY_LANGUAGES;
         }
     }
     return languages.map((language) => ({
