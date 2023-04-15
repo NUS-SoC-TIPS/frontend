@@ -51,7 +51,7 @@ export const LanguageFormControl = ({
         }
         onChange={onChangeWrapper}
         options={options}
-        placeholder="Select preferred language..."
+        placeholder="Select your preferred language..."
       />
     </FormControl>
   );

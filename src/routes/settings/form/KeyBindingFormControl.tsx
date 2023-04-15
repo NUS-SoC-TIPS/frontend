@@ -51,7 +51,7 @@ export const KeyBindingFormControl = ({
         isClearable={false}
         onChange={onChangeWrapper}
         options={options}
-        placeholder="Select preferred key binding..."
+        placeholder="Select your preferred key binding..."
       />
     </FormControl>
   );
