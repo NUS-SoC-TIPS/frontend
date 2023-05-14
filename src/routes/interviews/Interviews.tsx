@@ -1,12 +1,10 @@
 import { ReactElement, useEffect, useReducer } from 'react';
 import { SimpleGrid } from '@chakra-ui/react';
 
-import { WindowPeriodCard } from 'components/card';
 import { ErrorBanner } from 'components/errorBanner';
 import { getRecordStats } from 'lib/records';
 import { RecordStatsEntity } from 'types/api/records';
 import { RecordWithPartner } from 'types/models/record';
-import { computeWindowData } from 'utils/windowUtils';
 
 import { InterviewsPage } from './InterviewsPage';
 import { InterviewsSkeleton } from './InterviewsSkeleton';
@@ -88,8 +86,6 @@ export const Interviews = (): ReactElement => {
     );
   }
 
-  const { status, startAt, endAt } = computeWindowData(stats.closestWindow);
-
   const onView = (id: number): void => {
     const selectedInterview =
       stats.allRecords.find((interview) => interview.id === id) ?? null;
@@ -101,13 +97,7 @@ export const Interviews = (): ReactElement => {
       <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
         <NumCompletedCard
           numCompleted={stats.numberOfRecordsForThisWindowOrWeek}
-          requireInterview={stats.closestWindow.requireInterview}
-          windowStatus={status}
-        />
-        <WindowPeriodCard
-          endAt={endAt}
-          startAt={startAt}
-          windowStatus={status}
+          requireInterview={stats.requireInterview}
         />
         <LatestPartnerCard partner={stats.latestRecord?.partner ?? null} />
       </SimpleGrid>

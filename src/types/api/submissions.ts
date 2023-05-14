@@ -1,7 +1,6 @@
 import { Language } from 'types/models/code';
 import { QuestionSource } from 'types/models/question';
 import { SubmissionWithQuestion } from 'types/models/submission';
-import { Window } from 'types/models/window';
 
 export interface CreateSubmissionDto {
   questionSlug: string;
@@ -19,8 +18,14 @@ export interface SubmissionStatsEntity {
   // If currently in the middle of a window, the number will be returned
   // Else if not, it will be the number completed this week, with respect to SG time.
   numberOfSubmissionsForThisWindowOrWeek: number;
+  // If this is null, that means the number of submissions is for this week. If it's non-null, then
+  // the number of submissions is for this current window.
+  numQuestions: number | null;
   latestSubmission: SubmissionWithQuestion | null;
-  // TODO: Look into replacing this with something more meaningful
-  closestWindow: Window;
+  stats: {
+    numEasyCompleted: number;
+    numMediumCompleted: number;
+    numHardCompleted: number;
+  };
   allSubmissions: SubmissionWithQuestion[];
 }

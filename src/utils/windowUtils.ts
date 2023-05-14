@@ -1,5 +1,6 @@
 import { Window, WindowStatus } from 'types/models/window';
 
+// TODO: Consider deleting this
 export const computeWindowData = (
   window: Window,
 ): { status: WindowStatus; startAt: Date; endAt: Date } => {

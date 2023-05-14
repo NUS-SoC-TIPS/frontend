@@ -2,12 +2,11 @@ import { ReactElement, useEffect, useReducer } from 'react';
 import { SimpleGrid } from '@chakra-ui/react';
 
 import { Banner } from 'components/banner';
-import { Card, WindowPeriodCard } from 'components/card';
+import { Card } from 'components/card';
 import { ErrorBanner } from 'components/errorBanner';
 import { getSubmissionStats } from 'lib/submissions';
 import { SubmissionStatsEntity } from 'types/api/submissions';
 import { SubmissionWithQuestion } from 'types/models/submission';
-import { computeWindowData } from 'utils/windowUtils';
 
 import { AddQuestion } from './AddQuestion';
 import { PastSubmission } from './PastSubmission';
@@ -116,8 +115,6 @@ export const Questions = (): ReactElement<typeof QuestionsPage> => {
     );
   }
 
-  const { status, startAt, endAt } = computeWindowData(stats.closestWindow);
-
   const onView = (id: number): void => {
     const selectedSubmission =
       stats.allSubmissions.find((submission) => submission.id === id) ?? null;
@@ -129,13 +126,7 @@ export const Questions = (): ReactElement<typeof QuestionsPage> => {
       <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
         <NumCompletedCard
           numCompleted={stats?.numberOfSubmissionsForThisWindowOrWeek ?? 0}
-          numTarget={stats?.closestWindow.numQuestions ?? 7}
-          windowStatus={status}
-        />
-        <WindowPeriodCard
-          endAt={endAt}
-          startAt={startAt}
-          windowStatus={status}
+          numTarget={stats?.numQuestions}
         />
         <LatestSubmissionCard submission={stats?.latestSubmission} />
       </SimpleGrid>
