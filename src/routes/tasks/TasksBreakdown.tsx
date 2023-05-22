@@ -9,6 +9,7 @@ import { CohortItem } from 'types/api/cohorts';
 import { formatDateWithYear } from 'utils/dateUtils';
 import { computeTaskStepData, findCurrentWindow } from 'utils/windowUtils';
 
+import { ExclusionBanner } from './banners';
 import { InterviewTasksBox } from './InterviewTasksBox';
 import { SubmissionTasksBox } from './SubmissionTasksBox';
 import { TasksBreakdownPage } from './TasksBreakdownPage';
@@ -106,6 +107,11 @@ export const TasksBreakdown = (): ReactElement<typeof Page> => {
           Week {state.step + 1} ({formatDateWithYear(selectedWindow.startAt)} -{' '}
           {formatDateWithYear(selectedWindow.endAt)})
         </Heading>
+        {selectedWindow.exclusion != null ? (
+          <ExclusionBanner exclusion={selectedWindow.exclusion} />
+        ) : (
+          <></>
+        )}
         <Stack
           direction={{ base: 'column', md: 'row' }}
           spacing={{ base: 6, md: 6 }}
