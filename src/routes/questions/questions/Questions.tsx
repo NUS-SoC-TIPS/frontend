@@ -1,17 +1,16 @@
 import { ReactElement, useEffect, useReducer } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { SimpleGrid } from '@chakra-ui/react';
 
 import { Banner } from 'components/banner';
 import { Card, StatCardSkeleton } from 'components/card';
 import { ErrorBanner } from 'components/errorBanner';
-import { ADD_QUESTION } from 'constants/routes';
 import { getQuestionStats, getSubmissions } from 'lib/questions';
 import { QuestionStats, SubmissionListItem } from 'types/api/questions';
 
+import { NumCompletedCard } from '../stats';
+import { PastSubmissionsTable } from '../tables';
+
 import { QuestionsPage } from './QuestionsPage';
-import { NumCompletedCard } from './stats';
-import { PastSubmissionsTable } from './tables';
 
 interface State {
   isError: boolean;
@@ -28,7 +27,6 @@ export const Questions = (): ReactElement<typeof QuestionsPage> => {
       submissions: null,
     } as State,
   );
-  const navigate = useNavigate();
 
   useEffect(() => {
     let didCancel = false;
@@ -78,7 +76,7 @@ export const Questions = (): ReactElement<typeof QuestionsPage> => {
   }
 
   return (
-    <QuestionsPage onAdd={(): void => navigate(ADD_QUESTION)}>
+    <QuestionsPage>
       <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
         {stats != null ? (
           <NumCompletedCard

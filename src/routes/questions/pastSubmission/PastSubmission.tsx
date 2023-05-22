@@ -1,10 +1,9 @@
 import { ReactElement, useCallback, useEffect, useReducer } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 
 import { ErrorBanner } from 'components/errorBanner';
-import { Dashboard, Page } from 'components/page';
-import { QUESTIONS } from 'constants/routes';
+import { Page } from 'components/page';
 import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
 import { getSubmission, updateSubmission } from 'lib/questions';
 import { SubmissionItem } from 'types/api/questions';
@@ -18,7 +17,9 @@ import {
   LanguageFormControl,
   NameFormControl,
   UrlFormControl,
-} from './form';
+} from '../form';
+
+import { PastSubmissionPage } from './PastSubmissionPage';
 import { PastSubmissionSkeleton } from './PastSubmissionSkeleton';
 
 interface State {
@@ -44,7 +45,6 @@ export const PastSubmission = (): ReactElement<void, typeof Page> => {
   );
   const toast = useToast();
   const { id } = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     let didCancel = false;
@@ -128,19 +128,9 @@ export const PastSubmission = (): ReactElement<void, typeof Page> => {
   const { originalSubmission, isError } = state;
 
   if (isError) {
-    <Page>
-      <Dashboard
-        actions={
-          <Button onClick={(): void => navigate(QUESTIONS)} variant="primary">
-            Back to Questions
-          </Button>
-        }
-        heading="Submission"
-        subheading="Failed to load your submission!"
-      >
-        <ErrorBanner maxW="100%" px={0} />
-      </Dashboard>
-    </Page>;
+    <PastSubmissionPage subheading="Failed to load your submission!">
+      <ErrorBanner maxW="100%" px={0} />
+    </PastSubmissionPage>;
   }
 
   if (originalSubmission == null) {
@@ -148,55 +138,46 @@ export const PastSubmission = (): ReactElement<void, typeof Page> => {
   }
 
   return (
-    <Page>
-      <Dashboard
-        actions={
-          <Button onClick={(): void => navigate(QUESTIONS)} variant="primary">
-            Back to Questions
+    <PastSubmissionPage
+      heading={`Submission for ${originalSubmission.question.name}`}
+      subheading={`Submitted on ${formatDateWithYear(
+        originalSubmission.submittedAt,
+      )}`}
+    >
+      <Stack divider={<StackDivider />} spacing={5}>
+        <NameFormControl
+          defaultQuestion={originalSubmission.question}
+          isDisabled={true}
+          isError={false}
+          isLoading={false}
+          onChange={emptyFunction}
+          questions={[originalSubmission.question]}
+          selectedQuestion={originalSubmission.question}
+        />
+        <UrlFormControl question={originalSubmission.question} />
+        <DifficultyFormControl question={originalSubmission.question} />
+        <LanguageFormControl
+          defaultLanguage={originalSubmission.languageUsed}
+          onChangeLanguage={(languageUsed): void => setState({ languageUsed })}
+          question={originalSubmission.question}
+        />
+        <CodeFormControl
+          code={state.codeWritten}
+          key={state.id}
+          language={state.languageUsed}
+          onChange={onChangeCode}
+        />
+        <Flex direction="row-reverse">
+          <Button
+            isDisabled={cannotUpdate()}
+            isLoading={state.isUpdating}
+            onClick={onUpdate}
+            variant="primary"
+          >
+            Update Submission
           </Button>
-        }
-        heading={`Submission for ${originalSubmission.question.name}`}
-        subheading={`Submitted on ${formatDateWithYear(
-          originalSubmission.submittedAt,
-        )}`}
-      >
-        <Stack divider={<StackDivider />} spacing={5}>
-          <NameFormControl
-            defaultQuestion={originalSubmission.question}
-            isDisabled={true}
-            isError={false}
-            isLoading={false}
-            onChange={emptyFunction}
-            questions={[originalSubmission.question]}
-            selectedQuestion={originalSubmission.question}
-          />
-          <UrlFormControl question={originalSubmission.question} />
-          <DifficultyFormControl question={originalSubmission.question} />
-          <LanguageFormControl
-            defaultLanguage={originalSubmission.languageUsed}
-            onChangeLanguage={(languageUsed): void =>
-              setState({ languageUsed })
-            }
-            question={originalSubmission.question}
-          />
-          <CodeFormControl
-            code={state.codeWritten}
-            key={state.id}
-            language={state.languageUsed}
-            onChange={onChangeCode}
-          />
-          <Flex direction="row-reverse">
-            <Button
-              isDisabled={cannotUpdate()}
-              isLoading={state.isUpdating}
-              onClick={onUpdate}
-              variant="primary"
-            >
-              Update Submission
-            </Button>
-          </Flex>
-        </Stack>
-      </Dashboard>
-    </Page>
+        </Flex>
+      </Stack>
+    </PastSubmissionPage>
   );
 };

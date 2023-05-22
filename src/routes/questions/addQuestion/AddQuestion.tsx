@@ -18,7 +18,7 @@ import {
   LanguageFormControl,
   NameFormControl,
   UrlFormControl,
-} from './form';
+} from '../form';
 
 interface State {
   questions: QuestionListItem[];
