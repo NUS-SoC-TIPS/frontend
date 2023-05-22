@@ -14,7 +14,7 @@ export const StatCardSkeleton = (): ReactElement<typeof Card> => {
         </Skeleton>
         <Stack spacing="4">
           <Skeleton>
-            <Heading height={42}>Skeleton</Heading>
+            <Heading size="sm">Skeleton</Heading>
           </Skeleton>
           <Skeleton>
             <Text color="muted" fontWeight="medium">

@@ -21,9 +21,7 @@ export const StatCard = ({
           {title}
         </Text>
         <Stack spacing="4">
-          <Heading minHeight={42} size="sm">
-            {stat}
-          </Heading>
+          <Heading size="sm">{stat}</Heading>
           <Text color="muted" fontWeight="medium">
             {subtitle}
           </Text>
