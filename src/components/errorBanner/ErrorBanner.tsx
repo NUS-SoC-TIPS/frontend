@@ -28,7 +28,7 @@ export const ErrorBanner = (
   return (
     <Container as="section" {...containerProps}>
       <Box
-        bg="error"
+        bg="red.600"
         borderRadius="xl"
         color="on-accent"
         position="relative"
@@ -47,7 +47,7 @@ export const ErrorBanner = (
             spacing={4}
           >
             {!isMobile && (
-              <Square bg="error-subtle" borderRadius="md" size={12}>
+              <Square bg="red.300" borderRadius="md" size={12}>
                 <Icon as={FiAlertTriangle} boxSize={6} />
               </Square>
             )}
