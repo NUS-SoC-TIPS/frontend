@@ -1,28 +1,63 @@
-import { AdminStatsEntity, CreateExclusionDto } from 'types/api/admin';
-import { Exclusion } from 'types/models/exclusion';
-import { Window } from 'types/models/window';
+import {
+  AdminOverview,
+  CohortAdminItem,
+  CohortStudentValidationResult,
+  CreateExclusionDto,
+  CreateStudentDto,
+  CreateUpdateCohortDto,
+  WindowItem,
+} from 'types/api/admin';
 import { api } from 'utils/apiUtils';
 
-export const getAdminWindows = async (): Promise<Window[]> => {
-  const response = await api.get('admin/windows');
+export const getOverviewAdmin = async (): Promise<AdminOverview> => {
+  const response = await api.get('admin');
   return response.data;
 };
 
-export const getAdminStats = async (
-  windowId: number,
-): Promise<AdminStatsEntity> => {
-  const response = await api.get(`admin/stats/${windowId}`);
+export const getCohortAdmin = async (id: number): Promise<CohortAdminItem> => {
+  const response = await api.get(`cohorts_admin/${id}`);
+  return response.data;
+};
+
+export const createOrUpdateCohortAdmin = async (
+  dto: CreateUpdateCohortDto,
+): Promise<void> => {
+  await api.post('cohorts_admin', dto);
+};
+
+export const validateStudentsAdmin = async (
+  cohortId: number,
+  dto: CreateStudentDto[],
+): Promise<CohortStudentValidationResult> => {
+  const response = await api.post(
+    `cohorts_admin/${cohortId}/students/validate`,
+    dto,
+  );
+  return response.data;
+};
+
+export const createStudentsAdmin = async (
+  cohortId: number,
+  dto: CreateStudentDto[],
+): Promise<CohortStudentValidationResult> => {
+  const response = await api.post(
+    `cohorts_admin/${cohortId}/students/create`,
+    dto,
+  );
+  return response.data;
+};
+
+export const getWindowAdmin = async (id: number): Promise<WindowItem> => {
+  const response = await api.get(`windows/${id}`);
   return response.data;
 };
 
 export const createExclusion = async (
   dto: CreateExclusionDto,
-): Promise<Exclusion> => {
-  const response = await api.post('admin/exclusions', dto);
-  return response.data;
+): Promise<void> => {
+  await api.post('exclusions', dto);
 };
 
 export const deleteExclusion = async (id: number): Promise<void> => {
-  const response = await api.delete(`admin/exclusions/${id}`);
-  return response.data;
+  await api.delete(`exclusions/${id}`);
 };

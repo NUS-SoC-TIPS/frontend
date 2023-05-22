@@ -3,12 +3,12 @@ import { Stack } from '@chakra-ui/react';
 
 import { Modal } from 'components/modal';
 import { QuestionBoxHighlight } from 'components/question';
-import { SubmissionWithQuestion } from 'types/models/submission';
+import { SubmissionBase } from 'types/api/questions';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  submissions: SubmissionWithQuestion[];
+  submissions: SubmissionBase[];
 }
 
 export const QuestionsCompleted = ({

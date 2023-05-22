@@ -1,20 +1,24 @@
 import { ReactElement } from 'react';
 
 import { Card } from 'components/card';
-import { UserWithWindowData } from 'types/api/admin';
-import { RecordWithPartner } from 'types/models/record';
-import { SubmissionWithQuestion } from 'types/models/submission';
-import { Window } from 'types/models/window';
+import { WindowItem } from 'types/api/admin';
+import { InterviewBase } from 'types/api/interviews';
+import { SubmissionBase } from 'types/api/questions';
 import { formatDateWithYear } from 'utils/dateUtils';
 
 import { UserTable } from './UserTable';
 
 interface Props {
-  users: UserWithWindowData[];
-  window: Window;
-  onExclude: (id: string) => void;
-  onViewSubmissions: (submissions: SubmissionWithQuestion[]) => void;
-  onViewRecords: (records: RecordWithPartner[]) => void;
+  users: WindowItem['students'];
+  window: {
+    startAt: Date;
+    endAt: Date;
+    numQuestions: number;
+    requireInterview: boolean;
+  };
+  onExclude: (id: number) => void;
+  onViewSubmissions: (submissions: SubmissionBase[]) => void;
+  onViewInterviews: (interviews: InterviewBase[]) => void;
 }
 
 export const StudentTable = ({
@@ -22,13 +26,13 @@ export const StudentTable = ({
   window,
   onExclude,
   onViewSubmissions,
-  onViewRecords,
+  onViewInterviews,
 }: Props): ReactElement<Props, typeof Card> => {
   return (
     <UserTable
       isInclude={false}
       onIncludeOrExclude={onExclude}
-      onViewRecords={onViewRecords}
+      onViewInterviews={onViewInterviews}
       onViewSubmissions={onViewSubmissions}
       options={{
         title: 'Students',
@@ -37,6 +41,7 @@ export const StudentTable = ({
         )} - ${formatDateWithYear(window.endAt)})`,
       }}
       users={users}
+      window={window}
     />
   );
 };

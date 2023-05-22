@@ -2,7 +2,6 @@ import { ReactElement } from 'react';
 import { SimpleGrid } from '@chakra-ui/react';
 
 import { StatCardSkeleton } from 'components/card';
-import { Window } from 'types/models/window';
 
 import { AdminPage } from './AdminPage';
 

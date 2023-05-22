@@ -3,31 +3,31 @@ import { Stack } from '@chakra-ui/react';
 
 import { Modal } from 'components/modal';
 import { UserProfileHighlight } from 'components/userProfile';
-import { RecordWithPartner } from 'types/models/record';
+import { InterviewBase } from 'types/api/interviews';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  records: RecordWithPartner[];
+  interviews: InterviewBase[];
 }
 
 export const InterviewsCompleted = ({
   isOpen,
   onClose,
-  records,
+  interviews,
 }: Props): ReactElement<Props, typeof Modal> => {
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
       scrollBehavior="inside"
-      title={`${records.length} ${
-        records.length === 1 ? 'Interview' : 'Interviews'
+      title={`${interviews.length} ${
+        interviews.length === 1 ? 'Interview' : 'Interviews'
       } Completed`}
     >
       <Stack direction="column" spacing={2}>
-        {records.map((record) => (
-          <UserProfileHighlight key={record.id} user={record.partner} />
+        {interviews.map((interview) => (
+          <UserProfileHighlight key={interview.id} user={interview.partner} />
         ))}
       </Stack>
     </Modal>

@@ -4,11 +4,10 @@ import { Box, Button, Link } from '@chakra-ui/react';
 import { Card } from 'components/card';
 import { Table } from 'components/table';
 import { UserProfile } from 'components/userProfile';
-import { UserWithWindowData } from 'types/api/admin';
-import { Exclusion } from 'types/models/exclusion';
-import { RecordWithPartner } from 'types/models/record';
-import { SubmissionWithQuestion } from 'types/models/submission';
-import { User } from 'types/models/user';
+import { WindowItem } from 'types/api/admin';
+import { InterviewBase } from 'types/api/interviews';
+import { SubmissionBase } from 'types/api/questions';
+import { UserBase } from 'types/api/users';
 import { TableColumn, TableOptions } from 'types/table';
 import { emptyFunction } from 'utils/functionUtils';
 import {
@@ -18,47 +17,44 @@ import {
 import { booleanRenderer, exclusionRenderer } from 'utils/tableUtils';
 
 interface Props {
-  users: UserWithWindowData[];
-  usersAreStudents?: boolean;
+  users: WindowItem['students'];
+  window: { numQuestions: number; requireInterview: boolean };
   options?: TableOptions;
   isInclude?: boolean;
-  onIncludeOrExclude?: (id: string) => void;
-  onViewSubmissions: (submissions: SubmissionWithQuestion[]) => void;
-  onViewRecords: (records: RecordWithPartner[]) => void;
+  onIncludeOrExclude?: (id: number) => void;
+  onViewSubmissions: (submissions: SubmissionBase[]) => void;
+  onViewInterviews: (interviews: InterviewBase[]) => void;
 }
 
 interface Row {
-  id: string;
-  user: User;
+  studentId: number;
+  user: UserBase;
   name: string;
   githubUsername: string;
   coursemologyProfile: {
     name: string;
-    link: string;
-    email: string;
+    url: string;
   };
   coursemologyName: string;
-  coursemologyEmail: string;
-  submissions: SubmissionWithQuestion[];
-  records: RecordWithPartner[];
+  submissions: SubmissionBase[];
+  interviews: InterviewBase[];
   hasCompletedWindow: boolean;
-  coursemologyProfileLink: string;
-  exclusion?: Exclusion;
+  coursemologyProfileUrl: string;
+  exclusion: { id: number; reason: string } | null;
 }
 
 const getColumns = (
-  usersAreStudents: boolean,
   isInclude: boolean,
-  onIncludeOrExclude: (id: string) => void,
-  onViewSubmissions: (submissions: SubmissionWithQuestion[]) => void,
-  onViewRecords: (records: RecordWithPartner[]) => void,
+  onIncludeOrExclude: (id: number) => void,
+  onViewSubmissions: (submissions: SubmissionBase[]) => void,
+  onViewInterviews: (interviews: InterviewBase[]) => void,
 ): TableColumn[] => {
   return [
     {
       label: 'User',
       key: 'user',
       options: {
-        customBodyRenderer: (user: User): ReactNode => (
+        customBodyRenderer: (user: UserBase): ReactNode => (
           <UserProfile ps={0} user={user} />
         ),
         isSearchable: false,
@@ -87,34 +83,23 @@ const getColumns = (
       options: {
         customBodyRenderer: (profile: {
           name: string;
-          link: string;
-          email: string;
+          url: string;
         }): ReactNode => (
           <Box>
             <Link
               color="emphasized"
               fontSize="sm"
               fontWeight="medium"
-              href={profile.link}
+              href={profile.url}
               isExternal={true}
               noOfLines={1}
               textAlign="left"
             >
               {profile.name}
             </Link>
-            <Link
-              color="muted"
-              fontSize="sm"
-              href={`mailto:${profile.email}`}
-              isExternal={true}
-              noOfLines={1}
-              textAlign="left"
-            >
-              {profile.email}
-            </Link>
           </Box>
         ),
-        isVisible: usersAreStudents,
+        isVisible: true,
         isSearchable: false,
         isDownloadable: false,
         isSortable: true,
@@ -126,33 +111,24 @@ const getColumns = (
       key: 'coursemologyName',
       options: {
         isVisible: false,
-        isSearchable: usersAreStudents,
-        isDownloadable: usersAreStudents,
+        isSearchable: true,
+        isDownloadable: true,
       },
     },
     {
-      label: 'Coursemology Email',
-      key: 'coursemologyEmail',
-      options: {
-        isVisible: false,
-        isSearchable: usersAreStudents,
-        isDownloadable: usersAreStudents,
-      },
-    },
-    {
-      label: 'Coursemology Profile Link',
-      key: 'coursemologyProfileLink',
+      label: 'Coursemology Profile URL',
+      key: 'coursemologyProfileUrl',
       options: {
         isVisible: false,
         isSearchable: false,
-        isDownloadable: usersAreStudents,
+        isDownloadable: true,
       },
     },
     {
       label: 'Number of Questions',
       key: 'submissions',
       options: {
-        customBodyRenderer: (submissions: SubmissionWithQuestion[]) =>
+        customBodyRenderer: (submissions: SubmissionBase[]) =>
           submissions.length === 0 ? (
             0
           ) : (
@@ -160,37 +136,33 @@ const getColumns = (
               {submissions.length}
             </Link>
           ),
-        customSearchValueRenderer: (submissions: SubmissionWithQuestion[]) =>
+        customSearchValueRenderer: (submissions: SubmissionBase[]) =>
           `${submissions.length}`,
-        customCsvBodyRenderer: (submissions: SubmissionWithQuestion[]) =>
+        customCsvBodyRenderer: (submissions: SubmissionBase[]) =>
           `${submissions.length}`,
-        customSortComparator: (
-          a: SubmissionWithQuestion[],
-          b: SubmissionWithQuestion[],
-        ) => a.length - b.length,
+        customSortComparator: (a: SubmissionBase[], b: SubmissionBase[]) =>
+          a.length - b.length,
         isSortable: true,
       },
     },
     {
       label: 'Number of Interviews',
-      key: 'records',
+      key: 'interviews',
       options: {
-        customBodyRenderer: (records: RecordWithPartner[]) =>
-          records.length === 0 ? (
+        customBodyRenderer: (interviews: InterviewBase[]) =>
+          interviews.length === 0 ? (
             0
           ) : (
-            <Link onClick={(): void => onViewRecords(records)}>
-              {records.length}
+            <Link onClick={(): void => onViewInterviews(interviews)}>
+              {interviews.length}
             </Link>
           ),
-        customSearchValueRenderer: (records: RecordWithPartner[]) =>
-          `${records.length}`,
-        customCsvBodyRenderer: (records: RecordWithPartner[]) =>
-          `${records.length}`,
-        customSortComparator: (
-          a: RecordWithPartner[],
-          b: RecordWithPartner[],
-        ) => a.length - b.length,
+        customSearchValueRenderer: (interviews: InterviewBase[]) =>
+          `${interviews.length}`,
+        customCsvBodyRenderer: (interviews: InterviewBase[]) =>
+          `${interviews.length}`,
+        customSortComparator: (a: InterviewBase[], b: InterviewBase[]) =>
+          a.length - b.length,
         isSortable: true,
       },
     },
@@ -216,17 +188,17 @@ const getColumns = (
         isDownloadable: isInclude,
         isSearchable: isInclude,
         customSortComparator: (
-          a: Exclusion | undefined,
-          b: Exclusion | undefined,
+          a: { reason: string } | undefined,
+          b: { reason: string } | undefined,
         ) => exclusionRenderer(a).localeCompare(exclusionRenderer(b)),
         isSortable: true,
       },
     },
     {
       label: 'Actions',
-      key: 'id',
+      key: 'studentId',
       options: {
-        customBodyRenderer: (id: string): ReactNode => (
+        customBodyRenderer: (id: number): ReactNode => (
           <Button
             onClick={(): void => {
               onIncludeOrExclude(id);
@@ -238,43 +210,51 @@ const getColumns = (
         ),
         isDownloadable: false,
         isSearchable: false,
-        isVisible: usersAreStudents,
+        isVisible: true,
       },
     },
   ];
 };
 
 const transformData = (
-  users: (UserWithWindowData & { exclusion?: Exclusion })[],
+  users: WindowItem['students'],
+  window: { numQuestions: number; requireInterview: boolean },
 ): Row[] => {
   return users.map((user) => {
     const {
-      records,
+      name,
+      studentId,
+      githubUsername,
+      interviews,
       submissions,
-      hasCompletedWindow,
       coursemologyName,
-      coursemologyEmail,
-      coursemologyProfileLink,
+      coursemologyProfileUrl,
       exclusion,
-      ...userData
     } = user;
 
+    const hasCompletedWindow =
+      submissions.length >= window.numQuestions &&
+      (!window.requireInterview || interviews.length >= 1);
+
     return {
-      id: user.id,
-      user: userData,
-      name: user.name,
-      githubUsername: user.githubUsername,
+      studentId,
+      user: {
+        name,
+        githubUsername,
+        profileUrl: user.profileUrl,
+        photoUrl: user.photoUrl,
+      },
+      name,
+      githubUsername,
       coursemologyProfile: {
         name: coursemologyName,
-        link: coursemologyProfileLink,
-        email: coursemologyEmail,
+        url: coursemologyProfileUrl,
       },
       coursemologyName,
-      coursemologyEmail,
-      records,
+      interviews,
       submissions,
       hasCompletedWindow,
-      coursemologyProfileLink,
+      coursemologyProfileUrl,
       exclusion,
     };
   });
@@ -282,31 +262,24 @@ const transformData = (
 
 export const UserTable = ({
   users,
-  usersAreStudents = true,
+  window,
   isInclude = false,
   options = {},
   onViewSubmissions,
-  onViewRecords,
+  onViewInterviews,
   onIncludeOrExclude = emptyFunction,
 }: Props): ReactElement<Props, typeof Card> => {
   const columns = useMemo(
     () =>
       getColumns(
-        usersAreStudents,
         isInclude,
         onIncludeOrExclude,
         onViewSubmissions,
-        onViewRecords,
+        onViewInterviews,
       ),
-    [
-      usersAreStudents,
-      isInclude,
-      onIncludeOrExclude,
-      onViewSubmissions,
-      onViewRecords,
-    ],
+    [isInclude, onIncludeOrExclude, onViewSubmissions, onViewInterviews],
   );
-  const rows = useMemo(() => transformData(users), [users]);
+  const rows = useMemo(() => transformData(users, window), [users, window]);
 
   return (
     <Card px={0} py={0}>

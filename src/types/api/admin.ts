@@ -1,8 +1,8 @@
-import { Exclusion } from 'types/models/exclusion';
-import { RecordWithPartner } from 'types/models/record';
-import { SubmissionWithQuestion } from 'types/models/submission';
-import { User } from 'types/models/user';
-import { Window } from 'types/models/window';
+import { InterviewBase } from './interviews';
+import { SubmissionBase } from './questions';
+import { StudentBase } from './students';
+import { UserBase } from './users';
+import { WindowBase } from './windows';
 
 export interface CreateExclusionDto {
   userId: string;
@@ -10,26 +10,75 @@ export interface CreateExclusionDto {
   reason: string;
 }
 
-export interface UserWithWindowData extends User {
+export interface CreateStudentDto {
+  githubUsername: string;
   coursemologyName: string;
-  coursemologyEmail: string;
-  coursemologyProfileLink: string;
-  submissions: SubmissionWithQuestion[];
-  records: RecordWithPartner[];
-  hasCompletedWindow: boolean;
+  coursemologyProfileUrl: string;
 }
 
-export interface ExcludedUserWithWindowData extends UserWithWindowData {
-  exclusion: Exclusion;
+export interface CreateUpdateCohortDto {
+  id: number | null;
+  name: string;
+  coursemologyUrl: string;
+  windows: CreateUpdateWindowDto[];
 }
 
-// If a user joins only in window 2, they will be present in
-// window 2's stats but under "yet to join" in window 1.
-export interface AdminStatsEntity extends Window {
-  numberOfStudents: number; // Number of students who are on the platform by the end of the window
-  numberOfCompletedStudents: number; // Number of students who have completed the targets
-  averageNumberOfQuestions: number; // Average number of questions attempted by the students
-  students: UserWithWindowData[];
-  excludedStudents: ExcludedUserWithWindowData[];
-  nonStudents: UserWithWindowData[];
+export interface CreateUpdateWindowDto {
+  id: number | null;
+  numQuestions: number;
+  requireInterview: boolean;
+  startAt: Date;
+  endAt: Date;
+}
+
+export interface AdminOverview {
+  cohorts: {
+    id: number;
+    name: string;
+    numStudents: number;
+    startAt: Date;
+    endAt: Date;
+  }[];
+  // TODO: Think about whether we want to paginate the list of non-students
+  nonStudents: (UserBase & {
+    joinedAt: Date;
+  })[];
+}
+
+export interface CohortAdminItem {
+  name: string;
+  coursemologyUrl: string;
+  windows: WindowBase[];
+  // TODO: Remove this later once a separate query is done
+  students: (StudentBase & {
+    studentId: number;
+    joinedAt: Date;
+    coursemologyName: string;
+    isExcluded: boolean;
+  })[];
+}
+
+export interface CohortStudentValidationResult {
+  success: (StudentBase & {
+    coursemologyName: string;
+  })[];
+  error: {
+    githubUsername: string;
+    coursemologyName: string;
+    coursemologyProfileUrl: string;
+    error: 'ALREADY ADDED' | 'NOT FOUND' | 'INVALID DATA';
+  }[];
+}
+
+export interface WindowItem extends WindowBase {
+  students: (StudentBase & {
+    studentId: number;
+    coursemologyName: string;
+    submissions: SubmissionBase[];
+    interviews: InterviewBase[];
+    exclusion: {
+      id: number;
+      reason: string; // TODO: Make this an enum
+    } | null;
+  })[];
 }
