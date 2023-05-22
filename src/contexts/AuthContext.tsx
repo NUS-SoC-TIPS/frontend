@@ -18,10 +18,10 @@ import {
   logout as apiLogout,
 } from 'lib/auth';
 import { signInWithFirebase } from 'lib/firebase';
-import { UserWithSettingsAndConfig } from 'types/models/user';
+import { UserSelf } from 'types/api/users';
 
 export interface AuthContextInterface {
-  data: UserWithSettingsAndConfig | null;
+  data: UserSelf | null;
   login(): Promise<void>;
   loginDev(): Promise<void>;
   logout(): Promise<void>;
@@ -34,7 +34,7 @@ export const AuthContext = createContext<AuthContextInterface | undefined>(
 
 const AuthProvider = (props: PropsWithChildren<unknown>): ReactElement => {
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState<UserWithSettingsAndConfig | null>(null);
+  const [data, setData] = useState<UserSelf | null>(null);
   const [isError, setIsError] = useState(false);
   const [hasFetchedOnce, setHasFetchedOnce] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);

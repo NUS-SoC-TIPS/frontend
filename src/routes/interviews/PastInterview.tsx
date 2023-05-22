@@ -1,4 +1,5 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect, useReducer } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Button,
   Heading,
@@ -9,76 +10,124 @@ import {
 } from '@chakra-ui/react';
 
 import { SimpleCodeEditor } from 'components/codeEditor';
+import { ErrorBanner } from 'components/errorBanner';
 import { Dashboard, Page } from 'components/page';
 import { LANGUAGE_TO_STRING } from 'constants/enumStrings';
-import { RecordWithPartner } from 'types/models/record';
+import { INTERVIEWS } from 'constants/routes';
+import { getInterview } from 'lib/interviews';
+import { InterviewItem } from 'types/api/interviews';
 import { formatDate, formatDuration } from 'utils/dateUtils';
 
-interface Props {
-  interview: RecordWithPartner;
-  onBack: () => void;
+import { PastInterviewSkeleton } from './PastInterviewSkeleton';
+
+interface State {
+  isError: boolean;
+  interview: InterviewItem | null;
 }
 
-export const PastInterview = ({
-  interview,
-  onBack,
-}: Props): ReactElement<Props, typeof Page> => {
-  const {
-    language,
-    partner: { name },
-    createdAt,
-    codeWritten,
-    notes,
-    duration,
-  } = interview;
+export const PastInterview = (): ReactElement<void, typeof Page> => {
+  const [state, setState] = useReducer(
+    (s: State, a: Partial<State>): State => ({ ...s, ...a }),
+    { isError: false, interview: null } as State,
+  );
   const height = useBreakpointValue(
     { base: '20rem', md: '30rem' },
     { ssr: false },
   );
-  const trimmedNotes = notes.trim();
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  useEffect(() => {
+    let didCancel = false;
+    const fetchData = async (): Promise<void> => {
+      if (id == null) {
+        return;
+      }
+      try {
+        const interview = await getInterview(+id);
+        if (!didCancel) {
+          setState({ interview });
+        }
+      } catch {
+        if (!didCancel) {
+          setState({ isError: true });
+        }
+      }
+    };
+    fetchData();
+
+    return () => {
+      didCancel = true;
+    };
+  }, [id]);
+
+  const { interview, isError } = state;
+
+  if (isError) {
+    <Page>
+      <Dashboard
+        actions={
+          <Button onClick={(): void => navigate(INTERVIEWS)} variant="primary">
+            Back to Interviews
+          </Button>
+        }
+        heading="Interview"
+        subheading="Failed to load your interview!"
+      >
+        <ErrorBanner maxW="100%" px={0} />
+      </Dashboard>
+    </Page>;
+  }
+
+  if (interview == null) {
+    return <PastInterviewSkeleton />;
+  }
+
+  const notes = interview.partner.notes.trim();
+
   return (
     <Page>
       <Dashboard
         actions={
-          <Button onClick={onBack} variant="primary">
-            Back
+          <Button onClick={(): void => navigate(INTERVIEWS)} variant="primary">
+            Back to Interviews
           </Button>
         }
-        heading={`Interview with ${name}`}
-        subheading={`Completed on ${formatDate(createdAt)} in ${formatDuration(
-          duration,
-        )}`}
+        heading={`Interview with ${interview.partner.name}`}
+        subheading={`Completed at ${formatDate(
+          interview.completedAt,
+        )} in ${formatDuration(interview.duration)}`}
       >
         <SimpleGrid columns={{ base: 1, md: 2 }} gap={8}>
           <Stack>
             <Heading fontWeight="medium" mb={0} size="xxs">
-              Code Written in {LANGUAGE_TO_STRING[language]}
+              Code Written in {LANGUAGE_TO_STRING[interview.language]}
             </Heading>
             <SimpleCodeEditor
               height={height}
-              language={language}
-              value={codeWritten}
+              language={interview.language}
+              value={interview.codeWritten}
               width="100%"
             />
           </Stack>
           <Stack>
             <Heading fontWeight="medium" mb={0} size="xxs">
-              Feedback from {name}
+              Feedback from {interview.partner.name}
             </Heading>
             <Textarea
-              color={notes !== '' ? undefined : 'muted'}
+              color={interview.partner.notes !== '' ? undefined : 'muted'}
               height={height}
               maxHeight={height}
               readOnly={true}
               value={
-                trimmedNotes.trim() !== ''
-                  ? trimmedNotes
+                notes !== ''
+                  ? notes
                   : 'Your partner did not leave any comments, unfortunately :('
               }
             />
           </Stack>
         </SimpleGrid>
-        {interview.notes}
+        {notes}
       </Dashboard>
     </Page>
   );

@@ -16,7 +16,8 @@ import {
   SETTINGS,
   TASKS,
 } from 'constants/routes';
-import { User, UserRole } from 'types/models/user';
+import { UserSelf } from 'types/api/users';
+import { UserRole } from 'types/models/user';
 
 import { Logo } from '../logo';
 import { UserProfile } from '../userProfile';
@@ -25,7 +26,7 @@ import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { NavButton } from './NavButton';
 
 interface Props {
-  user: User;
+  user: UserSelf;
   logout: () => void | Promise<void>;
   pathname: string;
   navigate: (path: string) => void;
@@ -63,12 +64,14 @@ export const Sidebar = ({
               label="Interviews"
               onClick={(): void => navigate(INTERVIEWS)}
             />
-            <NavButton
-              aria-current={pathname === TASKS ? 'page' : undefined}
-              icon={FiCheckSquare}
-              label="Tasks"
-              onClick={(): void => navigate(TASKS)}
-            />
+            {(user.isStudent || user.role === UserRole.ADMIN) && (
+              <NavButton
+                aria-current={pathname === TASKS ? 'page' : undefined}
+                icon={FiCheckSquare}
+                label="Tasks"
+                onClick={(): void => navigate(TASKS)}
+              />
+            )}
             {user.role === UserRole.ADMIN && (
               <NavButton
                 aria-current={pathname === ADMIN ? 'page' : undefined}

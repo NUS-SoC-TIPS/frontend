@@ -1,12 +1,12 @@
 import { ReactElement } from 'react';
 import { Box } from '@chakra-ui/react';
 
-import { Question } from 'types/models/question';
+import { QuestionBase } from 'types/api/questions';
 
 import { QuestionBox } from './QuestionBox';
 
 interface Props {
-  question: Question;
+  question: QuestionBase;
 }
 
 export const QuestionBoxHighlight = ({

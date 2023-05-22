@@ -71,12 +71,14 @@ export const Navbar = (): ReactElement<typeof Box> => {
                 >
                   Interviews
                 </Button>
-                <Button
-                  aria-current={pathname === TASKS ? 'page' : undefined}
-                  onClick={(): void => navigate(TASKS)}
-                >
-                  Tasks
-                </Button>
+                {(user.isStudent || user.role === UserRole.ADMIN) && (
+                  <Button
+                    aria-current={pathname === TASKS ? 'page' : undefined}
+                    onClick={(): void => navigate(TASKS)}
+                  >
+                    Tasks
+                  </Button>
+                )}
                 {user.role === UserRole.ADMIN && (
                   <Button
                     aria-current={pathname === ADMIN ? 'page' : undefined}

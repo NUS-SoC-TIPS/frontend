@@ -12,6 +12,7 @@ import {
   RoomJoiningStatus,
   updateRoomState,
 } from 'reducers/roomReducer';
+import { UserBase } from 'types/api/users';
 import { Language } from 'types/models/code';
 import { User } from 'types/models/user';
 
@@ -36,7 +37,7 @@ const handleJoinRoom = (socket: Socket): void => {
     ROOM_EVENTS.JOIN_ROOM,
     (data: {
       id: number;
-      partner: User | null;
+      partner: { name: string } | null;
       videoToken: string;
       isPartnerInRoom: boolean;
       language: Language;
@@ -102,7 +103,7 @@ const handleRoomIsClosed = (socket: Socket): void => {
 };
 
 const handleRoomIsFull = (socket: Socket): void => {
-  socket.on(ROOM_EVENTS.ROOM_IS_FULL, (data: { users: User[] }) =>
+  socket.on(ROOM_EVENTS.ROOM_IS_FULL, (data: { users: UserBase[] }) =>
     store.dispatch(
       updateRoomState({
         status: RoomJoiningStatus.FULL,

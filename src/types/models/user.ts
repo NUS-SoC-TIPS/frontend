@@ -27,11 +27,7 @@ export interface Settings {
   preferredKeyBinding: KeyBinding;
 }
 
-export interface AppConfig {
-  coursemology: string;
-}
-
-export interface UserWithSettingsAndConfig extends User {
+export interface UserWithSettings extends User {
   settings: Settings | null;
-  config: AppConfig;
+  isStudent: boolean;
 }

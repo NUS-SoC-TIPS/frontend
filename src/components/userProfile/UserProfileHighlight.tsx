@@ -1,12 +1,12 @@
 import { ReactElement } from 'react';
 import { Box } from '@chakra-ui/react';
 
-import { User } from 'types/models/user';
+import { UserBase } from 'types/api/users';
 
 import { UserProfile } from './UserProfile';
 
 interface Props {
-  user: User;
+  user: UserBase;
 }
 
 export const UserProfileHighlight = ({

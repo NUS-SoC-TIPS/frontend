@@ -1,10 +1,10 @@
 import { memo, ReactElement } from 'react';
 import { Avatar, Box, HStack, Link, StackProps, Text } from '@chakra-ui/react';
 
-import { User } from 'types/models/user';
+import { UserBase } from 'types/api/users';
 
 interface Props extends StackProps {
-  user: User;
+  user: UserBase;
   noOfLines?: number;
 }
 

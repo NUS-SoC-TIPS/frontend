@@ -1,16 +1,13 @@
 import { ReactElement, ReactNode, useMemo } from 'react';
-import { Button } from '@chakra-ui/react';
+import { Button, Link } from '@chakra-ui/react';
 
 import { Card } from 'components/card';
 import { QuestionBox } from 'components/question';
 import { Table } from 'components/table';
+import { PAST_SUBMISSION } from 'constants/routes';
+import { QuestionBase, SubmissionListItem } from 'types/api/questions';
 import { Language } from 'types/models/code';
-import {
-  Question,
-  QuestionDifficulty,
-  QuestionSource,
-} from 'types/models/question';
-import { SubmissionWithQuestion } from 'types/models/submission';
+import { QuestionDifficulty, QuestionSource } from 'types/models/question';
 import { TableColumn } from 'types/table';
 import { formatDate } from 'utils/dateUtils';
 import {
@@ -26,34 +23,33 @@ import {
 } from 'utils/tableUtils';
 
 interface Props {
-  submissions: SubmissionWithQuestion[];
-  onView: (id: number) => void;
+  submissions: SubmissionListItem[];
 }
 
 interface Row {
   id: number;
-  question: Question;
+  question: QuestionBase;
   source: QuestionSource;
-  createdAt: Date;
+  submittedAt: Date;
   difficulty: QuestionDifficulty;
   languageUsed: Language;
 }
 
-const getColumns = (onView: (id: number) => void): TableColumn[] => {
+const getColumns = (): TableColumn[] => {
   return [
     {
       label: 'Question',
       key: 'question',
       options: {
-        customBodyRenderer: (question: Question): ReactNode => (
+        customBodyRenderer: (question: QuestionBase): ReactNode => (
           <QuestionBox
             question={question}
             withBox={false}
             withDifficulty={false}
           />
         ),
-        customSearchValueRenderer: (question: Question) => question.name,
-        customCsvBodyRenderer: (question: Question) => question.name,
+        customSearchValueRenderer: (question: QuestionBase) => question.name,
+        customCsvBodyRenderer: (question: QuestionBase) => question.name,
         customSortComparator: compareNamesAscending,
         isSortable: true,
       },
@@ -68,8 +64,8 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
       },
     },
     {
-      label: 'Submitted On',
-      key: 'createdAt',
+      label: 'Submitted At',
+      key: 'submittedAt',
       options: {
         customBodyRenderer: formatDate,
         customSearchValueRenderer: formatDate,
@@ -105,9 +101,9 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
       key: 'id',
       options: {
         customBodyRenderer: (id: number): ReactNode => (
-          <Button onClick={(): void => onView(id)} variant="secondary">
-            View
-          </Button>
+          <Link href={`${PAST_SUBMISSION}/${id}`} isExternal={true}>
+            <Button variant="secondary">View</Button>
+          </Link>
         ),
         isDownloadable: false,
         isSearchable: false,
@@ -116,11 +112,11 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
   ];
 };
 
-const transformData = (submissions: SubmissionWithQuestion[]): Row[] => {
+const transformData = (submissions: SubmissionListItem[]): Row[] => {
   return submissions.map((submission) => ({
     id: submission.id,
     question: submission.question,
-    createdAt: submission.createdAt,
+    submittedAt: submission.submittedAt,
     difficulty: submission.question.difficulty,
     source: submission.question.source,
     languageUsed: submission.languageUsed,
@@ -129,9 +125,8 @@ const transformData = (submissions: SubmissionWithQuestion[]): Row[] => {
 
 export const PastSubmissionsTable = ({
   submissions,
-  onView,
 }: Props): ReactElement<Props, typeof Card> => {
-  const columns = useMemo(() => getColumns(onView), [onView]);
+  const columns = useMemo(() => getColumns(), []);
   const rows = useMemo(() => transformData(submissions), [submissions]);
   return (
     <Card px={0} py={0}>

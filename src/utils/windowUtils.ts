@@ -1,19 +1,4 @@
-import { Window, WindowStatus } from 'types/models/window';
-
-// TODO: Consider deleting this
-export const computeWindowData = (
-  window: Window,
-): { status: WindowStatus; startAt: Date; endAt: Date } => {
-  const currentTime = new Date();
-  const startAt = window?.startAt ?? currentTime;
-  const endAt = window?.endAt ?? currentTime;
-  if (startAt <= currentTime && currentTime <= endAt) {
-    return { status: WindowStatus.ONGOING, startAt, endAt };
-  } else if (startAt > currentTime) {
-    return { status: WindowStatus.UPCOMING, startAt, endAt };
-  }
-  return { status: WindowStatus.OVER, startAt, endAt };
-};
+import { Window } from 'types/models/window';
 
 export const findCurrentWindow = (
   windows: Window[],

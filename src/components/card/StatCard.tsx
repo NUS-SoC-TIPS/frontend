@@ -6,11 +6,13 @@ import { Card } from './Card';
 interface Props {
   title: string | number;
   stat: string | number;
+  subtitle: string | number;
 }
 
 export const StatCard = ({
   title,
   stat,
+  subtitle,
 }: Props): ReactElement<Props, typeof Card> => {
   return (
     <Card>
@@ -18,7 +20,14 @@ export const StatCard = ({
         <Text color="muted" fontSize="sm">
           {title}
         </Text>
-        <Heading size="sm">{stat}</Heading>
+        <Stack spacing="4">
+          <Heading minHeight={42} size="sm">
+            {stat}
+          </Heading>
+          <Text color="muted" fontWeight="medium">
+            {subtitle}
+          </Text>
+        </Stack>
       </Stack>
     </Card>
   );

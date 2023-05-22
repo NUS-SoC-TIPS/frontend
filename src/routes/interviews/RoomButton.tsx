@@ -3,13 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 
 import { ROOM } from 'constants/routes';
-import { createRoom, getCurrentRoom } from 'lib/rooms';
-import { Room } from 'types/models/room';
+import { createRoom, getCurrentRoom } from 'lib/interviews';
 
 interface State {
   isLoading: boolean;
   isError: boolean;
-  room: Room | null;
+  roomSlug: string | null;
 }
 
 export const RoomButton = (): ReactElement<typeof Button> => {
@@ -18,7 +17,7 @@ export const RoomButton = (): ReactElement<typeof Button> => {
     {
       isLoading: true,
       isError: false,
-      room: null,
+      roomSlug: null,
     } as State,
   );
   const navigate = useNavigate();
@@ -27,9 +26,9 @@ export const RoomButton = (): ReactElement<typeof Button> => {
     let didCancel = false;
     const fetchData = (): void => {
       getCurrentRoom()
-        .then((room: Room | null) => {
+        .then((roomSlug) => {
           if (!didCancel) {
-            setState({ isLoading: false, room });
+            setState({ isLoading: false, roomSlug });
           }
         })
         .catch(() => {
@@ -46,8 +45,8 @@ export const RoomButton = (): ReactElement<typeof Button> => {
   }, []);
 
   const onClick = async (): Promise<void> => {
-    if (state.room) {
-      navigate(`${ROOM}/${state.room.slug}`);
+    if (state.roomSlug) {
+      navigate(`${ROOM}/${state.roomSlug}`);
     } else {
       setState({ isLoading: true });
       const slug = await createRoom();
@@ -57,7 +56,7 @@ export const RoomButton = (): ReactElement<typeof Button> => {
 
   return (
     <Button isLoading={state.isLoading} onClick={onClick} variant="primary">
-      {state.room ? 'Rejoin Room' : 'Create Room'}
+      {state.roomSlug ? 'Rejoin Room' : 'Create Room'}
     </Button>
   );
 };

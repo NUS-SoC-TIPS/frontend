@@ -206,14 +206,17 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
       <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
         <StatCard
           stat={stats.numberOfStudents}
+          subtitle="blabla"
           title="Number of Students This Window"
         />
         <StatCard
           stat={stats.numberOfCompletedStudents}
+          subtitle="blabla"
           title="Number of Students Completed"
         />
         <StatCard
           stat={stats.averageNumberOfQuestions.toFixed(2)}
+          subtitle="blabla"
           title="Average Number of Submissions"
         />
       </SimpleGrid>

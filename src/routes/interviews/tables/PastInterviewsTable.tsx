@@ -1,11 +1,12 @@
-import { ReactElement, ReactNode } from 'react';
-import { Button } from '@chakra-ui/react';
+import { ReactElement, ReactNode, useMemo } from 'react';
+import { Button, Link } from '@chakra-ui/react';
 
 import { Card } from 'components/card';
 import { Table } from 'components/table';
 import { UserProfile } from 'components/userProfile';
-import { RecordWithPartner } from 'types/models/record';
-import { User } from 'types/models/user';
+import { PAST_INTERVIEWS } from 'constants/routes';
+import { InterviewListItem } from 'types/api/interviews';
+import { UserBase } from 'types/api/users';
 import { TableColumn } from 'types/table';
 import { formatDate, formatDuration } from 'utils/dateUtils';
 import {
@@ -16,21 +17,20 @@ import {
 import { languageRenderer } from 'utils/tableUtils';
 
 interface Props {
-  interviews: RecordWithPartner[];
-  onView: (id: number) => void;
+  interviews: InterviewListItem[];
 }
 
-const getColumns = (onView: (id: number) => void): TableColumn[] => {
+const getColumns = (): TableColumn[] => {
   return [
     {
       label: 'Partner',
       key: 'partner',
       options: {
-        customBodyRenderer: (partner: User): ReactNode => (
+        customBodyRenderer: (partner: UserBase): ReactNode => (
           <UserProfile ps={0} user={partner} />
         ),
-        customSearchValueRenderer: (partner: User) => partner.name,
-        customCsvBodyRenderer: (partner: User) => partner.name,
+        customSearchValueRenderer: (partner: UserBase) => partner.name,
+        customCsvBodyRenderer: (partner: UserBase) => partner.name,
         customSortComparator: compareNamesAscending,
         isSortable: true,
       },
@@ -43,8 +43,8 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
       },
     },
     {
-      label: 'Completed On',
-      key: 'createdAt',
+      label: 'Completed At',
+      key: 'completedAt',
       options: {
         customBodyRenderer: formatDate,
         customSearchValueRenderer: formatDate,
@@ -79,9 +79,9 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
       key: 'id',
       options: {
         customBodyRenderer: (id: number): ReactNode => (
-          <Button onClick={(): void => onView(id)} variant="secondary">
-            View
-          </Button>
+          <Link href={`${PAST_INTERVIEWS}/${id}`} isExternal={true}>
+            <Button variant="secondary">View</Button>
+          </Link>
         ),
         isDownloadable: false,
         isSearchable: false,
@@ -92,9 +92,8 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
 
 export const PastInterviewsTable = ({
   interviews,
-  onView,
 }: Props): ReactElement<Props, typeof Card> => {
-  const columns = getColumns(onView);
+  const columns = useMemo(() => getColumns(), []);
   return (
     <Card px={0} py={0}>
       <Table

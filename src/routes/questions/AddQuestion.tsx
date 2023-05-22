@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ReactElement, useCallback, useEffect, useReducer } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 
 import { Dashboard, Page } from 'components/page';
+import { PAST_SUBMISSION, QUESTIONS } from 'constants/routes';
 import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
-import { getQuestions } from 'lib/questions';
-import { createSubmission } from 'lib/submissions';
+import { createSubmission, getQuestions } from 'lib/questions';
+import { QuestionListItem } from 'types/api/questions';
 import { Language } from 'types/models/code';
-import { Question } from 'types/models/question';
-import { SubmissionWithQuestion } from 'types/models/submission';
-import { compareIdsAscending } from 'utils/sortUtils';
+import { compareNamesAscending } from 'utils/sortUtils';
 
 import {
   CodeFormControl,
@@ -19,17 +19,12 @@ import {
   UrlFormControl,
 } from './form';
 
-interface Props {
-  onBack: () => void;
-  onCreate: (submission: SubmissionWithQuestion) => void;
-}
-
 interface State {
-  questions: Question[];
+  questions: QuestionListItem[];
   isLoading: boolean;
   isAdding: boolean;
   isError: boolean;
-  selectedQuestion: Question | null;
+  selectedQuestion: QuestionListItem | null;
   languageUsed: Language | null;
   codeWritten: string;
 }
@@ -39,10 +34,7 @@ interface QuestionOption {
   label: string;
 }
 
-export const AddQuestion = ({
-  onBack,
-  onCreate,
-}: Props): ReactElement<Props, typeof Page> => {
+export const AddQuestion = (): ReactElement<void, typeof Page> => {
   const [state, setState] = useReducer(
     (s: State, a: Partial<State>): State => ({ ...s, ...a }),
     {
@@ -56,13 +48,14 @@ export const AddQuestion = ({
     } as State,
   );
   const toast = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     let didCancel = false;
     const fetchData = async (): Promise<void> => {
       try {
         const questions = await getQuestions();
-        questions.sort(compareIdsAscending);
+        questions.sort(compareNamesAscending);
         if (!didCancel) {
           setState({ questions, isLoading: false });
         }
@@ -105,14 +98,13 @@ export const AddQuestion = ({
       codeWritten: state.codeWritten.trim(),
     })
       .then((data): void => {
-        onCreate({ ...data, question: state.selectedQuestion! });
         toast({
           ...DEFAULT_TOAST_PROPS,
           title: 'Question added!',
           description: 'Awesome work with the question!',
           status: 'success',
         });
-        onBack();
+        setTimeout(() => navigate(`${PAST_SUBMISSION}/${data.id}`), 1000);
       })
       .catch((): void => {
         toast(ERROR_TOAST_PROPS);
@@ -128,8 +120,8 @@ export const AddQuestion = ({
     <Page>
       <Dashboard
         actions={
-          <Button onClick={onBack} variant="primary">
-            Back
+          <Button onClick={(): void => navigate(QUESTIONS)} variant="primary">
+            Back to Questions
           </Button>
         }
         heading="Add a Question"

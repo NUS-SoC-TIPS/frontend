@@ -2,10 +2,10 @@ import { ReactElement } from 'react';
 
 import { FormControl } from 'components/formControl';
 import { RadioButton, RadioButtonGroup } from 'components/radio';
-import { Question, QuestionDifficulty } from 'types/models/question';
+import { QuestionDifficulty } from 'types/models/question';
 
 interface Props {
-  question: Question;
+  question: { difficulty: QuestionDifficulty };
 }
 
 export const DifficultyFormControl = ({

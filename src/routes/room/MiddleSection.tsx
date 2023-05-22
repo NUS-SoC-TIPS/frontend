@@ -68,7 +68,7 @@ export const MiddleSection = ({
     >
       <CodeEditor
         height={finalHeight}
-        keyBinding={user?.settings?.preferredKeyBinding ?? KeyBinding.STANDARD}
+        keyBinding={user?.preferredKeyBinding ?? KeyBinding.STANDARD}
         language={language}
         roomSlug={slug}
         socket={socket}

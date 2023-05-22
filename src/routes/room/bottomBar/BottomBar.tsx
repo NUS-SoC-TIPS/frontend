@@ -23,12 +23,12 @@ import { ERROR_TOAST_PROPS } from 'constants/toast';
 import { useUser } from 'contexts/UserContext';
 import { closeRoom } from 'lib/roomsSocket';
 import { RoomClosingStatus } from 'reducers/roomReducer';
-import { User } from 'types/models/user';
+import { UserSelf } from 'types/api/users';
 
 import { CodeExecutionButton } from './CodeExecutionButton';
 
 interface UserDisplayProps {
-  user: User;
+  user: { name: string };
   color?: string;
   isDisconnected?: boolean;
 }
@@ -61,7 +61,7 @@ export const BottomBar = ({
     { ssr: false },
   );
   const [isCloseRoomModalOpen, setIsCloseRoomModalOpen] = useState(false);
-  const user = useUser() as User;
+  const user = useUser() as UserSelf;
   const { partner, isRoomClosed, isPartnerInRoom, closingStatus } =
     useAppSelector((state) => state.room);
   const toast = useToast();

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { User } from 'types/models/user';
+import { UserBase } from 'types/api/users';
 
 export enum RoomJoiningStatus {
   LOADING,
@@ -22,12 +22,12 @@ export enum RoomClosingStatus {
 export interface RoomState {
   id: number;
   status: RoomJoiningStatus;
-  partner: User | null;
+  partner: { name: string } | null;
   videoToken: string | null; // empty string = not set yet, null = video token failed to generate
   isPartnerInRoom: boolean; // the partner may be set, but they might have disconnected
   isRoomClosed: boolean; // this is for when the room was just closed by a user in the room
   userActualSlug: string; // only used if user is already in another room
-  usersInRoom: User[]; // only used if room is full
+  usersInRoom: UserBase[]; // only used if room is full
   closingStatus: RoomClosingStatus;
 }
 

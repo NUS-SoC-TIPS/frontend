@@ -3,10 +3,10 @@ import { Heading, Stack, Text } from '@chakra-ui/react';
 
 import { Card } from 'components/card';
 import { UserProfile } from 'components/userProfile';
-import { User } from 'types/models/user';
+import { UserBase } from 'types/api/users';
 
 interface Props {
-  partner: User | null;
+  partner: UserBase | null;
 }
 
 export const LatestPartnerCard = ({

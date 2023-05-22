@@ -3,15 +3,19 @@ import { ReactElement, useCallback, useMemo, useState } from 'react';
 import { FormControl } from 'components/formControl';
 import { AsyncSelect } from 'components/select';
 import { SOURCE_TO_STRING } from 'constants/enumStrings';
-import { Question } from 'types/models/question';
+import { QuestionSource } from 'types/models/question';
 
 interface Props {
-  questions: Question[];
+  questions: { name: string; source: QuestionSource; slug: string }[];
   isLoading: boolean;
   isError: boolean;
-  selectedQuestion: Question | null;
+  selectedQuestion: {
+    name: string;
+    source: QuestionSource;
+    slug: string;
+  } | null;
   onChange: (newValue: unknown) => void;
-  defaultQuestion?: Question;
+  defaultQuestion?: { name: string; source: QuestionSource; slug: string };
   isDisabled?: boolean;
 }
 
@@ -19,9 +23,11 @@ interface Props {
 // Until then, we will prevent the menu from showing too many options at once, as it lags.
 const NUM_QUERIES_TO_SHOW = 50;
 
-const questionToOption = (
-  question: Question,
-): { label: string; value: string } => {
+const questionToOption = (question: {
+  name: string;
+  source: QuestionSource;
+  slug: string;
+}): { label: string; value: string } => {
   return {
     label: `${question.name} [${SOURCE_TO_STRING[question.source]}]`,
     value: question.slug,

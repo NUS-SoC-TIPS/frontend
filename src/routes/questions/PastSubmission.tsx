@@ -1,14 +1,14 @@
-import { ReactElement, useCallback, useReducer } from 'react';
+import { ReactElement, useCallback, useEffect, useReducer } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 
+import { ErrorBanner } from 'components/errorBanner';
 import { Dashboard, Page } from 'components/page';
+import { QUESTIONS } from 'constants/routes';
 import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
-import { updateSubmission } from 'lib/submissions';
+import { getSubmission, updateSubmission } from 'lib/questions';
+import { SubmissionItem } from 'types/api/questions';
 import { Language } from 'types/models/code';
-import {
-  QuestionSubmission,
-  SubmissionWithQuestion,
-} from 'types/models/submission';
 import { formatDate } from 'utils/dateUtils';
 import { emptyFunction } from 'utils/functionUtils';
 
@@ -19,62 +19,90 @@ import {
   NameFormControl,
   UrlFormControl,
 } from './form';
-
-interface Props {
-  submission: SubmissionWithQuestion;
-  onBack: () => void;
-  onUpdate: (submission: QuestionSubmission) => void;
-}
+import { PastSubmissionSkeleton } from './PastSubmissionSkeleton';
 
 interface State {
   id: number; // Used to force the re-rendering of the code input upon save
   isUpdating: boolean;
-  originalLanguageUsed: Language;
+  isError: boolean;
   languageUsed: Language | null;
-  originalCodeWritten: string;
   codeWritten: string;
+  originalSubmission: SubmissionItem | null;
 }
 
-export const PastSubmission = ({
-  submission,
-  onBack,
-  onUpdate: parentOnUpdate,
-}: Props): ReactElement<Props, typeof Page> => {
+export const PastSubmission = (): ReactElement<void, typeof Page> => {
   const [state, setState] = useReducer(
     (s: State, a: Partial<State>): State => ({ ...s, ...a }),
     {
       id: 0,
       isUpdating: false,
-      originalLanguageUsed: submission.languageUsed,
-      languageUsed: submission.languageUsed,
-      originalCodeWritten: submission.codeWritten,
-      codeWritten: submission.codeWritten,
+      isError: false,
+      languageUsed: null,
+      codeWritten: '',
+      originalSubmission: null,
     } as State,
   );
   const toast = useToast();
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let didCancel = false;
+    const fetchData = async (): Promise<void> => {
+      if (id == null) {
+        return;
+      }
+      try {
+        const originalSubmission = await getSubmission(+id);
+        if (!didCancel) {
+          setState({
+            originalSubmission,
+            languageUsed: originalSubmission.languageUsed,
+            codeWritten: originalSubmission.codeWritten,
+          });
+        }
+      } catch {
+        if (!didCancel) {
+          setState({ isError: true });
+        }
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      didCancel = true;
+    };
+  }, [id]);
 
   const cannotUpdate = (): boolean => {
     return (
       state.languageUsed == null ||
       state.codeWritten.trim() === '' ||
-      (state.languageUsed === state.originalLanguageUsed &&
-        state.codeWritten.trim() === state.originalCodeWritten.trim())
+      (state.languageUsed === state.originalSubmission?.languageUsed &&
+        state.codeWritten.trim() ===
+          state.originalSubmission.codeWritten.trim())
     );
   };
 
   const onUpdate = (): Promise<void> => {
+    const { originalSubmission, languageUsed } = state;
+    if (originalSubmission == null || languageUsed == null) {
+      return Promise.resolve();
+    }
     setState({ isUpdating: true });
-    return updateSubmission(submission.id, {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      languageUsed: state.languageUsed!,
+    return updateSubmission(originalSubmission.id, {
+      languageUsed,
       codeWritten: state.codeWritten.trim(),
     })
       .then((data): void => {
-        parentOnUpdate(data);
         setState({
           id: state.id + 1,
-          originalLanguageUsed: data.languageUsed,
-          originalCodeWritten: data.codeWritten,
+          originalSubmission: {
+            ...originalSubmission,
+            languageUsed,
+            codeWritten: data.codeWritten,
+          },
           // We update this as string trimming may occur upon saving, which causes the
           // codeWritten to differ from the originalCodeWritten.
           codeWritten: data.codeWritten,
@@ -97,35 +125,59 @@ export const PastSubmission = ({
     setState({ codeWritten });
   }, []);
 
+  const { originalSubmission, isError } = state;
+
+  if (isError) {
+    <Page>
+      <Dashboard
+        actions={
+          <Button onClick={(): void => navigate(QUESTIONS)} variant="primary">
+            Back to Questions
+          </Button>
+        }
+        heading="Submission"
+        subheading="Failed to load your submission!"
+      >
+        <ErrorBanner maxW="100%" px={0} />
+      </Dashboard>
+    </Page>;
+  }
+
+  if (originalSubmission == null) {
+    return <PastSubmissionSkeleton />;
+  }
+
   return (
     <Page>
       <Dashboard
         actions={
-          <Button onClick={onBack} variant="primary">
-            Back
+          <Button onClick={(): void => navigate(QUESTIONS)} variant="primary">
+            Back to Questions
           </Button>
         }
-        heading={`Submission for ${submission.question.name}`}
-        subheading={`Submitted on ${formatDate(submission.createdAt)}`}
+        heading={`Submission for ${originalSubmission.question.name}`}
+        subheading={`Submitted on ${formatDate(
+          originalSubmission.submittedAt,
+        )}`}
       >
         <Stack divider={<StackDivider />} spacing={5}>
           <NameFormControl
-            defaultQuestion={submission.question}
+            defaultQuestion={originalSubmission.question}
             isDisabled={true}
             isError={false}
             isLoading={false}
             onChange={emptyFunction}
-            questions={[submission.question]}
-            selectedQuestion={submission.question}
+            questions={[originalSubmission.question]}
+            selectedQuestion={originalSubmission.question}
           />
-          <UrlFormControl question={submission.question} />
-          <DifficultyFormControl question={submission.question} />
+          <UrlFormControl question={originalSubmission.question} />
+          <DifficultyFormControl question={originalSubmission.question} />
           <LanguageFormControl
-            defaultLanguage={submission.languageUsed}
+            defaultLanguage={originalSubmission.languageUsed}
             onChangeLanguage={(languageUsed): void =>
               setState({ languageUsed })
             }
-            question={submission.question}
+            question={originalSubmission.question}
           />
           <CodeFormControl
             code={state.codeWritten}

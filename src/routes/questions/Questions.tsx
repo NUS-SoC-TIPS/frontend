@@ -1,77 +1,75 @@
 import { ReactElement, useEffect, useReducer } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { SimpleGrid } from '@chakra-ui/react';
 
 import { Banner } from 'components/banner';
-import { Card } from 'components/card';
+import { Card, StatCardSkeleton } from 'components/card';
 import { ErrorBanner } from 'components/errorBanner';
-import { getSubmissionStats } from 'lib/submissions';
-import { SubmissionStatsEntity } from 'types/api/submissions';
-import { SubmissionWithQuestion } from 'types/models/submission';
+import { ADD_QUESTION } from 'constants/routes';
+import { getQuestionStats, getSubmissions } from 'lib/questions';
+import { QuestionStats, SubmissionListItem } from 'types/api/questions';
 
-import { AddQuestion } from './AddQuestion';
-import { PastSubmission } from './PastSubmission';
 import { QuestionsPage } from './QuestionsPage';
-import { QuestionsSkeleton } from './QuestionsSkeleton';
-import { LatestSubmissionCard, NumCompletedCard } from './stats';
+import { NumCompletedCard } from './stats';
 import { PastSubmissionsTable } from './tables';
 
 interface State {
-  isLoading: boolean;
   isError: boolean;
-  stats: SubmissionStatsEntity | null;
-  isAddingQuestion: boolean;
-  selectedSubmission: SubmissionWithQuestion | null;
+  stats: QuestionStats | null;
+  submissions: SubmissionListItem[] | null;
 }
 
 export const Questions = (): ReactElement<typeof QuestionsPage> => {
   const [state, setState] = useReducer(
     (s: State, a: Partial<State>) => ({ ...s, ...a }),
     {
-      isLoading: true,
       isError: false,
       stats: null,
-      isAddingQuestion: false,
-      selectedSubmission: null,
+      submissions: null,
     } as State,
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
     let didCancel = false;
-    const fetchData = (): Promise<void> => {
-      return getSubmissionStats()
+    const fetchStats = (): Promise<void> => {
+      return getQuestionStats()
         .then((stats) => {
           if (!didCancel) {
-            setState({
-              isLoading: false,
-              stats,
-            });
+            setState({ stats });
           }
         })
         .catch(() => {
           if (!didCancel) {
-            setState({
-              isLoading: false,
-              isError: true,
-            });
+            setState({ isError: true });
+          }
+        });
+    };
+    const fetchSubmissions = (): Promise<void> => {
+      return getSubmissions()
+        .then((submissions) => {
+          if (!didCancel) {
+            setState({ submissions });
+          }
+        })
+        .catch(() => {
+          if (!didCancel) {
+            setState({ isError: true });
           }
         });
     };
 
-    fetchData();
+    fetchStats();
+    fetchSubmissions();
 
     return (): void => {
       didCancel = true;
     };
   }, []);
 
-  const { stats, isLoading, isError, isAddingQuestion, selectedSubmission } =
-    state;
+  const { stats, isError, submissions } = state;
 
-  if (isLoading) {
-    return <QuestionsSkeleton />;
-  }
-
-  if (isError || stats == null) {
+  if (isError) {
     return (
       <QuestionsPage>
         <ErrorBanner maxW="100%" px={0} />
@@ -79,61 +77,25 @@ export const Questions = (): ReactElement<typeof QuestionsPage> => {
     );
   }
 
-  const refetchStats = (): void => {
-    setState({ isLoading: state.selectedSubmission ? false : true });
-    getSubmissionStats()
-      .then((stats) => {
-        setState({
-          isLoading: false,
-          stats,
-        });
-      })
-      .catch(() => {
-        setState({
-          isLoading: false,
-          isError: true,
-        });
-      });
-  };
-
-  if (isAddingQuestion) {
-    return (
-      <AddQuestion
-        onBack={(): void => setState({ isAddingQuestion: false })}
-        onCreate={refetchStats}
-      />
-    );
-  }
-
-  if (selectedSubmission) {
-    return (
-      <PastSubmission
-        onBack={(): void => setState({ selectedSubmission: null })}
-        onUpdate={refetchStats}
-        submission={selectedSubmission}
-      />
-    );
-  }
-
-  const onView = (id: number): void => {
-    const selectedSubmission =
-      stats.allSubmissions.find((submission) => submission.id === id) ?? null;
-    setState({ selectedSubmission });
-  };
-
   return (
-    <QuestionsPage onAdd={(): void => setState({ isAddingQuestion: true })}>
+    <QuestionsPage onAdd={(): void => navigate(ADD_QUESTION)}>
       <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
-        <NumCompletedCard
-          numCompleted={stats?.numberOfSubmissionsForThisWindowOrWeek ?? 0}
-          numTarget={stats?.numQuestions}
-        />
-        <LatestSubmissionCard submission={stats?.latestSubmission} />
+        {stats != null ? (
+          <NumCompletedCard
+            endAt={stats.progress.endOfWindowOrWeek}
+            numCompleted={stats.progress.numSubmissionsThisWindowOrWeek}
+            numTarget={stats.progress.numSubmissionsRequired}
+            startAt={stats.progress.startOfWindowOrWeek}
+          />
+        ) : (
+          <StatCardSkeleton />
+        )}
       </SimpleGrid>
-      <PastSubmissionsTable
-        onView={onView}
-        submissions={stats.allSubmissions}
-      />
+      {submissions != null ? (
+        <PastSubmissionsTable submissions={submissions} />
+      ) : (
+        <StatCardSkeleton />
+      )}
       <Card>
         <Banner
           message="Keep an eye on this section for an exciting upcoming feature!"

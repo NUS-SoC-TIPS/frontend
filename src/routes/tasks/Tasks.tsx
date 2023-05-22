@@ -1,23 +1,17 @@
 import { ReactElement, useEffect, useReducer } from 'react';
-import { Heading, Stack } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react';
 
 import { ErrorBanner } from 'components/errorBanner';
 import { Page } from 'components/page';
-import { getTaskStats } from 'lib/tasks';
-import { TaskStatsEntity, TaskStatWindowStatus } from 'types/api/tasks';
-import { formatDate } from 'utils/dateUtils';
-import { findCurrentWindow } from 'utils/windowUtils';
+import { getCohort } from 'lib/tasks';
 
-import { InterviewTasksBox } from './InterviewTasksBox';
-import { SubmissionTasksBox } from './SubmissionTasksBox';
 import { TasksPage } from './TasksPage';
 import { TasksSkeleton } from './TasksSkeleton';
-import { TaskStep } from './TaskStep';
 
 interface State {
   isLoading: boolean;
   isError: boolean;
-  stats: TaskStatsEntity;
+  // stats: TaskStatsEntity;
   step: number;
 }
 
@@ -36,16 +30,16 @@ export const Tasks = (): ReactElement<typeof Page> => {
   useEffect(() => {
     let didCancel = false;
     const fetchData = (): Promise<void> => {
-      return getTaskStats()
-        .then((stats) => {
-          const { index } = findCurrentWindow(stats);
-          if (!didCancel) {
-            setState({
-              isLoading: false,
-              stats,
-              step: index,
-            });
-          }
+      return getCohort(1)
+        .then(() => {
+          // const { index } = findCurrentWindow(stats.windows);
+          // if (!didCancel) {
+          //   setState({
+          //     isLoading: false,
+          //     stats,
+          //     step: index,
+          //   });
+          // }
         })
         .catch(() => {
           if (!didCancel) {
@@ -64,13 +58,13 @@ export const Tasks = (): ReactElement<typeof Page> => {
     };
   }, []);
 
-  const { stats, isLoading, isError, step } = state;
+  const { isLoading, isError } = state;
 
   if (isLoading) {
     return <TasksSkeleton />;
   }
 
-  if (isError || stats == null || stats.length === 0) {
+  if (isError) {
     return (
       <TasksPage>
         <ErrorBanner maxW="100%" px={0} />
@@ -78,11 +72,11 @@ export const Tasks = (): ReactElement<typeof Page> => {
     );
   }
 
-  const setStep = (step: number): void => {
-    setState({ step });
-  };
+  // const setStep = (step: number): void => {
+  //   setState({ step });
+  // };
 
-  const selectedWindow = stats[step];
+  // const selectedWindow = stats[step];
 
   return (
     <TasksPage>
@@ -91,7 +85,7 @@ export const Tasks = (): ReactElement<typeof Page> => {
         my={{ base: 0, md: 4 }}
         spacing={0}
       >
-        {stats.map((window, id) => (
+        {/* {stats.map((window, id) => (
           <TaskStep
             currentStep={step}
             id={id}
@@ -103,9 +97,9 @@ export const Tasks = (): ReactElement<typeof Page> => {
             setStep={setStep}
             window={window}
           />
-        ))}
+        ))} */}
       </Stack>
-      <Stack spacing={4}>
+      {/* <Stack spacing={4}>
         <Heading fontWeight="medium" mb={0} size="xxs">
           Week {step + 1} ({formatDate(selectedWindow.startAt)} -{' '}
           {formatDate(selectedWindow.endAt)})
@@ -127,7 +121,7 @@ export const Tasks = (): ReactElement<typeof Page> => {
             requireInterview={selectedWindow.requireInterview}
           />
         </Stack>
-      </Stack>
+      </Stack> */}
     </TasksPage>
   );
 };

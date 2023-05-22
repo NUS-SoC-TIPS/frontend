@@ -12,9 +12,16 @@ export const StatCardSkeleton = (): ReactElement<typeof Card> => {
             Skeleton
           </Text>
         </Skeleton>
-        <Skeleton>
-          <Heading height={42}>Skeleton</Heading>
-        </Skeleton>
+        <Stack spacing="4">
+          <Skeleton>
+            <Heading height={42}>Skeleton</Heading>
+          </Skeleton>
+          <Skeleton>
+            <Text color="muted" fontWeight="medium">
+              Skeleton
+            </Text>
+          </Skeleton>
+        </Stack>
       </Stack>
     </Card>
   );

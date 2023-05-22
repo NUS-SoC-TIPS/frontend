@@ -1,5 +1,5 @@
 import { memo, ReactElement } from 'react';
-import { FiBookOpen, FiLogOut } from 'react-icons/fi';
+import { FiLogOut } from 'react-icons/fi';
 import {
   Avatar,
   Box,
@@ -13,12 +13,12 @@ import {
 
 import { MyPopover } from 'components/popover';
 import { useAuth } from 'contexts/AuthContext';
-import { UserWithSettingsAndConfig } from 'types/models/user';
+import { UserSelf } from 'types/api/users';
 
 import { UserProfile } from '../userProfile';
 
 interface Props {
-  user: UserWithSettingsAndConfig;
+  user: UserSelf;
 }
 
 const RawUserPopover = ({
@@ -26,11 +26,6 @@ const RawUserPopover = ({
 }: Props): ReactElement<Props, typeof Popover> | null => {
   const { logout } = useAuth();
   const items = [
-    {
-      title: 'Coursemology',
-      onClick: () => window.open(user.config.coursemology),
-      icon: FiBookOpen,
-    },
     {
       title: 'Logout',
       onClick: logout,
@@ -65,7 +60,6 @@ const RawUserPopover = ({
 
 export const UserPopover = memo(RawUserPopover, (prevProps, newProps) => {
   return (
-    prevProps.user.config.coursemology === newProps.user.config.coursemology &&
     prevProps.user.name === newProps.user.name &&
     prevProps.user.photoUrl === newProps.user.photoUrl &&
     prevProps.user.githubUsername === newProps.user.githubUsername // This is for UserProfile

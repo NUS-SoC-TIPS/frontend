@@ -40,10 +40,8 @@ export const Settings = (): ReactElement<typeof Page> => {
     {
       name: user?.name ?? '',
       photoUrl: user?.photoUrl ?? '',
-      preferredInterviewLanguage:
-        user?.settings?.preferredInterviewLanguage ?? null,
-      preferredKeyBinding:
-        user?.settings?.preferredKeyBinding ?? KeyBinding.STANDARD,
+      preferredInterviewLanguage: user?.preferredInterviewLanguage ?? null,
+      preferredKeyBinding: user?.preferredKeyBinding ?? KeyBinding.STANDARD,
       isSaving: false,
     } as State,
   );
@@ -55,9 +53,9 @@ export const Settings = (): ReactElement<typeof Page> => {
       (state.name === user?.name &&
         state.photoUrl === user?.photoUrl &&
         state.preferredInterviewLanguage ===
-          (user?.settings?.preferredInterviewLanguage ?? null) &&
+          (user?.preferredInterviewLanguage ?? null) &&
         state.preferredKeyBinding ===
-          (user?.settings?.preferredKeyBinding ?? KeyBinding.STANDARD))
+          (user?.preferredKeyBinding ?? KeyBinding.STANDARD))
     );
   };
 

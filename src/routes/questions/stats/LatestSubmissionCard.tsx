@@ -3,10 +3,11 @@ import { Heading, Stack, Text } from '@chakra-ui/react';
 
 import { Card } from 'components/card';
 import { QuestionBox } from 'components/question';
-import { SubmissionWithQuestion } from 'types/models/submission';
+import { SubmissionListItem } from 'types/api/questions';
+import { formatDate } from 'utils/dateUtils';
 
 interface Props {
-  submission: SubmissionWithQuestion | null;
+  submission: SubmissionListItem | null;
 }
 
 export const LatestSubmissionCard = ({
@@ -18,15 +19,22 @@ export const LatestSubmissionCard = ({
         <Text color="muted" fontSize="sm">
           Latest Submission
         </Text>
-        {submission ? (
-          <QuestionBox
-            noOfLines={1}
-            question={submission.question}
-            withBox={false}
-          />
-        ) : (
-          <Heading size="sm">-</Heading>
-        )}
+        <Stack spacing="4">
+          {submission ? (
+            <QuestionBox
+              noOfLines={1}
+              question={submission.question}
+              withBox={false}
+            />
+          ) : (
+            <Heading size="sm">-</Heading>
+          )}
+          <Text color="muted" fontWeight="medium">
+            {submission
+              ? `Submitted on ${formatDate(submission.submittedAt)}`
+              : '-'}
+          </Text>
+        </Stack>
       </Stack>
     </Card>
   );

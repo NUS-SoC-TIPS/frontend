@@ -12,10 +12,10 @@ import {
   SHELL_LANGUAGES,
 } from 'constants/languages';
 import { Language } from 'types/models/code';
-import { Question, QuestionSource, QuestionType } from 'types/models/question';
+import { QuestionSource, QuestionType } from 'types/models/question';
 
 interface Props {
-  question: Question;
+  question: { source: QuestionSource; type: QuestionType };
   onChangeLanguage: (language: Language | null) => void;
   defaultLanguage?: Language;
 }
