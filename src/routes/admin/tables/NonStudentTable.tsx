@@ -5,7 +5,7 @@ import { UserWithWindowData } from 'types/api/admin';
 import { RecordWithPartner } from 'types/models/record';
 import { SubmissionWithQuestion } from 'types/models/submission';
 import { Window } from 'types/models/window';
-import { formatDate } from 'utils/dateUtils';
+import { formatDateWithYear } from 'utils/dateUtils';
 
 import { UserTable } from './UserTable';
 
@@ -28,9 +28,9 @@ export const NonStudentTable = ({
       onViewSubmissions={onViewSubmissions}
       options={{
         title: 'Non-Students',
-        downloadFileName: `Non-Students (${formatDate(
+        downloadFileName: `Non-Students (${formatDateWithYear(
           window.startAt,
-        )} - ${formatDate(window.endAt)})`,
+        )} - ${formatDateWithYear(window.endAt)})`,
       }}
       users={users}
       usersAreStudents={false}

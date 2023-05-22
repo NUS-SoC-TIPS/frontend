@@ -9,7 +9,7 @@ import { QuestionBase, SubmissionListItem } from 'types/api/questions';
 import { Language } from 'types/models/code';
 import { QuestionDifficulty, QuestionSource } from 'types/models/question';
 import { TableColumn } from 'types/table';
-import { formatDate } from 'utils/dateUtils';
+import { formatDateWithYear } from 'utils/dateUtils';
 import {
   compareDatesAscending,
   compareDifficultiesEasyFirst,
@@ -67,9 +67,9 @@ const getColumns = (): TableColumn[] => {
       label: 'Submitted At',
       key: 'submittedAt',
       options: {
-        customBodyRenderer: formatDate,
-        customSearchValueRenderer: formatDate,
-        customCsvBodyRenderer: formatDate,
+        customBodyRenderer: formatDateWithYear,
+        customSearchValueRenderer: formatDateWithYear,
+        customCsvBodyRenderer: formatDateWithYear,
         isSortable: true,
         customSortComparator: compareDatesAscending,
       },

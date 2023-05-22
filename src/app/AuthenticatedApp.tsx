@@ -11,6 +11,7 @@ import {
   ROOM,
   SETTINGS,
   TASKS,
+  TASKS_BREAKDOWN,
 } from 'constants/routes';
 import { useUser } from 'contexts/UserContext';
 import { Admin } from 'routes/admin';
@@ -22,6 +23,7 @@ import { PastSubmission } from 'routes/questions/PastSubmission';
 import { Room } from 'routes/room';
 import { Settings } from 'routes/settings';
 import { Tasks } from 'routes/tasks';
+import { TasksBreakdown } from 'routes/tasks/TasksBreakdown';
 import { UserRole } from 'types/models/user';
 
 const AuthenticatedApp = (): ReactElement<typeof Routes> => {
@@ -39,10 +41,15 @@ const AuthenticatedApp = (): ReactElement<typeof Routes> => {
       <Route element={<PastInterview />} path={`${PAST_INTERVIEWS}/:id`} />
       <Route element={<Room />} path={`${ROOM}/:slug`} />
 
-      <Route element={<Settings />} path={SETTINGS} />
+      {/* Tasks */}
       {(user?.isStudent || isAdmin) && (
-        <Route element={<Tasks />} path={TASKS} />
+        <>
+          <Route element={<Tasks />} path={TASKS} />
+          <Route element={<TasksBreakdown />} path={`${TASKS_BREAKDOWN}/:id`} />
+        </>
       )}
+
+      <Route element={<Settings />} path={SETTINGS} />
       {isAdmin && <Route element={<Admin />} path={ADMIN} />}
       <Route element={<Navigate to={QUESTIONS} />} path="*" />
     </Routes>

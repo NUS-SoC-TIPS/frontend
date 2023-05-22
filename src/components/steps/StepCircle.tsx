@@ -3,28 +3,48 @@ import { HiCheck, HiX } from 'react-icons/hi';
 import { Circle, Icon, SquareProps } from '@chakra-ui/react';
 
 interface Props extends SquareProps {
-  isSuccess: boolean;
-  isFailure: boolean;
+  icon: 'CHECK' | 'CROSS' | 'NONE';
+  color: 'RED' | 'GREEN' | 'GREY' | 'NONE';
   isDisabled: boolean;
 }
 
 const RawStepCircle = (props: Props): ReactElement<Props, typeof Circle> => {
-  const { isSuccess, isDisabled, isFailure, ...rest } = props;
+  const { icon, color, isDisabled, ...rest } = props;
+
+  const getBgColor = (): string => {
+    switch (color) {
+      case 'RED':
+        return 'red.300';
+      case 'GREEN':
+        return 'green.300';
+      case 'GREY':
+        return 'gray.500';
+      case 'NONE':
+        return 'inherit';
+    }
+  };
+
+  const getIcon = (): ReactElement<typeof Icon | typeof Circle> => {
+    switch (icon) {
+      case 'CHECK':
+        return <Icon as={HiCheck} boxSize={5} color="inverted" />;
+      case 'CROSS':
+        return <Icon as={HiX} boxSize={5} color="inverted" />;
+      case 'NONE':
+      default:
+        return <Circle bg={isDisabled ? 'border' : 'accent'} size={3} />;
+    }
+  };
+
   return (
     <Circle
-      bg={isSuccess ? 'accent' : isFailure ? 'error' : 'inherit'}
+      bg={getBgColor()}
       borderColor={isDisabled ? 'inherit' : 'accent'}
-      borderWidth={isSuccess || isFailure ? 0 : '2px'}
+      borderWidth={color === 'NONE' ? '2px' : 0}
       size={8}
       {...rest}
     >
-      {isSuccess ? (
-        <Icon as={HiCheck} boxSize={5} color="inverted" />
-      ) : isFailure ? (
-        <Icon as={HiX} boxSize={5} color="on-accent" />
-      ) : (
-        <Circle bg={isDisabled ? 'border' : 'accent'} size={3} />
-      )}
+      {getIcon()}
     </Circle>
   );
 };

@@ -1,16 +1,17 @@
 import { ReactElement } from 'react';
 
 import { Step } from 'components/steps';
-import { TaskStatWindow, TaskStatWindowStatus } from 'types/api/tasks';
-import { formatDate } from 'utils/dateUtils';
+import { formatDateWithoutYear } from 'utils/dateUtils';
 
 interface Props {
-  window: TaskStatWindow;
+  window: { startAt: Date };
   id: number;
   isLastStep: boolean;
   currentStep: number;
   setStep: (step: number) => void;
-  isPreviousStepFailure: boolean;
+  leftLineColor: 'RED' | 'GREEN' | 'GREY' | 'NONE';
+  rightLineColor: 'RED' | 'GREEN' | 'GREY' | 'NONE';
+  icon: 'CHECK' | 'CROSS' | 'NONE';
 }
 
 export const TaskStep = ({
@@ -19,37 +20,25 @@ export const TaskStep = ({
   currentStep,
   isLastStep,
   setStep,
-  isPreviousStepFailure,
+  leftLineColor,
+  rightLineColor,
+  icon,
 }: Props): ReactElement<Props, typeof Step> => {
   const isDisabled = id > currentStep;
   const isActive = id === currentStep;
-  const isFailure = window.status === TaskStatWindowStatus.FAILED;
-  const isSuccess = window.status === TaskStatWindowStatus.COMPLETED;
 
   return (
     <Step
-      description={formatDate(window.startAt)}
+      color={currentStep >= id ? rightLineColor : 'NONE'}
+      description={formatDateWithoutYear(window.startAt)}
+      icon={currentStep >= id ? icon : 'NONE'}
       isActive={isActive}
       isDisabled={isDisabled}
-      isFailure={isFailure}
       isFirstStep={id === 0}
       isLastStep={isLastStep}
-      isSuccess={isSuccess}
-      leftLineColor={
-        isPreviousStepFailure && currentStep >= id
-          ? 'error'
-          : !isDisabled
-          ? 'accent'
-          : undefined
-      }
+      leftLineColor={currentStep >= id ? leftLineColor : 'NONE'}
       onClick={(): void => setStep(id)}
-      rightLineColor={
-        isFailure && currentStep > id
-          ? 'error'
-          : id < currentStep
-          ? 'accent'
-          : undefined
-      }
+      rightLineColor={currentStep > id ? rightLineColor : 'NONE'}
       title={`Week ${id + 1}`}
     />
   );

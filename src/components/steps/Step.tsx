@@ -15,23 +15,23 @@ interface Props extends BoxProps {
   title: string;
   description: string;
   isActive: boolean;
-  isSuccess: boolean;
-  isFailure: boolean;
   isDisabled: boolean;
   isFirstStep: boolean;
   isLastStep: boolean;
-  leftLineColor?: string;
-  rightLineColor?: string;
+  icon: 'CHECK' | 'CROSS' | 'NONE';
+  color: 'RED' | 'GREEN' | 'GREY' | 'NONE';
+  leftLineColor: 'RED' | 'GREEN' | 'GREY' | 'NONE';
+  rightLineColor: 'RED' | 'GREEN' | 'GREY' | 'NONE';
 }
 
 const RawStep = (props: Props): ReactElement<Props, typeof Stack> => {
   const {
     isActive,
-    isSuccess,
-    isFailure,
     isDisabled,
     isFirstStep,
     isLastStep,
+    icon,
+    color,
     leftLineColor,
     rightLineColor,
     title,
@@ -46,6 +46,21 @@ const RawStep = (props: Props): ReactElement<Props, typeof Stack> => {
     { ssr: false },
   );
   const buttonPadding = useBreakpointValue({ base: 2, lg: 4 }, { ssr: false });
+
+  const getColor = (
+    color: 'RED' | 'GREEN' | 'GREY' | 'NONE',
+  ): string | undefined => {
+    switch (color) {
+      case 'RED':
+        return 'red.300';
+      case 'GREEN':
+        return 'green.200';
+      case 'GREY':
+        return 'gray.500';
+      case 'NONE':
+        return undefined;
+    }
+  };
 
   return (
     <Box height="100%" position="relative" width="100%" {...boxProps}>
@@ -96,21 +111,13 @@ const RawStep = (props: Props): ReactElement<Props, typeof Stack> => {
           spacing={0}
         >
           <Divider
-            borderColor={
-              isFirstStep ? 'transparent' : leftLineColor ?? 'inherit'
-            }
+            borderColor={isFirstStep ? 'transparent' : getColor(leftLineColor)}
             borderWidth="1px"
             orientation={orientation}
           />
-          <StepCircle
-            isDisabled={isDisabled}
-            isFailure={isFailure}
-            isSuccess={isSuccess}
-          />
+          <StepCircle color={color} icon={icon} isDisabled={isDisabled} />
           <Divider
-            borderColor={
-              isLastStep ? 'transparent' : rightLineColor ?? 'inherit'
-            }
+            borderColor={isLastStep ? 'transparent' : getColor(rightLineColor)}
             borderWidth="1px"
             orientation={orientation}
           />

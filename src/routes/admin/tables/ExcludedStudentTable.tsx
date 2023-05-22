@@ -5,7 +5,7 @@ import { UserWithWindowData } from 'types/api/admin';
 import { RecordWithPartner } from 'types/models/record';
 import { SubmissionWithQuestion } from 'types/models/submission';
 import { Window } from 'types/models/window';
-import { formatDate } from 'utils/dateUtils';
+import { formatDateWithYear } from 'utils/dateUtils';
 
 import { UserTable } from './UserTable';
 
@@ -32,9 +32,9 @@ export const ExcludedStudentTable = ({
       onViewSubmissions={onViewSubmissions}
       options={{
         title: 'Excluded',
-        downloadFileName: `Excluded Students (${formatDate(
+        downloadFileName: `Excluded Students (${formatDateWithYear(
           window.startAt,
-        )} - ${formatDate(window.endAt)})`,
+        )} - ${formatDateWithYear(window.endAt)})`,
       }}
       users={users}
     />

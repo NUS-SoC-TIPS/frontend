@@ -8,6 +8,7 @@ export const PAST_SUBMISSION = '/questions/submissions';
 export const INTERVIEWS = '/interviews';
 export const PAST_INTERVIEWS = '/interviews';
 export const TASKS = '/tasks';
+export const TASKS_BREAKDOWN = '/tasks';
 export const SETTINGS = '/settings';
 export const ROOM = '/room';
 export const ADMIN = '/admin';

@@ -8,7 +8,7 @@ import { PAST_INTERVIEWS } from 'constants/routes';
 import { InterviewListItem } from 'types/api/interviews';
 import { UserBase } from 'types/api/users';
 import { TableColumn } from 'types/table';
-import { formatDate, formatDuration } from 'utils/dateUtils';
+import { formatDateWithYear, formatDuration } from 'utils/dateUtils';
 import {
   compareDatesAscending,
   compareLanguagesAscending,
@@ -46,9 +46,9 @@ const getColumns = (): TableColumn[] => {
       label: 'Completed At',
       key: 'completedAt',
       options: {
-        customBodyRenderer: formatDate,
-        customSearchValueRenderer: formatDate,
-        customCsvBodyRenderer: formatDate,
+        customBodyRenderer: formatDateWithYear,
+        customSearchValueRenderer: formatDateWithYear,
+        customCsvBodyRenderer: formatDateWithYear,
         customSortComparator: compareDatesAscending,
         isSortable: true,
       },

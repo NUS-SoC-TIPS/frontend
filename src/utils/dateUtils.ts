@@ -4,8 +4,12 @@ const options = {
   year: 'numeric' as const,
 };
 
-export const formatDate = (date: Date): string => {
+export const formatDateWithYear = (date: Date): string => {
   return date.toLocaleDateString('en-US', options);
+};
+
+export const formatDateWithoutYear = (date: Date): string => {
+  return date.toLocaleDateString('en-US', { ...options, year: undefined });
 };
 
 export const formatDuration = (duration: number): string => {

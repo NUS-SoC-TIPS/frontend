@@ -3,6 +3,7 @@ import { ReactElement, useCallback, useEffect, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 
+import { ErrorBanner } from 'components/errorBanner';
 import { Dashboard, Page } from 'components/page';
 import { PAST_SUBMISSION, QUESTIONS } from 'constants/routes';
 import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
@@ -128,6 +129,7 @@ export const AddQuestion = (): ReactElement<void, typeof Page> => {
         subheading="Note: This should be done AFTER you complete the question on the
         respective platform, e.g. LeetCode."
       >
+        {state.isError && <ErrorBanner />}
         <Stack divider={<StackDivider />} spacing={5}>
           <NameFormControl {...state} onChange={onChangeAsyncSelect} />
           {state.selectedQuestion && (

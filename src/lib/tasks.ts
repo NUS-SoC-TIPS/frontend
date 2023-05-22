@@ -7,6 +7,6 @@ export const getCohorts = async (): Promise<CohortListItem[]> => {
 };
 
 export const getCohort = async (id: number): Promise<CohortItem> => {
-  const response = await api.get(`cohort/${id}`);
+  const response = await api.get(`cohorts/${id}`);
   return response.data;
 };

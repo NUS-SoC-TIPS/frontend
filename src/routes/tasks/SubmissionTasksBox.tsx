@@ -12,25 +12,21 @@ import {
 } from '@chakra-ui/react';
 
 import { QuestionBox } from 'components/question';
-import { SubmissionWithQuestion } from 'types/models/submission';
-import { compareCreatedAtsDescending } from 'utils/sortUtils';
+import { SubmissionBase } from 'types/api/questions';
+import { compareIdsAscending } from 'utils/sortUtils';
 
 interface Props {
-  numToShow: number;
   numQuestions: number;
-  submissions: SubmissionWithQuestion[];
+  submissions: SubmissionBase[];
   hasCompletedQuestions: boolean;
 }
 
 export const SubmissionTasksBox = ({
   submissions,
-  numToShow,
   numQuestions,
   hasCompletedQuestions,
 }: Props): ReactElement<typeof Box> => {
-  const shownSubmissions = submissions
-    .sort(compareCreatedAtsDescending)
-    .slice(0, numToShow);
+  submissions.sort(compareIdsAscending);
 
   return (
     <Box as="section" flex={1}>
@@ -61,14 +57,9 @@ export const SubmissionTasksBox = ({
                 </Circle>
               )}
             </HStack>
-            {shownSubmissions.map((sub) => (
+            {submissions.map((sub) => (
               <QuestionBox key={sub.id} question={sub.question} />
             ))}
-            {submissions.length > numToShow && (
-              <Text color="muted" fontSize="xs" textAlign="center">
-                Only the latest {numToShow} submissions are shown.
-              </Text>
-            )}
           </Stack>
         </Box>
       </Container>

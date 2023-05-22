@@ -16,7 +16,7 @@ import { LANGUAGE_TO_STRING } from 'constants/enumStrings';
 import { INTERVIEWS } from 'constants/routes';
 import { getInterview } from 'lib/interviews';
 import { InterviewItem } from 'types/api/interviews';
-import { formatDate, formatDuration } from 'utils/dateUtils';
+import { formatDateWithYear, formatDuration } from 'utils/dateUtils';
 
 import { PastInterviewSkeleton } from './PastInterviewSkeleton';
 
@@ -94,7 +94,7 @@ export const PastInterview = (): ReactElement<void, typeof Page> => {
           </Button>
         }
         heading={`Interview with ${interview.partner.name}`}
-        subheading={`Completed at ${formatDate(
+        subheading={`Completed at ${formatDateWithYear(
           interview.completedAt,
         )} in ${formatDuration(interview.duration)}`}
       >

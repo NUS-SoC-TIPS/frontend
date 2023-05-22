@@ -4,7 +4,7 @@ import { Box, useBreakpointValue } from '@chakra-ui/react';
 import { Dashboard, Page } from 'components/page';
 import { Select } from 'components/select';
 import { Window } from 'types/models/window';
-import { formatDate } from 'utils/dateUtils';
+import { formatDateWithYear } from 'utils/dateUtils';
 import { emptyFunction } from 'utils/functionUtils';
 
 interface Props {
@@ -38,7 +38,7 @@ export const AdminPage = ({
     onChangeWindow((option as WindowOption).value);
   };
   const options: WindowOption[] = windows.map((w, index) => ({
-    label: `${formatDate(w.startAt)} - ${formatDate(w.endAt)}`,
+    label: `${formatDateWithYear(w.startAt)} - ${formatDateWithYear(w.endAt)}`,
     value: index,
   }));
 

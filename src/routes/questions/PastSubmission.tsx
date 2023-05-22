@@ -9,7 +9,7 @@ import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
 import { getSubmission, updateSubmission } from 'lib/questions';
 import { SubmissionItem } from 'types/api/questions';
 import { Language } from 'types/models/code';
-import { formatDate } from 'utils/dateUtils';
+import { formatDateWithYear } from 'utils/dateUtils';
 import { emptyFunction } from 'utils/functionUtils';
 
 import {
@@ -156,7 +156,7 @@ export const PastSubmission = (): ReactElement<void, typeof Page> => {
           </Button>
         }
         heading={`Submission for ${originalSubmission.question.name}`}
-        subheading={`Submitted on ${formatDate(
+        subheading={`Submitted on ${formatDateWithYear(
           originalSubmission.submittedAt,
         )}`}
       >

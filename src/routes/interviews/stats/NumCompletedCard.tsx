@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 
 import { StatCard } from 'components/card';
-import { formatDate } from 'utils/dateUtils';
+import { formatDateWithYear } from 'utils/dateUtils';
 
 interface Props {
   numCompleted: number;
@@ -23,7 +23,9 @@ export const NumCompletedCard = ({
     requireInterview != null ? '/1' : ''
   } ${interviews}`;
 
-  const subtitle = `${formatDate(startAt)} - ${formatDate(endAt)}`;
+  const subtitle = `${formatDateWithYear(startAt)} - ${formatDateWithYear(
+    endAt,
+  )}`;
 
   return <StatCard stat={stat} subtitle={subtitle} title={title} />;
 };

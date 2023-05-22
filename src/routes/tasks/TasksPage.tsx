@@ -10,7 +10,10 @@ export const TasksPage = ({
 > => {
   return (
     <Page>
-      <Dashboard heading="Tasks" subheading="Track your progress here!">
+      <Dashboard
+        heading="Tasks"
+        subheading="Select a cohort to see your progress for it!"
+      >
         {children}
       </Dashboard>
     </Page>

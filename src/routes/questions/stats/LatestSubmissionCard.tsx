@@ -4,7 +4,7 @@ import { Heading, Stack, Text } from '@chakra-ui/react';
 import { Card } from 'components/card';
 import { QuestionBox } from 'components/question';
 import { SubmissionListItem } from 'types/api/questions';
-import { formatDate } from 'utils/dateUtils';
+import { formatDateWithYear } from 'utils/dateUtils';
 
 interface Props {
   submission: SubmissionListItem | null;
@@ -31,7 +31,7 @@ export const LatestSubmissionCard = ({
           )}
           <Text color="muted" fontWeight="medium">
             {submission
-              ? `Submitted on ${formatDate(submission.submittedAt)}`
+              ? `Submitted on ${formatDateWithYear(submission.submittedAt)}`
               : '-'}
           </Text>
         </Stack>

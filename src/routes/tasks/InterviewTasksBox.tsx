@@ -12,25 +12,21 @@ import {
 } from '@chakra-ui/react';
 
 import { UserProfile } from 'components/userProfile';
-import { RecordWithPartner } from 'types/models/record';
-import { compareCreatedAtsDescending } from 'utils/sortUtils';
+import { InterviewBase } from 'types/api/interviews';
+import { compareIdsAscending } from 'utils/sortUtils';
 
 interface Props {
-  numToShow: number;
   requireInterview: boolean;
   hasCompletedInterview: boolean;
-  records: RecordWithPartner[];
+  interviews: InterviewBase[];
 }
 
 export const InterviewTasksBox = ({
-  numToShow,
-  records,
+  interviews,
   requireInterview,
   hasCompletedInterview,
 }: Props): ReactElement<typeof Box> => {
-  const shownRecords = records
-    .sort(compareCreatedAtsDescending)
-    .slice(0, numToShow);
+  interviews.sort(compareIdsAscending);
 
   return (
     <Box as="section" flex={1}>
@@ -48,7 +44,9 @@ export const InterviewTasksBox = ({
                   Interviews
                 </Text>
                 <Text color="muted" fontSize="sm">
-                  {requireInterview ? `${records.length}/1` : records.length}{' '}
+                  {requireInterview
+                    ? `${interviews.length}/1`
+                    : interviews.length}{' '}
                   Completed
                 </Text>
               </Stack>
@@ -62,12 +60,12 @@ export const InterviewTasksBox = ({
                 </Circle>
               )}
             </HStack>
-            {shownRecords.map((record) => {
+            {interviews.map((interview) => {
               return (
                 <Box
                   borderRadius="lg"
                   borderWidth={{ base: '1px' }}
-                  key={record.id}
+                  key={interview.id}
                   p={{ base: 3, md: 4 }}
                 >
                   <Stack
@@ -76,16 +74,11 @@ export const InterviewTasksBox = ({
                     justify="space-between"
                     spacing={5}
                   >
-                    <UserProfile ps={0} user={record.partner} />
+                    <UserProfile ps={0} user={interview.partner} />
                   </Stack>
                 </Box>
               );
             })}
-            {records.length > numToShow && (
-              <Text color="muted" fontSize="xs" textAlign="center">
-                Only the latest {numToShow} interviews are shown.
-              </Text>
-            )}
           </Stack>
         </Box>
       </Container>
