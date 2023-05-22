@@ -1,6 +1,7 @@
 import { ReactElement, useEffect, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { StatCardSkeleton } from 'components/card';
 import { ErrorBanner } from 'components/errorBanner';
 import { COHORT } from 'constants/routes';
 import { getOverviewAdmin } from 'lib/admin';
@@ -47,8 +48,12 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
   const { isError, overview } = state;
 
   if (overview == null) {
-    // TODO: Return overview
-    return <></>;
+    return (
+      <AdminPage>
+        <StatCardSkeleton />
+        <StatCardSkeleton />
+      </AdminPage>
+    );
   }
 
   if (isError) {
