@@ -26,6 +26,6 @@ export const getInterviews = async (): Promise<InterviewListItem[]> => {
 };
 
 export const getInterview = async (id: number): Promise<InterviewItem> => {
-  const response = await api.get(`interviews/${id}`);
+  const response = await api.get(`interviews/records/${id}`);
   return response.data;
 };
