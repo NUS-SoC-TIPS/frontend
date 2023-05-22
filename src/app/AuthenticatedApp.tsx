@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import {
   ADD_QUESTION,
   ADMIN,
+  COHORT,
   INTERVIEWS,
   PAST_INTERVIEWS,
   PAST_SUBMISSION,
@@ -49,8 +50,15 @@ const AuthenticatedApp = (): ReactElement<typeof Routes> => {
         </>
       )}
 
+      {/* Admin */}
+      {isAdmin && (
+        <>
+          <Route element={<Admin />} path={ADMIN} />
+          <Route element={<Admin />} path={`${COHORT}/:id`} />
+        </>
+      )}
+
       <Route element={<Settings />} path={SETTINGS} />
-      {isAdmin && <Route element={<Admin />} path={ADMIN} />}
       <Route element={<Navigate to={QUESTIONS} />} path="*" />
     </Routes>
   );

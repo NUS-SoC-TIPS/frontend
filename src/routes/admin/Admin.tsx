@@ -1,11 +1,13 @@
 import { ReactElement, useEffect, useReducer } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { ErrorBanner } from 'components/errorBanner';
+import { COHORT } from 'constants/routes';
 import { getOverviewAdmin } from 'lib/admin';
 import { AdminOverview } from 'types/api/admin';
 
 import { AdminPage } from './AdminPage';
-import { NonStudentTable } from './tables';
+import { CohortTable, NonStudentTable } from './tables';
 
 interface State {
   overview: AdminOverview | null;
@@ -17,6 +19,7 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
     (s: State, a: Partial<State>) => ({ ...s, ...a }),
     { overview: null, isError: false } as State,
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
     let didCancel = false;
@@ -56,8 +59,11 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
     );
   }
 
+  const onView = (id: number): void => navigate(`${COHORT}/${id}`);
+
   return (
     <AdminPage>
+      <CohortTable cohorts={overview.cohorts} onView={onView} />
       <NonStudentTable users={overview.nonStudents} />
     </AdminPage>
   );

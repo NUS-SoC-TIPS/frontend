@@ -12,3 +12,4 @@ export const TASKS_BREAKDOWN = '/tasks/breakdown';
 export const SETTINGS = '/settings';
 export const ROOM = '/room';
 export const ADMIN = '/admin';
+export const COHORT = '/admin/cohorts';
