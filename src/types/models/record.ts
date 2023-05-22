@@ -16,16 +16,6 @@ export interface RoomRecord {
   questionSource: QuestionSource | null;
 }
 
-export interface RoomRecordUser {
-  id: number;
-  createdAt: Date;
-  updatedAt: Date;
-  isInterviewer: boolean;
-  notes: string;
-  userId: string;
-  roomRecordId: number;
-}
-
 export interface RecordWithPartner extends RoomRecord {
   partner: User;
   notes: string;

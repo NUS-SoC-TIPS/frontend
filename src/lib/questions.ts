@@ -1,13 +1,11 @@
 import {
+  CreateSubmissionDto,
   QuestionListItem,
   QuestionStats,
   SubmissionItem,
   SubmissionListItem,
-} from 'types/api/questions';
-import {
-  CreateSubmissionDto,
   UpdateSubmissionDto,
-} from 'types/api/submissions';
+} from 'types/api/questions';
 import { api } from 'utils/apiUtils';
 
 export const getQuestions = async (): Promise<QuestionListItem[]> => {

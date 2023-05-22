@@ -14,7 +14,6 @@ import {
 } from 'reducers/roomReducer';
 import { UserBase } from 'types/api/users';
 import { Language } from 'types/models/code';
-import { User } from 'types/models/user';
 
 export const closeRoom = (socket: Socket): void => {
   socket.emit(ROOM_EVENTS.CLOSE_ROOM);
@@ -122,7 +121,7 @@ const handleInAnotherTab = (socket: Socket): void => {
 };
 
 const handlePartnerJoinedRoom = (socket: Socket): void => {
-  socket.on(ROOM_EVENTS.JOINED_ROOM, (data: { partner: User }) => {
+  socket.on(ROOM_EVENTS.JOINED_ROOM, (data: { partner: { name: string } }) => {
     store.dispatch(
       updateRoomState({ partner: data.partner, isPartnerInRoom: true }),
     );

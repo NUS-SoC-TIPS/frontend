@@ -1,5 +1,3 @@
-import { KeyBinding, Language } from './code';
-
 export interface User {
   id: string;
   createdAt: Date;
@@ -14,20 +12,4 @@ export interface User {
 export enum UserRole {
   NORMAL = 'NORMAL',
   ADMIN = 'ADMIN',
-}
-
-export interface Settings {
-  id: number;
-  createdAt: Date;
-  updatedAt: Date;
-  userId: string;
-  hasUpdatedName: boolean;
-  hasUpdatedPhoto: boolean;
-  preferredInterviewLanguage?: Language;
-  preferredKeyBinding: KeyBinding;
-}
-
-export interface UserWithSettings extends User {
-  settings: Settings | null;
-  isStudent: boolean;
 }
