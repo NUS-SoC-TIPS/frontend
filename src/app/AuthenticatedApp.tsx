@@ -6,7 +6,7 @@ import {
   ADMIN,
   COHORT,
   INTERVIEWS,
-  PAST_INTERVIEWS,
+  PAST_INTERVIEW,
   PAST_SUBMISSION,
   QUESTIONS,
   ROOM,
@@ -37,7 +37,7 @@ const AuthenticatedApp = (): ReactElement<typeof Routes> => {
 
       {/* Interviews */}
       <Route element={<Interviews />} path={INTERVIEWS} />
-      <Route element={<PastInterview />} path={`${PAST_INTERVIEWS}/:id`} />
+      <Route element={<PastInterview />} path={`${PAST_INTERVIEW}/:id`} />
       <Route element={<Room />} path={`${ROOM}/:slug`} />
 
       {/* Tasks */}

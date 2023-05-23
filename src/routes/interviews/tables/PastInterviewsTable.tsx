@@ -4,7 +4,7 @@ import { Button, Link } from '@chakra-ui/react';
 import { Card } from 'components/card';
 import { Table } from 'components/table';
 import { UserProfile } from 'components/userProfile';
-import { PAST_INTERVIEWS } from 'constants/routes';
+import { PAST_INTERVIEW } from 'constants/routes';
 import { InterviewListItem } from 'types/api/interviews';
 import { UserBase } from 'types/api/users';
 import { TableColumn } from 'types/table';
@@ -79,7 +79,7 @@ const getColumns = (): TableColumn[] => {
       key: 'id',
       options: {
         customBodyRenderer: (id: number): ReactNode => (
-          <Link href={`${PAST_INTERVIEWS}/${id}`} isExternal={true}>
+          <Link href={`${PAST_INTERVIEW}/${id}`} isExternal={true}>
             <Button variant="secondary">View</Button>
           </Link>
         ),

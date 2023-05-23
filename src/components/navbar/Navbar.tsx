@@ -18,11 +18,16 @@ import {
 } from '@chakra-ui/react';
 
 import {
+  ADD_QUESTION,
   ADMIN,
+  COHORT,
   INTERVIEWS,
+  PAST_INTERVIEW,
+  PAST_SUBMISSION,
   QUESTIONS,
   SETTINGS,
   TASKS,
+  TASKS_BREAKDOWN,
 } from 'constants/routes';
 import { useAuth } from 'contexts/AuthContext';
 import { useUser } from 'contexts/UserContext';
@@ -60,20 +65,35 @@ export const Navbar = (): ReactElement<typeof Box> => {
             {isDesktop && user && (
               <ButtonGroup spacing={1} variant="ghost">
                 <Button
-                  aria-current={pathname === QUESTIONS ? 'page' : undefined}
+                  aria-current={
+                    pathname === QUESTIONS ||
+                    pathname === ADD_QUESTION ||
+                    pathname.startsWith(PAST_SUBMISSION)
+                      ? 'page'
+                      : undefined
+                  }
                   onClick={(): void => navigate(QUESTIONS)}
                 >
                   Questions
                 </Button>
                 <Button
-                  aria-current={pathname === INTERVIEWS ? 'page' : undefined}
+                  aria-current={
+                    pathname === INTERVIEWS ||
+                    pathname.startsWith(PAST_INTERVIEW)
+                      ? 'page'
+                      : undefined
+                  }
                   onClick={(): void => navigate(INTERVIEWS)}
                 >
                   Interviews
                 </Button>
                 {(user.isStudent || user.role === UserRole.ADMIN) && (
                   <Button
-                    aria-current={pathname === TASKS ? 'page' : undefined}
+                    aria-current={
+                      pathname === TASKS || pathname.startsWith(TASKS_BREAKDOWN)
+                        ? 'page'
+                        : undefined
+                    }
                     onClick={(): void => navigate(TASKS)}
                   >
                     Tasks
@@ -81,7 +101,11 @@ export const Navbar = (): ReactElement<typeof Box> => {
                 )}
                 {user.role === UserRole.ADMIN && (
                   <Button
-                    aria-current={pathname === ADMIN ? 'page' : undefined}
+                    aria-current={
+                      pathname === ADMIN || pathname.startsWith(COHORT)
+                        ? 'page'
+                        : undefined
+                    }
                     onClick={(): void => navigate(ADMIN)}
                   >
                     Admin

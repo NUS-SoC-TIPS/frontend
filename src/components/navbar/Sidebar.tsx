@@ -10,11 +10,16 @@ import {
 import { Divider, Flex, Stack, useColorModeValue } from '@chakra-ui/react';
 
 import {
+  ADD_QUESTION,
   ADMIN,
+  COHORT,
   INTERVIEWS,
+  PAST_INTERVIEW,
+  PAST_SUBMISSION,
   QUESTIONS,
   SETTINGS,
   TASKS,
+  TASKS_BREAKDOWN,
 } from 'constants/routes';
 import { UserSelf } from 'types/api/users';
 import { UserRole } from 'types/models/user';
@@ -53,20 +58,34 @@ export const Sidebar = ({
           <Logo pl={4} />
           <Stack spacing={2}>
             <NavButton
-              aria-current={pathname === QUESTIONS ? 'page' : undefined}
+              aria-current={
+                pathname === QUESTIONS ||
+                pathname === ADD_QUESTION ||
+                pathname.startsWith(PAST_SUBMISSION)
+                  ? 'page'
+                  : undefined
+              }
               icon={FiBook}
               label="Questions"
               onClick={(): void => navigate(QUESTIONS)}
             />
             <NavButton
-              aria-current={pathname === INTERVIEWS ? 'page' : undefined}
+              aria-current={
+                pathname === INTERVIEWS || pathname.startsWith(PAST_INTERVIEW)
+                  ? 'page'
+                  : undefined
+              }
               icon={FiMessageSquare}
               label="Interviews"
               onClick={(): void => navigate(INTERVIEWS)}
             />
             {(user.isStudent || user.role === UserRole.ADMIN) && (
               <NavButton
-                aria-current={pathname === TASKS ? 'page' : undefined}
+                aria-current={
+                  pathname === TASKS || pathname.startsWith(TASKS_BREAKDOWN)
+                    ? 'page'
+                    : undefined
+                }
                 icon={FiCheckSquare}
                 label="Tasks"
                 onClick={(): void => navigate(TASKS)}
@@ -74,7 +93,11 @@ export const Sidebar = ({
             )}
             {user.role === UserRole.ADMIN && (
               <NavButton
-                aria-current={pathname === ADMIN ? 'page' : undefined}
+                aria-current={
+                  pathname === ADMIN || pathname.startsWith(COHORT)
+                    ? 'page'
+                    : undefined
+                }
                 icon={FiAperture}
                 label="Admin"
                 onClick={(): void => navigate(ADMIN)}
