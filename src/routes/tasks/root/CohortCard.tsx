@@ -79,7 +79,7 @@ export const CohortCard = ({
         </Stack>
         <Box>
           <Button
-            disabled={!hasWindowsConfigured}
+            isDisabled={!hasWindowsConfigured}
             onClick={(): void => onClick(cohort.id)}
             variant="primary"
           >

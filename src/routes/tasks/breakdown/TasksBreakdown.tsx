@@ -37,6 +37,9 @@ export const TasksBreakdown = (): ReactElement<typeof Page> => {
       }
       return getCohort(+id)
         .then((cohort) => {
+          if (cohort.windows.length === 0) {
+            throw new Error('Cohort is not configured yet!');
+          }
           const step = findCurrentWindow(cohort.windows);
           if (!didCancel) {
             setState({ cohort, step });
@@ -79,7 +82,7 @@ export const TasksBreakdown = (): ReactElement<typeof Page> => {
   const taskStepData = computeTaskStepData(cohort.windows);
 
   return (
-    <TasksBreakdownPage>
+    <TasksBreakdownPage coursemologyUrl={cohort.coursemologyUrl}>
       <Stack
         direction={{ base: 'column', md: 'row' }}
         my={{ base: 0, md: 4 }}
@@ -104,8 +107,8 @@ export const TasksBreakdown = (): ReactElement<typeof Page> => {
       </Stack>
       <Stack spacing={4}>
         <Heading fontWeight="medium" mb={0} size="xxs">
-          Week {state.step + 1} ({formatDateWithYear(selectedWindow.startAt)} -{' '}
-          {formatDateWithYear(selectedWindow.endAt)})
+          Window {state.step + 1} ({formatDateWithYear(selectedWindow.startAt)}{' '}
+          - {formatDateWithYear(selectedWindow.endAt)})
         </Heading>
         {selectedWindow.exclusion != null ? (
           <ExclusionBanner exclusion={selectedWindow.exclusion} />
