@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 
 import { ErrorBanner } from 'components/errorBanner';
-import { Page } from 'components/page';
 import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
 import { getSubmission, updateSubmission } from 'lib/questions';
 import { SubmissionItem } from 'types/api/questions';
@@ -31,7 +30,10 @@ interface State {
   originalSubmission: SubmissionItem | null;
 }
 
-export const PastSubmission = (): ReactElement<void, typeof Page> => {
+export const PastSubmission = (): ReactElement<
+  void,
+  typeof PastSubmissionPage
+> => {
   const [state, setState] = useReducer(
     (s: State, a: Partial<State>): State => ({ ...s, ...a }),
     {

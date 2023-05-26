@@ -8,7 +8,10 @@ import { UserProvider } from './UserContext';
 
 const AppProviders = ({
   children,
-}: PropsWithChildren<unknown>): ReactElement => {
+}: PropsWithChildren<unknown>): ReactElement<
+  PropsWithChildren<unknown>,
+  typeof ChakraProvider
+> => {
   return (
     <ChakraProvider theme={theme}>
       <AuthProvider>

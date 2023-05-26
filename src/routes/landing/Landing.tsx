@@ -7,7 +7,7 @@ import { useAuth } from 'contexts/AuthContext';
 
 import { Hero } from './Hero';
 
-export const Landing = (): ReactElement => {
+export const Landing = (): ReactElement<typeof Page> => {
   const { login, loginDev, isLoggingIn } = useAuth();
   const toast = useToast();
 

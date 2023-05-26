@@ -1,14 +1,16 @@
 import { ReactElement } from 'react';
 import { Stack, StackDivider } from '@chakra-ui/react';
 
-import { Page } from 'components/page';
 import { emptyFunction } from 'utils/functionUtils';
 
 import { NameFormControl } from '../form';
 
 import { PastSubmissionPage } from './PastSubmissionPage';
 
-export const PastSubmissionSkeleton = (): ReactElement<void, typeof Page> => {
+export const PastSubmissionSkeleton = (): ReactElement<
+  void,
+  typeof PastSubmissionPage
+> => {
   return (
     <PastSubmissionPage>
       <Stack divider={<StackDivider />} spacing={5}>
