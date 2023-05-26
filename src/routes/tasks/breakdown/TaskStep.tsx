@@ -39,7 +39,7 @@ export const TaskStep = ({
       leftLineColor={currentStep >= id ? leftLineColor : 'NONE'}
       onClick={(): void => setStep(id)}
       rightLineColor={currentStep > id ? rightLineColor : 'NONE'}
-      title={`Week ${id + 1}`}
+      title={`Window ${id + 1}`}
     />
   );
 };
