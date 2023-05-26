@@ -20,8 +20,7 @@ import { Interviews, PastInterview } from 'routes/interviews';
 import { AddQuestion, PastSubmission, Questions } from 'routes/questions';
 import { Room } from 'routes/room';
 import { Settings } from 'routes/settings';
-import { Tasks } from 'routes/tasks';
-import { TasksBreakdown } from 'routes/tasks/TasksBreakdown';
+import { Tasks, TasksBreakdown } from 'routes/tasks';
 import { UserRole } from 'types/models/user';
 
 const AuthenticatedApp = (): ReactElement<typeof Routes> => {

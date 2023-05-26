@@ -6,10 +6,9 @@ import { ErrorBanner } from 'components/errorBanner';
 import { getInterviews, getInterviewStats } from 'lib/interviews';
 import { InterviewListItem, InterviewStats } from 'types/api/interviews';
 
-import { NumCompletedCard } from '../stats';
-import { PastInterviewsTable } from '../tables';
-
 import { InterviewsPage } from './InterviewsPage';
+import { NumCompletedCard } from './stats';
+import { PastInterviewsTable } from './tables';
 
 interface State {
   isError: boolean;

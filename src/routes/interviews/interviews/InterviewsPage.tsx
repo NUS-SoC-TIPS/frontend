@@ -4,8 +4,8 @@ import { Button, Stack } from '@chakra-ui/react';
 
 import { Dashboard, Page } from 'components/page';
 
-import { HelpModal } from '../HelpModal';
-import { RoomButton } from '../RoomButton';
+import { HelpModal } from './HelpModal';
+import { RoomButton } from './RoomButton';
 
 export const InterviewsPage = ({
   children,

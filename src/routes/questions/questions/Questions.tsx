@@ -7,10 +7,9 @@ import { ErrorBanner } from 'components/errorBanner';
 import { getQuestionStats, getSubmissions } from 'lib/questions';
 import { QuestionStats, SubmissionListItem } from 'types/api/questions';
 
-import { NumCompletedCard } from '../stats';
-import { PastSubmissionsTable } from '../tables';
-
 import { QuestionsPage } from './QuestionsPage';
+import { NumCompletedCard } from './stats';
+import { PastSubmissionsTable } from './tables';
 
 interface State {
   isError: boolean;
