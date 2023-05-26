@@ -16,8 +16,7 @@ import {
 } from 'constants/routes';
 import { useUser } from 'contexts/UserContext';
 import { Admin } from 'routes/admin';
-import { Interviews } from 'routes/interviews';
-import { PastInterview } from 'routes/interviews/PastInterview';
+import { Interviews, PastInterview } from 'routes/interviews';
 import { AddQuestion, PastSubmission, Questions } from 'routes/questions';
 import { Room } from 'routes/room';
 import { Settings } from 'routes/settings';

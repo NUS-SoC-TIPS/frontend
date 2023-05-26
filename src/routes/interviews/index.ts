@@ -1,1 +1,2 @@
-export * from './Interviews';
+export * from './interviews';
+export * from './pastInterview';

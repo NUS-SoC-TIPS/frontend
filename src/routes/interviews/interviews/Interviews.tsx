@@ -6,9 +6,10 @@ import { ErrorBanner } from 'components/errorBanner';
 import { getInterviews, getInterviewStats } from 'lib/interviews';
 import { InterviewListItem, InterviewStats } from 'types/api/interviews';
 
+import { NumCompletedCard } from '../stats';
+import { PastInterviewsTable } from '../tables';
+
 import { InterviewsPage } from './InterviewsPage';
-import { NumCompletedCard } from './stats';
-import { PastInterviewsTable } from './tables';
 
 interface State {
   isError: boolean;
@@ -20,7 +21,7 @@ interface State {
  * This component constitutes a few stateful components, namely the
  * room button, the stats panels and the past interview records.
  */
-export const Interviews = (): ReactElement => {
+export const Interviews = (): ReactElement<typeof InterviewsPage> => {
   const [state, setState] = useReducer(
     (s: State, a: Partial<State>) => ({ ...s, ...a }),
     {
