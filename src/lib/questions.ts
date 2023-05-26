@@ -42,3 +42,7 @@ export const updateSubmission = async (
   const response = await api.patch(`questions/submissions/${id}`, data);
   return response.data;
 };
+
+export const deleteSubmission = async (id: number): Promise<void> => {
+  await api.delete(`questions/submissions/${id}`);
+};

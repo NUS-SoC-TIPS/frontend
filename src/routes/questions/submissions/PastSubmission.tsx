@@ -1,10 +1,15 @@
 import { ReactElement, useCallback, useEffect, useReducer } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 
 import { ErrorBanner } from 'components/errorBanner';
+import { QUESTIONS } from 'constants/routes';
 import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
-import { getSubmission, updateSubmission } from 'lib/questions';
+import {
+  deleteSubmission,
+  getSubmission,
+  updateSubmission,
+} from 'lib/questions';
 import { SubmissionItem } from 'types/api/questions';
 import { Language } from 'types/models/code';
 import { formatDateWithYear } from 'utils/dateUtils';
@@ -18,12 +23,14 @@ import {
   UrlFormControl,
 } from '../components/form';
 
+import { ConfirmDeleteModal } from './ConfirmDeleteModal';
 import { PastSubmissionPage } from './PastSubmissionPage';
 import { PastSubmissionSkeleton } from './PastSubmissionSkeleton';
 
 interface State {
   id: number; // Used to force the re-rendering of the code input upon save
-  isUpdating: boolean;
+  isModalOpen: boolean;
+  isUpdatingOrDeleting: boolean;
   isError: boolean;
   languageUsed: Language | null;
   codeWritten: string;
@@ -38,7 +45,8 @@ export const PastSubmission = (): ReactElement<
     (s: State, a: Partial<State>): State => ({ ...s, ...a }),
     {
       id: 0,
-      isUpdating: false,
+      isModalOpen: false,
+      isUpdatingOrDeleting: false,
       isError: false,
       languageUsed: null,
       codeWritten: '',
@@ -47,6 +55,7 @@ export const PastSubmission = (): ReactElement<
   );
   const toast = useToast();
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     let didCancel = false;
@@ -92,7 +101,7 @@ export const PastSubmission = (): ReactElement<
     if (originalSubmission == null || languageUsed == null) {
       return Promise.resolve();
     }
-    setState({ isUpdating: true });
+    setState({ isUpdatingOrDeleting: true });
     return updateSubmission(originalSubmission.id, {
       languageUsed,
       codeWritten: state.codeWritten.trim(),
@@ -108,7 +117,7 @@ export const PastSubmission = (): ReactElement<
           // We update this as string trimming may occur upon saving, which causes the
           // codeWritten to differ from the originalCodeWritten.
           codeWritten: data.codeWritten,
-          isUpdating: false,
+          isUpdatingOrDeleting: false,
         });
         toast({
           ...DEFAULT_TOAST_PROPS,
@@ -119,7 +128,29 @@ export const PastSubmission = (): ReactElement<
       })
       .catch((): void => {
         toast(ERROR_TOAST_PROPS);
-        setState({ isUpdating: false });
+        setState({ isUpdatingOrDeleting: false });
+      });
+  };
+
+  const onDelete = (): Promise<void> => {
+    const { originalSubmission } = state;
+    if (originalSubmission == null) {
+      return Promise.resolve();
+    }
+    setState({ isUpdatingOrDeleting: true });
+    return deleteSubmission(originalSubmission.id)
+      .then(() => {
+        toast({
+          ...DEFAULT_TOAST_PROPS,
+          title: 'Submission deleted!',
+          description: 'Redirecting you to the Questions page...',
+          status: 'success',
+        });
+        setTimeout(() => navigate(QUESTIONS), 1000);
+      })
+      .catch((): void => {
+        toast(ERROR_TOAST_PROPS);
+        setState({ isUpdatingOrDeleting: false });
       });
   };
 
@@ -170,16 +201,31 @@ export const PastSubmission = (): ReactElement<
           onChange={onChangeCode}
         />
         <Flex direction="row-reverse">
-          <Button
-            isDisabled={cannotUpdate()}
-            isLoading={state.isUpdating}
-            onClick={onUpdate}
-            variant="primary"
-          >
-            Update Submission
-          </Button>
+          <Stack direction="row" spacing={3}>
+            <Button
+              isDisabled={state.isUpdatingOrDeleting}
+              onClick={(): void => setState({ isModalOpen: true })}
+              variant="secondary"
+            >
+              Delete Submission
+            </Button>
+            <Button
+              isDisabled={cannotUpdate()}
+              isLoading={state.isUpdatingOrDeleting}
+              onClick={onUpdate}
+              variant="primary"
+            >
+              Update Submission
+            </Button>
+          </Stack>
         </Flex>
       </Stack>
+      <ConfirmDeleteModal
+        isDeleting={state.isUpdatingOrDeleting}
+        isOpen={state.isModalOpen}
+        onClose={(): void => setState({ isModalOpen: false })}
+        onConfirm={onDelete}
+      />
     </PastSubmissionPage>
   );
 };
