@@ -4,11 +4,17 @@ const options = {
   year: 'numeric' as const,
 };
 
-export const formatDateWithYear = (date: Date): string => {
+export const formatDateWithYear = (date: Date | null): string => {
+  if (date == null) {
+    return '-';
+  }
   return date.toLocaleDateString('en-US', options);
 };
 
-export const formatDateWithoutYear = (date: Date): string => {
+export const formatDateWithoutYear = (date: Date | null): string => {
+  if (date == null) {
+    return '-';
+  }
   return date.toLocaleDateString('en-US', { ...options, year: undefined });
 };
 

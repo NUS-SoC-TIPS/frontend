@@ -40,6 +40,8 @@ export const CohortCard = ({
     }
   };
 
+  const hasWindowsConfigured = cohort.startAt != null && cohort.endAt != null;
+
   return (
     <Box
       bg="bg-surface"
@@ -66,12 +68,21 @@ export const CohortCard = ({
             </Badge>
           </Stack>
           <Text color="muted" fontSize="sm">
-            {formatDateWithYear(cohort.startAt)} -{' '}
-            {formatDateWithYear(cohort.endAt)}
+            {hasWindowsConfigured
+              ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                formatDateWithYear(cohort.startAt!) +
+                ' - ' +
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                formatDateWithYear(cohort.endAt!)
+              : 'Cohort is still being configured!'}
           </Text>
         </Stack>
         <Box>
-          <Button onClick={(): void => onClick(cohort.id)} variant="primary">
+          <Button
+            disabled={!hasWindowsConfigured}
+            onClick={(): void => onClick(cohort.id)}
+            variant="primary"
+          >
             View
           </Button>
         </Box>

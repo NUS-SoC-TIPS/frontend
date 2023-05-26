@@ -12,8 +12,8 @@ interface Props {
     id: number;
     name: string;
     numStudents: number;
-    startAt: Date;
-    endAt: Date;
+    startAt: Date | null;
+    endAt: Date | null;
   }[];
   onView: (id: number) => void;
 }

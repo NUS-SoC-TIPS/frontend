@@ -24,7 +24,17 @@ export const compareStartAtsDescending = <T extends { startAt: Date }>(
   return -compareDatesAscending(a.startAt, b.startAt);
 };
 
-export const compareDatesAscending = (a: Date, b: Date): number => {
+export const compareDatesAscending = (
+  a: Date | null,
+  b: Date | null,
+): number => {
+  if (a == null && b == null) {
+    return 0;
+  } else if (a == null) {
+    return 1;
+  } else if (b == null) {
+    return -1;
+  }
   return a.getTime() - b.getTime();
 };
 

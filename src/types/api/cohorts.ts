@@ -6,8 +6,8 @@ export interface CohortListItem {
   id: number;
   name: string;
   status: 'COMPLETED' | 'FAILED' | 'IN PROGRESS' | 'HAS NOT STARTED';
-  startAt: Date;
-  endAt: Date;
+  startAt: Date | null;
+  endAt: Date | null;
 }
 
 export interface CohortItem {
