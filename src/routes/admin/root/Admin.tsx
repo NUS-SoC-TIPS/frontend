@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { StatCardSkeleton } from 'components/card';
 import { ErrorBanner } from 'components/errorBanner';
-import { COHORT } from 'constants/routes';
+import { VIEW_COHORT } from 'constants/routes';
 import { getOverviewAdmin } from 'lib/admin';
 import { AdminOverview } from 'types/api/admin';
 
@@ -64,7 +64,7 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
     );
   }
 
-  const onView = (id: number): void => navigate(`${COHORT}/${id}`);
+  const onView = (id: number): void => navigate(`${VIEW_COHORT}/${id}`);
 
   return (
     <AdminPage>

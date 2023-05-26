@@ -2,9 +2,9 @@ import { ReactElement } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import {
+  ADD_COHORT,
   ADD_QUESTION,
   ADMIN,
-  COHORT,
   INTERVIEWS,
   PAST_INTERVIEW,
   PAST_SUBMISSION,
@@ -13,9 +13,11 @@ import {
   SETTINGS,
   TASKS,
   TASKS_BREAKDOWN,
+  VIEW_COHORT,
 } from 'constants/routes';
 import { useUser } from 'contexts/UserContext';
 import { Admin } from 'routes/admin';
+import { AddCohort } from 'routes/admin/add';
 import { Interviews, PastInterview } from 'routes/interviews';
 import { AddQuestion, PastSubmission, Questions } from 'routes/questions';
 import { Room } from 'routes/room';
@@ -50,7 +52,8 @@ const AuthenticatedApp = (): ReactElement<typeof Routes> => {
       {isAdmin && (
         <>
           <Route element={<Admin />} path={ADMIN} />
-          <Route element={<Admin />} path={`${COHORT}/:id`} />
+          <Route element={<AddCohort />} path={ADD_COHORT} />
+          <Route element={<Admin />} path={`${VIEW_COHORT}/:id`} />
         </>
       )}
 

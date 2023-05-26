@@ -18,9 +18,9 @@ import {
 } from '@chakra-ui/react';
 
 import {
+  ADD_COHORT,
   ADD_QUESTION,
   ADMIN,
-  COHORT,
   INTERVIEWS,
   PAST_INTERVIEW,
   PAST_SUBMISSION,
@@ -28,6 +28,7 @@ import {
   SETTINGS,
   TASKS,
   TASKS_BREAKDOWN,
+  VIEW_COHORT,
 } from 'constants/routes';
 import { useAuth } from 'contexts/AuthContext';
 import { useUser } from 'contexts/UserContext';
@@ -102,7 +103,9 @@ export const Navbar = (): ReactElement<typeof Box> => {
                 {user.role === UserRole.ADMIN && (
                   <Button
                     aria-current={
-                      pathname === ADMIN || pathname.startsWith(COHORT)
+                      pathname === ADMIN ||
+                      pathname === ADD_COHORT ||
+                      pathname.startsWith(VIEW_COHORT)
                         ? 'page'
                         : undefined
                     }

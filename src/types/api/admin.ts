@@ -16,6 +16,11 @@ export interface CreateStudentDto {
   coursemologyProfileUrl: string;
 }
 
+export interface CreateCohortDto {
+  name: string;
+  coursemologyUrl: string;
+}
+
 export interface CreateUpdateCohortDto {
   id: number | null;
   name: string;

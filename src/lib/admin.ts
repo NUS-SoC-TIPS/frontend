@@ -2,6 +2,7 @@ import {
   AdminOverview,
   CohortAdminItem,
   CohortStudentValidationResult,
+  CreateCohortDto,
   CreateExclusionDto,
   CreateStudentDto,
   CreateUpdateCohortDto,
@@ -19,10 +20,18 @@ export const getCohortAdmin = async (id: number): Promise<CohortAdminItem> => {
   return response.data;
 };
 
+export const createCohortAdmin = async (
+  dto: CreateCohortDto,
+): Promise<{ id: number }> => {
+  const response = await api.post('cohorts_admin', dto);
+  return response.data;
+};
+
 export const createOrUpdateCohortAdmin = async (
   dto: CreateUpdateCohortDto,
-): Promise<void> => {
-  await api.post('cohorts_admin', dto);
+): Promise<{ id: number }> => {
+  const response = await api.post('cohorts_admin', dto);
+  return response.data;
 };
 
 export const validateStudentsAdmin = async (
