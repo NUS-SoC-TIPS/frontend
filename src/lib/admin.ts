@@ -1,11 +1,13 @@
 import {
   AdminOverview,
   CohortAdminItem,
+  CohortAdminUpdateResult,
   CohortStudentValidationResult,
   CreateCohortDto,
   CreateExclusionDto,
   CreateStudentDto,
-  CreateUpdateCohortDto,
+  CreateUpdateWindowsDto,
+  UpdateCohortDto,
   WindowItem,
 } from 'types/api/admin';
 import { api } from 'utils/apiUtils';
@@ -27,10 +29,19 @@ export const createCohortAdmin = async (
   return response.data;
 };
 
-export const createOrUpdateCohortAdmin = async (
-  dto: CreateUpdateCohortDto,
-): Promise<{ id: number }> => {
-  const response = await api.post('cohorts_admin', dto);
+export const updateCohortAdmin = async (
+  id: number,
+  dto: UpdateCohortDto,
+): Promise<CohortAdminUpdateResult> => {
+  const response = await api.post(`cohorts_admin/${id}`, dto);
+  return response.data;
+};
+
+export const createOrUpdateWindowsAdmin = async (
+  cohortId: number,
+  dto: CreateUpdateWindowsDto,
+): Promise<void> => {
+  const response = await api.post(`cohorts_admin/${cohortId}/windows`, dto);
   return response.data;
 };
 

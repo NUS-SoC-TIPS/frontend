@@ -21,10 +21,12 @@ export interface CreateCohortDto {
   coursemologyUrl: string;
 }
 
-export interface CreateUpdateCohortDto {
-  id: number | null;
+export interface UpdateCohortDto {
   name: string;
   coursemologyUrl: string;
+}
+
+export interface CreateUpdateWindowsDto {
   windows: CreateUpdateWindowDto[];
 }
 
@@ -61,6 +63,11 @@ export interface CohortAdminItem {
     coursemologyName: string;
     isExcluded: boolean;
   })[];
+}
+
+export interface CohortAdminUpdateResult {
+  name: string;
+  coursemologyUrl: string;
 }
 
 export interface CohortStudentValidationResult {
