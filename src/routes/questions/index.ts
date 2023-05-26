@@ -1,3 +1,3 @@
-export * from './addQuestion';
-export * from './pastSubmission';
-export * from './questions';
+export * from './add';
+export * from './root';
+export * from './submissions';

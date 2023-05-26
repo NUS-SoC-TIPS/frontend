@@ -16,7 +16,7 @@ import {
   LanguageFormControl,
   NameFormControl,
   UrlFormControl,
-} from '../form';
+} from '../components/form';
 
 import { PastSubmissionPage } from './PastSubmissionPage';
 import { PastSubmissionSkeleton } from './PastSubmissionSkeleton';

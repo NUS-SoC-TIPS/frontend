@@ -1,2 +1,2 @@
-export * from './interviews';
-export * from './pastInterview';
+export * from './records';
+export * from './root';
