@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 
 import { Dashboard, Page } from 'components/page';
-import { ADD_STUDENTS, ADMIN } from 'constants/routes';
+import { ADD_STUDENTS, ADMIN, VIEW_WINDOW } from 'constants/routes';
 import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
 import { COURSEMOLOGY_COURSE_URL_PREFIX } from 'constants/urls';
 import { getCohortAdmin, updateCohortAdmin } from 'lib/admin';
@@ -137,7 +137,12 @@ export const ViewCohort = (): ReactElement<void, typeof Page> => {
     });
   };
 
-  const { cohort } = state;
+  const { cohort, isError } = state;
+
+  if (isError) {
+    // TODO: Add error state
+    return <></>;
+  }
 
   if (cohort == null) {
     // TODO: Add loading state
@@ -185,6 +190,7 @@ export const ViewCohort = (): ReactElement<void, typeof Page> => {
           <WindowTable
             onAdd={onAddWindow}
             onEdit={onEditWindow}
+            onView={(id: number): void => navigate(`${VIEW_WINDOW}/${id}`)}
             windows={cohort.windows}
           />
         </Stack>

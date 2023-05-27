@@ -1,5 +1,5 @@
 import { ReactElement, ReactNode, useMemo } from 'react';
-import { Button } from '@chakra-ui/react';
+import { Button, HStack } from '@chakra-ui/react';
 
 import { Card } from 'components/card';
 import { Table } from 'components/table';
@@ -14,11 +14,15 @@ import { booleanRenderer } from 'utils/tableUtils';
 
 interface Props {
   windows: WindowBase[];
+  onView: (id: number) => void;
   onEdit: (id: number) => void;
   onAdd: () => void;
 }
 
-const getColumns = (onEdit: (id: number) => void): TableColumn[] => {
+const getColumns = (
+  onView: (id: number) => void,
+  onEdit: (id: number) => void,
+): TableColumn[] => {
   return [
     {
       label: 'Start At (SGT)',
@@ -65,14 +69,14 @@ const getColumns = (onEdit: (id: number) => void): TableColumn[] => {
       key: 'id',
       options: {
         customBodyRenderer: (id: number): ReactNode => (
-          <Button
-            onClick={(): void => {
-              onEdit(id);
-            }}
-            variant="secondary"
-          >
-            Edit
-          </Button>
+          <HStack spacing={2}>
+            <Button onClick={(): void => onView(id)} variant="secondary">
+              View
+            </Button>
+            <Button onClick={(): void => onEdit(id)} variant="secondary">
+              Edit
+            </Button>
+          </HStack>
         ),
         isDownloadable: false,
         isSearchable: false,
@@ -84,10 +88,11 @@ const getColumns = (onEdit: (id: number) => void): TableColumn[] => {
 
 export const WindowTable = ({
   windows,
+  onView,
   onEdit,
   onAdd,
 }: Props): ReactElement<Props, typeof Card> => {
-  const columns = useMemo(() => getColumns(onEdit), [onEdit]);
+  const columns = useMemo(() => getColumns(onView, onEdit), [onView, onEdit]);
 
   return (
     <Card px={0} py={0}>
