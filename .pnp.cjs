@@ -86,6 +86,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["codemirror", "npm:6.0.1"],\
             ["codemirror-lang-elixir", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:3.0.1"],\
             ["commitizen", "npm:4.3.0"],\
+            ["dayjs", "npm:1.11.7"],\
             ["eslint", "npm:8.38.0"],\
             ["eslint-config-prettier", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:8.8.0"],\
             ["eslint-plugin-eslint-comments", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:3.2.0"],\
@@ -12694,6 +12695,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["dayjs", [\
+        ["npm:1.11.7", {\
+          "packageLocation": "./.yarn/cache/dayjs-npm-1.11.7-d5cd5b2919-5003a7c1dd.zip/node_modules/dayjs/",\
+          "packageDependencies": [\
+            ["dayjs", "npm:1.11.7"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["debug", [\
         ["npm:2.6.9", {\
           "packageLocation": "./.yarn/cache/debug-npm-2.6.9-7d4cb597dc-d2f51589ca.zip/node_modules/debug/",\
@@ -24093,6 +24103,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["codemirror", "npm:6.0.1"],\
             ["codemirror-lang-elixir", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:3.0.1"],\
             ["commitizen", "npm:4.3.0"],\
+            ["dayjs", "npm:1.11.7"],\
             ["eslint", "npm:8.38.0"],\
             ["eslint-config-prettier", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:8.8.0"],\
             ["eslint-plugin-eslint-comments", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:3.2.0"],\
