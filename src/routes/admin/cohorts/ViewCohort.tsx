@@ -13,7 +13,7 @@ import { stripPrefixForUrlField } from 'utils/cohortUtils';
 
 import { NameFormControl, UrlFormControl } from '../components/form';
 
-import { WindowTable } from './WindowTable';
+import { StudentTable, WindowTable } from './tables';
 
 interface State {
   cohort: CohortAdminItem | null;
@@ -157,10 +157,11 @@ export const ViewCohort = (): ReactElement<void, typeof Page> => {
                 onClick={onUpdateBasicInfo}
                 variant="primary"
               >
-                Update Cohort
+                Update Basic Info
               </Button>
             </Flex>
           </Stack>
+          <StudentTable students={cohort.students} />
           <WindowTable onEdit={onEditWindow} windows={cohort.windows} />
         </Stack>
       </Dashboard>
