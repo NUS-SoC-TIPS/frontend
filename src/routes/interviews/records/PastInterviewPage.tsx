@@ -24,7 +24,10 @@ export const PastInterviewPage = ({
     <Page>
       <Dashboard
         actions={
-          <Button onClick={(): void => navigate(INTERVIEWS)} variant="primary">
+          <Button
+            onClick={(): void => navigate(INTERVIEWS)}
+            variant="secondary"
+          >
             Back to Interviews
           </Button>
         }

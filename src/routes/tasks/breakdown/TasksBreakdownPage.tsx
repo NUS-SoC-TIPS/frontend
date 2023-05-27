@@ -41,7 +41,7 @@ export const TasksBreakdownPage = ({
                 Coursemology
               </Button>
             )}
-            <Button onClick={(): void => navigate(TASKS)} variant="primary">
+            <Button onClick={(): void => navigate(TASKS)} variant="secondary">
               Back to Cohorts
             </Button>
           </Stack>

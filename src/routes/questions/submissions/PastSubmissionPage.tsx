@@ -23,7 +23,7 @@ export const PastSubmissionPage = ({
     <Page>
       <Dashboard
         actions={
-          <Button onClick={(): void => navigate(QUESTIONS)} variant="primary">
+          <Button onClick={(): void => navigate(QUESTIONS)} variant="secondary">
             Back to Questions
           </Button>
         }
