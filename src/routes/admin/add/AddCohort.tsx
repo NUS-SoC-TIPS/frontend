@@ -8,7 +8,7 @@ import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
 import { COURSEMOLOGY_COURSE_URL_PREFIX } from 'constants/urls';
 import { createCohortAdmin } from 'lib/admin';
 
-import { NameFormControl, UrlFormControl } from './form';
+import { NameFormControl, UrlFormControl } from '../components/form';
 
 interface State {
   name: string;
@@ -57,7 +57,7 @@ export const AddCohort = (): ReactElement<void, typeof Page> => {
     <Page>
       <Dashboard
         actions={
-          <Button onClick={(): void => navigate(ADMIN)} variant="primary">
+          <Button onClick={(): void => navigate(ADMIN)} variant="secondary">
             Back to Admin
           </Button>
         }
