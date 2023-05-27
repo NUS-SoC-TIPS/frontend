@@ -44,4 +44,6 @@ export interface TableOptions {
   isSearchable?: boolean;
   /** Downloaded CSV file name. Default is `Table`. No need to provide the `.csv` suffix. */
   downloadFileName?: string;
+  /** Number of rows per page. Default is 5. */
+  numRowsPerPage?: number;
 }

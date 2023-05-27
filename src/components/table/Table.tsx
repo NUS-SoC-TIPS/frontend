@@ -50,6 +50,7 @@ export const Table = ({
   const [sortedColumnKey, setSortedColumnKey] = useState<string | null>(null);
   const [isAscending, setIsAscending] = useState(true);
 
+  const numRowsPerPage = options?.numRowsPerPage ?? 5;
   const tokens = searchValue.toLowerCase().split(' ');
   const searchedRows =
     searchValue === ''
@@ -97,8 +98,14 @@ export const Table = ({
     });
   }
 
-  const maxPage = Math.max(Math.ceil(sortedSearchedRows.length / 5) - 1, 0);
-  const renderedRows = sortedSearchedRows.slice(page * 5, (page + 1) * 5);
+  const maxPage = Math.max(
+    Math.ceil(sortedSearchedRows.length / numRowsPerPage) - 1,
+    0,
+  );
+  const renderedRows = sortedSearchedRows.slice(
+    page * numRowsPerPage,
+    (page + 1) * numRowsPerPage,
+  );
   const renderedColumns = columns.filter(
     (column) => column.options?.isVisible !== false,
   );
@@ -117,8 +124,11 @@ export const Table = ({
     if (sortedSearchedRows.length === 0) {
       return 'Showing 0 results';
     }
-    const lowerNumber = page * 5 + 1;
-    const upperNumber = Math.min((page + 1) * 5, sortedSearchedRows.length);
+    const lowerNumber = page * numRowsPerPage + 1;
+    const upperNumber = Math.min(
+      (page + 1) * numRowsPerPage,
+      sortedSearchedRows.length,
+    );
     const results = sortedSearchedRows.length === 1 ? 'row' : 'rows';
     return `Showing ${lowerNumber} to ${upperNumber} of ${sortedSearchedRows.length} ${results}`;
   };
@@ -277,10 +287,10 @@ export const Table = ({
             variant="secondary"
             width={{ base: 'full', md: 'auto' }}
           >
-            <Button disabled={page === 0} onClick={onPrevious}>
+            <Button isDisabled={page === 0} onClick={onPrevious}>
               Previous
             </Button>
-            <Button disabled={page === maxPage} onClick={onNext}>
+            <Button isDisabled={page === maxPage} onClick={onNext}>
               Next
             </Button>
           </ButtonGroup>
