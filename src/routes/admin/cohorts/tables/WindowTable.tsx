@@ -15,6 +15,7 @@ import { booleanRenderer } from 'utils/tableUtils';
 interface Props {
   windows: WindowBase[];
   onEdit: (id: number) => void;
+  onAdd: () => void;
 }
 
 const getColumns = (onEdit: (id: number) => void): TableColumn[] => {
@@ -84,12 +85,18 @@ const getColumns = (onEdit: (id: number) => void): TableColumn[] => {
 export const WindowTable = ({
   windows,
   onEdit,
+  onAdd,
 }: Props): ReactElement<Props, typeof Card> => {
   const columns = useMemo(() => getColumns(onEdit), [onEdit]);
 
   return (
     <Card px={0} py={0}>
       <Table
+        actionButton={
+          <Button onClick={onAdd} variant="primary">
+            Add Window
+          </Button>
+        }
         columns={columns}
         options={{
           title: 'Windows',

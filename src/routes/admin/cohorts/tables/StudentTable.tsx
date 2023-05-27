@@ -1,5 +1,5 @@
 import { ReactElement, ReactNode, useMemo } from 'react';
-import { Box, Link } from '@chakra-ui/react';
+import { Box, Button, Link } from '@chakra-ui/react';
 
 import { Card } from 'components/card';
 import { Table } from 'components/table';
@@ -22,6 +22,7 @@ interface Props {
     coursemologyName: string;
     isExcluded: boolean;
   })[];
+  onAdd: () => void;
 }
 
 interface Row {
@@ -183,6 +184,7 @@ const transformData = (
 
 export const StudentTable = ({
   students,
+  onAdd,
 }: Props): ReactElement<Props, typeof Card> => {
   const columns = useMemo(() => getColumns(), []);
   const rows = useMemo(() => transformData(students), [students]);
@@ -190,6 +192,11 @@ export const StudentTable = ({
   return (
     <Card px={0} py={0}>
       <Table
+        actionButton={
+          <Button onClick={onAdd} variant="primary">
+            Add Students
+          </Button>
+        }
         columns={columns}
         options={{
           title: 'Students',

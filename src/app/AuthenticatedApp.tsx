@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import {
   ADD_COHORT,
   ADD_QUESTION,
+  ADD_STUDENTS,
   ADMIN,
   INTERVIEWS,
   PAST_INTERVIEW,
@@ -53,6 +54,7 @@ const AuthenticatedApp = (): ReactElement<typeof Routes> => {
           <Route element={<Admin />} path={ADMIN} />
           <Route element={<AddCohort />} path={ADD_COHORT} />
           <Route element={<ViewCohort />} path={`${VIEW_COHORT}/:id`} />
+          <Route element={<ViewCohort />} path={`${ADD_STUDENTS}/:id`} />
         </>
       )}
 

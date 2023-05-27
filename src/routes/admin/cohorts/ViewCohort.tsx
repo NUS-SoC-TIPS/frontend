@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 
 import { Dashboard, Page } from 'components/page';
-import { ADMIN } from 'constants/routes';
+import { ADD_STUDENTS, ADMIN } from 'constants/routes';
 import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
 import { COURSEMOLOGY_COURSE_URL_PREFIX } from 'constants/urls';
 import { getCohortAdmin, updateCohortAdmin } from 'lib/admin';
@@ -120,6 +120,23 @@ export const ViewCohort = (): ReactElement<void, typeof Page> => {
     });
   };
 
+  const onAddWindow = (): void => {
+    const windows = state.cohort?.windows ?? [];
+    const startAt = windows[windows.length - 1].endAt ?? new Date();
+    startAt.setDate(startAt.getDate() + 1);
+    const endAt = new Date(startAt);
+    endAt.setDate(startAt.getDate() + 6);
+    setState({
+      selectedWindow: {
+        id: null,
+        startAt,
+        endAt,
+        numQuestions: 6,
+        requireInterview: false,
+      },
+    });
+  };
+
   const { cohort } = state;
 
   if (cohort == null) {
@@ -161,8 +178,15 @@ export const ViewCohort = (): ReactElement<void, typeof Page> => {
               </Button>
             </Flex>
           </Stack>
-          <StudentTable students={cohort.students} />
-          <WindowTable onEdit={onEditWindow} windows={cohort.windows} />
+          <StudentTable
+            onAdd={(): void => navigate(`${ADD_STUDENTS}/${id}`)}
+            students={cohort.students}
+          />
+          <WindowTable
+            onAdd={onAddWindow}
+            onEdit={onEditWindow}
+            windows={cohort.windows}
+          />
         </Stack>
       </Dashboard>
     </Page>

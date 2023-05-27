@@ -12,5 +12,6 @@ export const TASKS_BREAKDOWN = '/tasks/breakdown';
 export const ADMIN = '/admin';
 export const ADD_COHORT = '/admin/add';
 export const VIEW_COHORT = '/admin/cohorts';
+export const ADD_STUDENTS = '/admin/students';
 export const SETTINGS = '/settings';
 export const ROOM = '/room';

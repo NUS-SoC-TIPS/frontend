@@ -31,12 +31,18 @@ interface Props extends TableProps {
   columns: TableColumn[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rows: any[];
+  /**
+   * Action button to be placed to the left of the download button (if any)
+   * and search bar. Shown even in mobile view.
+   */
+  actionButton?: ReactNode;
   options?: TableOptions;
 }
 
 export const Table = ({
   columns,
   rows,
+  actionButton,
   options,
   ...props
 }: Props): ReactElement<Props, typeof ChakraTable> => {
@@ -217,6 +223,7 @@ export const Table = ({
             {options?.title ?? 'Table'}
           </Text>
           <HStack spacing={2}>
+            {actionButton != null ? <div>{actionButton}</div> : <></>}
             {options?.isDownloadable !== false && !isMobile && (
               <CSVLink
                 data={getCsvData()}
