@@ -16,8 +16,7 @@ import {
   VIEW_COHORT,
 } from 'constants/routes';
 import { useUser } from 'contexts/UserContext';
-import { Admin } from 'routes/admin';
-import { AddCohort } from 'routes/admin/add';
+import { AddCohort, Admin, ViewCohort } from 'routes/admin';
 import { Interviews, PastInterview } from 'routes/interviews';
 import { AddQuestion, PastSubmission, Questions } from 'routes/questions';
 import { Room } from 'routes/room';
@@ -53,7 +52,7 @@ const AuthenticatedApp = (): ReactElement<typeof Routes> => {
         <>
           <Route element={<Admin />} path={ADMIN} />
           <Route element={<AddCohort />} path={ADD_COHORT} />
-          <Route element={<Admin />} path={`${VIEW_COHORT}/:id`} />
+          <Route element={<ViewCohort />} path={`${VIEW_COHORT}/:id`} />
         </>
       )}
 
