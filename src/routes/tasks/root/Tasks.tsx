@@ -64,7 +64,7 @@ export const Tasks = (): ReactElement<typeof Page> => {
   return (
     <TasksPage>
       <Container maxW="3xl" px={0}>
-        <Stack flex="1" spacing="5">
+        <Stack flex={1} spacing={5}>
           {cohorts.map((cohort) => (
             <CohortCard
               cohort={cohort}

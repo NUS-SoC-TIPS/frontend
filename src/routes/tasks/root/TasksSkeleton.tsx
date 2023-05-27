@@ -8,7 +8,7 @@ export const TasksSkeleton = (): ReactElement<typeof TasksPage> => {
   return (
     <TasksPage>
       <Container maxW="3xl" px={0}>
-        <Stack flex="1" spacing="5">
+        <Stack flex={1} spacing={5}>
           <CohortCardSkeleton />
         </Stack>
       </Container>

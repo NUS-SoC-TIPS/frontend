@@ -201,7 +201,7 @@ export const PastSubmission = (): ReactElement<
           onChange={onChangeCode}
         />
         <Flex direction="row-reverse">
-          <Stack direction="row" spacing={3}>
+          <Stack direction="row" spacing={2}>
             <Button
               isDisabled={state.isUpdatingOrDeleting}
               onClick={(): void => setState({ isModalOpen: true })}

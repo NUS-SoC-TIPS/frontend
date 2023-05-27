@@ -212,8 +212,8 @@ export const Table = ({
   };
 
   return (
-    <Stack spacing="5">
-      <Box pt="5" px={{ base: '4', md: '6' }}>
+    <Stack spacing={5}>
+      <Box pt={5} px={{ base: 4, md: 6 }}>
         <Stack
           alignItems={{ base: 'stretch', md: 'center' }}
           direction={{ base: 'column', md: 'row' }}
@@ -235,7 +235,7 @@ export const Table = ({
             {options?.isSearchable !== false && (
               <InputGroup maxW={{ base: '100%', md: 'xs' }}>
                 <InputLeftElement pointerEvents="none">
-                  <Icon as={FiSearch} boxSize="5" color="muted" />
+                  <Icon as={FiSearch} boxSize={5} color="muted" />
                 </InputLeftElement>
                 <Input
                   onChange={(event): void => setSearchValue(event.target.value)}
@@ -284,8 +284,8 @@ export const Table = ({
           </Tbody>
         </ChakraTable>
       </Box>
-      <Box pb="5" px={{ base: '4', md: '6' }}>
-        <HStack justify="space-between" spacing="3">
+      <Box pb={5} px={{ base: 4, md: 6 }}>
+        <HStack justify="space-between" spacing={3}>
           {!isMobile && (
             <Text color="muted" fontSize="sm">
               {getBottomMessage()}
@@ -293,7 +293,7 @@ export const Table = ({
           )}
           <ButtonGroup
             justifyContent="space-between"
-            spacing="3"
+            spacing={2}
             variant="secondary"
             width={{ base: 'full', md: 'auto' }}
           >

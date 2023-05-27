@@ -22,7 +22,7 @@ export const TasksBreakdownPage = ({
     <Page>
       <Dashboard
         actions={
-          <Stack direction="row" spacing={3}>
+          <Stack direction="row" spacing={2}>
             {coursemologyUrl ? (
               <Link href={coursemologyUrl} isExternal={true}>
                 <Button

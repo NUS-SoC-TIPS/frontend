@@ -19,7 +19,7 @@ export const InterviewsPage = ({
     <Page>
       <Dashboard
         actions={
-          <Stack direction="row" spacing={3}>
+          <Stack direction="row" spacing={2}>
             <Button
               leftIcon={<FiHelpCircle fontSize="1.25rem" />}
               onClick={(): void => setIsModalOpen(true)}

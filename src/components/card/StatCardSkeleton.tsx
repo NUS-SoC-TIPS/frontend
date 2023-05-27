@@ -12,7 +12,7 @@ export const StatCardSkeleton = (): ReactElement<typeof Card> => {
             Skeleton
           </Text>
         </Skeleton>
-        <Stack spacing="4">
+        <Stack spacing={4}>
           <Skeleton>
             <Heading size="sm">Skeleton</Heading>
           </Skeleton>

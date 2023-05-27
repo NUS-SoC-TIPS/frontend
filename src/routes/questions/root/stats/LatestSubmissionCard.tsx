@@ -19,7 +19,7 @@ export const LatestSubmissionCard = ({
         <Text color="muted" fontSize="sm">
           Latest Submission
         </Text>
-        <Stack spacing="4">
+        <Stack spacing={4}>
           {submission ? (
             <QuestionBox
               noOfLines={1}
