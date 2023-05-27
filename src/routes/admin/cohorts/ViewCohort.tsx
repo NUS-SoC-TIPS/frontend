@@ -138,27 +138,31 @@ export const ViewCohort = (): ReactElement<void, typeof Page> => {
         heading="Viewing Cohort"
         subheading="View and update the basic information, windows and students of a cohort here."
       >
-        <Stack divider={<StackDivider />} spacing={5}>
-          <NameFormControl
-            name={state.name}
-            onChange={(name: string): void => setState({ name })}
-          />
-          <UrlFormControl
-            onChange={(url: string): void => setState({ coursemologyUrl: url })}
-            url={state.coursemologyUrl}
-          />
-          <Flex direction="row-reverse">
-            <Button
-              isDisabled={cannotUpdateBasicInfo()}
-              isLoading={state.isUpdatingBasicInfo}
-              onClick={onUpdateBasicInfo}
-              variant="primary"
-            >
-              Update Cohort
-            </Button>
-          </Flex>
+        <Stack spacing={12}>
+          <Stack divider={<StackDivider />} spacing={5}>
+            <NameFormControl
+              name={state.name}
+              onChange={(name: string): void => setState({ name })}
+            />
+            <UrlFormControl
+              onChange={(url: string): void =>
+                setState({ coursemologyUrl: url })
+              }
+              url={state.coursemologyUrl}
+            />
+            <Flex direction="row-reverse">
+              <Button
+                isDisabled={cannotUpdateBasicInfo()}
+                isLoading={state.isUpdatingBasicInfo}
+                onClick={onUpdateBasicInfo}
+                variant="primary"
+              >
+                Update Cohort
+              </Button>
+            </Flex>
+          </Stack>
+          <WindowTable onEdit={onEditWindow} windows={cohort.windows} />
         </Stack>
-        <WindowTable onEdit={onEditWindow} windows={cohort.windows} />
       </Dashboard>
     </Page>
   );
