@@ -15,6 +15,7 @@ import {
   TASKS,
   TASKS_BREAKDOWN,
   VIEW_COHORT,
+  VIEW_WINDOW,
 } from 'constants/routes';
 import { useUser } from 'contexts/UserContext';
 import { AddCohort, Admin, ViewCohort } from 'routes/admin';
@@ -55,6 +56,7 @@ const AuthenticatedApp = (): ReactElement<typeof Routes> => {
           <Route element={<AddCohort />} path={ADD_COHORT} />
           <Route element={<ViewCohort />} path={`${VIEW_COHORT}/:id`} />
           <Route element={<ViewCohort />} path={`${ADD_STUDENTS}/:id`} />
+          <Route element={<ViewCohort />} path={`${VIEW_WINDOW}/:id`} />
         </>
       )}
 
