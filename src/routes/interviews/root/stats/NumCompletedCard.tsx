@@ -17,7 +17,9 @@ export const NumCompletedCard = ({
   endAt,
 }: Props): ReactElement<Props, typeof StatCard> => {
   const title =
-    requireInterview != null ? 'Completed This Window' : 'Completed This Week';
+    requireInterview != null
+      ? 'Completed This Window (SGT)'
+      : 'Completed This Week (SGT)';
   const interviews = numCompleted === 1 ? 'interview' : 'interviews';
   const stat = `${numCompleted}${
     requireInterview != null ? '/1' : ''

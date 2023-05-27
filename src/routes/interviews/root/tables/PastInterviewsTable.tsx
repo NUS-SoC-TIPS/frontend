@@ -43,7 +43,7 @@ const getColumns = (): TableColumn[] => {
       },
     },
     {
-      label: 'Completed At',
+      label: 'Completed At (SGT)',
       key: 'completedAt',
       options: {
         customBodyRenderer: formatDateWithYear,

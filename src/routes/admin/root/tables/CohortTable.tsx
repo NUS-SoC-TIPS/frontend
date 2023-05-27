@@ -35,7 +35,7 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
       },
     },
     {
-      label: 'Start At',
+      label: 'Start At (SGT)',
       key: 'startAt',
       options: {
         customBodyRenderer: formatDateWithYear,
@@ -46,7 +46,7 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
       },
     },
     {
-      label: 'End At',
+      label: 'End At (SGT)',
       key: 'endAt',
       options: {
         customBodyRenderer: formatDateWithYear,

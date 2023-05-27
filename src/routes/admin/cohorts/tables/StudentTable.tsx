@@ -115,7 +115,7 @@ const getColumns = (): TableColumn[] => {
       },
     },
     {
-      label: 'Joined At',
+      label: 'Joined At (SGT)',
       key: 'joinedAt',
       options: {
         customBodyRenderer: formatDateWithYear,

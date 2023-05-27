@@ -21,7 +21,7 @@ interface Props {
 const getColumns = (onEdit: (id: number) => void): TableColumn[] => {
   return [
     {
-      label: 'Start At',
+      label: 'Start At (SGT)',
       key: 'startAt',
       options: {
         customBodyRenderer: formatDateWithYear,
@@ -32,7 +32,7 @@ const getColumns = (onEdit: (id: number) => void): TableColumn[] => {
       },
     },
     {
-      label: 'End At',
+      label: 'End At (SGT)',
       key: 'endAt',
       options: {
         customBodyRenderer: formatDateWithYear,

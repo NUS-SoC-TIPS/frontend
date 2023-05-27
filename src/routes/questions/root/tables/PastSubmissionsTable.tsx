@@ -64,7 +64,7 @@ const getColumns = (): TableColumn[] => {
       },
     },
     {
-      label: 'Submitted At',
+      label: 'Submitted At (SGT)',
       key: 'submittedAt',
       options: {
         customBodyRenderer: formatDateWithYear,

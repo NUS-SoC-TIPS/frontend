@@ -1,21 +1,26 @@
-const options = {
-  day: 'numeric' as const,
-  month: 'short' as const,
-  year: 'numeric' as const,
-};
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.locale('en-sg');
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('Asia/Singapore');
+dayjs.extend(localizedFormat);
 
 export const formatDateWithYear = (date: Date | null): string => {
   if (date == null) {
     return '-';
   }
-  return date.toLocaleDateString('en-US', options);
+  return dayjs(date).tz().format('ll');
 };
 
 export const formatDateWithoutYear = (date: Date | null): string => {
   if (date == null) {
     return '-';
   }
-  return date.toLocaleDateString('en-US', { ...options, year: undefined });
+  return dayjs(date).tz().format('MMM D');
 };
 
 export const formatDuration = (duration: number): string => {
