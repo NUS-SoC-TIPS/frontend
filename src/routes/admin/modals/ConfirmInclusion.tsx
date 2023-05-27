@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { Button, Text } from '@chakra-ui/react';
+import { Button, Stack, Text } from '@chakra-ui/react';
 
 import { Modal } from 'components/modal';
 
@@ -19,14 +19,14 @@ export const ConfirmInclusion = ({
   return (
     <Modal
       actions={
-        <>
-          <Button mr={2} onClick={onClose} variant="secondary">
+        <Stack direction="row" spacing={2}>
+          <Button onClick={onClose} variant="secondary">
             Cancel
           </Button>
           <Button onClick={onConfirmInclude} variant="primary">
             Include
           </Button>
-        </>
+        </Stack>
       }
       isOpen={isOpen}
       onClose={onClose}

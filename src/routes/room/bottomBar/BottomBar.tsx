@@ -5,6 +5,7 @@ import {
   Circle,
   Container,
   HStack,
+  Stack,
   Text,
   useBreakpointValue,
   useColorModeValue,
@@ -114,10 +115,9 @@ export const BottomBar = ({
     }
 
     return (
-      <>
+      <Stack direction="row" spacing={2}>
         <Button
           isDisabled={closingStatus === RoomClosingStatus.CLOSING}
-          mr={2}
           onClick={onCloseModal}
           variant="secondary"
         >
@@ -130,7 +130,7 @@ export const BottomBar = ({
         >
           Close Room
         </Button>
-      </>
+      </Stack>
     );
   };
 

@@ -1,5 +1,5 @@
 import { ReactElement, useState } from 'react';
-import { Button, FormControl, FormLabel } from '@chakra-ui/react';
+import { Button, FormControl, FormLabel, Stack } from '@chakra-ui/react';
 
 import { Modal } from 'components/modal';
 import { Select } from 'components/select';
@@ -49,8 +49,8 @@ export const ConfirmExclusion = ({
   return (
     <Modal
       actions={
-        <>
-          <Button mr={2} onClick={onClose} variant="secondary">
+        <Stack direction="row" spacing={2}>
+          <Button onClick={onClose} variant="secondary">
             Cancel
           </Button>
           <Button
@@ -60,7 +60,7 @@ export const ConfirmExclusion = ({
           >
             Exclude
           </Button>
-        </>
+        </Stack>
       }
       isOpen={isOpen}
       onClose={onClose}
