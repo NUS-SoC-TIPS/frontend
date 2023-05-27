@@ -54,7 +54,7 @@ export const TopBar = ({ socket }: Props): ReactElement<Props, typeof Box> => {
             />
           </Box>
           <Button
-            disabled={hasCopied}
+            isDisabled={hasCopied}
             onClick={onCopyInviteLink}
             size="sm"
             variant="primary"

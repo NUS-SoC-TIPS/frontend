@@ -37,7 +37,7 @@ export const MyPopover = ({
         <>
           <PopoverTrigger>
             <Button
-              disabled={isDisabled}
+              isDisabled={isDisabled}
               rightIcon={<PopoverIcon isOpen={isOpen} />}
               {...buttonProps}
             >

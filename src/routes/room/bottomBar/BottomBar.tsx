@@ -116,7 +116,7 @@ export const BottomBar = ({
     return (
       <>
         <Button
-          disabled={closingStatus === RoomClosingStatus.CLOSING}
+          isDisabled={closingStatus === RoomClosingStatus.CLOSING}
           mr={2}
           onClick={onCloseModal}
           variant="secondary"
@@ -173,7 +173,7 @@ export const BottomBar = ({
           </HStack>
           <Button
             colorScheme="red"
-            disabled={closingStatus === RoomClosingStatus.CLOSING}
+            isDisabled={closingStatus === RoomClosingStatus.CLOSING}
             onClick={(): void => setIsCloseRoomModalOpen(true)}
             size="sm"
           >

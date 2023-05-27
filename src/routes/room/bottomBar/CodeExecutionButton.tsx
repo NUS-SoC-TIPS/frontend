@@ -40,7 +40,7 @@ export const CodeExecutionButton = ({
   if (versionName == null) {
     return (
       <Tooltip label="Execution is not supported for this language">
-        <Button disabled={true} size="sm" variant="secondary">
+        <Button isDisabled={true} size="sm" variant="secondary">
           Execute Code
         </Button>
       </Tooltip>
