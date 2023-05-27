@@ -50,7 +50,10 @@ export const Table = ({
   const [sortedColumnKey, setSortedColumnKey] = useState<string | null>(null);
   const [isAscending, setIsAscending] = useState(true);
 
-  const numRowsPerPage = options?.numRowsPerPage ?? 5;
+  let numRowsPerPage = options?.numRowsPerPage ?? 5;
+  if (numRowsPerPage <= 0) {
+    numRowsPerPage = 5;
+  }
   const tokens = searchValue.toLowerCase().split(' ');
   const searchedRows =
     searchValue === ''
