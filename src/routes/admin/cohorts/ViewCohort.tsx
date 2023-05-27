@@ -13,6 +13,8 @@ import { stripPrefixForUrlField } from 'utils/cohortUtils';
 
 import { NameFormControl, UrlFormControl } from '../components/form';
 
+import { WindowTable } from './WindowTable';
+
 interface State {
   cohort: CohortAdminItem | null;
   name: string;
@@ -110,6 +112,21 @@ export const ViewCohort = (): ReactElement<void, typeof Page> => {
       });
   };
 
+  const onEditWindow = (id: number): void => {
+    setState({
+      selectedWindow:
+        state.cohort?.windows?.filter((window) => window.id === id)?.[0] ??
+        null,
+    });
+  };
+
+  const { cohort } = state;
+
+  if (cohort == null) {
+    // TODO: Add loading state
+    return <></>;
+  }
+
   return (
     <Page>
       <Dashboard
@@ -119,7 +136,7 @@ export const ViewCohort = (): ReactElement<void, typeof Page> => {
           </Button>
         }
         heading="Viewing Cohort"
-        subheading="Update the basic information, windows and students of a cohort here."
+        subheading="View and update the basic information, windows and students of a cohort here."
       >
         <Stack divider={<StackDivider />} spacing={5}>
           <NameFormControl
@@ -141,6 +158,7 @@ export const ViewCohort = (): ReactElement<void, typeof Page> => {
             </Button>
           </Flex>
         </Stack>
+        <WindowTable onEdit={onEditWindow} windows={cohort.windows} />
       </Dashboard>
     </Page>
   );
