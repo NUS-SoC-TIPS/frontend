@@ -26,16 +26,19 @@ export interface UpdateCohortDto {
   coursemologyUrl: string;
 }
 
-export interface CreateUpdateWindowsDto {
-  windows: CreateUpdateWindowDto[];
-}
-
-export interface CreateUpdateWindowDto {
-  id: number | null;
+export interface CreateWindowDto {
   numQuestions: number;
   requireInterview: boolean;
-  startAt: Date;
-  endAt: Date;
+  startAt: string;
+  endAt: string;
+}
+
+export interface UpdateWindowDto {
+  id: number;
+  numQuestions: number;
+  requireInterview: boolean;
+  startAt: string;
+  endAt: string;
 }
 
 export interface AdminOverview {

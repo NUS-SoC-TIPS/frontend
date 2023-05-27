@@ -6,10 +6,12 @@ import {
   CreateCohortDto,
   CreateExclusionDto,
   CreateStudentDto,
-  CreateUpdateWindowsDto,
+  CreateWindowDto,
   UpdateCohortDto,
+  UpdateWindowDto,
   WindowItem,
 } from 'types/api/admin';
+import { WindowBase } from 'types/api/windows';
 import { api } from 'utils/apiUtils';
 
 export const getOverviewAdmin = async (): Promise<AdminOverview> => {
@@ -37,11 +39,19 @@ export const updateCohortAdmin = async (
   return response.data;
 };
 
-export const createOrUpdateWindowsAdmin = async (
+export const createWindowAdmin = async (
   cohortId: number,
-  dto: CreateUpdateWindowsDto,
-): Promise<void> => {
+  dto: CreateWindowDto,
+): Promise<WindowBase> => {
   const response = await api.post(`cohorts_admin/${cohortId}/windows`, dto);
+  return response.data;
+};
+
+export const updateWindowAdmin = async (
+  cohortId: number,
+  dto: UpdateWindowDto,
+): Promise<WindowBase> => {
+  const response = await api.patch(`cohorts_admin/${cohortId}/windows`, dto);
   return response.data;
 };
 
