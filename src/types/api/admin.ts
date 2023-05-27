@@ -53,6 +53,7 @@ export interface AdminOverview {
 }
 
 export interface CohortAdminItem {
+  id: number;
   name: string;
   coursemologyUrl: string;
   windows: WindowBase[];

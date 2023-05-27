@@ -33,7 +33,7 @@ export const updateCohortAdmin = async (
   id: number,
   dto: UpdateCohortDto,
 ): Promise<CohortAdminUpdateResult> => {
-  const response = await api.post(`cohorts_admin/${id}`, dto);
+  const response = await api.patch(`cohorts_admin/${id}`, dto);
   return response.data;
 };
 
