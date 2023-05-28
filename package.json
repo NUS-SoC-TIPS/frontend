@@ -45,6 +45,7 @@
     "codemirror": "^6.0.1",
     "codemirror-lang-elixir": "^3.0.1",
     "dayjs": "^1.11.7",
+    "dayzed": "^3.2.3",
     "firebase": "^9.19.1",
     "framer-motion": "^10.12.2",
     "lib0": "^0.2.73",
