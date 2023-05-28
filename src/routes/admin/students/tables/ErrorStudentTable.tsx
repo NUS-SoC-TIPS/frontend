@@ -21,7 +21,7 @@ const getColumns = (): TableColumn[] => {
       label: 'GitHub Username',
       key: 'githubUsername',
       options: {
-        isVisible: false,
+        isSortable: true,
       },
     },
     {
