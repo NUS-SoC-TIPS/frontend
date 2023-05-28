@@ -101,6 +101,7 @@ export const WindowModal = ({
 
   const allValuesAreEqual = (): boolean => {
     return (
+      !isCreate &&
       numQuestions === newNumQuestions &&
       requireInterview === newRequireInterview &&
       isSameByDate(
