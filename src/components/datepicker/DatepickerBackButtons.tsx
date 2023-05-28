@@ -18,10 +18,14 @@ export const DatepickerBackButtons = ({
           calendars,
           offset: 12,
         })}
+        size="sm"
+        variant="secondary"
       >
         {'<<'}
       </Button>
-      <Button {...getBackProps({ calendars })}>{'<'}</Button>
+      <Button {...getBackProps({ calendars })} size="sm" variant="secondary">
+        {'<'}
+      </Button>
     </>
   );
 };

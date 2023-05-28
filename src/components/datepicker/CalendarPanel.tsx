@@ -82,7 +82,7 @@ export const CalendarPanel: React.FC<CalendarPanelProps> = ({
                 calendars={calendars}
                 getBackProps={getBackProps}
               />
-              <Heading minWidth={'5rem'} size="sm" textAlign="center">
+              <Heading px={3} size="2xs" textAlign="center">
                 {dayjs().month(calendar.month).format('MMM')} {calendar.year}
               </Heading>
               <DatepickerForwardButtons

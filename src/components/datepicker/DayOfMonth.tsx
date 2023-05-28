@@ -35,14 +35,14 @@ export const DayOfMonth = ({
         borderColor: 'transparent',
       },
       _hover: {
-        bg: 'purple.400',
+        bg: 'gray.500',
         _disabled: {
           bg: 'gray.100',
         },
       },
     },
-    isInRangeBtnProps: { background: 'purple.200' },
-    selectedBtnProps: { background: 'purple.200' },
+    isInRangeBtnProps: { background: 'gray.600' },
+    selectedBtnProps: { background: 'gray.600' },
     todayBtnProps: { borderColor: 'blue.400' },
   };
 

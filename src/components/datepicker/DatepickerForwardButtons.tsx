@@ -15,12 +15,16 @@ export const DatepickerForwardButtons = ({
 }: Props): ReactElement<Props, typeof Fragment> => {
   return (
     <>
-      <Button {...getForwardProps({ calendars })}>{'>'}</Button>
+      <Button {...getForwardProps({ calendars })} size="sm" variant="secondary">
+        {'>'}
+      </Button>
       <Button
         {...getForwardProps({
           calendars,
           offset: 12,
         })}
+        size="sm"
+        variant="secondary"
       >
         {'>>'}
       </Button>
