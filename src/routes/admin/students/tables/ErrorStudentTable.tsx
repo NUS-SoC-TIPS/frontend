@@ -10,7 +10,7 @@ interface Props {
     githubUsername: string;
     coursemologyName: string;
     coursemologyProfileUrl: string;
-    error: 'ALREADY ADDED' | 'NOT FOUND' | 'INVALID DATA';
+    error: 'ALREADY ADDED' | 'NOT FOUND' | 'IS ADMIN' | 'INVALID DATA';
   }[];
   isCreated: boolean;
 }
