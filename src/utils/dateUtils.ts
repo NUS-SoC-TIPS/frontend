@@ -9,9 +9,12 @@ dayjs.extend(timezone);
 dayjs.tz.setDefault('Asia/Singapore');
 dayjs.extend(localizedFormat);
 
-export const formatDateWithYear = (date: Date | null): string => {
+export const formatDateWithYear = (date: Date | null, isSGT = true): string => {
   if (date == null) {
     return '-';
+  }
+  if (!isSGT) {
+    return dayjs(date).format('ll');
   }
   return dayjs(date).tz().format('ll');
 };
@@ -21,6 +24,15 @@ export const formatDateWithoutYear = (date: Date | null): string => {
     return '-';
   }
   return dayjs(date).tz().format('MMM D');
+};
+
+export const isBeforeByDate = (a: Date | string, b: Date | string): boolean => {
+  return dayjs(a).tz().startOf('day') < dayjs(b).tz().startOf('day');
+};
+
+export const changeToUserTimezone = (date: Date): Date => {
+  const originalDateTimeString = dayjs(date).tz().format('LLL');
+  return new Date(originalDateTimeString);
 };
 
 export const formatDuration = (duration: number): string => {

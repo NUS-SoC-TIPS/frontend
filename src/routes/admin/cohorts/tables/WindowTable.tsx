@@ -25,7 +25,7 @@ const getColumns = (
 ): TableColumn[] => {
   return [
     {
-      label: 'Start At (SGT)',
+      label: 'Start At (00:00 SGT)',
       key: 'startAt',
       options: {
         customBodyRenderer: formatDateWithYear,
@@ -36,7 +36,7 @@ const getColumns = (
       },
     },
     {
-      label: 'End At (SGT)',
+      label: 'End At (23:59 SGT)',
       key: 'endAt',
       options: {
         customBodyRenderer: formatDateWithYear,

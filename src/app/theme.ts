@@ -40,6 +40,7 @@ export const theme = extendTheme(
           fontWeight: 'medium',
         },
       },
+      NumberInput: proTheme.components.Input,
     },
   },
 );

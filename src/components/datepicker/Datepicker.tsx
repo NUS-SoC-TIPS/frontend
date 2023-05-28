@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import {
   FocusLock,
   Input,
@@ -32,9 +32,12 @@ export const Datepicker = ({
 
   const { onOpen, onClose, isOpen } = useDisclosure({ defaultIsOpen: false });
 
+  useEffect(() => {
+    setDateInView(date);
+  }, [date]);
+
   const onPopoverClose = (): void => {
     onClose();
-    setDateInView(date);
     setOffset(0);
   };
 
@@ -70,7 +73,7 @@ export const Datepicker = ({
               onOpen();
             }
           }}
-          value={date != null ? formatDateWithYear(date) : ''}
+          value={date != null ? formatDateWithYear(date, false) : ''}
         />
       </PopoverTrigger>
       <PopoverContent width="100%">

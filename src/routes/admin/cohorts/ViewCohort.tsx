@@ -6,14 +6,22 @@ import { Dashboard, Page } from 'components/page';
 import { ADD_STUDENTS, ADMIN, VIEW_WINDOW } from 'constants/routes';
 import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
 import { COURSEMOLOGY_COURSE_URL_PREFIX } from 'constants/urls';
-import { getCohortAdmin, updateCohortAdmin } from 'lib/admin';
+import {
+  createWindowAdmin,
+  getCohortAdmin,
+  updateCohortAdmin,
+  updateWindowAdmin,
+} from 'lib/admin';
 import { CohortAdminItem } from 'types/api/admin';
 import { WindowBase } from 'types/api/windows';
 import { stripPrefixForUrlField } from 'utils/cohortUtils';
+import { changeToUserTimezone } from 'utils/dateUtils';
+import { compareStartAtsDescending } from 'utils/sortUtils';
 
 import { NameFormControl, UrlFormControl } from '../components/form';
 
 import { StudentTable, WindowTable } from './tables';
+import { WindowModal } from './WindowModal';
 
 interface State {
   cohort: CohortAdminItem | null;
@@ -21,7 +29,7 @@ interface State {
   coursemologyUrl: string;
   isError: boolean;
   isUpdatingBasicInfo: boolean;
-  isCreatingOrUpdatingWindow: boolean;
+  isUpdatingOrCreatingWindow: boolean;
   selectedWindow: (Omit<WindowBase, 'id'> & { id: number | null }) | null;
 }
 
@@ -34,7 +42,6 @@ export const ViewCohort = (): ReactElement<void, typeof Page> => {
       coursemologyUrl: '',
       isError: false,
       isUpdatingBasicInfo: false,
-      isCreatingOrUpdatingWindow: false,
       selectedWindow: null,
     } as State,
   );
@@ -50,6 +57,7 @@ export const ViewCohort = (): ReactElement<void, typeof Page> => {
       }
       try {
         const cohort = await getCohortAdmin(+id).then(stripPrefixForUrlField);
+        cohort.windows.sort(compareStartAtsDescending);
         if (!didCancel) {
           setState({
             cohort,
@@ -70,24 +78,24 @@ export const ViewCohort = (): ReactElement<void, typeof Page> => {
     };
   }, [id]);
 
+  const { name, coursemologyUrl, cohort, isError, selectedWindow } = state;
+
   const cannotUpdateBasicInfo = (): boolean => {
     return (
-      (state.name === state.cohort?.name &&
-        state.coursemologyUrl === state.cohort?.coursemologyUrl) ||
-      state.name.trim() === '' ||
-      state.coursemologyUrl.trim() === ''
+      (name === cohort?.name && coursemologyUrl === cohort?.coursemologyUrl) ||
+      name.trim() === '' ||
+      coursemologyUrl.trim() === ''
     );
   };
 
   const onUpdateBasicInfo = (): Promise<void> => {
-    const { cohort } = state;
     if (cohort == null) {
       return Promise.resolve();
     }
     setState({ isUpdatingBasicInfo: true });
     return updateCohortAdmin(cohort.id, {
-      name: state.name,
-      coursemologyUrl: COURSEMOLOGY_COURSE_URL_PREFIX + state.coursemologyUrl,
+      name: name,
+      coursemologyUrl: COURSEMOLOGY_COURSE_URL_PREFIX + coursemologyUrl,
     })
       .then(stripPrefixForUrlField)
       .then((data): void => {
@@ -98,11 +106,14 @@ export const ViewCohort = (): ReactElement<void, typeof Page> => {
             'Students will be seeing the updated information immediately.',
           status: 'success',
         });
-        const { name, coursemologyUrl } = data;
         setState({
-          cohort: { ...cohort, name, coursemologyUrl },
-          name,
-          coursemologyUrl,
+          cohort: {
+            ...cohort,
+            name: data.name,
+            coursemologyUrl: data.coursemologyUrl,
+          },
+          name: data.name,
+          coursemologyUrl: data.coursemologyUrl,
           isUpdatingBasicInfo: false,
         });
       })
@@ -113,16 +124,23 @@ export const ViewCohort = (): ReactElement<void, typeof Page> => {
   };
 
   const onEditWindow = (id: number): void => {
+    const window = cohort?.windows?.filter((window) => window.id === id)?.[0];
+    if (window == null) {
+      setState({ selectedWindow: null });
+      return;
+    }
     setState({
-      selectedWindow:
-        state.cohort?.windows?.filter((window) => window.id === id)?.[0] ??
-        null,
+      selectedWindow: {
+        ...window,
+        startAt: changeToUserTimezone(window.startAt),
+        endAt: changeToUserTimezone(window.endAt),
+      },
     });
   };
 
   const onAddWindow = (): void => {
-    const windows = state.cohort?.windows ?? [];
-    const startAt = windows[windows.length - 1].endAt ?? new Date();
+    let startAt = state.cohort?.windows?.[0]?.endAt ?? new Date();
+    startAt = new Date(startAt);
     startAt.setDate(startAt.getDate() + 1);
     const endAt = new Date(startAt);
     endAt.setDate(startAt.getDate() + 6);
@@ -137,7 +155,61 @@ export const ViewCohort = (): ReactElement<void, typeof Page> => {
     });
   };
 
-  const { cohort, isError } = state;
+  const onSaveWindow = async (
+    startAt: Date,
+    endAt: Date,
+    numQuestions: number,
+    requireInterview: boolean,
+  ): Promise<void> => {
+    if (cohort == null || selectedWindow == null) {
+      return;
+    }
+    const { id } = selectedWindow;
+    let data;
+    let newWindows = cohort.windows;
+    try {
+      if (id == null) {
+        data = await createWindowAdmin(cohort.id, {
+          startAt: startAt.toDateString(),
+          endAt: endAt.toDateString(),
+          numQuestions,
+          requireInterview,
+        });
+        newWindows = [...newWindows, data];
+      } else {
+        data = await updateWindowAdmin(cohort.id, {
+          id,
+          startAt: startAt.toDateString(),
+          endAt: endAt.toDateString(),
+          numQuestions,
+          requireInterview,
+        });
+        const index = newWindows.findIndex((window) => window.id === id);
+        newWindows[index] = data;
+      }
+    } catch {
+      toast(ERROR_TOAST_PROPS);
+      setState({ isUpdatingOrCreatingWindow: false });
+      return;
+    }
+
+    newWindows.sort(compareStartAtsDescending);
+    toast({
+      ...DEFAULT_TOAST_PROPS,
+      title: id == null ? 'Window added!' : 'Window updated!',
+      description:
+        'Students will be seeing the updated information immediately.',
+      status: 'success',
+    });
+    setState({
+      cohort: {
+        ...cohort,
+        windows: newWindows,
+      },
+      isUpdatingOrCreatingWindow: false,
+      selectedWindow: null,
+    });
+  };
 
   if (isError) {
     // TODO: Add error state
@@ -194,6 +266,22 @@ export const ViewCohort = (): ReactElement<void, typeof Page> => {
             windows={cohort.windows}
           />
         </Stack>
+        <WindowModal
+          endAt={selectedWindow?.endAt ?? new Date()}
+          isCreate={selectedWindow?.id == null}
+          isLoading={state.isUpdatingOrCreatingWindow}
+          isOpen={selectedWindow != null}
+          numQuestions={selectedWindow?.numQuestions ?? 6}
+          onClose={(): void => setState({ selectedWindow: null })}
+          onSave={onSaveWindow}
+          otherWindows={
+            cohort?.windows?.filter(
+              (window) => window.id !== selectedWindow?.id,
+            ) ?? []
+          }
+          requireInterview={selectedWindow?.requireInterview ?? false}
+          startAt={selectedWindow?.startAt ?? new Date()}
+        />
       </Dashboard>
     </Page>
   );
