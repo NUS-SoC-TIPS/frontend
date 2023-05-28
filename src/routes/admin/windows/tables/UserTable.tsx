@@ -21,6 +21,7 @@ interface Props {
   options?: TableOptions;
   isInclude?: boolean;
   onIncludeOrExclude?: (id: number) => void;
+  onAutoExclude?: () => void;
   onViewSubmissions: (submissions: SubmissionBase[]) => void;
   onViewInterviews: (interviews: InterviewBase[]) => void;
 }
@@ -262,6 +263,7 @@ export const UserTable = ({
   onViewSubmissions,
   onViewInterviews,
   onIncludeOrExclude = emptyFunction,
+  onAutoExclude,
 }: Props): ReactElement<Props, typeof Card> => {
   const columns = useMemo(
     () =>
@@ -277,7 +279,20 @@ export const UserTable = ({
 
   return (
     <Card px={0} py={0}>
-      <Table columns={columns} options={options} rows={rows} />
+      <Table
+        actionButton={
+          onAutoExclude ? (
+            <Button onClick={onAutoExclude} variant="primary">
+              Auto Exclude
+            </Button>
+          ) : (
+            <></>
+          )
+        }
+        columns={columns}
+        options={options}
+        rows={rows}
+      />
     </Card>
   );
 };

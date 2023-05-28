@@ -12,6 +12,7 @@ interface Props {
   users: WindowItem['students'];
   window: { startAt: Date; endAt: Date };
   onExclude: (id: number) => void;
+  onAutoExclude: () => void;
   onViewSubmissions: (submissions: SubmissionBase[]) => void;
   onViewInterviews: (interviews: InterviewBase[]) => void;
 }
@@ -20,12 +21,14 @@ export const StudentTable = ({
   users,
   window,
   onExclude,
+  onAutoExclude,
   onViewSubmissions,
   onViewInterviews,
 }: Props): ReactElement<Props, typeof Card> => {
   return (
     <UserTable
       isInclude={false}
+      onAutoExclude={onAutoExclude}
       onIncludeOrExclude={onExclude}
       onViewInterviews={onViewInterviews}
       onViewSubmissions={onViewSubmissions}

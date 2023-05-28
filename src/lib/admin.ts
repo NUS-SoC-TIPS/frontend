@@ -95,3 +95,8 @@ export const createExclusion = async (
 export const deleteExclusion = async (id: number): Promise<void> => {
   await api.delete(`exclusions/${id}`);
 };
+
+export const autoExclude = async (id: number): Promise<number> => {
+  const response = await api.post(`windows/${id}/autoexclude`);
+  return response.data;
+};

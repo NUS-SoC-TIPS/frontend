@@ -6,13 +6,19 @@ import { StatCard } from 'components/card';
 import { Dashboard, Page } from 'components/page';
 import { VIEW_COHORT } from 'constants/routes';
 import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
-import { createExclusion, deleteExclusion, getWindowAdmin } from 'lib/admin';
+import {
+  autoExclude,
+  createExclusion,
+  deleteExclusion,
+  getWindowAdmin,
+} from 'lib/admin';
 import { WindowItem } from 'types/api/admin';
 import { InterviewBase } from 'types/api/interviews';
 import { SubmissionBase } from 'types/api/questions';
 import { StudentBaseWithId } from 'types/api/students';
 
 import {
+  ConfirmAutoExclusion,
   ConfirmExclusion,
   ConfirmInclusion,
   InterviewsCompleted,
@@ -34,6 +40,8 @@ interface State {
     | null;
   submissionsViewed: SubmissionBase[] | null;
   interviewsViewed: InterviewBase[] | null;
+  isAutoExclusionModalShown: boolean;
+  isAutoExcluding: boolean;
 }
 
 export const ViewWindow = (): ReactElement<typeof Page> => {
@@ -121,7 +129,7 @@ export const ViewWindow = (): ReactElement<typeof Page> => {
     setState({ studentBeingExcluded: student });
   };
 
-  const onConfirmExclude = async (reason: string): Promise<void> => {
+  const onConfirmExclude = (reason: string): void => {
     if (!studentBeingExcluded) {
       return;
     }
@@ -161,7 +169,7 @@ export const ViewWindow = (): ReactElement<typeof Page> => {
     setState({ studentBeingIncluded: { ...student, exclusion } });
   };
 
-  const onConfirmInclude = async (): Promise<void> => {
+  const onConfirmInclude = (): void => {
     if (!studentBeingIncluded) {
       return;
     }
@@ -178,6 +186,31 @@ export const ViewWindow = (): ReactElement<typeof Page> => {
       })
       .catch(() => {
         toast(ERROR_TOAST_PROPS);
+      });
+  };
+
+  const onConfirmAutoExclude = (): void => {
+    setState({ isAutoExcluding: true });
+    let numExcluded = 0;
+    autoExclude(window.id)
+      .then((data) => {
+        numExcluded = data;
+        refetchWindow();
+      })
+      .then(() => {
+        toast({
+          ...DEFAULT_TOAST_PROPS,
+          title: `${numExcluded} ${
+            numExcluded === 1 ? 'student' : 'students'
+          } automatically excluded!`,
+          description: 'What a bummer...',
+          status: 'info',
+        });
+        setState({ isAutoExcluding: false, isAutoExclusionModalShown: false });
+      })
+      .catch(() => {
+        toast(ERROR_TOAST_PROPS);
+        setState({ isAutoExcluding: false, isAutoExclusionModalShown: false });
       });
   };
 
@@ -209,6 +242,9 @@ export const ViewWindow = (): ReactElement<typeof Page> => {
           <StatCard stat={numCompleted} title="Number of Students Completed" />
         </SimpleGrid>
         <StudentTable
+          onAutoExclude={(): void =>
+            setState({ isAutoExclusionModalShown: true })
+          }
           onExclude={onExclude}
           onViewInterviews={onViewInterviews}
           onViewSubmissions={onViewSubmissions}
@@ -243,6 +279,12 @@ export const ViewWindow = (): ReactElement<typeof Page> => {
           interviews={interviewsViewed ?? []}
           isOpen={interviewsViewed != null}
           onClose={(): void => setState({ interviewsViewed: null })}
+        />
+        <ConfirmAutoExclusion
+          isLoading={state.isAutoExcluding}
+          isOpen={state.isAutoExclusionModalShown}
+          onClose={(): void => setState({ isAutoExclusionModalShown: false })}
+          onConfirmAutoExclude={onConfirmAutoExclude}
         />
       </Dashboard>
     </Page>
