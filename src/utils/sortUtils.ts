@@ -17,7 +17,7 @@ export const compareCreatedAtsDescending = <T extends { createdAt: Date }>(
   return -compareDatesAscending(a.createdAt, b.createdAt);
 };
 
-export const compareStartAtsDescending = <T extends { startAt: Date }>(
+export const compareStartAtsDescending = <T extends { startAt: Date | null }>(
   a: T,
   b: T,
 ): number => {

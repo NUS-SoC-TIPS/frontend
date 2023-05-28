@@ -6,6 +6,7 @@ import { ErrorBanner } from 'components/errorBanner';
 import { VIEW_COHORT } from 'constants/routes';
 import { getOverviewAdmin } from 'lib/admin';
 import { AdminOverview } from 'types/api/admin';
+import { compareStartAtsDescending } from 'utils/sortUtils';
 
 import { AdminPage } from './AdminPage';
 import { CohortTable, NonStudentTable } from './tables';
@@ -28,6 +29,7 @@ export const Admin = (): ReactElement<typeof AdminPage> => {
       return getOverviewAdmin()
         .then((overview) => {
           if (!didCancel) {
+            overview.cohorts.sort(compareStartAtsDescending);
             setState({ overview });
           }
         })
