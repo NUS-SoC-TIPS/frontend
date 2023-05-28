@@ -1,6 +1,13 @@
 import { ReactElement, useEffect, useReducer } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
+import {
+  Button,
+  Flex,
+  HStack,
+  Stack,
+  StackDivider,
+  useToast,
+} from '@chakra-ui/react';
 
 import { Dashboard, Page } from 'components/page';
 import { ADD_STUDENTS, ADMIN, VIEW_WINDOW } from 'constants/routes';
@@ -9,6 +16,7 @@ import { COURSEMOLOGY_COURSE_URL_PREFIX } from 'constants/urls';
 import {
   createWindowAdmin,
   getCohortAdmin,
+  rematchWindows,
   updateCohortAdmin,
   updateWindowAdmin,
 } from 'lib/admin';
@@ -30,6 +38,7 @@ interface State {
   isError: boolean;
   isUpdatingBasicInfo: boolean;
   isUpdatingOrCreatingWindow: boolean;
+  isRematchingWindows: boolean;
   selectedWindow: (Omit<WindowBase, 'id'> & { id: number | null }) | null;
 }
 
@@ -212,6 +221,28 @@ export const ViewCohort = (): ReactElement<void, typeof Page> => {
     });
   };
 
+  const onRematchWindows = (): Promise<void> => {
+    if (cohort == null) {
+      return Promise.resolve();
+    }
+    setState({ isRematchingWindows: true });
+    return rematchWindows(cohort.id)
+      .then((): void => {
+        toast({
+          ...DEFAULT_TOAST_PROPS,
+          title: 'Windows rematched!',
+          description:
+            'Students will be seeing the updated information immediately.',
+          status: 'success',
+        });
+        setState({ isRematchingWindows: false });
+      })
+      .catch((): void => {
+        toast(ERROR_TOAST_PROPS);
+        setState({ isRematchingWindows: false });
+      });
+  };
+
   if (isError) {
     // TODO: Add error state
     return <></>;
@@ -226,9 +257,18 @@ export const ViewCohort = (): ReactElement<void, typeof Page> => {
     <Page>
       <Dashboard
         actions={
-          <Button onClick={(): void => navigate(ADMIN)} variant="secondary">
-            Back to Admin
-          </Button>
+          <HStack spacing={2}>
+            <Button
+              isLoading={state.isRematchingWindows}
+              onClick={onRematchWindows}
+              variant="secondary"
+            >
+              Rematch Windows
+            </Button>
+            <Button onClick={(): void => navigate(ADMIN)} variant="secondary">
+              Back to Admin
+            </Button>
+          </HStack>
         }
         heading="Viewing Cohort"
         subheading="View and update the basic information, windows and students of a cohort here."
