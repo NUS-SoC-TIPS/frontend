@@ -1,7 +1,8 @@
 import { ReactElement, useEffect, useReducer } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, useToast } from '@chakra-ui/react';
+import { Button, SimpleGrid, useToast } from '@chakra-ui/react';
 
+import { StatCard } from 'components/card';
 import { Dashboard, Page } from 'components/page';
 import { VIEW_COHORT } from 'constants/routes';
 import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
@@ -101,6 +102,9 @@ export const ViewWindow = (): ReactElement<typeof Page> => {
   const excludedStudents = window.students.filter(
     (student) => student.exclusion != null,
   );
+  const numCompleted = window.students.filter(
+    (student) => student.hasCompletedWindow,
+  ).length;
 
   const refetchWindow = (): Promise<void> => {
     return getWindowAdmin(+id).then((window) => setState({ window }));
@@ -197,6 +201,13 @@ export const ViewWindow = (): ReactElement<typeof Page> => {
         heading="Viewing Window"
         subheading="See how students are doing for this window here!"
       >
+        <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
+          <StatCard
+            stat={window.students.length}
+            title="Number of Students This Window"
+          />
+          <StatCard stat={numCompleted} title="Number of Students Completed" />
+        </SimpleGrid>
         <StudentTable
           onExclude={onExclude}
           onViewInterviews={onViewInterviews}

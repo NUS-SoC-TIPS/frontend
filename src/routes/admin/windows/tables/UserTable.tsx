@@ -18,7 +18,6 @@ import { booleanRenderer, exclusionRenderer } from 'utils/tableUtils';
 
 interface Props {
   users: WindowItem['students'];
-  window: { numQuestions: number; requireInterview: boolean };
   options?: TableOptions;
   isInclude?: boolean;
   onIncludeOrExclude?: (id: number) => void;
@@ -216,10 +215,7 @@ const getColumns = (
   ];
 };
 
-const transformData = (
-  users: WindowItem['students'],
-  window: { numQuestions: number; requireInterview: boolean },
-): Row[] => {
+const transformData = (users: WindowItem['students']): Row[] => {
   return users.map((user) => {
     const {
       name,
@@ -229,14 +225,11 @@ const transformData = (
       photoUrl,
       interviews,
       submissions,
+      hasCompletedWindow,
       coursemologyName,
       coursemologyProfileUrl,
       exclusion,
     } = user;
-
-    const hasCompletedWindow =
-      submissions.length >= window.numQuestions &&
-      (!window.requireInterview || interviews.length >= 1);
 
     return {
       studentId,
@@ -264,7 +257,6 @@ const transformData = (
 
 export const UserTable = ({
   users,
-  window,
   isInclude = false,
   options = {},
   onViewSubmissions,
@@ -281,7 +273,7 @@ export const UserTable = ({
       ),
     [isInclude, onIncludeOrExclude, onViewSubmissions, onViewInterviews],
   );
-  const rows = useMemo(() => transformData(users, window), [users, window]);
+  const rows = useMemo(() => transformData(users), [users]);
 
   return (
     <Card px={0} py={0}>

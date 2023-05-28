@@ -87,6 +87,7 @@ export interface WindowItem extends WindowBase {
   students: (StudentBaseWithId & {
     submissions: SubmissionBase[];
     interviews: InterviewBase[];
+    hasCompletedWindow: boolean;
     exclusion: {
       id: number;
       reason: string; // TODO: Make this an enum

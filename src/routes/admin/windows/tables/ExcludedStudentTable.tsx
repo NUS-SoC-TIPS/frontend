@@ -10,12 +10,7 @@ import { UserTable } from './UserTable';
 
 interface Props {
   users: WindowItem['students'];
-  window: {
-    startAt: Date;
-    endAt: Date;
-    numQuestions: number;
-    requireInterview: boolean;
-  };
+  window: { startAt: Date; endAt: Date };
   onInclude: (id: number) => void;
   onViewSubmissions: (submissions: SubmissionBase[]) => void;
   onViewInterviews: (interviews: InterviewBase[]) => void;
@@ -41,7 +36,6 @@ export const ExcludedStudentTable = ({
         )} - ${formatDateWithYear(window.endAt)})`,
       }}
       users={users}
-      window={window}
     />
   );
 };
