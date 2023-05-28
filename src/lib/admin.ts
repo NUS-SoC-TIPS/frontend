@@ -55,6 +55,10 @@ export const updateWindowAdmin = async (
   return response.data;
 };
 
+export const deleteWindowAdmin = async (id: number): Promise<void> => {
+  await api.delete(`windows/${id}`);
+};
+
 export const validateStudentsAdmin = async (
   cohortId: number,
   dto: CreateStudentDto[],
