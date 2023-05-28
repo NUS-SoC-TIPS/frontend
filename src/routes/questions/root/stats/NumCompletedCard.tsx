@@ -21,7 +21,12 @@ export const NumCompletedCard = ({
       ? 'Completed This Window (SGT)'
       : 'Completed This Week (SGT)';
 
-  const questions = numCompleted === 1 ? 'question' : 'questions';
+  const questions =
+    numCompleted === 1
+      ? numTarget && numTarget > 1
+        ? 'questions'
+        : 'question'
+      : 'questions';
   const stat = `${numCompleted}${
     numTarget != null ? `/${numTarget}` : ''
   } ${questions}`;
