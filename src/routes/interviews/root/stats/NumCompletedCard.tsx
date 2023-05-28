@@ -22,7 +22,7 @@ export const NumCompletedCard = ({
       : 'Completed This Week (SGT)';
   const interviews = numCompleted === 1 ? 'interview' : 'interviews';
   const stat = `${numCompleted}${
-    requireInterview != null ? '/1' : ''
+    requireInterview != null && requireInterview ? '/1' : ''
   } ${interviews}`;
 
   const subtitle = `${formatDateWithYear(startAt)} - ${formatDateWithYear(
