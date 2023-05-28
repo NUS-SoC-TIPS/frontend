@@ -16,7 +16,11 @@ import {
 import { Datepicker } from 'components/datepicker';
 import { Modal } from 'components/modal';
 import { RadioButton, RadioButtonGroup } from 'components/radio';
-import { isBeforeByDate } from 'utils/dateUtils';
+import {
+  formatDateWithYear,
+  isBeforeByDate,
+  isSameByDate,
+} from 'utils/dateUtils';
 import { emptyFunction } from 'utils/functionUtils';
 
 interface Props {
@@ -95,6 +99,18 @@ export const WindowModal = ({
     return null;
   };
 
+  const allValuesAreEqual = (): boolean => {
+    return (
+      numQuestions === newNumQuestions &&
+      requireInterview === newRequireInterview &&
+      isSameByDate(
+        newStartAt.toDateString(),
+        formatDateWithYear(startAt, false),
+      ) &&
+      isSameByDate(newEndAt.toDateString(), formatDateWithYear(endAt, false))
+    );
+  };
+
   const handleSave = (): void => {
     onSave(newStartAt, newEndAt, newNumQuestions, newRequireInterview);
   };
@@ -109,7 +125,7 @@ export const WindowModal = ({
             Cancel
           </Button>
           <Button
-            isDisabled={errorMessage != null}
+            isDisabled={errorMessage != null || allValuesAreEqual()}
             isLoading={isLoading}
             onClick={handleSave}
             variant="primary"

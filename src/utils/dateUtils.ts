@@ -27,7 +27,14 @@ export const formatDateWithoutYear = (date: Date | null): string => {
 };
 
 export const isBeforeByDate = (a: Date | string, b: Date | string): boolean => {
-  return dayjs(a).tz().startOf('day') < dayjs(b).tz().startOf('day');
+  return dayjs(a).tz().startOf('day').isBefore(dayjs(b).tz().startOf('day'));
+};
+
+export const isSameByDate = (a: Date | string, b: Date | string): boolean => {
+  return dayjs(a)
+    .tz()
+    .startOf('day')
+    .isSame(dayjs(b).tz().startOf('day'), 'date');
 };
 
 export const changeToUserTimezone = (date: Date): Date => {

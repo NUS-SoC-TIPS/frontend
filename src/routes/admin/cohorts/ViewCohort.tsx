@@ -168,6 +168,7 @@ export const ViewCohort = (): ReactElement<void, typeof Page> => {
     let data;
     let newWindows = cohort.windows;
     try {
+      setState({ isUpdatingOrCreatingWindow: true });
       if (id == null) {
         data = await createWindowAdmin(cohort.id, {
           startAt: startAt.toDateString(),
