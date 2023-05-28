@@ -4,7 +4,7 @@ import { Box, Button, Link } from '@chakra-ui/react';
 import { Card } from 'components/card';
 import { Table } from 'components/table';
 import { UserProfile } from 'components/userProfile';
-import { StudentBase } from 'types/api/students';
+import { StudentBaseWithId } from 'types/api/students';
 import { UserBase } from 'types/api/users';
 import { TableColumn } from 'types/table';
 import { formatDateWithYear } from 'utils/dateUtils';
@@ -16,10 +16,8 @@ import {
 import { booleanRenderer } from 'utils/tableUtils';
 
 interface Props {
-  students: (StudentBase & {
-    studentId: number;
+  students: (StudentBaseWithId & {
     joinedAt: Date;
-    coursemologyName: string;
     isExcluded: boolean;
   })[];
   onAdd: () => void;
@@ -140,10 +138,8 @@ const getColumns = (): TableColumn[] => {
 };
 
 const transformData = (
-  students: (StudentBase & {
-    studentId: number;
+  students: (StudentBaseWithId & {
     joinedAt: Date;
-    coursemologyName: string;
     isExcluded: boolean;
   })[],
 ): Row[] => {

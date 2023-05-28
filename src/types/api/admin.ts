@@ -1,11 +1,11 @@
 import { InterviewBase } from './interviews';
 import { SubmissionBase } from './questions';
-import { StudentBase } from './students';
+import { StudentBase, StudentBaseWithId } from './students';
 import { UserBase } from './users';
 import { WindowBase } from './windows';
 
 export interface CreateExclusionDto {
-  userId: string;
+  studentId: number;
   windowId: number;
   reason: string;
 }
@@ -61,10 +61,8 @@ export interface CohortAdminItem {
   coursemologyUrl: string;
   windows: WindowBase[];
   // TODO: Remove this later once a separate query is done
-  students: (StudentBase & {
-    studentId: number;
+  students: (StudentBaseWithId & {
     joinedAt: Date;
-    coursemologyName: string;
     isExcluded: boolean;
   })[];
 }
@@ -75,9 +73,7 @@ export interface CohortAdminUpdateResult {
 }
 
 export interface CohortStudentValidationResult {
-  success: (StudentBase & {
-    coursemologyName: string;
-  })[];
+  success: StudentBase[];
   error: {
     githubUsername: string;
     coursemologyName: string;
@@ -87,9 +83,8 @@ export interface CohortStudentValidationResult {
 }
 
 export interface WindowItem extends WindowBase {
-  students: (StudentBase & {
-    studentId: number;
-    coursemologyName: string;
+  cohortId: number;
+  students: (StudentBaseWithId & {
     submissions: SubmissionBase[];
     interviews: InterviewBase[];
     exclusion: {
