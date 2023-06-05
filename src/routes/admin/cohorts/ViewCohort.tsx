@@ -1,16 +1,9 @@
 import { ReactElement, useEffect, useReducer } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-  Button,
-  Flex,
-  HStack,
-  Stack,
-  StackDivider,
-  useToast,
-} from '@chakra-ui/react';
+import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 
-import { Dashboard, Page } from 'components/page';
-import { ADD_STUDENTS, ADMIN, VIEW_WINDOW } from 'constants/routes';
+import { ErrorBanner } from 'components/errorBanner';
+import { ADD_STUDENTS, VIEW_WINDOW } from 'constants/routes';
 import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
 import { COURSEMOLOGY_COURSE_URL_PREFIX } from 'constants/urls';
 import {
@@ -29,6 +22,8 @@ import { compareStartAtsDescending } from 'utils/sortUtils';
 import { NameFormControl, UrlFormControl } from '../components/form';
 
 import { StudentTable, WindowTable } from './tables';
+import { ViewCohortPage } from './ViewCohortPage';
+import { ViewCohortSkeleton } from './ViewCohortSkeleton';
 import { WindowModal } from './WindowModal';
 
 interface State {
@@ -42,7 +37,7 @@ interface State {
   selectedWindow: (Omit<WindowBase, 'id'> & { id: number | null }) | null;
 }
 
-export const ViewCohort = (): ReactElement<void, typeof Page> => {
+export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
   const [state, setState] = useReducer(
     (s: State, a: Partial<State>): State => ({ ...s, ...a }),
     {
@@ -244,86 +239,70 @@ export const ViewCohort = (): ReactElement<void, typeof Page> => {
   };
 
   if (isError) {
-    // TODO: Add error state
-    return <></>;
+    return (
+      <ViewCohortPage>
+        <ErrorBanner />
+      </ViewCohortPage>
+    );
   }
 
   if (cohort == null) {
-    // TODO: Add loading state
-    return <></>;
+    return <ViewCohortSkeleton />;
   }
 
   return (
-    <Page>
-      <Dashboard
-        actions={
-          <HStack spacing={2}>
+    <ViewCohortPage
+      isRematchingWindows={state.isRematchingWindows}
+      onRematchWindows={onRematchWindows}
+    >
+      <Stack spacing={12}>
+        <Stack divider={<StackDivider />} spacing={5}>
+          <NameFormControl
+            name={state.name}
+            onChange={(name: string): void => setState({ name })}
+          />
+          <UrlFormControl
+            onChange={(url: string): void => setState({ coursemologyUrl: url })}
+            url={state.coursemologyUrl}
+          />
+          <Flex direction="row-reverse">
             <Button
-              isLoading={state.isRematchingWindows}
-              onClick={onRematchWindows}
-              variant="secondary"
+              isDisabled={cannotUpdateBasicInfo()}
+              isLoading={state.isUpdatingBasicInfo}
+              onClick={onUpdateBasicInfo}
+              variant="primary"
             >
-              Rematch Windows
+              Update Basic Info
             </Button>
-            <Button onClick={(): void => navigate(ADMIN)} variant="secondary">
-              Back to Admin
-            </Button>
-          </HStack>
-        }
-        heading="Viewing Cohort"
-        subheading="View and update the basic information, windows and students of a cohort here."
-      >
-        <Stack spacing={12}>
-          <Stack divider={<StackDivider />} spacing={5}>
-            <NameFormControl
-              name={state.name}
-              onChange={(name: string): void => setState({ name })}
-            />
-            <UrlFormControl
-              onChange={(url: string): void =>
-                setState({ coursemologyUrl: url })
-              }
-              url={state.coursemologyUrl}
-            />
-            <Flex direction="row-reverse">
-              <Button
-                isDisabled={cannotUpdateBasicInfo()}
-                isLoading={state.isUpdatingBasicInfo}
-                onClick={onUpdateBasicInfo}
-                variant="primary"
-              >
-                Update Basic Info
-              </Button>
-            </Flex>
-          </Stack>
-          <StudentTable
-            onAdd={(): void => navigate(`${ADD_STUDENTS}/${id}`)}
-            students={cohort.students}
-          />
-          <WindowTable
-            onAdd={onAddWindow}
-            onEdit={onEditWindow}
-            onView={(id: number): void => navigate(`${VIEW_WINDOW}/${id}`)}
-            windows={cohort.windows}
-          />
+          </Flex>
         </Stack>
-        <WindowModal
-          endAt={selectedWindow?.endAt ?? new Date()}
-          isCreate={selectedWindow?.id == null}
-          isLoading={state.isUpdatingOrCreatingWindow}
-          isOpen={selectedWindow != null}
-          numQuestions={selectedWindow?.numQuestions ?? 6}
-          onClose={(): void => setState({ selectedWindow: null })}
-          onSave={onSaveWindow}
-          otherWindows={
-            cohort?.windows?.filter(
-              (window) => window.id !== selectedWindow?.id,
-            ) ?? []
-          }
-          requireInterview={selectedWindow?.requireInterview ?? false}
-          startAt={selectedWindow?.startAt ?? new Date()}
+        <StudentTable
+          onAdd={(): void => navigate(`${ADD_STUDENTS}/${id}`)}
+          students={cohort.students}
         />
-      </Dashboard>
-    </Page>
+        <WindowTable
+          onAdd={onAddWindow}
+          onEdit={onEditWindow}
+          onView={(id: number): void => navigate(`${VIEW_WINDOW}/${id}`)}
+          windows={cohort.windows}
+        />
+      </Stack>
+      <WindowModal
+        endAt={selectedWindow?.endAt ?? new Date()}
+        isCreate={selectedWindow?.id == null}
+        isLoading={state.isUpdatingOrCreatingWindow}
+        isOpen={selectedWindow != null}
+        numQuestions={selectedWindow?.numQuestions ?? 6}
+        onClose={(): void => setState({ selectedWindow: null })}
+        onSave={onSaveWindow}
+        otherWindows={
+          cohort?.windows?.filter(
+            (window) => window.id !== selectedWindow?.id,
+          ) ?? []
+        }
+        requireInterview={selectedWindow?.requireInterview ?? false}
+        startAt={selectedWindow?.startAt ?? new Date()}
+      />
+    </ViewCohortPage>
   );
 };
