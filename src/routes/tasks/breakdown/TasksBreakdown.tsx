@@ -127,6 +127,7 @@ export const TasksBreakdown = (): ReactElement<typeof Page> => {
           <InterviewTasksBox
             hasCompletedInterview={selectedWindow.hasCompletedInterview}
             interviews={selectedWindow.interviews}
+            pairedPartner={selectedWindow.pairedPartner}
             requireInterview={selectedWindow.requireInterview}
           />
         </Stack>
