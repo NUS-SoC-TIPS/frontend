@@ -1,10 +1,9 @@
 import { ReactElement, useEffect, useReducer } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Button, SimpleGrid, useToast } from '@chakra-ui/react';
+import { useParams } from 'react-router-dom';
+import { SimpleGrid, useToast } from '@chakra-ui/react';
 
 import { StatCard } from 'components/card';
-import { Dashboard, Page } from 'components/page';
-import { VIEW_COHORT } from 'constants/routes';
+import { ErrorBanner } from 'components/errorBanner';
 import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
 import {
   autoExclude,
@@ -25,6 +24,8 @@ import {
   QuestionsCompleted,
 } from './modals';
 import { ExcludedStudentTable, StudentTable } from './tables';
+import { ViewWindowPage } from './ViewWindowPage';
+import { ViewWindowSkeleton } from './ViewWindowSkeleton';
 
 interface State {
   isError: boolean;
@@ -44,7 +45,7 @@ interface State {
   isAutoExcluding: boolean;
 }
 
-export const ViewWindow = (): ReactElement<typeof Page> => {
+export const ViewWindow = (): ReactElement<typeof ViewWindowPage> => {
   const [state, setState] = useReducer(
     (s: State, a: Partial<State>) => ({ ...s, ...a }),
     {
@@ -58,7 +59,6 @@ export const ViewWindow = (): ReactElement<typeof Page> => {
   );
   const toast = useToast();
   const { id } = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     let didCancel = false;
@@ -95,13 +95,15 @@ export const ViewWindow = (): ReactElement<typeof Page> => {
   } = state;
 
   if (isError || id == null) {
-    // TODO: Add error state
-    return <></>;
+    return (
+      <ViewWindowPage>
+        <ErrorBanner />
+      </ViewWindowPage>
+    );
   }
 
   if (window == null) {
-    // TODO: Add loading state
-    return <></>;
+    return <ViewWindowSkeleton />;
   }
 
   const includedStudents = window.students.filter(
@@ -221,72 +223,59 @@ export const ViewWindow = (): ReactElement<typeof Page> => {
     setState({ interviewsViewed });
 
   return (
-    <Page>
-      <Dashboard
-        actions={
-          <Button
-            onClick={(): void => navigate(`${VIEW_COHORT}/${window.cohortId}`)}
-            variant="secondary"
-          >
-            Back to Cohort
-          </Button>
+    <ViewWindowPage cohortId={window.cohortId}>
+      <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
+        <StatCard
+          stat={window.students.length}
+          title="Number of Students This Window"
+        />
+        <StatCard stat={numCompleted} title="Number of Students Completed" />
+      </SimpleGrid>
+      <StudentTable
+        onAutoExclude={(): void =>
+          setState({ isAutoExclusionModalShown: true })
         }
-        heading="Viewing Window"
-        subheading="See how students are doing for this window here!"
-      >
-        <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
-          <StatCard
-            stat={window.students.length}
-            title="Number of Students This Window"
-          />
-          <StatCard stat={numCompleted} title="Number of Students Completed" />
-        </SimpleGrid>
-        <StudentTable
-          onAutoExclude={(): void =>
-            setState({ isAutoExclusionModalShown: true })
-          }
-          onExclude={onExclude}
-          onViewInterviews={onViewInterviews}
-          onViewSubmissions={onViewSubmissions}
-          users={includedStudents}
-          window={window}
-        />
-        <ExcludedStudentTable
-          onInclude={onInclude}
-          onViewInterviews={onViewInterviews}
-          onViewSubmissions={onViewSubmissions}
-          users={excludedStudents}
-          window={window}
-        />
-        <ConfirmExclusion
-          isOpen={studentBeingExcluded != null}
-          name={studentBeingExcluded?.name ?? ''}
-          onClose={(): void => setState({ studentBeingExcluded: null })}
-          onConfirmExclude={onConfirmExclude}
-        />
-        <ConfirmInclusion
-          isOpen={studentBeingIncluded != null}
-          name={studentBeingIncluded?.name ?? ''}
-          onClose={(): void => setState({ studentBeingIncluded: null })}
-          onConfirmInclude={onConfirmInclude}
-        />
-        <QuestionsCompleted
-          isOpen={submissionsViewed != null}
-          onClose={(): void => setState({ submissionsViewed: null })}
-          submissions={submissionsViewed ?? []}
-        />
-        <InterviewsCompleted
-          interviews={interviewsViewed ?? []}
-          isOpen={interviewsViewed != null}
-          onClose={(): void => setState({ interviewsViewed: null })}
-        />
-        <ConfirmAutoExclusion
-          isLoading={state.isAutoExcluding}
-          isOpen={state.isAutoExclusionModalShown}
-          onClose={(): void => setState({ isAutoExclusionModalShown: false })}
-          onConfirmAutoExclude={onConfirmAutoExclude}
-        />
-      </Dashboard>
-    </Page>
+        onExclude={onExclude}
+        onViewInterviews={onViewInterviews}
+        onViewSubmissions={onViewSubmissions}
+        users={includedStudents}
+        window={window}
+      />
+      <ExcludedStudentTable
+        onInclude={onInclude}
+        onViewInterviews={onViewInterviews}
+        onViewSubmissions={onViewSubmissions}
+        users={excludedStudents}
+        window={window}
+      />
+      <ConfirmExclusion
+        isOpen={studentBeingExcluded != null}
+        name={studentBeingExcluded?.name ?? ''}
+        onClose={(): void => setState({ studentBeingExcluded: null })}
+        onConfirmExclude={onConfirmExclude}
+      />
+      <ConfirmInclusion
+        isOpen={studentBeingIncluded != null}
+        name={studentBeingIncluded?.name ?? ''}
+        onClose={(): void => setState({ studentBeingIncluded: null })}
+        onConfirmInclude={onConfirmInclude}
+      />
+      <QuestionsCompleted
+        isOpen={submissionsViewed != null}
+        onClose={(): void => setState({ submissionsViewed: null })}
+        submissions={submissionsViewed ?? []}
+      />
+      <InterviewsCompleted
+        interviews={interviewsViewed ?? []}
+        isOpen={interviewsViewed != null}
+        onClose={(): void => setState({ interviewsViewed: null })}
+      />
+      <ConfirmAutoExclusion
+        isLoading={state.isAutoExcluding}
+        isOpen={state.isAutoExclusionModalShown}
+        onClose={(): void => setState({ isAutoExclusionModalShown: false })}
+        onConfirmAutoExclude={onConfirmAutoExclude}
+      />
+    </ViewWindowPage>
   );
 };
