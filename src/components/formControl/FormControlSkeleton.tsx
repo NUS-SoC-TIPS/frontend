@@ -1,12 +1,7 @@
 import { PropsWithChildren, ReactElement } from 'react';
-import {
-  Box,
-  FormControl as ChakraFormControl,
-  FormLabel,
-  Input,
-  Skeleton,
-  Stack,
-} from '@chakra-ui/react';
+import { Input, Skeleton } from '@chakra-ui/react';
+
+import { FormControl } from './FormControl';
 
 interface Props {
   id: string;
@@ -18,22 +13,13 @@ export const FormControlSkeleton = ({
   label,
 }: PropsWithChildren<Props>): ReactElement<
   PropsWithChildren<Props>,
-  typeof ChakraFormControl
+  typeof FormControl
 > => {
   return (
-    <ChakraFormControl id={id}>
-      <Stack
-        direction={{ base: 'column', md: 'row' }}
-        justify="space-between"
-        spacing={{ base: 1.5, md: 8 }}
-      >
-        <FormLabel variant="inline">{label}</FormLabel>
-        <Box maxW={{ md: '3xl' }} w="100%">
-          <Skeleton>
-            <Input />
-          </Skeleton>
-        </Box>
-      </Stack>
-    </ChakraFormControl>
+    <FormControl id={id} label={label}>
+      <Skeleton>
+        <Input />
+      </Skeleton>
+    </FormControl>
   );
 };

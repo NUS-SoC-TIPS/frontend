@@ -1,9 +1,14 @@
 import { ReactElement } from 'react';
-import { Stack, StackDivider } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  Skeleton,
+  Stack,
+  StackDivider,
+} from '@chakra-ui/react';
 
-import { emptyFunction } from 'utils/functionUtils';
-
-import { NameFormControl } from '../components/form';
+import { FormControl, FormControlSkeleton } from 'components/formControl';
 
 import { PastSubmissionPage } from './PastSubmissionPage';
 
@@ -14,14 +19,25 @@ export const PastSubmissionSkeleton = (): ReactElement<
   return (
     <PastSubmissionPage>
       <Stack divider={<StackDivider />} spacing={5}>
-        <NameFormControl
-          isDisabled={true}
-          isError={false}
-          isLoading={true}
-          onChange={emptyFunction}
-          questions={[]}
-          selectedQuestion={null}
-        />
+        <FormControlSkeleton id="name" label="Name" />
+        <FormControlSkeleton id="url" label="URL" />
+        <FormControlSkeleton id="difficulty" label="Difficulty" />
+        <FormControlSkeleton id="language" label="Language Used" />
+        <FormControl id="code" label="Code Written">
+          <Skeleton>
+            <Box height="15rem" width="100%" />
+          </Skeleton>
+        </FormControl>
+        <Flex direction="row-reverse">
+          <Stack direction="row" spacing={2}>
+            <Button isDisabled={true} variant="secondary">
+              Delete Submission
+            </Button>
+            <Button isDisabled={true} variant="primary">
+              Update Submission
+            </Button>
+          </Stack>
+        </Flex>
       </Stack>
     </PastSubmissionPage>
   );
