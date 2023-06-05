@@ -61,7 +61,7 @@ export const TasksBreakdown = (): ReactElement<typeof Page> => {
 
   const { cohort, isError } = state;
 
-  if (isError) {
+  if (isError || id == null) {
     return (
       <TasksBreakdownPage>
         <ErrorBanner maxW="100%" px={0} />

@@ -63,7 +63,7 @@ export const PastInterview = (): ReactElement<
 
   const { interview, isError } = state;
 
-  if (isError) {
+  if (isError || id == null) {
     <PastInterviewPage subheading="Failed to load your interview!">
       <ErrorBanner maxW="100%" px={0} />
     </PastInterviewPage>;

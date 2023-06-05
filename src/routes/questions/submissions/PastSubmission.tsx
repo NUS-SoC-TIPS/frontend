@@ -160,7 +160,7 @@ export const PastSubmission = (): ReactElement<
 
   const { originalSubmission, isError } = state;
 
-  if (isError) {
+  if (isError || id == null) {
     <PastSubmissionPage subheading="Failed to load your submission!">
       <ErrorBanner maxW="100%" px={0} />
     </PastSubmissionPage>;

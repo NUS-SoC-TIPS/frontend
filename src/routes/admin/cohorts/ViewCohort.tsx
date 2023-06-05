@@ -238,7 +238,7 @@ export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
       });
   };
 
-  if (isError) {
+  if (isError || id == null) {
     return (
       <ViewCohortPage>
         <ErrorBanner />
