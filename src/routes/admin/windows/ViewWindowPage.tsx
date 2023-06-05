@@ -6,10 +6,12 @@ import { Dashboard, Page } from 'components/page';
 import { VIEW_COHORT } from 'constants/routes';
 
 interface Props {
+  heading?: string;
   cohortId?: number;
 }
 
 export const ViewWindowPage = ({
+  heading = 'Viewing Window',
   cohortId,
   children,
 }: PropsWithChildren<Props>): ReactElement<
@@ -34,7 +36,7 @@ export const ViewWindowPage = ({
             Back to Cohort
           </Button>
         }
-        heading="Viewing Window"
+        heading={heading}
         subheading="See how students are doing for this window here!"
       >
         {children}

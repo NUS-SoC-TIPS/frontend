@@ -7,6 +7,7 @@ import { UserProfile } from 'components/userProfile';
 import { WindowItem } from 'types/api/admin';
 import { InterviewBase } from 'types/api/interviews';
 import { SubmissionBase } from 'types/api/questions';
+import { StudentBase } from 'types/api/students';
 import { UserBase } from 'types/api/users';
 import { TableColumn, TableOptions } from 'types/table';
 import { emptyFunction } from 'utils/functionUtils';
@@ -20,10 +21,12 @@ interface Props {
   users: WindowItem['students'];
   options?: TableOptions;
   isInclude?: boolean;
+  extraActionName?: string;
+  onExtraAction?: () => void;
   onIncludeOrExclude?: (id: number) => void;
-  onAutoExclude?: () => void;
   onViewSubmissions: (submissions: SubmissionBase[]) => void;
   onViewInterviews: (interviews: InterviewBase[]) => void;
+  onViewPartner: (partner: StudentBase) => void;
 }
 
 interface Row {
@@ -40,6 +43,7 @@ interface Row {
   interviews: InterviewBase[];
   hasCompletedWindow: boolean;
   coursemologyProfileUrl: string;
+  partner: StudentBase | null;
   exclusion: { id: number; reason: string } | null;
 }
 
@@ -48,6 +52,7 @@ const getColumns = (
   onIncludeOrExclude: (id: number) => void,
   onViewSubmissions: (submissions: SubmissionBase[]) => void,
   onViewInterviews: (interviews: InterviewBase[]) => void,
+  onViewPartner: (partner: StudentBase) => void,
 ): TableColumn[] => {
   return [
     {
@@ -167,6 +172,27 @@ const getColumns = (
       },
     },
     {
+      label: 'Is Paired',
+      key: 'partner',
+      options: {
+        customBodyRenderer: (partner: StudentBase | null) =>
+          partner === null ? (
+            'No'
+          ) : (
+            <Link onClick={(): void => onViewPartner(partner)}>Yes</Link>
+          ),
+        customSearchValueRenderer: (partner: StudentBase | null) =>
+          partner == null
+            ? 'No'
+            : `Yes ${partner.name} ${partner.githubUsername}`,
+        customCsvBodyRenderer: (partner: StudentBase | null) =>
+          partner == null ? '-' : partner.coursemologyName,
+        customSortComparator: (a: StudentBase | null, b: StudentBase | null) =>
+          compareBooleansTrueFirst(a != null, b != null),
+        isSortable: true,
+      },
+    },
+    {
       label: 'Completed Window',
       key: 'hasCompletedWindow',
       options: {
@@ -230,6 +256,7 @@ const transformData = (users: WindowItem['students']): Row[] => {
       coursemologyName,
       coursemologyProfileUrl,
       exclusion,
+      pairedPartner,
     } = user;
 
     return {
@@ -252,6 +279,7 @@ const transformData = (users: WindowItem['students']): Row[] => {
       hasCompletedWindow,
       coursemologyProfileUrl,
       exclusion,
+      partner: pairedPartner,
     };
   });
 };
@@ -262,8 +290,10 @@ export const UserTable = ({
   options = {},
   onViewSubmissions,
   onViewInterviews,
+  onViewPartner,
   onIncludeOrExclude = emptyFunction,
-  onAutoExclude,
+  onExtraAction,
+  extraActionName,
 }: Props): ReactElement<Props, typeof Card> => {
   const columns = useMemo(
     () =>
@@ -272,8 +302,15 @@ export const UserTable = ({
         onIncludeOrExclude,
         onViewSubmissions,
         onViewInterviews,
+        onViewPartner,
       ),
-    [isInclude, onIncludeOrExclude, onViewSubmissions, onViewInterviews],
+    [
+      isInclude,
+      onIncludeOrExclude,
+      onViewSubmissions,
+      onViewInterviews,
+      onViewPartner,
+    ],
   );
   const rows = useMemo(() => transformData(users), [users]);
 
@@ -281,9 +318,9 @@ export const UserTable = ({
     <Card px={0} py={0}>
       <Table
         actionButton={
-          onAutoExclude ? (
-            <Button onClick={onAutoExclude} variant="primary">
-              Auto Exclude
+          extraActionName && onExtraAction ? (
+            <Button onClick={onExtraAction} variant="primary">
+              {extraActionName}
             </Button>
           ) : (
             <></>

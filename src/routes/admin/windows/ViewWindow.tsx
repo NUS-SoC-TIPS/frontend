@@ -10,17 +10,21 @@ import {
   createExclusion,
   deleteExclusion,
   getWindowAdmin,
+  pairStudents,
 } from 'lib/admin';
 import { WindowItem } from 'types/api/admin';
 import { InterviewBase } from 'types/api/interviews';
 import { SubmissionBase } from 'types/api/questions';
-import { StudentBaseWithId } from 'types/api/students';
+import { StudentBase, StudentBaseWithId } from 'types/api/students';
+import { formatDateWithoutYear } from 'utils/dateUtils';
 
 import {
   ConfirmAutoExclusion,
   ConfirmExclusion,
   ConfirmInclusion,
+  ConfirmPairStudents,
   InterviewsCompleted,
+  PairedPartner,
   QuestionsCompleted,
 } from './modals';
 import { ExcludedStudentTable, StudentTable } from './tables';
@@ -41,8 +45,11 @@ interface State {
     | null;
   submissionsViewed: SubmissionBase[] | null;
   interviewsViewed: InterviewBase[] | null;
+  partnerViewed: StudentBase | null;
   isAutoExclusionModalShown: boolean;
+  isPairStudentsModalShown: boolean;
   isAutoExcluding: boolean;
+  isPairingStudents: boolean;
 }
 
 export const ViewWindow = (): ReactElement<typeof ViewWindowPage> => {
@@ -92,6 +99,7 @@ export const ViewWindow = (): ReactElement<typeof ViewWindowPage> => {
     studentBeingIncluded,
     submissionsViewed,
     interviewsViewed,
+    partnerViewed,
   } = state;
 
   if (isError || id == null) {
@@ -112,6 +120,9 @@ export const ViewWindow = (): ReactElement<typeof ViewWindowPage> => {
   const excludedStudents = window.students.filter(
     (student) => student.exclusion != null,
   );
+  const numPaired = window.students.filter(
+    (student) => student.pairedPartner != null,
+  ).length;
   const numCompleted = window.students.filter(
     (student) => student.hasCompletedWindow,
   ).length;
@@ -216,19 +227,56 @@ export const ViewWindow = (): ReactElement<typeof ViewWindowPage> => {
       });
   };
 
+  const onConfirmPairStudents = (): void => {
+    setState({ isPairingStudents: true });
+    let numPaired = 0;
+    pairStudents(window.id)
+      .then((data) => {
+        numPaired = data;
+        refetchWindow();
+      })
+      .then(() => {
+        toast({
+          ...DEFAULT_TOAST_PROPS,
+          title: `${numPaired} ${
+            numPaired === 1 ? 'student' : 'students'
+          } paired!`,
+          description:
+            'They will now be able to see their paired partner on the app.',
+          status: 'info',
+        });
+        setState({ isPairingStudents: false, isPairStudentsModalShown: false });
+      })
+      .catch(() => {
+        toast(ERROR_TOAST_PROPS);
+        setState({ isPairingStudents: false, isPairStudentsModalShown: false });
+      });
+  };
+
   const onViewSubmissions = (submissionsViewed: SubmissionBase[]): void =>
     setState({ submissionsViewed });
 
   const onViewInterviews = (interviewsViewed: InterviewBase[]): void =>
     setState({ interviewsViewed });
 
+  const onViewPartner = (partnerViewed: StudentBase): void =>
+    setState({ partnerViewed });
+
   return (
-    <ViewWindowPage cohortId={window.cohortId}>
+    <ViewWindowPage
+      cohortId={window.cohortId}
+      heading={`Viewing Window (${formatDateWithoutYear(
+        window.startAt,
+      )} - ${formatDateWithoutYear(window.endAt)})`}
+    >
       <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
         <StatCard
           stat={window.students.length}
           title="Number of Students This Window"
         />
+        {window.requireInterview && (
+          <StatCard stat={numPaired} title="Number of Students Paired" />
+        )}
         <StatCard stat={numCompleted} title="Number of Students Completed" />
       </SimpleGrid>
       <StudentTable
@@ -236,7 +284,11 @@ export const ViewWindow = (): ReactElement<typeof ViewWindowPage> => {
           setState({ isAutoExclusionModalShown: true })
         }
         onExclude={onExclude}
+        onPairStudents={(): void =>
+          setState({ isPairStudentsModalShown: true })
+        }
         onViewInterviews={onViewInterviews}
+        onViewPartner={onViewPartner}
         onViewSubmissions={onViewSubmissions}
         users={includedStudents}
         window={window}
@@ -244,6 +296,7 @@ export const ViewWindow = (): ReactElement<typeof ViewWindowPage> => {
       <ExcludedStudentTable
         onInclude={onInclude}
         onViewInterviews={onViewInterviews}
+        onViewPartner={onViewPartner}
         onViewSubmissions={onViewSubmissions}
         users={excludedStudents}
         window={window}
@@ -270,11 +323,22 @@ export const ViewWindow = (): ReactElement<typeof ViewWindowPage> => {
         isOpen={interviewsViewed != null}
         onClose={(): void => setState({ interviewsViewed: null })}
       />
+      <PairedPartner
+        isOpen={partnerViewed != null}
+        onClose={(): void => setState({ partnerViewed: null })}
+        partner={partnerViewed}
+      />
       <ConfirmAutoExclusion
         isLoading={state.isAutoExcluding}
         isOpen={state.isAutoExclusionModalShown}
         onClose={(): void => setState({ isAutoExclusionModalShown: false })}
         onConfirmAutoExclude={onConfirmAutoExclude}
+      />
+      <ConfirmPairStudents
+        isLoading={state.isPairingStudents}
+        isOpen={state.isPairStudentsModalShown}
+        onClose={(): void => setState({ isPairStudentsModalShown: false })}
+        onConfirmPairStudents={onConfirmPairStudents}
       />
     </ViewWindowPage>
   );

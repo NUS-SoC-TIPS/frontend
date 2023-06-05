@@ -4,6 +4,7 @@ import { Card } from 'components/card';
 import { WindowItem } from 'types/api/admin';
 import { InterviewBase } from 'types/api/interviews';
 import { SubmissionBase } from 'types/api/questions';
+import { StudentBase } from 'types/api/students';
 import { formatDateWithYear } from 'utils/dateUtils';
 
 import { UserTable } from './UserTable';
@@ -14,6 +15,7 @@ interface Props {
   onInclude: (id: number) => void;
   onViewSubmissions: (submissions: SubmissionBase[]) => void;
   onViewInterviews: (interviews: InterviewBase[]) => void;
+  onViewPartner: (partner: StudentBase) => void;
 }
 
 export const ExcludedStudentTable = ({
@@ -22,12 +24,14 @@ export const ExcludedStudentTable = ({
   onInclude,
   onViewSubmissions,
   onViewInterviews,
+  onViewPartner,
 }: Props): ReactElement<Props, typeof Card> => {
   return (
     <UserTable
       isInclude={true}
       onIncludeOrExclude={onInclude}
       onViewInterviews={onViewInterviews}
+      onViewPartner={onViewPartner}
       onViewSubmissions={onViewSubmissions}
       options={{
         title: 'Excluded',

@@ -101,6 +101,11 @@ export const autoExclude = async (id: number): Promise<number> => {
   return response.data;
 };
 
+export const pairStudents = async (id: number): Promise<number> => {
+  const response = await api.post(`windows/${id}/pairs`);
+  return response.data;
+};
+
 export const rematchWindows = async (id: number): Promise<void> => {
   await api.post(`cohorts_admin/${id}/windows/rematch`);
 };
