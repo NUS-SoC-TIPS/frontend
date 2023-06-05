@@ -21,10 +21,10 @@ import { compareStartAtsDescending } from 'utils/sortUtils';
 
 import { NameFormControl, UrlFormControl } from '../components/form';
 
+import { ConfirmRematchWindows, WindowModal } from './modals';
 import { StudentTable, WindowTable } from './tables';
 import { ViewCohortPage } from './ViewCohortPage';
 import { ViewCohortSkeleton } from './ViewCohortSkeleton';
-import { WindowModal } from './WindowModal';
 
 interface State {
   cohort: CohortAdminItem | null;
@@ -34,6 +34,7 @@ interface State {
   isUpdatingBasicInfo: boolean;
   isUpdatingOrCreatingWindow: boolean;
   isRematchingWindows: boolean;
+  isRematchWindowsModalShown: boolean;
   selectedWindow: (Omit<WindowBase, 'id'> & { id: number | null }) | null;
 }
 
@@ -216,8 +217,9 @@ export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
     });
   };
 
-  const onRematchWindows = (): Promise<void> => {
+  const onConfirmRematchWindows = (): Promise<void> => {
     if (cohort == null) {
+      toast(ERROR_TOAST_PROPS);
       return Promise.resolve();
     }
     setState({ isRematchingWindows: true });
@@ -230,11 +232,17 @@ export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
             'Students will be seeing the updated information immediately.',
           status: 'success',
         });
-        setState({ isRematchingWindows: false });
+        setState({
+          isRematchingWindows: false,
+          isRematchWindowsModalShown: false,
+        });
       })
       .catch((): void => {
         toast(ERROR_TOAST_PROPS);
-        setState({ isRematchingWindows: false });
+        setState({
+          isRematchingWindows: false,
+          isRematchWindowsModalShown: false,
+        });
       });
   };
 
@@ -253,7 +261,9 @@ export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
   return (
     <ViewCohortPage
       isRematchingWindows={state.isRematchingWindows}
-      onRematchWindows={onRematchWindows}
+      onRematchWindows={(): void =>
+        setState({ isRematchWindowsModalShown: true })
+      }
     >
       <Stack spacing={12}>
         <Stack divider={<StackDivider />} spacing={5}>
@@ -287,6 +297,12 @@ export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
           windows={cohort.windows}
         />
       </Stack>
+      <ConfirmRematchWindows
+        isLoading={state.isRematchingWindows}
+        isOpen={state.isRematchWindowsModalShown}
+        onClose={(): void => setState({ isRematchWindowsModalShown: false })}
+        onConfirmRematchWindows={onConfirmRematchWindows}
+      />
       <WindowModal
         endAt={selectedWindow?.endAt ?? new Date()}
         isCreate={selectedWindow?.id == null}
