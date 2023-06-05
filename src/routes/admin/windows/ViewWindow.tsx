@@ -296,7 +296,6 @@ export const ViewWindow = (): ReactElement<typeof ViewWindowPage> => {
       <ExcludedStudentTable
         onInclude={onInclude}
         onViewInterviews={onViewInterviews}
-        onViewPartner={onViewPartner}
         onViewSubmissions={onViewSubmissions}
         users={excludedStudents}
         window={window}

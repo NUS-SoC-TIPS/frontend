@@ -26,7 +26,7 @@ interface Props {
   onIncludeOrExclude?: (id: number) => void;
   onViewSubmissions: (submissions: SubmissionBase[]) => void;
   onViewInterviews: (interviews: InterviewBase[]) => void;
-  onViewPartner: (partner: StudentBase) => void;
+  onViewPartner?: (partner: StudentBase) => void;
 }
 
 interface Row {
@@ -190,6 +190,9 @@ const getColumns = (
         customSortComparator: (a: StudentBase | null, b: StudentBase | null) =>
           compareBooleansTrueFirst(a != null, b != null),
         isSortable: true,
+        isVisible: !isInclude,
+        isDownloadable: !isInclude,
+        isSearchable: !isInclude,
       },
     },
     {
@@ -290,7 +293,7 @@ export const UserTable = ({
   options = {},
   onViewSubmissions,
   onViewInterviews,
-  onViewPartner,
+  onViewPartner = emptyFunction,
   onIncludeOrExclude = emptyFunction,
   onExtraAction,
   extraActionName,
