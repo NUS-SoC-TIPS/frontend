@@ -7,7 +7,7 @@ import { getInterviews, getInterviewStats } from 'lib/interviews';
 import { InterviewListItem, InterviewStats } from 'types/api/interviews';
 
 import { InterviewsPage } from './InterviewsPage';
-import { NumCompletedCard } from './stats';
+import { NumCompletedCard, PairedPartnerCard } from './stats';
 import { PastInterviewsTable } from './tables';
 
 interface State {
@@ -81,14 +81,20 @@ export const Interviews = (): ReactElement<typeof InterviewsPage> => {
     <InterviewsPage>
       <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
         {stats != null ? (
-          <NumCompletedCard
-            endAt={stats.progress.endOfWindowOrWeek}
-            numCompleted={stats.progress.numInterviewsThisWindowOrWeek}
-            requireInterview={stats.progress.isInterviewRequired}
-            startAt={stats.progress.startOfWindowOrWeek}
-          />
+          <>
+            <NumCompletedCard
+              endAt={stats.progress.endOfWindowOrWeek}
+              numCompleted={stats.progress.numInterviewsThisWindowOrWeek}
+              requireInterview={stats.progress.isInterviewRequired}
+              startAt={stats.progress.startOfWindowOrWeek}
+            />
+            <PairedPartnerCard partner={stats.pairedPartner} />
+          </>
         ) : (
-          <StatCardSkeleton />
+          <>
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+          </>
         )}
       </SimpleGrid>
       {interviews != null ? (

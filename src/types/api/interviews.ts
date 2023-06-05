@@ -43,5 +43,5 @@ export interface InterviewStatsProgress {
 export interface InterviewStats {
   progress: InterviewStatsProgress;
   averageDurationMs: number; // 0 if no interviews done
-  pairedOrLatestPartner: UserBase | StudentBase | null;
+  pairedPartner: StudentBase | null;
 }

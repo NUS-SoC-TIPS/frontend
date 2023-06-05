@@ -1,5 +1,6 @@
 import { InterviewBase } from './interviews';
 import { SubmissionBase } from './questions';
+import { StudentBase } from './students';
 import { WindowBase } from './windows';
 
 export interface CohortListItem {
@@ -22,5 +23,6 @@ export interface CohortItem {
     hasCompletedInterview: boolean;
     submissions: SubmissionBase[];
     interviews: InterviewBase[];
+    pairedPartner: StudentBase | null;
   })[];
 }
