@@ -38,10 +38,17 @@ export const ConfirmAutoExclusion = ({
       size="md"
       title="Are you sure you wish to perform auto exclusion?"
     >
-      <Text>
-        This will automatically exclude anyone who did not complete the window,
-        and the appropriate reason will be assigned for that exclusion.
-      </Text>
+      <Stack direction="column" spacing={4}>
+        <Text>
+          This will automatically exclude anyone who did not complete the
+          window, and the appropriate reason will be assigned for that
+          exclusion.
+        </Text>
+        <Text>
+          Students excluded will also be auto unpaired for all future windows,
+          including the current one you&apos;re viewing.
+        </Text>
+      </Stack>
     </Modal>
   );
 };

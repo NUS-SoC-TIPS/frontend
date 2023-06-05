@@ -1,5 +1,5 @@
 import { ReactElement, useState } from 'react';
-import { Button, FormControl, FormLabel, Stack } from '@chakra-ui/react';
+import { Button, FormControl, FormLabel, Stack, Text } from '@chakra-ui/react';
 
 import { Modal } from 'components/modal';
 import { Select } from 'components/select';
@@ -67,14 +67,20 @@ export const ConfirmExclusion = ({
       size="md"
       title={`Exclude ${name}?`}
     >
-      <FormControl isRequired={true}>
-        <FormLabel htmlFor="reason">Reason for Exclusion</FormLabel>
-        <Select
-          onChange={onChangeReason}
-          options={options}
-          placeholder="Select reason..."
-        />
-      </FormControl>
+      <Stack direction="column" spacing={4}>
+        <Text>
+          This will also unpair the user for all future windows, including the
+          current one you&apos;re viewing.
+        </Text>
+        <FormControl isRequired={true}>
+          <FormLabel htmlFor="reason">Reason for Exclusion</FormLabel>
+          <Select
+            onChange={onChangeReason}
+            options={options}
+            placeholder="Select reason..."
+          />
+        </FormControl>
+      </Stack>
     </Modal>
   );
 };
