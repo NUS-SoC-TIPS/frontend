@@ -75,7 +75,7 @@ export const ExclusionBanner = (
             direction={{ base: 'column', sm: 'row' }}
             spacing={{ base: 3, sm: 2 }}
           >
-            <Link href="mailto:soc-tips@googlegroups.com">
+            <Link href="mailto:soc-tips24@googlegroups.com">
               <Button
                 _active={{ bg: 'red.100' }}
                 _hover={{ bg: 'red.100' }}
