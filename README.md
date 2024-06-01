@@ -50,7 +50,7 @@ Then, navigate to the project root and install the dependencies:
 
 ```sh
 cd TIPS-Frontend
-yarn install && husky install
+yarn install && yarn husky install
 ```
 
 Finally, you can get the frontend up and running via:
