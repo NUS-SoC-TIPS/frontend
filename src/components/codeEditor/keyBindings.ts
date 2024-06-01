@@ -106,7 +106,8 @@ const overrideVimUndo = (): void => {
           // Clip cursor, referenced from https://github.com/replit/codemirror-vim/blob/d7d9ec2ab438571f500dfd21b37da733fdba47fe/src/vim.js#L3044-L3062
           const cur = cm.getCursor('start');
           const vim = cm.state.vim;
-          const includeLineBreak = vim.insertMode || vim.visualMode;
+          const includeLineBreak =
+            vim != null ? vim.insertMode || vim.visualMode : false;
           const line = Math.min(
             Math.max(cm.firstLine(), cur.line),
             cm.lastLine(),

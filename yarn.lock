@@ -5187,7 +5187,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@replit/codemirror-vim@npm:^6.0.11":
+"@replit/codemirror-vim@npm:^6.2.1":
   version: 6.2.1
   resolution: "@replit/codemirror-vim@npm:6.2.1"
   peerDependencies:
@@ -18497,7 +18497,7 @@ __metadata:
     "@fontsource/inter": "npm:^4.5.15"
     "@lezer/common": "npm:^1.0.2"
     "@reduxjs/toolkit": "npm:^1.9.3"
-    "@replit/codemirror-vim": "npm:^6.0.11"
+    "@replit/codemirror-vim": "npm:^6.2.1"
     "@replit/codemirror-vscode-keymap": "npm:^6.0.2"
     "@testing-library/jest-dom": "npm:^5.16.5"
     "@testing-library/react": "npm:^14.0.0"
