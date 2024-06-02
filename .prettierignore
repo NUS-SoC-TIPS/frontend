@@ -3,3 +3,5 @@ dist
 build
 coverage
 __snapshots__
+.yarn
+.pnp.*

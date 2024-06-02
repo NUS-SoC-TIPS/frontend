@@ -1,4 +1,10 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["src", "vite.config.ts", ".eslintrc.cjs", "**/*js"]
+  "include": [
+    "src",
+    "vite.config.ts",
+    "src/setupTests.ts",
+    ".eslintrc.cjs",
+    "**/*js"
+  ]
 }

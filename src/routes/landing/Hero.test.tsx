@@ -1,4 +1,5 @@
 import { screen } from '@testing-library/react';
+import { expect, test } from 'vitest';
 
 import { emptyFunction } from '@/utils/functionUtils';
 import { render } from '@/utils/testUtils';
@@ -16,5 +17,6 @@ test('renders page title', () => {
   const titleElement = screen.getByText(
     /Tech interview preparation made easier/i,
   );
+  // @ts-expect-error This can run, just that there's some error with finding the type
   expect(titleElement).toBeInTheDocument();
 });
