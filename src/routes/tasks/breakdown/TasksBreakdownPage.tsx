@@ -1,5 +1,5 @@
 import { PropsWithChildren, ReactElement } from 'react';
-import { FiExternalLink } from 'react-icons/fi';
+import { FiExternalLink, FiMail } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { Button, Link, Stack } from '@chakra-ui/react';
 
@@ -8,10 +8,12 @@ import { TASKS } from '@/constants/routes';
 
 interface Props {
   coursemologyUrl?: string;
+  email?: string;
 }
 
 export const TasksBreakdownPage = ({
   coursemologyUrl,
+  email,
   children,
 }: PropsWithChildren<Props>): ReactElement<
   PropsWithChildren<Props>,
@@ -39,6 +41,24 @@ export const TasksBreakdownPage = ({
                 variant="secondary"
               >
                 Coursemology
+              </Button>
+            )}
+            {email ? (
+              <Link href={`mailto:${email}`}>
+                <Button
+                  leftIcon={<FiMail fontSize="1.25rem" />}
+                  variant="secondary"
+                >
+                  Email Us
+                </Button>
+              </Link>
+            ) : (
+              <Button
+                isDisabled={true}
+                leftIcon={<FiMail fontSize="1.25rem" />}
+                variant="secondary"
+              >
+                Email Us
               </Button>
             )}
             <Button onClick={(): void => navigate(TASKS)} variant="secondary">

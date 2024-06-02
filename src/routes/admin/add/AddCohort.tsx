@@ -5,14 +5,19 @@ import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 import { Dashboard, Page } from '@/components/page';
 import { ADMIN, VIEW_COHORT } from '@/constants/routes';
 import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from '@/constants/toast';
-import { COURSEMOLOGY_COURSE_URL_PREFIX } from '@/constants/urls';
+import {
+  COHORT_EMAIL_SUFFIX,
+  COURSEMOLOGY_COURSE_URL_PREFIX,
+} from '@/constants/urls';
 import { createCohortAdmin } from '@/lib/admin';
 
 import { NameFormControl, UrlFormControl } from '../components/form';
+import { EmailFormControl } from '../components/form/EmailFormControl';
 
 interface State {
   name: string;
   coursemologyUrl: string;
+  email: string;
   isAdding: boolean;
 }
 
@@ -22,6 +27,7 @@ export const AddCohort = (): ReactElement<void, typeof Page> => {
     {
       name: '',
       coursemologyUrl: '',
+      email: '',
       isAdding: false,
     } as State,
   );
@@ -29,7 +35,11 @@ export const AddCohort = (): ReactElement<void, typeof Page> => {
   const navigate = useNavigate();
 
   const cannotAdd = (): boolean => {
-    return state.name.trim() === '' || state.coursemologyUrl.trim() === '';
+    return (
+      state.name.trim() === '' ||
+      state.coursemologyUrl.trim() === '' ||
+      state.email.trim() === ''
+    );
   };
 
   const onAdd = (): Promise<void> => {
@@ -37,6 +47,7 @@ export const AddCohort = (): ReactElement<void, typeof Page> => {
     return createCohortAdmin({
       name: state.name,
       coursemologyUrl: COURSEMOLOGY_COURSE_URL_PREFIX + state.coursemologyUrl,
+      email: state.email + COHORT_EMAIL_SUFFIX,
     })
       .then((data): void => {
         toast({
@@ -72,6 +83,10 @@ export const AddCohort = (): ReactElement<void, typeof Page> => {
           <UrlFormControl
             onChange={(url: string): void => setState({ coursemologyUrl: url })}
             url={state.coursemologyUrl}
+          />
+          <EmailFormControl
+            email={state.email}
+            onChange={(email: string): void => setState({ email })}
           />
           <Flex direction="row-reverse">
             <Button

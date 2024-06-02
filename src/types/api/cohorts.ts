@@ -14,6 +14,7 @@ export interface CohortListItem {
 export interface CohortItem {
   name: string;
   coursemologyUrl: string;
+  email: string;
   windows: (WindowBase & {
     exclusion: {
       reason: string; // TODO: Make this an enum

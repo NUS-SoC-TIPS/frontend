@@ -5,7 +5,10 @@ import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 import { ErrorBanner } from '@/components/errorBanner';
 import { ADD_STUDENTS, VIEW_WINDOW } from '@/constants/routes';
 import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from '@/constants/toast';
-import { COURSEMOLOGY_COURSE_URL_PREFIX } from '@/constants/urls';
+import {
+  COHORT_EMAIL_SUFFIX,
+  COURSEMOLOGY_COURSE_URL_PREFIX,
+} from '@/constants/urls';
 import {
   createWindowAdmin,
   getCohortAdmin,
@@ -15,11 +18,15 @@ import {
 } from '@/lib/admin';
 import { CohortAdminItem } from '@/types/api/admin';
 import { WindowBase } from '@/types/api/windows';
-import { stripPrefixForUrlField } from '@/utils/cohortUtils';
+import {
+  stripPrefixForUrlField,
+  stripSuffixForEmailField,
+} from '@/utils/cohortUtils';
 import { changeToUserTimezone } from '@/utils/dateUtils';
 import { compareStartAtsDescending } from '@/utils/sortUtils';
 
 import { NameFormControl, UrlFormControl } from '../components/form';
+import { EmailFormControl } from '../components/form/EmailFormControl';
 
 import { ConfirmRematchWindows, WindowModal } from './modals';
 import { StudentTable, WindowTable } from './tables';
@@ -30,6 +37,7 @@ interface State {
   cohort: CohortAdminItem | null;
   name: string;
   coursemologyUrl: string;
+  email: string;
   isError: boolean;
   isUpdatingBasicInfo: boolean;
   isUpdatingOrCreatingWindow: boolean;
@@ -45,6 +53,7 @@ export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
       cohort: null,
       name: '',
       coursemologyUrl: '',
+      email: '',
       isError: false,
       isUpdatingBasicInfo: false,
       selectedWindow: null,
@@ -61,13 +70,16 @@ export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
         return;
       }
       try {
-        const cohort = await getCohortAdmin(+id).then(stripPrefixForUrlField);
+        const cohort = await getCohortAdmin(+id)
+          .then(stripPrefixForUrlField)
+          .then(stripSuffixForEmailField);
         cohort.windows.sort(compareStartAtsDescending);
         if (!didCancel) {
           setState({
             cohort,
             name: cohort.name,
             coursemologyUrl: cohort.coursemologyUrl,
+            email: cohort.email,
           });
         }
       } catch {
@@ -83,13 +95,17 @@ export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
     };
   }, [id]);
 
-  const { name, coursemologyUrl, cohort, isError, selectedWindow } = state;
+  const { name, coursemologyUrl, email, cohort, isError, selectedWindow } =
+    state;
 
   const cannotUpdateBasicInfo = (): boolean => {
     return (
-      (name === cohort?.name && coursemologyUrl === cohort?.coursemologyUrl) ||
+      (name === cohort?.name &&
+        coursemologyUrl === cohort?.coursemologyUrl &&
+        email === cohort?.email) ||
       name.trim() === '' ||
-      coursemologyUrl.trim() === ''
+      coursemologyUrl.trim() === '' ||
+      email.trim() === ''
     );
   };
 
@@ -99,10 +115,12 @@ export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
     }
     setState({ isUpdatingBasicInfo: true });
     return updateCohortAdmin(cohort.id, {
-      name: name,
-      coursemologyUrl: COURSEMOLOGY_COURSE_URL_PREFIX + coursemologyUrl,
+      name,
+      coursemologyUrl: COURSEMOLOGY_COURSE_URL_PREFIX + coursemologyUrl.trim(),
+      email: email.trim() + COHORT_EMAIL_SUFFIX,
     })
       .then(stripPrefixForUrlField)
+      .then(stripSuffixForEmailField)
       .then((data): void => {
         toast({
           ...DEFAULT_TOAST_PROPS,
@@ -116,9 +134,11 @@ export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
             ...cohort,
             name: data.name,
             coursemologyUrl: data.coursemologyUrl,
+            email: data.email,
           },
           name: data.name,
           coursemologyUrl: data.coursemologyUrl,
+          email: data.email,
           isUpdatingBasicInfo: false,
         });
       })
@@ -274,6 +294,10 @@ export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
           <UrlFormControl
             onChange={(url: string): void => setState({ coursemologyUrl: url })}
             url={state.coursemologyUrl}
+          />
+          <EmailFormControl
+            email={state.email}
+            onChange={(email: string): void => setState({ email })}
           />
           <Flex direction="row-reverse">
             <Button

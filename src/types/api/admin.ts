@@ -19,11 +19,13 @@ export interface CreateStudentDto {
 export interface CreateCohortDto {
   name: string;
   coursemologyUrl: string;
+  email: string;
 }
 
 export interface UpdateCohortDto {
   name: string;
   coursemologyUrl: string;
+  email: string;
 }
 
 export interface CreateWindowDto {
@@ -59,6 +61,7 @@ export interface CohortAdminItem {
   id: number;
   name: string;
   coursemologyUrl: string;
+  email: string;
   windows: WindowBase[];
   // TODO: Remove this later once a separate query is done
   students: (StudentBaseWithId & {
@@ -70,6 +73,7 @@ export interface CohortAdminItem {
 export interface CohortAdminUpdateResult {
   name: string;
   coursemologyUrl: string;
+  email: string;
 }
 
 export interface CohortStudentValidationResult {

@@ -82,7 +82,10 @@ export const TasksBreakdown = (): ReactElement<typeof Page> => {
   const taskStepData = computeTaskStepData(cohort.windows);
 
   return (
-    <TasksBreakdownPage coursemologyUrl={cohort.coursemologyUrl}>
+    <TasksBreakdownPage
+      coursemologyUrl={cohort.coursemologyUrl}
+      email={cohort.email}
+    >
       <Stack
         direction={{ base: 'column', md: 'row' }}
         my={{ base: 0, md: 4 }}
@@ -111,7 +114,10 @@ export const TasksBreakdown = (): ReactElement<typeof Page> => {
           - {formatDateWithYear(selectedWindow.endAt)})
         </Heading>
         {selectedWindow.exclusion != null ? (
-          <ExclusionBanner exclusion={selectedWindow.exclusion} />
+          <ExclusionBanner
+            email={cohort.email}
+            exclusion={selectedWindow.exclusion}
+          />
         ) : (
           <></>
         )}

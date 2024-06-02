@@ -15,6 +15,7 @@ import {
 
 interface Props {
   exclusion: { reason: string };
+  email: string;
 }
 
 export const ExclusionBanner = (
@@ -75,7 +76,7 @@ export const ExclusionBanner = (
             direction={{ base: 'column', sm: 'row' }}
             spacing={{ base: 3, sm: 2 }}
           >
-            <Link href="mailto:soc-tips24@googlegroups.com">
+            <Link href={`mailto:${props.email}`}>
               <Button
                 _active={{ bg: 'red.100' }}
                 _hover={{ bg: 'red.100' }}
