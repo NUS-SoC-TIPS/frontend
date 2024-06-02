@@ -142,7 +142,7 @@
       "pretty-quick --staged",
       "eslint --fix"
     ],
-    "**/*.{json}": [
+    "**/*.json": [
       "prettier --write"
     ],
     "**/*.md": [
