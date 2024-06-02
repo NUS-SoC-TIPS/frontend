@@ -65,11 +65,10 @@ export const getLanguageExtension = (language: Language | null): Extension => {
       return javascript({ typescript: true });
     case Language.RACKET:
       return StreamLanguage.define(scheme);
-
     case Language.ERLANG:
       return StreamLanguage.define(erlang);
     case Language.ELIXIR:
-      return StreamLanguage.define(elixir);
+      return elixir();
     case Language.DART:
       return StreamLanguage.define(dart);
     case Language.MY_SQL:
