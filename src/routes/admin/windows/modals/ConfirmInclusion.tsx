@@ -2,9 +2,11 @@ import { ReactElement } from 'react';
 import { Button, Stack, Text } from '@chakra-ui/react';
 
 import { Modal } from '@/components/modal';
+import { emptyFunction } from '@/utils/functionUtils';
 
 interface Props {
   isOpen: boolean;
+  isLoading: boolean;
   onClose: () => void;
   name: string;
   onConfirmInclude: () => void | Promise<void>;
@@ -12,6 +14,7 @@ interface Props {
 
 export const ConfirmInclusion = ({
   isOpen,
+  isLoading,
   onClose,
   name,
   onConfirmInclude,
@@ -20,16 +23,20 @@ export const ConfirmInclusion = ({
     <Modal
       actions={
         <Stack direction="row" spacing={2}>
-          <Button onClick={onClose} variant="secondary">
+          <Button isDisabled={isLoading} onClick={onClose} variant="secondary">
             Cancel
           </Button>
-          <Button onClick={onConfirmInclude} variant="primary">
+          <Button
+            isLoading={isLoading}
+            onClick={onConfirmInclude}
+            variant="primary"
+          >
             Include
           </Button>
         </Stack>
       }
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={isLoading ? emptyFunction : onClose}
       title={`Include ${name}?`}
     >
       <Text>Are you sure you wish to include {name}?</Text>

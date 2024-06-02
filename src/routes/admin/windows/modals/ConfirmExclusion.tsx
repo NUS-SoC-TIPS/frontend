@@ -3,9 +3,11 @@ import { Button, FormControl, FormLabel, Stack, Text } from '@chakra-ui/react';
 
 import { Modal } from '@/components/modal';
 import { Select } from '@/components/select';
+import { emptyFunction } from '@/utils/functionUtils';
 
 interface Props {
   isOpen: boolean;
+  isLoading: boolean;
   onClose: () => void;
   name: string;
   onConfirmExclude: (reason: string) => void | Promise<void>;
@@ -27,6 +29,7 @@ interface ReasonOption {
 
 export const ConfirmExclusion = ({
   isOpen,
+  isLoading,
   onClose,
   name,
   onConfirmExclude,
@@ -50,11 +53,12 @@ export const ConfirmExclusion = ({
     <Modal
       actions={
         <Stack direction="row" spacing={2}>
-          <Button onClick={onClose} variant="secondary">
+          <Button isDisabled={isLoading} onClick={onClose} variant="secondary">
             Cancel
           </Button>
           <Button
             isDisabled={reason == null || reason === ''}
+            isLoading={isLoading}
             onClick={handleExclude}
             variant="primary"
           >
@@ -63,7 +67,7 @@ export const ConfirmExclusion = ({
         </Stack>
       }
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={isLoading ? emptyFunction : onClose}
       size="md"
       title={`Exclude ${name}?`}
     >

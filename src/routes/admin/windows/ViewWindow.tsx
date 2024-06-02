@@ -48,6 +48,8 @@ interface State {
   partnerViewed: StudentBase | null;
   isAutoExclusionModalShown: boolean;
   isPairStudentsModalShown: boolean;
+  isExcluding: boolean;
+  isIncluding: boolean;
   isAutoExcluding: boolean;
   isPairingStudents: boolean;
 }
@@ -62,6 +64,13 @@ export const ViewWindow = (): ReactElement<typeof ViewWindowPage> => {
       studentBeingIncluded: null,
       submissionsViewed: null,
       interviewsViewed: null,
+      partnerViewed: null,
+      isAutoExclusionModalShown: false,
+      isPairStudentsModalShown: false,
+      isExcluding: false,
+      isIncluding: false,
+      isAutoExcluding: false,
+      isPairingStudents: false,
     } as State,
   );
   const toast = useToast();
@@ -301,12 +310,14 @@ export const ViewWindow = (): ReactElement<typeof ViewWindowPage> => {
         window={window}
       />
       <ConfirmExclusion
+        isLoading={state.isExcluding}
         isOpen={studentBeingExcluded != null}
         name={studentBeingExcluded?.name ?? ''}
         onClose={(): void => setState({ studentBeingExcluded: null })}
         onConfirmExclude={onConfirmExclude}
       />
       <ConfirmInclusion
+        isLoading={state.isIncluding}
         isOpen={studentBeingIncluded != null}
         name={studentBeingIncluded?.name ?? ''}
         onClose={(): void => setState({ studentBeingIncluded: null })}
