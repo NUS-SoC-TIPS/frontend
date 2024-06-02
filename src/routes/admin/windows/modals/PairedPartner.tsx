@@ -1,9 +1,9 @@
 import { ReactElement } from 'react';
 import { Stack } from '@chakra-ui/react';
 
-import { Modal } from 'components/modal';
-import { UserProfileHighlight } from 'components/userProfile';
-import { StudentBase } from 'types/api/students';
+import { Modal } from '@/components/modal';
+import { UserProfileHighlight } from '@/components/userProfile';
+import { StudentBase } from '@/types/api/students';
 
 interface Props {
   isOpen: boolean;

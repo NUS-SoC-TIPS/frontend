@@ -1,8 +1,8 @@
 import { ReactElement, useCallback } from 'react';
 
-import { FormControl } from 'components/formControl';
-import { Select } from 'components/select';
-import { LANGUAGE_TO_STRING } from 'constants/enumStrings';
+import { FormControl } from '@/components/formControl';
+import { Select } from '@/components/select';
+import { LANGUAGE_TO_STRING } from '@/constants/enumStrings';
 import {
   ALGORITHM_LANGUAGES,
   CONCURRENCY_LANGUAGES,
@@ -10,9 +10,9 @@ import {
   JAVASCRIPT_LANGUAGES,
   KATTIS_LANGUAGES,
   SHELL_LANGUAGES,
-} from 'constants/languages';
-import { Language } from 'types/models/code';
-import { QuestionSource, QuestionType } from 'types/models/question';
+} from '@/constants/languages';
+import { Language } from '@/types/models/code';
+import { QuestionSource, QuestionType } from '@/types/models/question';
 
 interface Props {
   question: { source: QuestionSource; type: QuestionType };

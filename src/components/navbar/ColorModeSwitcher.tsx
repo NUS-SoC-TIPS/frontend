@@ -34,13 +34,11 @@ export const ColorModeSwitcher = (
   return (
     <IconButton
       aria-label={`Switch to ${text} mode`}
-      color="current"
       fontSize="lg"
       icon={<SwitchIcon />}
       marginLeft={2}
       onClick={toggleColorMode}
       size="md"
-      variant="ghost"
       {...buttonProps}
     />
   );

@@ -1,4 +1,4 @@
-import { Language } from 'types/models/code';
+import { Language } from '@/types/models/code';
 
 export const INTERVIEW_LANGUAGES = Object.freeze([
   Language.C,

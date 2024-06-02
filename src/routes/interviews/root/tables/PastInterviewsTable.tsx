@@ -1,20 +1,20 @@
 import { ReactElement, ReactNode, useMemo } from 'react';
 import { Button, Link } from '@chakra-ui/react';
 
-import { Card } from 'components/card';
-import { Table } from 'components/table';
-import { UserProfile } from 'components/userProfile';
-import { PAST_INTERVIEW } from 'constants/routes';
-import { InterviewListItem } from 'types/api/interviews';
-import { UserBase } from 'types/api/users';
-import { TableColumn } from 'types/table';
-import { formatDateWithYear, formatDuration } from 'utils/dateUtils';
+import { Card } from '@/components/card';
+import { Table } from '@/components/table';
+import { UserProfile } from '@/components/userProfile';
+import { PAST_INTERVIEW } from '@/constants/routes';
+import { InterviewListItem } from '@/types/api/interviews';
+import { UserBase } from '@/types/api/users';
+import { TableColumn } from '@/types/table';
+import { formatDateWithYear, formatDuration } from '@/utils/dateUtils';
 import {
   compareDatesAscending,
   compareLanguagesAscending,
   compareNamesAscending,
-} from 'utils/sortUtils';
-import { languageRenderer } from 'utils/tableUtils';
+} from '@/utils/sortUtils';
+import { languageRenderer } from '@/utils/tableUtils';
 
 interface Props {
   interviews: InterviewListItem[];

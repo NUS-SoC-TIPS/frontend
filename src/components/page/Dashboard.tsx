@@ -29,7 +29,7 @@ export const Dashboard = ({
           <Heading fontWeight="medium" size={size}>
             {heading}
           </Heading>
-          <Text color="muted">{subheading}</Text>
+          <Text color="fg.muted">{subheading}</Text>
         </Stack>
         {actions}
       </Stack>

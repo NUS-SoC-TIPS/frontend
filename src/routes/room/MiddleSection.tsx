@@ -2,11 +2,11 @@ import { ReactElement, useEffect, useState } from 'react';
 import { Box, useBreakpointValue } from '@chakra-ui/react';
 import { Socket } from 'socket.io-client';
 
-import { useAppSelector } from 'app/hooks';
-import { CodeEditor } from 'components/codeEditor';
-import { useUser } from 'contexts/UserContext';
-import { KeyBinding } from 'types/models/code';
-import { useWindowDimensions } from 'utils/hookUtils';
+import { useAppSelector } from '@/app/hooks';
+import { CodeEditor } from '@/components/codeEditor';
+import { useUser } from '@/contexts/UserContext';
+import { KeyBinding } from '@/types/models/code';
+import { useWindowDimensions } from '@/utils/hookUtils';
 
 import { Panel } from './panel';
 import { Slider } from './Slider';
@@ -16,6 +16,10 @@ interface Props {
   socket: Socket;
   slug: string;
 }
+
+const TOP_BAR_HEIGHT = 52;
+const BOTTOM_BAR_HEIGHT = 52;
+const SLIDER_WIDTH = 16;
 
 export const MiddleSection = ({
   socket,
@@ -38,8 +42,10 @@ export const MiddleSection = ({
   }, [isTablet, editorSize]);
 
   const isPanelCollapsed = editorSize >= 1 && isTablet;
-  const fullLength = isTablet ? width : height - 96; // 48 (top) + 48 (bottom)
-  const scaledLength = fullLength * editorSize - 16; // 16 is for the slider
+  const fullLength = isTablet
+    ? width
+    : height - TOP_BAR_HEIGHT - BOTTOM_BAR_HEIGHT;
+  const scaledLength = fullLength * editorSize - SLIDER_WIDTH; // 16 is for the slider
 
   const onSliderDrag = (distance: number): void => {
     let ratio = Math.min(Math.max(distance / fullLength, 0.3), 1);
@@ -56,7 +62,9 @@ export const MiddleSection = ({
     setEditorSize(ratio);
   };
 
-  const finalHeight = isTablet ? `${height - 96}px` : `${scaledLength}px`;
+  const finalHeight = isTablet
+    ? `${height - TOP_BAR_HEIGHT - BOTTOM_BAR_HEIGHT}px`
+    : `${scaledLength}px`;
   const finalWidth = isTablet ? `${scaledLength}px` : '100%';
 
   return (
@@ -78,7 +86,15 @@ export const MiddleSection = ({
       <Slider height={finalHeight} onDrag={onSliderDrag} />
       {!isPanelCollapsed && (
         <Panel
-          height={isTablet ? height - 96 : height - 112 - scaledLength}
+          height={
+            isTablet
+              ? height - TOP_BAR_HEIGHT - BOTTOM_BAR_HEIGHT
+              : height -
+                TOP_BAR_HEIGHT -
+                BOTTOM_BAR_HEIGHT -
+                SLIDER_WIDTH -
+                scaledLength
+          }
           socket={socket}
           width={isTablet ? width - scaledLength - 16 : width}
         />

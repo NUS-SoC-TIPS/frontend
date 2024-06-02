@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 
-import { FormControl, TextFormControl } from 'components/formControl';
+import { FormControl, TextFormControl } from '@/components/formControl';
 
 interface Props {
   name: string;

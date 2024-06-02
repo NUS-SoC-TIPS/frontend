@@ -1,14 +1,14 @@
 import { Socket } from 'socket.io-client';
 
-import { store } from 'app/store';
-import { CODE_EVENTS } from 'constants/events';
+import { store } from '@/app/store';
+import { CODE_EVENTS } from '@/constants/events';
 import {
   CodeExecutionError,
   setIsExecuting,
   setLanguage,
-} from 'reducers/codeReducer';
-import { setExecutionOutput } from 'reducers/panelReducer';
-import { Language } from 'types/models/code';
+} from '@/reducers/codeReducer';
+import { setExecutionOutput } from '@/reducers/panelReducer';
+import { Language } from '@/types/models/code';
 
 export const updateLanguage = (socket: Socket, language: Language): void => {
   store.dispatch(setLanguage(language));

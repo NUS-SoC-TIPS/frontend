@@ -1,4 +1,4 @@
-import { QuestionDifficulty } from 'types/models/question';
+import { QuestionDifficulty } from '@/types/models/question';
 
 export const DIFFICULTY_TO_ORDER = Object.freeze({
   [QuestionDifficulty.EASY]: 0,

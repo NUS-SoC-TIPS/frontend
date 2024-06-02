@@ -35,6 +35,6 @@ jobs:
           yarn install
           yarn test
         env:
-          REACT_APP_BACKEND_API: http://localhost:3001
-          REACT_APP_BACKEND_WS_API: ws://localhost:3001
+          VITE_BACKEND_API: http://localhost:3001
+          VITE_BACKEND_WS_API: ws://localhost:3001
           GENERATE_SOURCEMAP: false

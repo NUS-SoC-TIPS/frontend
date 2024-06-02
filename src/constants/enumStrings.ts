@@ -1,5 +1,5 @@
-import { KeyBinding, Language } from 'types/models/code';
-import { QuestionDifficulty, QuestionSource } from 'types/models/question';
+import { KeyBinding, Language } from '@/types/models/code';
+import { QuestionDifficulty, QuestionSource } from '@/types/models/question';
 
 export const LANGUAGE_TO_STRING = Object.freeze({
   [Language.C_PLUS_PLUS]: 'C++',

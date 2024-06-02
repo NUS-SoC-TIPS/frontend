@@ -23,7 +23,7 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react';
 
-import { TableColumn, TableOptions } from 'types/table';
+import { TableColumn, TableOptions } from '@/types/table';
 
 import { SortIcon } from './SortIcon';
 
@@ -235,7 +235,7 @@ export const Table = ({
             {options?.isSearchable !== false && (
               <InputGroup maxW={{ base: '100%', md: 'xs' }}>
                 <InputLeftElement pointerEvents="none">
-                  <Icon as={FiSearch} boxSize={5} color="muted" />
+                  <Icon as={FiSearch} boxSize={5} color="fg.muted" />
                 </InputLeftElement>
                 <Input
                   onChange={(event): void => setSearchValue(event.target.value)}
@@ -270,7 +270,7 @@ export const Table = ({
             {allRows.length === 0 && (
               <Tr>
                 <Td>
-                  <Text color="muted">
+                  <Text color="fg.muted">
                     {options?.noDataMessage ?? 'No Data'}
                   </Text>
                 </Td>
@@ -287,7 +287,7 @@ export const Table = ({
       <Box pb={5} px={{ base: 4, md: 6 }}>
         <HStack justify="space-between" spacing={3}>
           {!isMobile && (
-            <Text color="muted" fontSize="sm">
+            <Text color="fg.muted" fontSize="sm">
               {getBottomMessage()}
             </Text>
           )}

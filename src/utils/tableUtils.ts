@@ -2,9 +2,9 @@ import {
   DIFFICULTY_TO_STRING,
   LANGUAGE_TO_STRING,
   SOURCE_TO_STRING,
-} from 'constants/enumStrings';
-import { Language } from 'types/models/code';
-import { QuestionDifficulty, QuestionSource } from 'types/models/question';
+} from '@/constants/enumStrings';
+import { Language } from '@/types/models/code';
+import { QuestionDifficulty, QuestionSource } from '@/types/models/question';
 
 export const languageRenderer = (language: Language): string =>
   LANGUAGE_TO_STRING[language];

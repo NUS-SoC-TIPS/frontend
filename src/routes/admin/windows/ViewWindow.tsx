@@ -2,21 +2,21 @@ import { ReactElement, useEffect, useReducer } from 'react';
 import { useParams } from 'react-router-dom';
 import { SimpleGrid, useToast } from '@chakra-ui/react';
 
-import { StatCard } from 'components/card';
-import { ErrorBanner } from 'components/errorBanner';
-import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
+import { StatCard } from '@/components/card';
+import { ErrorBanner } from '@/components/errorBanner';
+import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from '@/constants/toast';
 import {
   autoExclude,
   createExclusion,
   deleteExclusion,
   getWindowAdmin,
   pairStudents,
-} from 'lib/admin';
-import { WindowItem } from 'types/api/admin';
-import { InterviewBase } from 'types/api/interviews';
-import { SubmissionBase } from 'types/api/questions';
-import { StudentBase, StudentBaseWithId } from 'types/api/students';
-import { formatDateWithoutYear } from 'utils/dateUtils';
+} from '@/lib/admin';
+import { WindowItem } from '@/types/api/admin';
+import { InterviewBase } from '@/types/api/interviews';
+import { SubmissionBase } from '@/types/api/questions';
+import { StudentBase, StudentBaseWithId } from '@/types/api/students';
+import { formatDateWithoutYear } from '@/utils/dateUtils';
 
 import {
   ConfirmAutoExclusion,

@@ -1,4 +1,4 @@
-import { WindowBase } from 'types/api/windows';
+import { WindowBase } from '@/types/api/windows';
 
 export const findCurrentWindow = (windows: WindowBase[]): number => {
   if (windows.length === 0) {

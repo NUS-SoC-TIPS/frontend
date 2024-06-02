@@ -2,8 +2,8 @@ import { ReactElement } from 'react';
 import { Flex, Stack, StackDivider } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/react';
 
-import { StatCardSkeleton } from 'components/card';
-import { FormControlSkeleton } from 'components/formControl';
+import { StatCardSkeleton } from '@/components/card';
+import { FormControlSkeleton } from '@/components/formControl';
 
 import { ViewCohortPage } from './ViewCohortPage';
 

@@ -11,8 +11,8 @@ import {
   VisuallyHidden,
 } from '@chakra-ui/react';
 
-import addQuestion from 'assets/images/add_question.png';
-import { GitHubIcon } from 'components/icons/GitHubIcon';
+import addQuestion from '@/assets/images/add_question.png';
+import { GitHubIcon } from '@/components/icons/GitHubIcon';
 
 interface Props {
   onGetStarted: () => void | Promise<void>;
@@ -68,7 +68,7 @@ export const Hero = ({
           </Button>
         </Stack>
 
-        {process.env.NODE_ENV === 'development' && (
+        {import.meta.env.MODE === 'development' && (
           <Stack direction={{ base: 'column', md: 'row' }} justify="center">
             <Button
               fontSize="sm"

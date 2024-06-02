@@ -13,18 +13,18 @@ import {
 } from '@chakra-ui/react';
 import { Socket } from 'socket.io-client';
 
-import { useAppSelector } from 'app/hooks';
+import { useAppSelector } from '@/app/hooks';
 import {
   CURSOR_COLOR_TO_SEND_PARTNER,
   OWN_CURSOR_COLOR,
-} from 'components/codeEditor/colors';
-import { Modal } from 'components/modal';
-import { INTERVIEWS } from 'constants/routes';
-import { ERROR_TOAST_PROPS } from 'constants/toast';
-import { useUser } from 'contexts/UserContext';
-import { closeRoom } from 'lib/roomsSocket';
-import { RoomClosingStatus } from 'reducers/roomReducer';
-import { UserSelf } from 'types/api/users';
+} from '@/components/codeEditor/colors';
+import { Modal } from '@/components/modal';
+import { INTERVIEWS } from '@/constants/routes';
+import { ERROR_TOAST_PROPS } from '@/constants/toast';
+import { useUser } from '@/contexts/UserContext';
+import { closeRoom } from '@/lib/roomsSocket';
+import { RoomClosingStatus } from '@/reducers/roomReducer';
+import { UserSelf } from '@/types/api/users';
 
 import { CodeExecutionButton } from './CodeExecutionButton';
 
@@ -151,7 +151,7 @@ export const BottomBar = ({
   return (
     <Box
       as="footer"
-      bg="bg-surface"
+      bg="bg.surface"
       boxShadow={useColorModeValue('sm', 'sm-dark')}
     >
       <Container maxWidth="100%" px={2} py={2}>

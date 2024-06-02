@@ -2,8 +2,8 @@ import { ReactElement } from 'react';
 import { Badge, Box, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/react';
 
-import { CohortListItem } from 'types/api/cohorts';
-import { formatDateWithYear } from 'utils/dateUtils';
+import { CohortListItem } from '@/types/api/cohorts';
+import { formatDateWithYear } from '@/utils/dateUtils';
 
 interface Props {
   cohort: CohortListItem;
@@ -44,7 +44,7 @@ export const CohortCard = ({
 
   return (
     <Box
-      bg="bg-surface"
+      bg="bg.surface"
       borderRadius="lg"
       boxShadow="sm"
       p={{ base: 4, md: 6 }}
@@ -67,7 +67,7 @@ export const CohortCard = ({
               {getBadgeText()}
             </Badge>
           </Stack>
-          <Text color="muted" fontSize="sm">
+          <Text color="fg.muted" fontSize="sm">
             {hasWindowsConfigured
               ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 formatDateWithYear(cohort.startAt!) +

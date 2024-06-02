@@ -13,10 +13,10 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 
-import { UserProfile } from 'components/userProfile';
-import { InterviewBase } from 'types/api/interviews';
-import { StudentBase } from 'types/api/students';
-import { compareIdsAscending } from 'utils/sortUtils';
+import { UserProfile } from '@/components/userProfile';
+import { InterviewBase } from '@/types/api/interviews';
+import { StudentBase } from '@/types/api/students';
+import { compareIdsAscending } from '@/utils/sortUtils';
 
 interface Props {
   requireInterview: boolean;
@@ -46,7 +46,7 @@ export const InterviewTasksBox = ({
         {hasIncompletePairedPartner && (
           <>
             <Box
-              bg="bg-surface"
+              bg="bg.surface"
               borderTopLeftRadius="lg"
               borderTopRightRadius="lg"
               boxShadow={boxShadow}
@@ -58,12 +58,12 @@ export const InterviewTasksBox = ({
                     <Text fontSize="lg" fontWeight="medium">
                       Paired Partner
                     </Text>
-                    <Text color="muted" fontSize="sm">
+                    <Text color="fg.muted" fontSize="sm">
                       Interview Incomplete
                     </Text>
                   </Stack>
                   <Circle borderWidth="2px" size={8}>
-                    <Circle bg="border" size={3} />
+                    <Circle bg="border.default" size={3} />
                   </Circle>
                 </HStack>
                 <Box
@@ -86,7 +86,7 @@ export const InterviewTasksBox = ({
           </>
         )}
         <Box
-          bg="bg-surface"
+          bg="bg.surface"
           borderBottomLeftRadius="lg"
           borderBottomRightRadius="lg"
           borderTopLeftRadius={hasIncompletePairedPartner ? undefined : 'lg'}
@@ -100,7 +100,7 @@ export const InterviewTasksBox = ({
                 <Text fontSize="lg" fontWeight="medium">
                   Interviews
                 </Text>
-                <Text color="muted" fontSize="sm">
+                <Text color="fg.muted" fontSize="sm">
                   {requireInterview
                     ? `${interviews.length}/1`
                     : interviews.length}{' '}
@@ -109,11 +109,11 @@ export const InterviewTasksBox = ({
               </Stack>
               {hasCompletedInterview ? (
                 <Circle bg="accent" size={8}>
-                  <Icon as={HiCheck} boxSize={5} color="inverted" />
+                  <Icon as={HiCheck} boxSize={5} color="fg.inverted" />
                 </Circle>
               ) : (
                 <Circle borderWidth="2px" size={8}>
-                  <Circle bg="border" size={3} />
+                  <Circle bg="border.default" size={3} />
                 </Circle>
               )}
             </HStack>
@@ -129,9 +129,7 @@ export const InterviewTasksBox = ({
                     <UserProfile ps={0} user={interview.partner} />
                     {interview.partner.githubUsername ===
                       pairedPartner?.githubUsername && (
-                      <Badge colorScheme="blue" variant="subtle">
-                        Paired Partner
-                      </Badge>
+                      <Badge variant="fg.subtle">Paired Partner</Badge>
                     )}
                   </HStack>
                 </Box>

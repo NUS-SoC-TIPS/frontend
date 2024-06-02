@@ -1,9 +1,12 @@
 import { memo, ReactElement } from 'react';
 import { Badge, Box, Link, Stack, Text } from '@chakra-ui/react';
 
-import { DIFFICULTY_TO_STRING, SOURCE_TO_STRING } from 'constants/enumStrings';
-import { QuestionBase } from 'types/api/questions';
-import { getQuestionUrlWithHttps } from 'utils/questionUtils';
+import {
+  DIFFICULTY_TO_STRING,
+  SOURCE_TO_STRING,
+} from '@/constants/enumStrings';
+import { QuestionBase } from '@/types/api/questions';
+import { getQuestionUrlWithHttps } from '@/utils/questionUtils';
 
 interface Props {
   question: QuestionBase;
@@ -39,7 +42,7 @@ const RawQuestionBox = ({
     <Stack align="center" direction="row" justify="space-between" spacing={5}>
       <Box fontSize="sm">
         <Text
-          color="emphasized"
+          color="fg.emphasized"
           fontSize="sm"
           fontWeight="medium"
           noOfLines={noOfLines}
@@ -48,7 +51,7 @@ const RawQuestionBox = ({
           {question.name}
         </Text>
         <Link
-          color="muted"
+          color="fg.muted"
           fontSize="sm"
           href={getQuestionUrlWithHttps(question)}
           isExternal={true}
@@ -59,7 +62,7 @@ const RawQuestionBox = ({
         </Link>
       </Box>
       {withDifficulty && (
-        <Badge colorScheme="blue" variant="subtle">
+        <Badge variant="fg.subtle">
           {DIFFICULTY_TO_STRING[question.difficulty]}
         </Badge>
       )}

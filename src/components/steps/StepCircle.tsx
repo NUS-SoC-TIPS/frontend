@@ -27,12 +27,17 @@ const RawStepCircle = (props: Props): ReactElement<Props, typeof Circle> => {
   const getIcon = (): ReactElement<typeof Icon | typeof Circle> => {
     switch (icon) {
       case 'CHECK':
-        return <Icon as={HiCheck} boxSize={5} color="inverted" />;
+        return <Icon as={HiCheck} boxSize={5} color="fg.inverted" />;
       case 'CROSS':
-        return <Icon as={HiX} boxSize={5} color="inverted" />;
+        return <Icon as={HiX} boxSize={5} color="fg.inverted" />;
       case 'NONE':
       default:
-        return <Circle bg={isDisabled ? 'border' : 'accent'} size={3} />;
+        return (
+          <Circle
+            bg={isDisabled ? 'border.default' : 'accent.default'}
+            size={3}
+          />
+        );
     }
   };
 

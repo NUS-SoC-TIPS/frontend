@@ -5,8 +5,8 @@ import {
   SubmissionItem,
   SubmissionListItem,
   UpdateSubmissionDto,
-} from 'types/api/questions';
-import { api } from 'utils/apiUtils';
+} from '@/types/api/questions';
+import { api } from '@/utils/apiUtils';
 
 export const getQuestions = async (): Promise<QuestionListItem[]> => {
   const response = await api.get('questions');

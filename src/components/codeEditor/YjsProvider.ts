@@ -7,7 +7,7 @@ import * as awarenessProtocol from 'y-protocols/awareness';
 import * as syncProtocol from 'y-protocols/sync';
 import { Doc } from 'yjs';
 
-import { CODE_EVENTS, GENERAL_EVENTS } from 'constants/events';
+import { CODE_EVENTS, GENERAL_EVENTS } from '@/constants/events';
 
 const MESSAGE_SYNC = 0;
 const MESSAGE_AWARENESS = 1;

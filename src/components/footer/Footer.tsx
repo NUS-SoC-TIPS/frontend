@@ -21,16 +21,17 @@ const RawFooter = (): ReactElement<typeof Container> => (
     <Stack spacing={{ base: 4, md: 5 }}>
       <Stack align="center" direction="row" justify="space-between">
         <Logo />
-        <ButtonGroup variant="ghost">
+        <ButtonGroup variant="secondary">
           <IconButton
             aria-label="GitHub"
             as="a"
+            border="none"
             href="https://github.com/NUS-SoC-TIPS"
             icon={<FaGithub fontSize="1.25rem" />}
           />
         </ButtonGroup>
       </Stack>
-      <Text color="subtle" fontSize="sm">
+      <Text color="fg.subtle" fontSize="sm">
         &copy; {new Date().getFullYear()} Technical Interview Preparation
         (Summer). All rights reserved.
       </Text>

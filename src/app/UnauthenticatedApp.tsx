@@ -1,9 +1,9 @@
 import { ReactElement } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { ROOM, ROOT } from 'constants/routes';
-import { Landing } from 'routes/landing';
-import { UnauthenticatedRoom } from 'routes/room';
+import { ROOM, ROOT } from '@/constants/routes';
+import { Landing } from '@/routes/landing';
+import { UnauthenticatedRoom } from '@/routes/room';
 
 const UnauthenticatedApp = (): ReactElement<typeof Routes> => {
   return (

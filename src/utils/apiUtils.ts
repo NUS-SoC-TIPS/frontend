@@ -4,7 +4,7 @@ import { handleDates } from './dateUtils';
 import tokenUtils from './tokenUtils';
 
 const api = axios.create({
-  baseURL: `${process.env.REACT_APP_BACKEND_API}`,
+  baseURL: `${import.meta.env.VITE_BACKEND_API}`,
   headers: { 'Content-Type': 'application/json' },
 });
 

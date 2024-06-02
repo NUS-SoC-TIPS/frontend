@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 
-import { StatCard } from 'components/card';
-import { formatDateWithYear } from 'utils/dateUtils';
+import { StatCard } from '@/components/card';
+import { formatDateWithYear } from '@/utils/dateUtils';
 
 interface Props {
   numCompleted: number;

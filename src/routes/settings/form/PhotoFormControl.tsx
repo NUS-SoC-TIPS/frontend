@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
 import { Avatar, Stack } from '@chakra-ui/react';
 
-import { ImageDropzone } from 'components/dropzone';
-import { FormControl } from 'components/formControl';
+import { ImageDropzone } from '@/components/dropzone';
+import { FormControl } from '@/components/formControl';
 
 interface Props {
   photoUrl: string;

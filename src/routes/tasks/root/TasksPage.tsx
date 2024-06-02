@@ -1,6 +1,6 @@
 import { PropsWithChildren, ReactElement } from 'react';
 
-import { Dashboard, Page } from 'components/page';
+import { Dashboard, Page } from '@/components/page';
 
 export const TasksPage = ({
   children,

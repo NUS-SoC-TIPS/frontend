@@ -17,13 +17,13 @@ export const StatCard = ({
   return (
     <Card>
       <Stack>
-        <Text color="muted" fontSize="sm">
+        <Text color="fg.muted" fontSize="sm">
           {title}
         </Text>
         <Stack spacing={4}>
           <Heading size="sm">{stat}</Heading>
           {subtitle && (
-            <Text color="muted" fontWeight="medium">
+            <Text color="fg.muted" fontWeight="medium">
               {subtitle}
             </Text>
           )}

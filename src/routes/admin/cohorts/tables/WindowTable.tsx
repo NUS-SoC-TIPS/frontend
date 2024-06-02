@@ -1,16 +1,16 @@
 import { ReactElement, ReactNode, useMemo } from 'react';
 import { Button, HStack } from '@chakra-ui/react';
 
-import { Card } from 'components/card';
-import { Table } from 'components/table';
-import { WindowBase } from 'types/api/windows';
-import { TableColumn } from 'types/table';
-import { formatDateWithYear } from 'utils/dateUtils';
+import { Card } from '@/components/card';
+import { Table } from '@/components/table';
+import { WindowBase } from '@/types/api/windows';
+import { TableColumn } from '@/types/table';
+import { formatDateWithYear } from '@/utils/dateUtils';
 import {
   compareBooleansTrueFirst,
   compareDatesAscending,
-} from 'utils/sortUtils';
-import { booleanRenderer } from 'utils/tableUtils';
+} from '@/utils/sortUtils';
+import { booleanRenderer } from '@/utils/tableUtils';
 
 interface Props {
   windows: WindowBase[];

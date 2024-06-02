@@ -1,10 +1,10 @@
 import { ReactElement } from 'react';
 import { Box, Link, Popover, SimpleGrid, Text } from '@chakra-ui/react';
 
-import { MyPopover } from 'components/popover';
-import { LANGUAGE_TO_STRING } from 'constants/enumStrings';
-import { INTERVIEW_LANGUAGES } from 'constants/languages';
-import { Language } from 'types/models/code';
+import { MyPopover } from '@/components/popover';
+import { LANGUAGE_TO_STRING } from '@/constants/enumStrings';
+import { INTERVIEW_LANGUAGES } from '@/constants/languages';
+import { Language } from '@/types/models/code';
 
 interface Props {
   language: Language;
@@ -37,7 +37,7 @@ export const LanguagePopover = ({
           {items.map((item, id) => (
             <Link
               backgroundColor={
-                language === item.value ? 'bg-subtle' : undefined
+                language === item.value ? 'bg.subtle' : undefined
               }
               key={id}
               onClick={item.onClick}

@@ -1,10 +1,10 @@
 import { ReactElement, useEffect, useReducer } from 'react';
 import { SimpleGrid } from '@chakra-ui/react';
 
-import { StatCardSkeleton } from 'components/card';
-import { ErrorBanner } from 'components/errorBanner';
-import { getInterviews, getInterviewStats } from 'lib/interviews';
-import { InterviewListItem, InterviewStats } from 'types/api/interviews';
+import { StatCardSkeleton } from '@/components/card';
+import { ErrorBanner } from '@/components/errorBanner';
+import { getInterviews, getInterviewStats } from '@/lib/interviews';
+import { InterviewListItem, InterviewStats } from '@/types/api/interviews';
 
 import { InterviewsPage } from './InterviewsPage';
 import { NumCompletedCard, PairedPartnerCard } from './stats';

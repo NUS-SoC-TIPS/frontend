@@ -11,11 +11,11 @@ import {
   useToast,
 } from '@chakra-ui/react';
 
-import { Page } from 'components/page';
-import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
-import { useUser } from 'contexts/UserContext';
-import { updateSettings } from 'lib/users';
-import { KeyBinding, Language } from 'types/models/code';
+import { Page } from '@/components/page';
+import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from '@/constants/toast';
+import { useUser } from '@/contexts/UserContext';
+import { updateSettings } from '@/lib/users';
+import { KeyBinding, Language } from '@/types/models/code';
 
 import {
   KeyBindingFormControl,
@@ -94,7 +94,7 @@ export const Settings = (): ReactElement<typeof Page> => {
           >
             Settings
           </Heading>
-          <Text color="muted">Customise your experience here at TIPS!</Text>
+          <Text color="fg.muted">Customise your experience here at TIPS!</Text>
         </Stack>
         <Divider />
         <Stack divider={<StackDivider />} spacing={5}>

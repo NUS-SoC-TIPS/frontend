@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import codeReducer from 'reducers/codeReducer';
-import panelReducer from 'reducers/panelReducer';
-import roomReducer from 'reducers/roomReducer';
+import codeReducer from '@/reducers/codeReducer';
+import panelReducer from '@/reducers/panelReducer';
+import roomReducer from '@/reducers/roomReducer';
 
 export const store = configureStore({
   reducer: {

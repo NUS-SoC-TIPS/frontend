@@ -1,9 +1,9 @@
 import { ReactElement } from 'react';
 import { Input, InputGroup, InputLeftAddon } from '@chakra-ui/react';
 
-import { FormControl } from 'components/formControl';
-import { QuestionSource } from 'types/models/question';
-import { getQuestionUrl } from 'utils/questionUtils';
+import { FormControl } from '@/components/formControl';
+import { QuestionSource } from '@/types/models/question';
+import { getQuestionUrl } from '@/utils/questionUtils';
 
 interface Props {
   question: { source: QuestionSource; slug: string };
@@ -19,7 +19,7 @@ export const UrlFormControl = ({
         <Input
           _active={{}}
           _focus={{
-            borderColor: 'border',
+            borderColor: 'border.default',
           }}
           _hover={{ cursor: 'not-allowed' }}
           readOnly={true}

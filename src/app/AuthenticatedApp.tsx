@@ -16,21 +16,21 @@ import {
   TASKS_BREAKDOWN,
   VIEW_COHORT,
   VIEW_WINDOW,
-} from 'constants/routes';
-import { useUser } from 'contexts/UserContext';
+} from '@/constants/routes';
+import { useUser } from '@/contexts/UserContext';
 import {
   AddCohort,
   AddStudents,
   Admin,
   ViewCohort,
   ViewWindow,
-} from 'routes/admin';
-import { Interviews, PastInterview } from 'routes/interviews';
-import { AddQuestion, PastSubmission, Questions } from 'routes/questions';
-import { Room } from 'routes/room';
-import { Settings } from 'routes/settings';
-import { Tasks, TasksBreakdown } from 'routes/tasks';
-import { UserRole } from 'types/models/user';
+} from '@/routes/admin';
+import { Interviews, PastInterview } from '@/routes/interviews';
+import { AddQuestion, PastSubmission, Questions } from '@/routes/questions';
+import { Room } from '@/routes/room';
+import { Settings } from '@/routes/settings';
+import { Tasks, TasksBreakdown } from '@/routes/tasks';
+import { UserRole } from '@/types/models/user';
 
 const AuthenticatedApp = (): ReactElement<typeof Routes> => {
   const user = useUser();

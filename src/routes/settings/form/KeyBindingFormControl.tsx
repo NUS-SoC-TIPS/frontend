@@ -1,9 +1,9 @@
 import { ReactElement, useCallback, useMemo } from 'react';
 
-import { FormControl } from 'components/formControl';
-import { Select } from 'components/select';
-import { KEY_BINDING_TO_STRING } from 'constants/enumStrings';
-import { KeyBinding } from 'types/models/code';
+import { FormControl } from '@/components/formControl';
+import { Select } from '@/components/select';
+import { KEY_BINDING_TO_STRING } from '@/constants/enumStrings';
+import { KeyBinding } from '@/types/models/code';
 
 interface Props {
   onChangePreferredKeyBinding: (keyBinding: KeyBinding) => void;

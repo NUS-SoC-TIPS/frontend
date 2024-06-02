@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
 import { Input, InputGroup, InputLeftAddon } from '@chakra-ui/react';
 
-import { FormControl } from 'components/formControl';
-import { COURSEMOLOGY_COURSE_URL_PREFIX } from 'constants/urls';
+import { FormControl } from '@/components/formControl';
+import { COURSEMOLOGY_COURSE_URL_PREFIX } from '@/constants/urls';
 
 interface Props {
   url: string;

@@ -8,12 +8,12 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react';
 
-import { SimpleCodeEditor } from 'components/codeEditor';
-import { ErrorBanner } from 'components/errorBanner';
-import { LANGUAGE_TO_STRING } from 'constants/enumStrings';
-import { getInterview } from 'lib/interviews';
-import { InterviewItem } from 'types/api/interviews';
-import { formatDateWithYear, formatDuration } from 'utils/dateUtils';
+import { SimpleCodeEditor } from '@/components/codeEditor';
+import { ErrorBanner } from '@/components/errorBanner';
+import { LANGUAGE_TO_STRING } from '@/constants/enumStrings';
+import { getInterview } from '@/lib/interviews';
+import { InterviewItem } from '@/types/api/interviews';
+import { formatDateWithYear, formatDuration } from '@/utils/dateUtils';
 
 import { PastInterviewPage } from './PastInterviewPage';
 import { PastInterviewSkeleton } from './PastInterviewSkeleton';
@@ -99,7 +99,7 @@ export const PastInterview = (): ReactElement<
             Feedback from {interview.partner.name}
           </Heading>
           <Textarea
-            color={interview.partner.notes !== '' ? undefined : 'muted'}
+            color={interview.partner.notes !== '' ? undefined : 'fg.muted'}
             height={height}
             maxHeight={height}
             readOnly={true}

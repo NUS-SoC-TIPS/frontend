@@ -9,16 +9,16 @@ import {
 } from 'react';
 import { getAdditionalUserInfo } from 'firebase/auth';
 
-import { ErrorBanner } from 'components/errorBanner';
-import { Loading } from 'components/loading';
+import { ErrorBanner } from '@/components/errorBanner';
+import { Loading } from '@/components/loading';
 import {
   getSelf,
   login as apiLogin,
   loginDev as apiLoginDev,
   logout as apiLogout,
-} from 'lib/auth';
-import { signInWithFirebase } from 'lib/firebase';
-import { UserSelf } from 'types/api/users';
+} from '@/lib/auth';
+import { signInWithFirebase } from '@/lib/firebase';
+import { UserSelf } from '@/types/api/users';
 
 export interface AuthContextInterface {
   data: UserSelf | null;
@@ -112,7 +112,7 @@ const AuthProvider = (props: PropsWithChildren<unknown>): ReactElement => {
   };
 
   const loginDev = async (): Promise<void> => {
-    if (process.env.NODE_ENV !== 'development') {
+    if (import.meta.env.MODE !== 'development') {
       throw new Error('Should only be called in development');
     }
     setIsLoggingIn(true);

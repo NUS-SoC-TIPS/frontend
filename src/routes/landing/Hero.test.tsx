@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 
-import { emptyFunction } from 'utils/functionUtils';
-import { render } from 'utils/testUtils';
+import { emptyFunction } from '@/utils/functionUtils';
+import { render } from '@/utils/testUtils';
 
 import { Hero } from './Hero';
 

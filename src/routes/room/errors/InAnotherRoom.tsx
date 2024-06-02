@@ -2,9 +2,9 @@ import { ReactElement } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 
-import { useAppSelector } from 'app/hooks';
-import { Modal } from 'components/modal';
-import { ROOM } from 'constants/routes';
+import { useAppSelector } from '@/app/hooks';
+import { Modal } from '@/components/modal';
+import { ROOM } from '@/constants/routes';
 
 import { RoomPage } from '../RoomPage';
 

@@ -56,7 +56,7 @@ export const ToggleButton = (
   const { isOpen, ...iconButtonProps } = props;
   return (
     <IconButton
-      color={isOpen ? 'white' : 'muted'}
+      color={isOpen ? 'white' : 'fg.muted'}
       icon={<ToggleIcon isActive={isOpen} />}
       position="relative"
       size="sm"

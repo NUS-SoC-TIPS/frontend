@@ -1,7 +1,7 @@
 import { memo, ReactElement } from 'react';
 import { Avatar, Box, HStack, Link, StackProps, Text } from '@chakra-ui/react';
 
-import { UserBase } from 'types/api/users';
+import { UserBase } from '@/types/api/users';
 
 interface Props extends StackProps {
   user: UserBase;
@@ -23,7 +23,7 @@ const RawUserProfile = ({
       <Avatar boxSize={10} name={user.name} src={user.photoUrl} />
       <Box>
         <Text
-          color="emphasized"
+          color="fg.emphasized"
           fontSize="sm"
           fontWeight="medium"
           noOfLines={noOfLines}
@@ -32,7 +32,7 @@ const RawUserProfile = ({
           {user.name}
         </Text>
         <Link
-          color="muted"
+          color="fg.muted"
           fontSize="sm"
           href={user.profileUrl}
           isExternal={true}

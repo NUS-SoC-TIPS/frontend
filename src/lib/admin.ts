@@ -10,9 +10,9 @@ import {
   UpdateCohortDto,
   UpdateWindowDto,
   WindowItem,
-} from 'types/api/admin';
-import { WindowBase } from 'types/api/windows';
-import { api } from 'utils/apiUtils';
+} from '@/types/api/admin';
+import { WindowBase } from '@/types/api/windows';
+import { api } from '@/utils/apiUtils';
 
 export const getOverviewAdmin = async (): Promise<AdminOverview> => {
   const response = await api.get('admin');

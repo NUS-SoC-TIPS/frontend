@@ -2,10 +2,10 @@ import { PropsWithChildren, ReactElement } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { render, RenderOptions, RenderResult } from '@testing-library/react';
 
-import { theme } from 'app/theme';
-import { AuthContext } from 'contexts/AuthContext';
-import { UserContext } from 'contexts/UserContext';
-import { UserSelf } from 'types/api/users';
+import { theme } from '@/app/theme';
+import { AuthContext } from '@/contexts/AuthContext';
+import { UserContext } from '@/contexts/UserContext';
+import { UserSelf } from '@/types/api/users';
 
 import { emptyPromiseFunction } from './functionUtils';
 

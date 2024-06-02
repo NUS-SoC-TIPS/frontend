@@ -1,8 +1,8 @@
 import { PropsWithChildren, ReactElement } from 'react';
 import { Box, Container } from '@chakra-ui/react';
 
-import { Footer } from 'components/footer';
-import { Navbar } from 'components/navbar';
+import { Footer } from '@/components/footer';
+import { Navbar } from '@/components/navbar';
 
 export const Page = ({
   children,

@@ -2,11 +2,11 @@ import { ReactElement, useEffect, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Stack } from '@chakra-ui/react';
 
-import { ErrorBanner } from 'components/errorBanner';
-import { Page } from 'components/page';
-import { TASKS_BREAKDOWN } from 'constants/routes';
-import { getCohorts } from 'lib/tasks';
-import { CohortListItem } from 'types/api/cohorts';
+import { ErrorBanner } from '@/components/errorBanner';
+import { Page } from '@/components/page';
+import { TASKS_BREAKDOWN } from '@/constants/routes';
+import { getCohorts } from '@/lib/tasks';
+import { CohortListItem } from '@/types/api/cohorts';
 
 import { CohortCard } from './CohortCard';
 import { TasksPage } from './TasksPage';

@@ -3,8 +3,8 @@ import { FiExternalLink } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { Button, Link, Stack } from '@chakra-ui/react';
 
-import { Dashboard, Page } from 'components/page';
-import { TASKS } from 'constants/routes';
+import { Dashboard, Page } from '@/components/page';
+import { TASKS } from '@/constants/routes';
 
 interface Props {
   coursemologyUrl?: string;

@@ -2,14 +2,14 @@ import { ReactElement, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { io, Socket } from 'socket.io-client';
 
-import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { Loading } from 'components/loading';
-import { initSocketForCode } from 'lib/codeSocket';
-import { initSocketForRoom } from 'lib/roomsSocket';
-import { resetCodeState } from 'reducers/codeReducer';
-import { resetPanelState } from 'reducers/panelReducer';
-import { resetRoomState, RoomJoiningStatus } from 'reducers/roomReducer';
-import tokenUtils from 'utils/tokenUtils';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { Loading } from '@/components/loading';
+import { initSocketForCode } from '@/lib/codeSocket';
+import { initSocketForRoom } from '@/lib/roomsSocket';
+import { resetCodeState } from '@/reducers/codeReducer';
+import { resetPanelState } from '@/reducers/panelReducer';
+import { resetRoomState, RoomJoiningStatus } from '@/reducers/roomReducer';
+import tokenUtils from '@/utils/tokenUtils';
 
 import { BottomBar } from './bottomBar/BottomBar';
 import { FailedToJoinRoom } from './errors/FailedToJoinRoom';
@@ -47,7 +47,7 @@ export const Room = (): ReactElement => {
       dispatch(resetRoomState());
       dispatch(resetPanelState());
       dispatch(resetCodeState());
-      newSocket = io(`${process.env.REACT_APP_BACKEND_WS}`, {
+      newSocket = io(`${import.meta.env.VITE_BACKEND_WS}`, {
         reconnection: true,
         reconnectionDelay: 1000,
         reconnectionDelayMax: 5000,

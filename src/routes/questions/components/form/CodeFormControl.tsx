@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
 
-import { SimpleCodeEditor } from 'components/codeEditor';
-import { FormControl } from 'components/formControl';
-import { Language } from 'types/models/code';
+import { SimpleCodeEditor } from '@/components/codeEditor';
+import { FormControl } from '@/components/formControl';
+import { Language } from '@/types/models/code';
 
 interface Props {
   code: string;

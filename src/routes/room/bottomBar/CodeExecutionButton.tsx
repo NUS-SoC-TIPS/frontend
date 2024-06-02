@@ -2,10 +2,10 @@ import { ReactElement, useEffect } from 'react';
 import { Button, Tooltip, useToast } from '@chakra-ui/react';
 import { Socket } from 'socket.io-client';
 
-import { useAppSelector } from 'app/hooks';
-import { ERROR_TOAST_PROPS } from 'constants/toast';
-import { executeCode } from 'lib/codeSocket';
-import { CodeExecutionError } from 'reducers/codeReducer';
+import { useAppSelector } from '@/app/hooks';
+import { ERROR_TOAST_PROPS } from '@/constants/toast';
+import { executeCode } from '@/lib/codeSocket';
+import { CodeExecutionError } from '@/reducers/codeReducer';
 
 interface Props {
   socket: Socket;

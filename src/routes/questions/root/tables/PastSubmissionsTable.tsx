@@ -1,26 +1,26 @@
 import { ReactElement, ReactNode, useMemo } from 'react';
 import { Button, Link } from '@chakra-ui/react';
 
-import { Card } from 'components/card';
-import { QuestionBox } from 'components/question';
-import { Table } from 'components/table';
-import { PAST_SUBMISSION } from 'constants/routes';
-import { QuestionBase, SubmissionListItem } from 'types/api/questions';
-import { Language } from 'types/models/code';
-import { QuestionDifficulty, QuestionSource } from 'types/models/question';
-import { TableColumn } from 'types/table';
-import { formatDateWithYear } from 'utils/dateUtils';
+import { Card } from '@/components/card';
+import { QuestionBox } from '@/components/question';
+import { Table } from '@/components/table';
+import { PAST_SUBMISSION } from '@/constants/routes';
+import { QuestionBase, SubmissionListItem } from '@/types/api/questions';
+import { Language } from '@/types/models/code';
+import { QuestionDifficulty, QuestionSource } from '@/types/models/question';
+import { TableColumn } from '@/types/table';
+import { formatDateWithYear } from '@/utils/dateUtils';
 import {
   compareDatesAscending,
   compareDifficultiesEasyFirst,
   compareLanguagesAscending,
   compareNamesAscending,
-} from 'utils/sortUtils';
+} from '@/utils/sortUtils';
 import {
   difficultyRenderer,
   languageRenderer,
   sourceRenderer,
-} from 'utils/tableUtils';
+} from '@/utils/tableUtils';
 
 interface Props {
   submissions: SubmissionListItem[];

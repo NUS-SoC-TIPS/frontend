@@ -1,4 +1,4 @@
-import { QuestionSource } from 'types/models/question';
+import { QuestionSource } from '@/types/models/question';
 
 export const getQuestionUrl = (question: {
   source: QuestionSource;

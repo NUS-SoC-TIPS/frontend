@@ -30,7 +30,7 @@ export const ErrorBanner = (
       <Box
         bg="red.600"
         borderRadius="xl"
-        color="on-accent"
+        color="fg.accent"
         position="relative"
         px={{ base: 4, md: 3 }}
         py={{ base: 4, md: 2.5 }}
@@ -57,7 +57,7 @@ export const ErrorBanner = (
               spacing={{ base: 0.5, md: 1.5 }}
             >
               <Text fontWeight="medium">Sorry, something went wrong!</Text>
-              <Text color="on-accent-muted">
+              <Text color="fg.accent.muted">
                 Please reload the page and try again.
               </Text>
             </Stack>

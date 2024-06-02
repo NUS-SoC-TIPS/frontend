@@ -10,20 +10,14 @@ import {
 import { Divider, Flex, Stack, useColorModeValue } from '@chakra-ui/react';
 
 import {
-  ADD_COHORT,
-  ADD_QUESTION,
   ADMIN,
   INTERVIEWS,
-  PAST_INTERVIEW,
-  PAST_SUBMISSION,
   QUESTIONS,
   SETTINGS,
   TASKS,
-  TASKS_BREAKDOWN,
-  VIEW_COHORT,
-} from 'constants/routes';
-import { UserSelf } from 'types/api/users';
-import { UserRole } from 'types/models/user';
+} from '@/constants/routes';
+import { UserSelf } from '@/types/api/users';
+import { UserRole } from '@/types/models/user';
 
 import { Logo } from '../logo';
 import { UserProfile } from '../userProfile';
@@ -34,19 +28,27 @@ import { NavButton } from './NavButton';
 interface Props {
   user: UserSelf;
   logout: () => void | Promise<void>;
-  pathname: string;
+  isOnQuestionTab: boolean;
+  isOnInterviewsTab: boolean;
+  isOnTasksTab: boolean;
+  isOnAdminTab: boolean;
+  isOnSettingsTab: boolean;
   navigate: (path: string) => void;
 }
 
 export const Sidebar = ({
   user,
   logout,
-  pathname,
+  isOnQuestionTab,
+  isOnInterviewsTab,
+  isOnTasksTab,
+  isOnAdminTab,
+  isOnSettingsTab,
   navigate,
 }: Props): ReactElement<Props, typeof Flex> => (
-  <Flex as="section" bg="bg-canvas" minH="100vh">
+  <Flex as="section" bg="bg.canvas" minH="100vh">
     <Flex
-      bg="bg-surface"
+      bg="bg.surface"
       boxShadow={useColorModeValue('sm', 'sm-dark')}
       flex={1}
       maxW={{ base: 'full', sm: 'xs' }}
@@ -59,49 +61,33 @@ export const Sidebar = ({
           <Logo pl={4} />
           <Stack spacing={2}>
             <NavButton
-              aria-current={
-                pathname === QUESTIONS ||
-                pathname === ADD_QUESTION ||
-                pathname.startsWith(PAST_SUBMISSION)
-                  ? 'page'
-                  : undefined
-              }
+              aria-current={isOnQuestionTab ? 'page' : undefined}
               icon={FiBook}
+              isActive={isOnQuestionTab}
               label="Questions"
               onClick={(): void => navigate(QUESTIONS)}
             />
             <NavButton
-              aria-current={
-                pathname === INTERVIEWS || pathname.startsWith(PAST_INTERVIEW)
-                  ? 'page'
-                  : undefined
-              }
+              aria-current={isOnInterviewsTab ? 'page' : undefined}
               icon={FiMessageSquare}
+              isActive={isOnInterviewsTab}
               label="Interviews"
               onClick={(): void => navigate(INTERVIEWS)}
             />
             {(user.isStudent || user.role === UserRole.ADMIN) && (
               <NavButton
-                aria-current={
-                  pathname === TASKS || pathname.startsWith(TASKS_BREAKDOWN)
-                    ? 'page'
-                    : undefined
-                }
+                aria-current={isOnTasksTab ? 'page' : undefined}
                 icon={FiCheckSquare}
+                isActive={isOnTasksTab}
                 label="Tasks"
                 onClick={(): void => navigate(TASKS)}
               />
             )}
             {user.role === UserRole.ADMIN && (
               <NavButton
-                aria-current={
-                  pathname === ADMIN ||
-                  pathname === ADD_COHORT ||
-                  pathname.startsWith(VIEW_COHORT)
-                    ? 'page'
-                    : undefined
-                }
+                aria-current={isOnAdminTab ? 'page' : undefined}
                 icon={FiAperture}
+                isActive={isOnAdminTab}
                 label="Admin"
                 onClick={(): void => navigate(ADMIN)}
               />
@@ -112,8 +98,9 @@ export const Sidebar = ({
           <Stack spacing={2}>
             <ColorModeSwitcher isSideBar={true} />
             <NavButton
-              aria-current={pathname === SETTINGS ? 'page' : undefined}
+              aria-current={isOnSettingsTab ? 'page' : undefined}
               icon={FiSettings}
+              isActive={isOnSettingsTab}
               label="Settings"
               onClick={(): void => navigate(SETTINGS)}
             />

@@ -1,4 +1,4 @@
-import { COURSEMOLOGY_COURSE_URL_PREFIX } from 'constants/urls';
+import { COURSEMOLOGY_COURSE_URL_PREFIX } from '@/constants/urls';
 
 export const stripPrefixForUrlField = <
   T extends {

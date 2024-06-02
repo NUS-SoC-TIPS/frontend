@@ -1,11 +1,11 @@
 import { ReactElement } from 'react';
 
-import { Card } from 'components/card';
-import { WindowItem } from 'types/api/admin';
-import { InterviewBase } from 'types/api/interviews';
-import { SubmissionBase } from 'types/api/questions';
-import { StudentBase } from 'types/api/students';
-import { formatDateWithYear } from 'utils/dateUtils';
+import { Card } from '@/components/card';
+import { WindowItem } from '@/types/api/admin';
+import { InterviewBase } from '@/types/api/interviews';
+import { SubmissionBase } from '@/types/api/questions';
+import { StudentBase } from '@/types/api/students';
+import { formatDateWithYear } from '@/utils/dateUtils';
 
 import { UserTable } from './UserTable';
 

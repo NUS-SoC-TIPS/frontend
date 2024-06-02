@@ -1,7 +1,7 @@
-import { DIFFICULTY_TO_ORDER } from 'constants/enumOrders';
-import { LANGUAGE_TO_STRING } from 'constants/enumStrings';
-import { Language } from 'types/models/code';
-import { QuestionDifficulty } from 'types/models/question';
+import { DIFFICULTY_TO_ORDER } from '@/constants/enumOrders';
+import { LANGUAGE_TO_STRING } from '@/constants/enumStrings';
+import { Language } from '@/types/models/code';
+import { QuestionDifficulty } from '@/types/models/question';
 
 export const compareCreatedAtsAscending = <T extends { createdAt: Date }>(
   a: T,

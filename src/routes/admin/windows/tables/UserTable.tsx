@@ -1,21 +1,21 @@
 import { ReactElement, ReactNode, useMemo } from 'react';
 import { Box, Button, Link } from '@chakra-ui/react';
 
-import { Card } from 'components/card';
-import { Table } from 'components/table';
-import { UserProfile } from 'components/userProfile';
-import { WindowItem } from 'types/api/admin';
-import { InterviewBase } from 'types/api/interviews';
-import { SubmissionBase } from 'types/api/questions';
-import { StudentBase } from 'types/api/students';
-import { UserBase } from 'types/api/users';
-import { TableColumn, TableOptions } from 'types/table';
-import { emptyFunction } from 'utils/functionUtils';
+import { Card } from '@/components/card';
+import { Table } from '@/components/table';
+import { UserProfile } from '@/components/userProfile';
+import { WindowItem } from '@/types/api/admin';
+import { InterviewBase } from '@/types/api/interviews';
+import { SubmissionBase } from '@/types/api/questions';
+import { StudentBase } from '@/types/api/students';
+import { UserBase } from '@/types/api/users';
+import { TableColumn, TableOptions } from '@/types/table';
+import { emptyFunction } from '@/utils/functionUtils';
 import {
   compareBooleansTrueFirst,
   compareNamesAscending,
-} from 'utils/sortUtils';
-import { booleanRenderer, exclusionRenderer } from 'utils/tableUtils';
+} from '@/utils/sortUtils';
+import { booleanRenderer, exclusionRenderer } from '@/utils/tableUtils';
 
 interface Props {
   users: WindowItem['students'];
@@ -92,7 +92,7 @@ const getColumns = (
         }): ReactNode => (
           <Box>
             <Link
-              color="emphasized"
+              color="fg.emphasized"
               fontSize="sm"
               fontWeight="medium"
               href={profile.url}

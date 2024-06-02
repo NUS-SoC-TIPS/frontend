@@ -24,9 +24,9 @@ import {
 import autosize from 'autosize';
 import { Socket } from 'socket.io-client';
 
-import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { updateNotes } from 'lib/notesSocket';
-import { viewOutput } from 'reducers/panelReducer';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { updateNotes } from '@/lib/notesSocket';
+import { viewOutput } from '@/reducers/panelReducer';
 
 const CustomTab = forwardRef(
   <P extends UseTabProps & { showCircle?: boolean }>(

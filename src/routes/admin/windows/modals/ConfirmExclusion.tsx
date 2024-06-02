@@ -1,8 +1,8 @@
 import { ReactElement, useState } from 'react';
 import { Button, FormControl, FormLabel, Stack, Text } from '@chakra-ui/react';
 
-import { Modal } from 'components/modal';
-import { Select } from 'components/select';
+import { Modal } from '@/components/modal';
+import { Select } from '@/components/select';
 
 interface Props {
   isOpen: boolean;

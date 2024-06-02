@@ -9,11 +9,11 @@ import {
 } from '@chakra-ui/react';
 import { Socket } from 'socket.io-client';
 
-import { useAppSelector } from 'app/hooks';
-import { ROOM } from 'constants/routes';
-import { SITE_URL } from 'constants/urls';
-import { updateLanguage } from 'lib/codeSocket';
-import { Language } from 'types/models/code';
+import { useAppSelector } from '@/app/hooks';
+import { ROOM } from '@/constants/routes';
+import { SITE_URL } from '@/constants/urls';
+import { updateLanguage } from '@/lib/codeSocket';
+import { Language } from '@/types/models/code';
 
 import { LanguagePopover } from './LanguagePopover';
 
@@ -41,7 +41,7 @@ export const TopBar = ({ socket }: Props): ReactElement<Props, typeof Box> => {
   return (
     <Box
       as="nav"
-      bg="bg-surface"
+      bg="bg.surface"
       boxShadow={useColorModeValue('sm', 'sm-dark')}
     >
       <Container maxWidth="100%" px={2} py={2}>

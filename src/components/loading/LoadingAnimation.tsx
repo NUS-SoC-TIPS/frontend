@@ -2,7 +2,7 @@ import { memo, ReactElement } from 'react';
 import { Box } from '@chakra-ui/react';
 import { useLottie } from 'lottie-react';
 
-import animationData from 'assets/animations/loading.json';
+import animationData from '@/assets/animations/loading.json';
 
 const defaultOptions = {
   loop: true,

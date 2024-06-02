@@ -6,9 +6,9 @@ const config: ClientConfig = {
   codec: 'vp8',
 };
 
-export const AGORA_APP_ID = process.env.REACT_APP_AGORA_APP_ID ?? '';
+export const AGORA_APP_ID = import.meta.env.VITE_AGORA_APP_ID ?? '';
 
-if (process.env.NODE_ENV !== 'development') {
+if (import.meta.env.MODE !== 'development') {
   AgoraRTC.setLogLevel(4);
 }
 

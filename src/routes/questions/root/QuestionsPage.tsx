@@ -2,8 +2,8 @@ import { PropsWithChildren, ReactElement } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 
-import { Dashboard, Page } from 'components/page';
-import { ADD_QUESTION } from 'constants/routes';
+import { Dashboard, Page } from '@/components/page';
+import { ADD_QUESTION } from '@/constants/routes';
 
 export const QuestionsPage = ({
   children,

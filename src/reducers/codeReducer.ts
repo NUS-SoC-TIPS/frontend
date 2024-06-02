@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Language } from 'types/models/code';
+import { Language } from '@/types/models/code';
 
 export enum CodeExecutionError {
   FAILED_TO_START_EXECUTION,

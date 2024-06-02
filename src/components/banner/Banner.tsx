@@ -24,9 +24,9 @@ const RawBanner = ({
   );
   return (
     <Box
-      bg="bg-accent"
+      bg="bg.accent.default"
       borderRadius="xl"
-      color="on-accent"
+      color="fg.accent"
       position="relative"
       px={{ base: 4, md: 3 }}
       py={{ base: 4, md: 2.5 }}
@@ -43,7 +43,7 @@ const RawBanner = ({
           spacing={4}
         >
           {!isMobile && (
-            <Square bg="accent-subtle" borderRadius="md" size={12}>
+            <Square bg="bg.accent.subtle" borderRadius="md" size={12}>
               <Icon as={FiInfo} boxSize={6} />
             </Square>
           )}
@@ -53,7 +53,7 @@ const RawBanner = ({
             spacing={{ base: 0.5, md: 1.5 }}
           >
             <Text fontWeight="medium">{title}</Text>
-            <Text color="on-accent-muted">{message}</Text>
+            <Text color="fg.accent.muted">{message}</Text>
           </Stack>
         </Stack>
       </Stack>

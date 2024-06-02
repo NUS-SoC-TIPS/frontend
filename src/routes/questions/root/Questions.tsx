@@ -1,11 +1,11 @@
 import { ReactElement, useEffect, useReducer } from 'react';
 import { SimpleGrid } from '@chakra-ui/react';
 
-import { Banner } from 'components/banner';
-import { Card, StatCardSkeleton } from 'components/card';
-import { ErrorBanner } from 'components/errorBanner';
-import { getQuestionStats, getSubmissions } from 'lib/questions';
-import { QuestionStats, SubmissionListItem } from 'types/api/questions';
+import { Banner } from '@/components/banner';
+import { Card, StatCardSkeleton } from '@/components/card';
+import { ErrorBanner } from '@/components/errorBanner';
+import { getQuestionStats, getSubmissions } from '@/lib/questions';
+import { QuestionStats, SubmissionListItem } from '@/types/api/questions';
 
 import { QuestionsPage } from './QuestionsPage';
 import { NumCompletedCard } from './stats';

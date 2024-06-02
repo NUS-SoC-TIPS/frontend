@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { DateObj } from 'dayzed';
 
-import { formatDateWithYear } from 'utils/dateUtils';
+import { formatDateWithYear } from '@/utils/dateUtils';
 
 import { CalendarPanel } from './CalendarPanel';
 

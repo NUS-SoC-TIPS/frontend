@@ -1,12 +1,15 @@
 import { ReactElement, ReactNode, useMemo } from 'react';
 
-import { Card } from 'components/card';
-import { Table } from 'components/table';
-import { UserProfile } from 'components/userProfile';
-import { UserBase } from 'types/api/users';
-import { TableColumn } from 'types/table';
-import { formatDateWithYear } from 'utils/dateUtils';
-import { compareDatesAscending, compareNamesAscending } from 'utils/sortUtils';
+import { Card } from '@/components/card';
+import { Table } from '@/components/table';
+import { UserProfile } from '@/components/userProfile';
+import { UserBase } from '@/types/api/users';
+import { TableColumn } from '@/types/table';
+import { formatDateWithYear } from '@/utils/dateUtils';
+import {
+  compareDatesAscending,
+  compareNamesAscending,
+} from '@/utils/sortUtils';
 
 interface Props {
   users: (UserBase & {

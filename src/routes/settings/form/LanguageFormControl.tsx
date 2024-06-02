@@ -1,10 +1,10 @@
 import { ReactElement, useCallback, useMemo } from 'react';
 
-import { FormControl } from 'components/formControl';
-import { Select } from 'components/select';
-import { LANGUAGE_TO_STRING } from 'constants/enumStrings';
-import { INTERVIEW_LANGUAGES } from 'constants/languages';
-import { Language } from 'types/models/code';
+import { FormControl } from '@/components/formControl';
+import { Select } from '@/components/select';
+import { LANGUAGE_TO_STRING } from '@/constants/enumStrings';
+import { INTERVIEW_LANGUAGES } from '@/constants/languages';
+import { Language } from '@/types/models/code';
 
 interface Props {
   onChangePreferredInterviewLanguage: (language: Language | null) => void;

@@ -5,7 +5,7 @@ import { Skeleton } from '@chakra-ui/react';
 export const CohortCardSkeleton = (): ReactElement<typeof Box> => {
   return (
     <Box
-      bg="bg-surface"
+      bg="bg.surface"
       borderRadius="lg"
       boxShadow="sm"
       p={{ base: 4, md: 6 }}
@@ -31,7 +31,7 @@ export const CohortCardSkeleton = (): ReactElement<typeof Box> => {
             </Skeleton>
           </Stack>
           <Skeleton>
-            <Text color="muted" fontSize="sm">
+            <Text color="fg.muted" fontSize="sm">
               May 21, 2023 - May 22, 2023
             </Text>
           </Skeleton>

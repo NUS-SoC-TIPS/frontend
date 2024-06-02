@@ -6,7 +6,7 @@ import { oneDark } from '@codemirror/theme-one-dark';
 import { keymap } from '@codemirror/view';
 import { basicSetup, EditorView } from 'codemirror';
 
-import { Language } from 'types/models/code';
+import { Language } from '@/types/models/code';
 
 import { ONE_DARK_BACKGROUND_COLOR } from './colors';
 import { getLanguageExtension } from './languages';

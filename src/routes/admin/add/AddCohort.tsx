@@ -2,11 +2,11 @@ import { ReactElement, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 
-import { Dashboard, Page } from 'components/page';
-import { ADMIN, VIEW_COHORT } from 'constants/routes';
-import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
-import { COURSEMOLOGY_COURSE_URL_PREFIX } from 'constants/urls';
-import { createCohortAdmin } from 'lib/admin';
+import { Dashboard, Page } from '@/components/page';
+import { ADMIN, VIEW_COHORT } from '@/constants/routes';
+import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from '@/constants/toast';
+import { COURSEMOLOGY_COURSE_URL_PREFIX } from '@/constants/urls';
+import { createCohortAdmin } from '@/lib/admin';
 
 import { NameFormControl, UrlFormControl } from '../components/form';
 

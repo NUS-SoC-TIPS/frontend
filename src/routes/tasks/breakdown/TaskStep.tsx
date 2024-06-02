@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 
-import { Step } from 'components/steps';
-import { formatDateWithoutYear } from 'utils/dateUtils';
+import { Step } from '@/components/steps';
+import { formatDateWithoutYear } from '@/utils/dateUtils';
 
 interface Props {
   window: { startAt: Date };

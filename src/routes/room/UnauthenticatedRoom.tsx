@@ -1,10 +1,10 @@
 import { ReactElement } from 'react';
 import { Button, Text, useToast } from '@chakra-ui/react';
 
-import { GitHubIcon } from 'components/icons/GitHubIcon';
-import { Modal } from 'components/modal';
-import { ERROR_TOAST_PROPS } from 'constants/toast';
-import { useAuth } from 'contexts/AuthContext';
+import { GitHubIcon } from '@/components/icons/GitHubIcon';
+import { Modal } from '@/components/modal';
+import { ERROR_TOAST_PROPS } from '@/constants/toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 import { RoomPage } from './RoomPage';
 
@@ -25,7 +25,7 @@ export const UnauthenticatedRoom = (): ReactElement<typeof RoomPage> => {
         textAlignCentre={true}
         title="Login now to get started with your mock interviews!"
       >
-        <Text color="muted">
+        <Text color="fg.muted">
           No worries, it&apos;s quick and painless to get started with TIPS!
         </Text>
         <Button

@@ -1,9 +1,9 @@
 import { ReactElement, useMemo } from 'react';
 import { Box, Link } from '@chakra-ui/react';
 
-import { Card } from 'components/card';
-import { Table } from 'components/table';
-import { TableColumn } from 'types/table';
+import { Card } from '@/components/card';
+import { Table } from '@/components/table';
+import { TableColumn } from '@/types/table';
 
 interface Props {
   students: {
@@ -38,7 +38,7 @@ const getColumns = (): TableColumn[] => {
         customBodyRenderer: (url: string) => (
           <Box>
             <Link
-              color="emphasized"
+              color="fg.emphasized"
               fontSize="sm"
               fontWeight="medium"
               href={url}

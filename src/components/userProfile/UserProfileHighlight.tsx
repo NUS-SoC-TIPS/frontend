@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { Box } from '@chakra-ui/react';
 
-import { UserBase } from 'types/api/users';
+import { UserBase } from '@/types/api/users';
 
 import { UserProfile } from './UserProfile';
 

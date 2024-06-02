@@ -1,13 +1,13 @@
 import { ReactElement, ReactNode, useMemo } from 'react';
 import { Box, Link } from '@chakra-ui/react';
 
-import { Card } from 'components/card';
-import { Table } from 'components/table';
-import { UserProfile } from 'components/userProfile';
-import { StudentBase } from 'types/api/students';
-import { UserBase } from 'types/api/users';
-import { TableColumn } from 'types/table';
-import { compareNamesAscending } from 'utils/sortUtils';
+import { Card } from '@/components/card';
+import { Table } from '@/components/table';
+import { UserProfile } from '@/components/userProfile';
+import { StudentBase } from '@/types/api/students';
+import { UserBase } from '@/types/api/users';
+import { TableColumn } from '@/types/table';
+import { compareNamesAscending } from '@/utils/sortUtils';
 
 interface Props {
   students: StudentBase[];
@@ -64,7 +64,7 @@ const getColumns = (): TableColumn[] => {
         }): ReactNode => (
           <Box>
             <Link
-              color="emphasized"
+              color="fg.emphasized"
               fontSize="sm"
               fontWeight="medium"
               href={profile.url}

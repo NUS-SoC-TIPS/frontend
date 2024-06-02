@@ -2,7 +2,7 @@ import { createContext, PropsWithChildren } from 'react';
 import { useContext } from 'react';
 import { ReactElement } from 'react';
 
-import { UserSelf } from 'types/api/users';
+import { UserSelf } from '@/types/api/users';
 
 import { useAuth } from './AuthContext';
 

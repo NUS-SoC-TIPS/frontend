@@ -24,7 +24,7 @@ import { vscodeKeymap } from '@replit/codemirror-vscode-keymap';
 import { basicSetup } from 'codemirror';
 import { yUndoManagerKeymap } from 'y-codemirror.next';
 
-import { KeyBinding } from 'types/models/code';
+import { KeyBinding } from '@/types/models/code';
 
 export const getKeyBindingExtensions = (
   keyBinding: KeyBinding,

@@ -2,18 +2,18 @@ import { ReactElement, useCallback, useEffect, useReducer } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 
-import { ErrorBanner } from 'components/errorBanner';
-import { QUESTIONS } from 'constants/routes';
-import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
+import { ErrorBanner } from '@/components/errorBanner';
+import { QUESTIONS } from '@/constants/routes';
+import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from '@/constants/toast';
 import {
   deleteSubmission,
   getSubmission,
   updateSubmission,
-} from 'lib/questions';
-import { SubmissionItem } from 'types/api/questions';
-import { Language } from 'types/models/code';
-import { formatDateWithYear } from 'utils/dateUtils';
-import { emptyFunction } from 'utils/functionUtils';
+} from '@/lib/questions';
+import { SubmissionItem } from '@/types/api/questions';
+import { Language } from '@/types/models/code';
+import { formatDateWithYear } from '@/utils/dateUtils';
+import { emptyFunction } from '@/utils/functionUtils';
 
 import {
   CodeFormControl,

@@ -1,7 +1,7 @@
 import { PropsWithChildren, ReactElement } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 
-import { theme } from 'app/theme';
+import { theme } from '@/app/theme';
 
 import { AuthProvider } from './AuthContext';
 import { UserProvider } from './UserContext';

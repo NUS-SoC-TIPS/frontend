@@ -2,12 +2,12 @@ import { ReactElement, useEffect, useReducer } from 'react';
 import { useParams } from 'react-router-dom';
 import { Heading, Stack } from '@chakra-ui/layout';
 
-import { ErrorBanner } from 'components/errorBanner';
-import { Page } from 'components/page';
-import { getCohort } from 'lib/tasks';
-import { CohortItem } from 'types/api/cohorts';
-import { formatDateWithYear } from 'utils/dateUtils';
-import { computeTaskStepData, findCurrentWindow } from 'utils/windowUtils';
+import { ErrorBanner } from '@/components/errorBanner';
+import { Page } from '@/components/page';
+import { getCohort } from '@/lib/tasks';
+import { CohortItem } from '@/types/api/cohorts';
+import { formatDateWithYear } from '@/utils/dateUtils';
+import { computeTaskStepData, findCurrentWindow } from '@/utils/windowUtils';
 
 import { ExclusionBanner } from './banners';
 import { InterviewTasksBox } from './InterviewTasksBox';

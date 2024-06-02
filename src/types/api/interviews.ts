@@ -1,6 +1,6 @@
 // This is the minimal information needed by the frontend to
 
-import { Language } from 'types/models/code';
+import { Language } from '@/types/models/code';
 
 import { StudentBase } from './students';
 import { UserBase } from './users';

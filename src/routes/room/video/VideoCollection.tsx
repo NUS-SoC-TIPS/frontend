@@ -3,14 +3,14 @@ import { PropsWithChildren, ReactElement, useEffect, useState } from 'react';
 import { Box, useBreakpointValue, useToast } from '@chakra-ui/react';
 import { AgoraVideoPlayer, IAgoraRTCRemoteUser } from 'agora-rtc-react';
 
-import { useAppSelector } from 'app/hooks';
-import { ERROR_TOAST_PROPS } from 'constants/toast';
-import { useUser } from 'contexts/UserContext';
+import { useAppSelector } from '@/app/hooks';
+import { ERROR_TOAST_PROPS } from '@/constants/toast';
+import { useUser } from '@/contexts/UserContext';
 import {
   AGORA_APP_ID,
   useClient,
   useMicrophoneAndCameraTracks,
-} from 'lib/agora';
+} from '@/lib/agora';
 
 import { Controls } from './Controls';
 import './VideoCollection.scss';

@@ -6,8 +6,8 @@ export const useChakraSelectStyles = (): ChakraStylesConfig<
   boolean,
   GroupBase<unknown>
 > => {
-  const backgroundColor = useColorModeValue('white', 'gray.800');
-  const foregroundColor = useColorModeValue('gray.50', 'gray.700');
+  const backgroundColor = 'bg.surface';
+  const foregroundColor = 'bg.subtle';
   const controlHoverBorderColor = useColorModeValue('gray.300', 'gray.600');
   const controlFocusBorderColor = useColorModeValue('brand.500', 'brand.200');
   const controlFocusBoxShadow = useColorModeValue(
@@ -33,7 +33,7 @@ export const useChakraSelectStyles = (): ChakraStylesConfig<
         boxShadow: controlFocusBoxShadow,
       },
       _disabled: {
-        borderColor: 'border',
+        borderColor: 'border.default',
         cursor: 'not-allowed',
       },
     }),
@@ -51,6 +51,16 @@ export const useChakraSelectStyles = (): ChakraStylesConfig<
     }),
     option: (styles) => ({
       ...styles,
+    }),
+    crossIcon: (styles) => ({
+      ...styles,
+      boxSize: '2.5',
+    }),
+    clearIndicator: (styles) => ({
+      ...styles,
+      height: '100%',
+      width: '9',
+      bg: 'none',
     }),
   };
 };

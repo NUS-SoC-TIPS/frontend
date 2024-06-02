@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { Box } from '@chakra-ui/react';
 
-import { QuestionBase } from 'types/api/questions';
+import { QuestionBase } from '@/types/api/questions';
 
 import { QuestionBox } from './QuestionBox';
 

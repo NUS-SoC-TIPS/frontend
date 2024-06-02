@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
 
-import { FormControl } from 'components/formControl';
-import { RadioButton, RadioButtonGroup } from 'components/radio';
-import { QuestionDifficulty } from 'types/models/question';
+import { FormControl } from '@/components/formControl';
+import { RadioButton, RadioButtonGroup } from '@/components/radio';
+import { QuestionDifficulty } from '@/types/models/question';
 
 interface Props {
   question: { difficulty: QuestionDifficulty };

@@ -1,11 +1,11 @@
 import { ReactElement, ReactNode, useMemo } from 'react';
 import { Button } from '@chakra-ui/react';
 
-import { Card } from 'components/card';
-import { Table } from 'components/table';
-import { TableColumn } from 'types/table';
-import { formatDateWithYear } from 'utils/dateUtils';
-import { compareDatesAscending } from 'utils/sortUtils';
+import { Card } from '@/components/card';
+import { Table } from '@/components/table';
+import { TableColumn } from '@/types/table';
+import { formatDateWithYear } from '@/utils/dateUtils';
+import { compareDatesAscending } from '@/utils/sortUtils';
 
 interface Props {
   cohorts: {

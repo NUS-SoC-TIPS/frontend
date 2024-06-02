@@ -30,7 +30,7 @@ import { swift } from '@codemirror/legacy-modes/mode/swift';
 import { Extension } from '@codemirror/state';
 import { elixir } from 'codemirror-lang-elixir';
 
-import { Language } from 'types/models/code';
+import { Language } from '@/types/models/code';
 
 export const getLanguageExtension = (language: Language | null): Extension => {
   switch (language) {

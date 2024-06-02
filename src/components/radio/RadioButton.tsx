@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   ButtonProps,
+  chakra,
   useId,
   useRadio,
   UseRadioProps,
@@ -15,19 +16,14 @@ export interface Props extends ButtonProps {
 
 export const RadioButton = (props: Props): ReactElement<Props, typeof Box> => {
   const { radioProps, ...rest } = props;
-  const { getInputProps, getCheckboxProps, getLabelProps } =
+  const { state, getInputProps, getRadioProps, htmlProps, getLabelProps } =
     useRadio(radioProps);
   const id = useId(undefined, 'radio-button');
 
-  const inputProps = getInputProps();
-  const checkboxProps = getCheckboxProps();
-  const labelProps = getLabelProps();
-
   return (
-    <Box
-      as="label"
+    <chakra.label
+      {...htmlProps}
       cursor="pointer"
-      {...labelProps}
       flex={1}
       sx={{
         '.focus-visible + [data-focus]': {
@@ -36,15 +32,20 @@ export const RadioButton = (props: Props): ReactElement<Props, typeof Box> => {
         },
       }}
     >
-      <input {...inputProps} aria-labelledby={id} />
+      <input {...getInputProps({})} aria-labelledby={id} hidden={true} />
       <Button
         _focus={{ boxShadow: 'none' }}
+        _hover={{ bg: 'bg.subtle' }}
         as="div"
+        bg={state.isChecked ? 'bg.subtle' : 'bg.surface'}
+        borderColor="border.emphasized"
+        color="inherit"
         id={id}
         w="100%"
-        {...checkboxProps}
+        {...getRadioProps()}
+        {...getLabelProps()}
         {...rest}
       />
-    </Box>
+    </chakra.label>
   );
 };

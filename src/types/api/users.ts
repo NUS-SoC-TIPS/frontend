@@ -1,5 +1,5 @@
-import { KeyBinding, Language } from 'types/models/code';
-import { UserRole } from 'types/models/user';
+import { KeyBinding, Language } from '@/types/models/code';
+import { UserRole } from '@/types/models/user';
 
 // This is the minimal information needed by the frontend to
 // render the user card element.

@@ -13,15 +13,15 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import { Datepicker } from 'components/datepicker';
-import { Modal } from 'components/modal';
-import { RadioButton, RadioButtonGroup } from 'components/radio';
+import { Datepicker } from '@/components/datepicker';
+import { Modal } from '@/components/modal';
+import { RadioButton, RadioButtonGroup } from '@/components/radio';
 import {
   formatDateWithYear,
   isBeforeByDate,
   isSameByDate,
-} from 'utils/dateUtils';
-import { emptyFunction } from 'utils/functionUtils';
+} from '@/utils/dateUtils';
+import { emptyFunction } from '@/utils/functionUtils';
 
 interface Props {
   isOpen: boolean;
@@ -199,7 +199,7 @@ export const WindowModal = ({
             px={{ base: 4, md: 3 }}
             py={{ base: 4, md: 2.5 }}
           >
-            <Text color="on-accent-muted">{errorMessage}</Text>
+            <Text color="fg.accent.muted">{errorMessage}</Text>
           </Box>
         )}
       </Stack>

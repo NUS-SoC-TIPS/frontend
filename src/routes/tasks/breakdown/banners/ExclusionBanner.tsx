@@ -65,7 +65,7 @@ export const ExclusionBanner = (
               <Text fontWeight="medium">
                 Your course access has been downgraded starting from this week.
               </Text>
-              <Text color="on-accent-muted">
+              <Text color="fg.accent.muted">
                 Reason: {props.exclusion.reason}
               </Text>
             </Stack>

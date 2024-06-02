@@ -46,7 +46,7 @@ export const Modal = (props: Props): ReactElement<typeof ChakraModal> => {
         backdropFilter="blur(10px) hue-rotate(90deg)"
         bg="blackAlpha.300"
       />
-      <ModalContent borderRadius="2xl">
+      <ModalContent bg="bg.canvas" borderRadius="2xl">
         <ModalBody p={{ base: 4, lg: 6 }}>
           <ModalHeader p={2} textAlign={textAlignCentre ? 'center' : undefined}>
             {title}
@@ -60,9 +60,7 @@ export const Modal = (props: Props): ReactElement<typeof ChakraModal> => {
               {actions ? (
                 actions
               ) : (
-                <Button colorScheme="blue" onClick={props.onClose}>
-                  Close
-                </Button>
+                <Button onClick={props.onClose}>Close</Button>
               )}
             </ModalFooter>
           )}

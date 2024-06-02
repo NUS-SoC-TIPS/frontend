@@ -62,7 +62,7 @@ export const Slider = ({
   return (
     <Box
       alignItems="center"
-      bg="bg-surface"
+      bg="bg.surface"
       cursor={isTablet ? 'col-resize' : 'row-resize'}
       display="flex"
       flexGrow={0}

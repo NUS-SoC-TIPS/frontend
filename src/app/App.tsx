@@ -2,9 +2,9 @@ import { lazy, Suspense, useEffect } from 'react';
 import { ReactElement } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 
-import { Loading } from 'components/loading';
-import { useUser } from 'contexts/UserContext';
-import { retryPromise } from 'utils/promiseUtils';
+import { Loading } from '@/components/loading';
+import { useUser } from '@/contexts/UserContext';
+import { retryPromise } from '@/utils/promiseUtils';
 
 // Code splitting with React.lazy and Suspense
 type ModuleType = typeof import('./AuthenticatedApp');

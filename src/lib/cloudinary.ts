@@ -1,6 +1,6 @@
 import imageCompression from 'browser-image-compression';
 
-import { CLOUDINARY_UPLOAD_URL } from 'constants/urls';
+import { CLOUDINARY_UPLOAD_URL } from '@/constants/urls';
 
 export const uploadImageToCloudinary = async (image: File): Promise<string> => {
   const compressedFile = await imageCompression(image, {
@@ -12,7 +12,7 @@ export const uploadImageToCloudinary = async (image: File): Promise<string> => {
   formData.append(
     'upload_preset',
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET!,
+    import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET!,
   );
   const response = await fetch(CLOUDINARY_UPLOAD_URL, {
     method: 'POST',

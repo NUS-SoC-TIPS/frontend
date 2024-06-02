@@ -2,8 +2,8 @@ import {
   InterviewItem,
   InterviewListItem,
   InterviewStats,
-} from 'types/api/interviews';
-import { api } from 'utils/apiUtils';
+} from '@/types/api/interviews';
+import { api } from '@/utils/apiUtils';
 
 export const createRoom = async (): Promise<string> => {
   const response = await api.post('interviews/rooms');

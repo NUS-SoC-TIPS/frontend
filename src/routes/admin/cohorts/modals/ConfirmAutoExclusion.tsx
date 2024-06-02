@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
 import { Button, Stack, Text } from '@chakra-ui/react';
 
-import { Modal } from 'components/modal';
-import { emptyFunction } from 'utils/functionUtils';
+import { Modal } from '@/components/modal';
+import { emptyFunction } from '@/utils/functionUtils';
 
 interface Props {
   isOpen: boolean;

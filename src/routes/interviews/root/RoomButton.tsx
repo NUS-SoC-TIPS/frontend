@@ -2,8 +2,8 @@ import { ReactElement, useEffect, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 
-import { ROOM } from 'constants/routes';
-import { createRoom, getCurrentRoom } from 'lib/interviews';
+import { ROOM } from '@/constants/routes';
+import { createRoom, getCurrentRoom } from '@/lib/interviews';
 
 interface State {
   isLoading: boolean;

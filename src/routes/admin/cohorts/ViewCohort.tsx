@@ -2,22 +2,22 @@ import { ReactElement, useEffect, useReducer } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 
-import { ErrorBanner } from 'components/errorBanner';
-import { ADD_STUDENTS, VIEW_WINDOW } from 'constants/routes';
-import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
-import { COURSEMOLOGY_COURSE_URL_PREFIX } from 'constants/urls';
+import { ErrorBanner } from '@/components/errorBanner';
+import { ADD_STUDENTS, VIEW_WINDOW } from '@/constants/routes';
+import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from '@/constants/toast';
+import { COURSEMOLOGY_COURSE_URL_PREFIX } from '@/constants/urls';
 import {
   createWindowAdmin,
   getCohortAdmin,
   rematchWindows,
   updateCohortAdmin,
   updateWindowAdmin,
-} from 'lib/admin';
-import { CohortAdminItem } from 'types/api/admin';
-import { WindowBase } from 'types/api/windows';
-import { stripPrefixForUrlField } from 'utils/cohortUtils';
-import { changeToUserTimezone } from 'utils/dateUtils';
-import { compareStartAtsDescending } from 'utils/sortUtils';
+} from '@/lib/admin';
+import { CohortAdminItem } from '@/types/api/admin';
+import { WindowBase } from '@/types/api/windows';
+import { stripPrefixForUrlField } from '@/utils/cohortUtils';
+import { changeToUserTimezone } from '@/utils/dateUtils';
+import { compareStartAtsDescending } from '@/utils/sortUtils';
 
 import { NameFormControl, UrlFormControl } from '../components/form';
 

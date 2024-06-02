@@ -86,10 +86,10 @@ const RawStep = (props: Props): ReactElement<Props, typeof Stack> => {
           >
             <Box boxSize={8} opacity={0} />
             <Stack align={{ base: 'start', md: 'center' }} spacing={1}>
-              <Text color="emphasized" fontWeight="medium">
+              <Text color="fg.emphasized" fontWeight="medium">
                 {title}
               </Text>
-              <Text color="muted">{description}</Text>
+              <Text color="fg.muted">{description}</Text>
             </Stack>
           </Stack>
         </Button>

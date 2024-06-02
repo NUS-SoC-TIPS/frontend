@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { Button, Code, ListItem, OrderedList, Text } from '@chakra-ui/react';
 
-import { Modal } from 'components/modal';
+import { Modal } from '@/components/modal';
 
 interface Props {
   isOpen: boolean;
@@ -48,7 +48,7 @@ export const HelpModal = ({
           </Text>
         </ListItem>
       </OrderedList>
-      <Text color="muted" fontSize="sm" mt={4}>
+      <Text color="fg.muted" fontSize="sm" mt={4}>
         Note that your sessions need to be at least 15 minutes long to be
         counted. Your room will also auto-close after 5 minutes of inactivity.
       </Text>

@@ -1,14 +1,14 @@
 import { ReactElement } from 'react';
 import { Heading, Skeleton, Stack, Text } from '@chakra-ui/react';
 
-import { Card } from 'components/card';
+import { Card } from '@/components/card';
 
 export const StatCardSkeleton = (): ReactElement<typeof Card> => {
   return (
     <Card>
       <Stack>
         <Skeleton>
-          <Text color="muted" fontSize="sm">
+          <Text color="fg.muted" fontSize="sm">
             Skeleton
           </Text>
         </Skeleton>
@@ -17,7 +17,7 @@ export const StatCardSkeleton = (): ReactElement<typeof Card> => {
             <Heading size="sm">Skeleton</Heading>
           </Skeleton>
           <Skeleton>
-            <Text color="muted" fontWeight="medium">
+            <Text color="fg.muted" fontWeight="medium">
               Skeleton
             </Text>
           </Skeleton>

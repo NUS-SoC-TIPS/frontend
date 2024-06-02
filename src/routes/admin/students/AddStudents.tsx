@@ -2,12 +2,12 @@ import { ReactElement, useReducer } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Code, Flex, Stack, Text, useToast } from '@chakra-ui/react';
 
-import { JsonDropzone } from 'components/dropzone/JsonDropzone';
-import { Dashboard, Page } from 'components/page';
-import { VIEW_COHORT } from 'constants/routes';
-import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
-import { createStudentsAdmin, validateStudentsAdmin } from 'lib/admin';
-import { CohortStudentValidationResult } from 'types/api/admin';
+import { JsonDropzone } from '@/components/dropzone/JsonDropzone';
+import { Dashboard, Page } from '@/components/page';
+import { VIEW_COHORT } from '@/constants/routes';
+import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from '@/constants/toast';
+import { createStudentsAdmin, validateStudentsAdmin } from '@/lib/admin';
+import { CohortStudentValidationResult } from '@/types/api/admin';
 
 import {
   CreatedStudentTable,
@@ -164,12 +164,7 @@ export const AddStudents = (): ReactElement<void, typeof Page> => {
               <Text>
                 Start by uploading a JSON file in the following format:
               </Text>
-              <Code
-                colorScheme="blue"
-                whiteSpace="pre-wrap"
-                width="100%"
-                wordBreak="break-all"
-              >
+              <Code whiteSpace="pre-wrap" width="100%" wordBreak="break-all">
                 {sampleJson.map((line, index) => (
                   <p key={index}>{line}</p>
                 ))}

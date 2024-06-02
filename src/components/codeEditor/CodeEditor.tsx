@@ -7,7 +7,7 @@ import { Socket } from 'socket.io-client';
 import { yCollab } from 'y-codemirror.next';
 import { Doc } from 'yjs';
 
-import { KeyBinding, Language } from 'types/models/code';
+import { KeyBinding, Language } from '@/types/models/code';
 
 import {
   CURSOR_COLOR_TO_SEND_PARTNER,

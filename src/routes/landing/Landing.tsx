@@ -1,9 +1,9 @@
 import { ReactElement } from 'react';
 import { Stack, useToast } from '@chakra-ui/react';
 
-import { Page } from 'components/page';
-import { ERROR_TOAST_PROPS } from 'constants/toast';
-import { useAuth } from 'contexts/AuthContext';
+import { Page } from '@/components/page';
+import { ERROR_TOAST_PROPS } from '@/constants/toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 import { Hero } from './Hero';
 

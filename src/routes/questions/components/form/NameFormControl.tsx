@@ -1,9 +1,9 @@
 import { ReactElement, useCallback, useMemo, useState } from 'react';
 
-import { FormControl } from 'components/formControl';
-import { AsyncSelect } from 'components/select';
-import { SOURCE_TO_STRING } from 'constants/enumStrings';
-import { QuestionSource } from 'types/models/question';
+import { FormControl } from '@/components/formControl';
+import { AsyncSelect } from '@/components/select';
+import { SOURCE_TO_STRING } from '@/constants/enumStrings';
+import { QuestionSource } from '@/types/models/question';
 
 interface Props {
   questions: { name: string; source: QuestionSource; slug: string }[];

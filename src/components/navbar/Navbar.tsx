@@ -18,7 +18,6 @@ import {
 } from '@chakra-ui/react';
 
 import {
-  ADD_COHORT,
   ADD_QUESTION,
   ADMIN,
   INTERVIEWS,
@@ -28,11 +27,10 @@ import {
   SETTINGS,
   TASKS,
   TASKS_BREAKDOWN,
-  VIEW_COHORT,
-} from 'constants/routes';
-import { useAuth } from 'contexts/AuthContext';
-import { useUser } from 'contexts/UserContext';
-import { UserRole } from 'types/models/user';
+} from '@/constants/routes';
+import { useAuth } from '@/contexts/AuthContext';
+import { useUser } from '@/contexts/UserContext';
+import { UserRole } from '@/types/models/user';
 
 import { Logo } from '../logo';
 
@@ -53,10 +51,21 @@ export const Navbar = (): ReactElement<typeof Box> => {
   const navigate = useNavigate();
   const { isLoggingIn, login } = useAuth();
 
+  const isOnQuestionTab =
+    pathname === QUESTIONS ||
+    pathname === ADD_QUESTION ||
+    pathname.startsWith(PAST_SUBMISSION);
+  const isOnInterviewsTab =
+    pathname === INTERVIEWS || pathname.startsWith(PAST_INTERVIEW);
+  const isOnTasksTab =
+    pathname === TASKS || pathname.startsWith(TASKS_BREAKDOWN);
+  const isOnAdminTab = pathname.startsWith(ADMIN);
+  const isOnSettingsTab = pathname === SETTINGS;
+
   return (
     <Box
       as="nav"
-      bg="bg-surface"
+      bg="bg.surface"
       boxShadow={useColorModeValue('sm', 'sm-dark')}
     >
       <Container maxW="8xl" py={{ base: 3, lg: 4 }}>
@@ -64,37 +73,28 @@ export const Navbar = (): ReactElement<typeof Box> => {
           <HStack spacing={4}>
             <Logo />
             {isDesktop && user && (
-              <ButtonGroup spacing={1} variant="ghost">
+              <ButtonGroup spacing={2} variant="secondary">
                 <Button
-                  aria-current={
-                    pathname === QUESTIONS ||
-                    pathname === ADD_QUESTION ||
-                    pathname.startsWith(PAST_SUBMISSION)
-                      ? 'page'
-                      : undefined
-                  }
+                  aria-current={isOnQuestionTab ? 'page' : undefined}
+                  border="none"
+                  isActive={isOnQuestionTab}
                   onClick={(): void => navigate(QUESTIONS)}
                 >
                   Questions
                 </Button>
                 <Button
-                  aria-current={
-                    pathname === INTERVIEWS ||
-                    pathname.startsWith(PAST_INTERVIEW)
-                      ? 'page'
-                      : undefined
-                  }
+                  aria-current={isOnInterviewsTab ? 'page' : undefined}
+                  border="none"
+                  isActive={isOnInterviewsTab}
                   onClick={(): void => navigate(INTERVIEWS)}
                 >
                   Interviews
                 </Button>
                 {(user.isStudent || user.role === UserRole.ADMIN) && (
                   <Button
-                    aria-current={
-                      pathname === TASKS || pathname.startsWith(TASKS_BREAKDOWN)
-                        ? 'page'
-                        : undefined
-                    }
+                    aria-current={isOnTasksTab ? 'page' : undefined}
+                    border="none"
+                    isActive={isOnTasksTab}
                     onClick={(): void => navigate(TASKS)}
                   >
                     Tasks
@@ -102,13 +102,9 @@ export const Navbar = (): ReactElement<typeof Box> => {
                 )}
                 {user.role === UserRole.ADMIN && (
                   <Button
-                    aria-current={
-                      pathname === ADMIN ||
-                      pathname === ADD_COHORT ||
-                      pathname.startsWith(VIEW_COHORT)
-                        ? 'page'
-                        : undefined
-                    }
+                    aria-current={isOnAdminTab ? 'page' : undefined}
+                    border="none"
+                    isActive={isOnAdminTab}
                     onClick={(): void => navigate(ADMIN)}
                   >
                     Admin
@@ -121,20 +117,26 @@ export const Navbar = (): ReactElement<typeof Box> => {
             <HStack spacing={4}>
               {user ? (
                 <>
-                  <ButtonGroup spacing={1} variant="ghost">
-                    <ColorModeSwitcher isSideBar={false} />
+                  <ButtonGroup spacing={2} variant="secondary">
+                    <ColorModeSwitcher border="none" isSideBar={false} />
                     <IconButton
-                      aria-current={pathname === SETTINGS ? 'page' : undefined}
+                      aria-current={isOnSettingsTab ? 'page' : undefined}
                       aria-label="Settings"
+                      border="none"
                       icon={<FiSettings fontSize="1.25rem" />}
+                      isActive={isOnSettingsTab}
                       onClick={(): void => navigate(SETTINGS)}
                     />
                   </ButtonGroup>
                   <UserPopover user={user} />
                 </>
               ) : (
-                <>
-                  <ColorModeSwitcher isSideBar={false} />
+                <ButtonGroup spacing={2}>
+                  <ColorModeSwitcher
+                    border="none"
+                    isSideBar={false}
+                    variant="secondary"
+                  />
                   <Button
                     isLoading={isLoggingIn}
                     onClick={login}
@@ -142,7 +144,7 @@ export const Navbar = (): ReactElement<typeof Box> => {
                   >
                     Log in
                   </Button>
-                </>
+                </ButtonGroup>
               )}
             </HStack>
           ) : (
@@ -162,9 +164,13 @@ export const Navbar = (): ReactElement<typeof Box> => {
                 <DrawerOverlay />
                 <DrawerContent>
                   <Sidebar
+                    isOnAdminTab={isOnAdminTab}
+                    isOnInterviewsTab={isOnInterviewsTab}
+                    isOnQuestionTab={isOnQuestionTab}
+                    isOnSettingsTab={isOnSettingsTab}
+                    isOnTasksTab={isOnTasksTab}
                     logout={logout}
                     navigate={navigate}
-                    pathname={pathname}
                     user={user}
                   />
                 </DrawerContent>

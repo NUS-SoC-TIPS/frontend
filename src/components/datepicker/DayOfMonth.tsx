@@ -21,7 +21,8 @@ export const DayOfMonth = ({
   const styleBtnProps = {
     defaultBtnProps: {
       size: 'sm',
-      variant: 'ghost',
+      variant: 'secondary',
+      border: 'none',
       // this intends to fill the visual gap from Grid to improve the UX
       // so the button active area is actually larger than what it's seen
       _after: {
@@ -35,15 +36,15 @@ export const DayOfMonth = ({
         borderColor: 'transparent',
       },
       _hover: {
-        bg: 'gray.500',
+        bg: 'gray.600',
         _disabled: {
           bg: 'gray.100',
         },
       },
     },
-    isInRangeBtnProps: { background: 'gray.600' },
-    selectedBtnProps: { background: 'gray.600' },
-    todayBtnProps: { borderColor: 'blue.400' },
+    isInRangeBtnProps: { bg: 'gray.600' },
+    selectedBtnProps: { bg: 'gray.600' },
+    todayBtnProps: { bg: 'blue.400' },
   };
 
   return (

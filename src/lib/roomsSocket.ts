@@ -1,19 +1,19 @@
 import { Socket } from 'socket.io-client';
 
-import { store } from 'app/store';
-import { AUTH_EVENTS, GENERAL_EVENTS, ROOM_EVENTS } from 'constants/events';
+import { store } from '@/app/store';
+import { AUTH_EVENTS, GENERAL_EVENTS, ROOM_EVENTS } from '@/constants/events';
 import {
   setExecutableLanguageToVersionMap,
   setLanguage,
-} from 'reducers/codeReducer';
-import { setNotes } from 'reducers/panelReducer';
+} from '@/reducers/codeReducer';
+import { setNotes } from '@/reducers/panelReducer';
 import {
   RoomClosingStatus,
   RoomJoiningStatus,
   updateRoomState,
-} from 'reducers/roomReducer';
-import { UserBase } from 'types/api/users';
-import { Language } from 'types/models/code';
+} from '@/reducers/roomReducer';
+import { UserBase } from '@/types/api/users';
+import { Language } from '@/types/models/code';
 
 export const closeRoom = (socket: Socket): void => {
   socket.emit(ROOM_EVENTS.CLOSE_ROOM);

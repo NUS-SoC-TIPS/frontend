@@ -3,14 +3,14 @@ import { ReactElement, useCallback, useEffect, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 
-import { ErrorBanner } from 'components/errorBanner';
-import { Dashboard, Page } from 'components/page';
-import { PAST_SUBMISSION, QUESTIONS } from 'constants/routes';
-import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from 'constants/toast';
-import { createSubmission, getQuestions } from 'lib/questions';
-import { QuestionListItem } from 'types/api/questions';
-import { Language } from 'types/models/code';
-import { compareNamesAscending } from 'utils/sortUtils';
+import { ErrorBanner } from '@/components/errorBanner';
+import { Dashboard, Page } from '@/components/page';
+import { PAST_SUBMISSION, QUESTIONS } from '@/constants/routes';
+import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from '@/constants/toast';
+import { createSubmission, getQuestions } from '@/lib/questions';
+import { QuestionListItem } from '@/types/api/questions';
+import { Language } from '@/types/models/code';
+import { compareNamesAscending } from '@/utils/sortUtils';
 
 import {
   CodeFormControl,

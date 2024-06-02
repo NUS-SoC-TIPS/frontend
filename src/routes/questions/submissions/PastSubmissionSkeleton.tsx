@@ -8,7 +8,7 @@ import {
   StackDivider,
 } from '@chakra-ui/react';
 
-import { FormControl, FormControlSkeleton } from 'components/formControl';
+import { FormControl, FormControlSkeleton } from '@/components/formControl';
 
 import { PastSubmissionPage } from './PastSubmissionPage';
 

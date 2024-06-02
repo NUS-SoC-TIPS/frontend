@@ -2,7 +2,7 @@ import { PropsWithChildren, ReactElement, useState } from 'react';
 import { FiHelpCircle } from 'react-icons/fi';
 import { Button, Stack } from '@chakra-ui/react';
 
-import { Dashboard, Page } from 'components/page';
+import { Dashboard, Page } from '@/components/page';
 
 import { HelpModal } from './HelpModal';
 import { RoomButton } from './RoomButton';

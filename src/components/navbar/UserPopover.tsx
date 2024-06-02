@@ -1,21 +1,14 @@
 import { memo, ReactElement } from 'react';
 import { FiLogOut } from 'react-icons/fi';
-import {
-  Avatar,
-  Box,
-  Divider,
-  Icon,
-  Link,
-  Popover,
-  Stack,
-  Text,
-} from '@chakra-ui/react';
+import { Avatar, Box, Divider, Link, Popover, Stack } from '@chakra-ui/react';
 
-import { MyPopover } from 'components/popover';
-import { useAuth } from 'contexts/AuthContext';
-import { UserSelf } from 'types/api/users';
+import { MyPopover } from '@/components/popover';
+import { useAuth } from '@/contexts/AuthContext';
+import { UserSelf } from '@/types/api/users';
 
 import { UserProfile } from '../userProfile';
+
+import { NavButton } from './NavButton';
 
 interface Props {
   user: UserSelf;
@@ -44,10 +37,7 @@ const RawUserPopover = ({
           <Divider />
           {items.map((item, id) => (
             <Link key={id} onClick={item.onClick} variant="menu">
-              <Stack direction="row" p={3} spacing={4}>
-                <Icon as={item.icon} boxSize={6} color="accent" />
-                <Text fontWeight="medium">{item.title}</Text>
-              </Stack>
+              <NavButton icon={item.icon} label={item.title} />
             </Link>
           ))}
         </Stack>

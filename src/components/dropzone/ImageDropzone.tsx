@@ -10,11 +10,10 @@ import {
   Spinner,
   Square,
   Text,
-  useColorModeValue,
   VStack,
 } from '@chakra-ui/react';
 
-import { uploadImageToCloudinary } from 'lib/cloudinary';
+import { uploadImageToCloudinary } from '@/lib/cloudinary';
 
 interface Props extends Omit<CenterProps, 'onChange'> {
   onChange: (url: string) => void;
@@ -58,7 +57,8 @@ const RawImageDropzone = ({
 
   return (
     <Center
-      bg={useColorModeValue('white', 'gray.800')}
+      bg="bg.surface"
+      borderColor="border.emphasized"
       borderRadius="lg"
       borderWidth="1px"
       px={6}
@@ -67,21 +67,21 @@ const RawImageDropzone = ({
     >
       <VStack spacing={3} w="100%" {...getRootProps()}>
         <input {...getInputProps()} />
-        <Square bg="bg-subtle" borderRadius="lg" size={10}>
+        <Square bg="bg.subtle" borderRadius="lg" size={10}>
           {isUploading ? (
             <Spinner />
           ) : (
-            <Icon as={FiUploadCloud} boxSize={5} color="muted" />
+            <Icon as={FiUploadCloud} boxSize={5} color="fg.muted" />
           )}
         </Square>
         {isDragActive ? (
           <VStack spacing={1}>
             <HStack spacing={1} whiteSpace="nowrap">
-              <Text color="muted" fontSize="sm">
+              <Text color="fg.muted" fontSize="sm">
                 Release to upload file
               </Text>
             </HStack>
-            <Text color="muted" fontSize="xs">
+            <Text color="fg.muted" fontSize="xs">
               PNG, JPG or GIF up to 1MB
             </Text>
           </VStack>
@@ -89,21 +89,21 @@ const RawImageDropzone = ({
           <VStack spacing={1}>
             <HStack spacing={1} whiteSpace="nowrap">
               {isUploading ? (
-                <Text color="muted" fontSize="sm">
+                <Text color="fg.muted" fontSize="sm">
                   Uploading...
                 </Text>
               ) : (
                 <>
-                  <Button colorScheme="blue" size="sm" variant="link">
+                  <Button size="sm" variant="link">
                     Click to upload
                   </Button>
-                  <Text color="muted" fontSize="sm">
+                  <Text color="fg.muted" fontSize="sm">
                     or drag and drop
                   </Text>
                 </>
               )}
             </HStack>
-            <Text color="muted" fontSize="xs">
+            <Text color="fg.muted" fontSize="xs">
               PNG, JPG or GIF up to 1MB
             </Text>
           </VStack>

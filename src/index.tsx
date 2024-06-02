@@ -4,9 +4,9 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { ColorModeScript } from '@chakra-ui/react';
 
-import { store } from 'app/store';
-import { theme } from 'app/theme';
-import AppProviders from 'contexts/AppProviders';
+import { store } from '@/app/store';
+import { theme } from '@/app/theme';
+import AppProviders from '@/contexts/AppProviders';
 
 import { App } from './app';
 import reportWebVitals from './reportWebVitals';

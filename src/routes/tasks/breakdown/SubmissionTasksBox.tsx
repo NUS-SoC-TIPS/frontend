@@ -11,9 +11,9 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 
-import { QuestionBox } from 'components/question';
-import { SubmissionBase } from 'types/api/questions';
-import { compareIdsAscending } from 'utils/sortUtils';
+import { QuestionBox } from '@/components/question';
+import { SubmissionBase } from '@/types/api/questions';
+import { compareIdsAscending } from '@/utils/sortUtils';
 
 interface Props {
   numQuestions: number;
@@ -32,7 +32,7 @@ export const SubmissionTasksBox = ({
     <Box as="section" flex={1}>
       <Container maxW="3xl" px={0}>
         <Box
-          bg="bg-surface"
+          bg="bg.surface"
           borderRadius="lg"
           boxShadow={useColorModeValue('sm', 'sm-dark')}
           p={{ base: 4, md: 6 }}
@@ -43,17 +43,17 @@ export const SubmissionTasksBox = ({
                 <Text fontSize="lg" fontWeight="medium">
                   Questions
                 </Text>
-                <Text color="muted" fontSize="sm">
+                <Text color="fg.muted" fontSize="sm">
                   {submissions.length}/{numQuestions} Completed
                 </Text>
               </Stack>
               {hasCompletedQuestions ? (
                 <Circle bg="accent" size={8}>
-                  <Icon as={HiCheck} boxSize={5} color="inverted" />
+                  <Icon as={HiCheck} boxSize={5} color="fg.inverted" />
                 </Circle>
               ) : (
                 <Circle borderWidth="2px" size={8}>
-                  <Circle bg="border" size={3} />
+                  <Circle bg="border.default" size={3} />
                 </Circle>
               )}
             </HStack>

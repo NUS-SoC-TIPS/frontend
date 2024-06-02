@@ -1,46 +1,75 @@
 import { theme as proTheme } from '@chakra-ui/pro-theme';
-import { extendTheme, theme as baseTheme } from '@chakra-ui/react';
+import { extendTheme } from '@chakra-ui/react';
 
-import '@fontsource/inter/variable.css';
+import '@fontsource-variable/inter';
 
-export const theme = extendTheme(
-  {
-    colors: { ...baseTheme.colors, brand: baseTheme.colors.blue },
-    config: {
-      initialColorMode: 'dark',
-      useSystemColorMode: false,
-    },
-    semanticTokens: {
-      colors: {
-        error: {
-          default: 'red.600',
-          _dark: 'red.400',
-        },
-        'error-subtle': {
-          default: 'red.500',
-          _dark: 'red.300',
-        },
-      },
-    },
-    components: {
-      Menu: {
-        baseStyle: {
-          item: {
-            _focus: { bg: 'gray.700' },
+const baseTheme = extendTheme(proTheme);
+
+const extension = {
+  colors: { ...baseTheme.colors, brand: baseTheme.colors.blue },
+  fonts: {
+    heading: "'Inter Variable', -apple-system, system-ui, sans-serif",
+    body: "'Inter Variable', -apple-system, system-ui, sans-serif",
+  },
+  config: {
+    initialColorMode: 'dark',
+    useSystemColorMode: false,
+  },
+  components: {
+    Link: {
+      variants: {
+        underline: {
+          _before: 'none',
+          _hover: {
+            textDecoration: 'underline',
+            _before: 'none',
           },
         },
       },
     },
-  },
-  proTheme,
-  {
-    components: {
-      Button: {
-        baseStyle: {
-          fontWeight: 'medium',
+    Input: {
+      variants: {
+        outline: {
+          field: {
+            bg: 'bg.surface',
+          },
         },
       },
-      NumberInput: proTheme.components.Input,
+    },
+    Button: {
+      baseStyle: {
+        fontWeight: 'medium',
+      },
+    },
+    Menu: {
+      baseStyle: {
+        item: {
+          _focus: { bg: 'gray.700' },
+        },
+      },
+    },
+    Badge: {
+      baseStyle: {
+        borderRadius: 'xl',
+        textTransform: 'none',
+        fontWeight: 'regular',
+      },
     },
   },
+};
+
+const extendedThemeWithoutNumberInput = extendTheme(extension, baseTheme);
+
+// We do this as a separate step so as to get the final extended config for Input
+const extensionForNumberInput = {
+  components: {
+    NumberInput: extendedThemeWithoutNumberInput.components.Input,
+  },
+};
+
+const theme = extendTheme(
+  extensionForNumberInput,
+  extendedThemeWithoutNumberInput,
 );
+
+export { theme };

@@ -2,8 +2,8 @@ import { PropsWithChildren, ReactElement } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 
-import { Dashboard, Page } from 'components/page';
-import { QUESTIONS } from 'constants/routes';
+import { Dashboard, Page } from '@/components/page';
+import { QUESTIONS } from '@/constants/routes';
 
 interface Props {
   heading?: string;

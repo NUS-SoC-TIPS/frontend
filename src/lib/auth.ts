@@ -1,7 +1,7 @@
-import { AuthDto } from 'types/api/auth';
-import { UserSelf } from 'types/api/users';
-import { api } from 'utils/apiUtils';
-import tokenUtils from 'utils/tokenUtils';
+import { AuthDto } from '@/types/api/auth';
+import { UserSelf } from '@/types/api/users';
+import { api } from '@/utils/apiUtils';
+import tokenUtils from '@/utils/tokenUtils';
 
 export const login = async (data: AuthDto): Promise<void> => {
   const response = await api.post('auth/login', data);
@@ -10,7 +10,7 @@ export const login = async (data: AuthDto): Promise<void> => {
 };
 
 export const loginDev = async (): Promise<void> => {
-  if (process.env.NODE_ENV !== 'development') {
+  if (import.meta.env.MODE !== 'development') {
     throw new Error('Should only be called in development');
   }
   const response = await api.post('dev/login');

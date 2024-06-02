@@ -1,9 +1,9 @@
-import { Language } from 'types/models/code';
+import { Language } from '@/types/models/code';
 import {
   QuestionDifficulty,
   QuestionSource,
   QuestionType,
-} from 'types/models/question';
+} from '@/types/models/question';
 
 // This is the minimal information needed by the frontend to
 // render the question card element.
