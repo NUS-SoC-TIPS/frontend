@@ -14,6 +14,7 @@ export const ViewCohortSkeleton = (): ReactElement<typeof ViewCohortPage> => {
         <Stack divider={<StackDivider />} spacing={5}>
           <FormControlSkeleton id="name" label="Name" />
           <FormControlSkeleton id="url" label="URL" />
+          <FormControlSkeleton id="email" label="Email" />
           <Flex direction="row-reverse">
             <Button isDisabled={true} variant="primary">
               Update Basic Info
