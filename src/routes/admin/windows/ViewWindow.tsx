@@ -155,6 +155,7 @@ export const ViewWindow = (): ReactElement<typeof ViewWindowPage> => {
     if (!studentBeingExcluded) {
       return;
     }
+    setState({ isExcluding: true });
     createExclusion({
       studentId: studentBeingExcluded.studentId,
       windowId: window.id,
@@ -162,16 +163,17 @@ export const ViewWindow = (): ReactElement<typeof ViewWindowPage> => {
     })
       .then(refetchWindow)
       .then(() => {
-        setState({ studentBeingExcluded: null });
         toast({
           ...DEFAULT_TOAST_PROPS,
           title: `${studentBeingExcluded.name} excluded.`,
           description: 'What a bummer...',
           status: 'info',
         });
+        setState({ studentBeingExcluded: null, isExcluding: false });
       })
       .catch(() => {
         toast(ERROR_TOAST_PROPS);
+        setState({ isExcluding: false });
       });
   };
 
@@ -195,19 +197,21 @@ export const ViewWindow = (): ReactElement<typeof ViewWindowPage> => {
     if (!studentBeingIncluded) {
       return;
     }
+    setState({ isIncluding: true });
     deleteExclusion(studentBeingIncluded.exclusion.id)
       .then(refetchWindow)
       .then(() => {
-        setState({ studentBeingIncluded: null });
         toast({
           ...DEFAULT_TOAST_PROPS,
           title: `${studentBeingIncluded.name} included!`,
           description: 'Glad to have them back!',
           status: 'success',
         });
+        setState({ studentBeingIncluded: null, isIncluding: false });
       })
       .catch(() => {
         toast(ERROR_TOAST_PROPS);
+        setState({ isIncluding: false });
       });
   };
 
@@ -232,7 +236,7 @@ export const ViewWindow = (): ReactElement<typeof ViewWindowPage> => {
       })
       .catch(() => {
         toast(ERROR_TOAST_PROPS);
-        setState({ isAutoExcluding: false, isAutoExclusionModalShown: false });
+        setState({ isAutoExcluding: false });
       });
   };
 
@@ -258,7 +262,7 @@ export const ViewWindow = (): ReactElement<typeof ViewWindowPage> => {
       })
       .catch(() => {
         toast(ERROR_TOAST_PROPS);
-        setState({ isPairingStudents: false, isPairStudentsModalShown: false });
+        setState({ isPairingStudents: false });
       });
   };
 
