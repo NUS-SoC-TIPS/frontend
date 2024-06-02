@@ -8,7 +8,7 @@ We would love for you to contribute to Code2Gather and help make it even better 
 
 ## Commit Message Format
 
-_This specification is inspired by and supersedes the [AngularJS commit message format][commit-message-format]._
+_This specification is inspired by and supersedes the [AngularJS commit message format](#commit-message-format)._
 
 We have very precise rules over how our Git commit messages must be formatted. This format leads to **easier to read commit history**.
 

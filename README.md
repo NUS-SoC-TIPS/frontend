@@ -43,7 +43,7 @@ We will be using Yarn for Node dependency management, as well as for its workspa
 First, clone this repository:
 
 ```sh
-git clone https://github.com/CodeToGather/TIPS-Frontend.git
+git clone git@github.com:NUS-SoC-TIPS/frontend.git
 ```
 
 Then, navigate to the project root and install the dependencies:
