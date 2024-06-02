@@ -37,8 +37,9 @@ export const Controls = ({
         bottom={0}
         justifyContent="space-between"
         minH={7}
+        pl={2}
         position="absolute"
-        px={2}
+        pr={0.5}
         py={0.5}
         width="100%"
       >
@@ -46,20 +47,24 @@ export const Controls = ({
           {name}
         </Text>
         {tracks && (
-          <HStack>
+          <HStack spacing={1}>
             <IconButton
               aria-label="Audio"
-              color="white"
+              bg={trackState.audio ? undefined : 'red'}
+              border="none"
               icon={trackState.audio ? <FiMic /> : <FiMicOff />}
               onClick={(): Promise<void> => toggle('audio')}
               size="xs"
+              variant="secondary"
             />
             <IconButton
               aria-label="Video"
-              color="white"
+              bg={trackState.video ? undefined : 'red'}
+              border="none"
               icon={trackState.video ? <FiVideo /> : <FiVideoOff />}
               onClick={(): Promise<void> => toggle('video')}
               size="xs"
+              variant="secondary"
             />
           </HStack>
         )}
