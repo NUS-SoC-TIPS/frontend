@@ -32,12 +32,7 @@ const RawStepCircle = (props: Props): ReactElement<Props, typeof Circle> => {
         return <Icon as={HiX} boxSize={5} color="fg.inverted" />;
       case 'NONE':
       default:
-        return (
-          <Circle
-            bg={isDisabled ? 'border.default' : 'accent.default'}
-            size={3}
-          />
-        );
+        return <Circle bg={isDisabled ? 'inherit' : 'accent'} size={3} />;
     }
   };
 
