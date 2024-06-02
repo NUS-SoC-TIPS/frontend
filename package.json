@@ -75,8 +75,8 @@
     "serve": "vite preview",
     "test": "vitest",
     "test:coverage": "vitest run --coverage --watch=false",
-    "lint": "prettier --check \"src/**/*.{ts,tsx}\" && eslint . --ext .ts,.js,.tsx,.jsx",
-    "lint:fix": "prettier --write \"src/**/*.{ts,tsx}\" && eslint . --ext .ts,.js,.tsx,.jsx --fix",
+    "lint": "prettier --check \"src/**/*.{ts,tsx}\" && eslint . --ext .ts,.js,.cjs,.tsx,.jsx",
+    "lint:fix": "prettier --write \"src/**/*.{ts,tsx}\" && eslint . --ext .ts,.js,.cjs,.tsx,.jsx --fix",
     "postinstall": "husky"
   },
   "eslintConfig": {
