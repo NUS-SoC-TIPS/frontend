@@ -14,7 +14,7 @@ export const EmailFormControl = ({
   onChange,
 }: Props): ReactElement<Props, typeof FormControl> => {
   return (
-    <FormControl id="url" label="URL">
+    <FormControl id="email" label="Email">
       <InputGroup>
         <Input
           onChange={(event): void => onChange(event.target.value)}
