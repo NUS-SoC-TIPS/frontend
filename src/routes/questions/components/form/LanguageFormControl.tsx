@@ -42,6 +42,7 @@ export const LanguageFormControl = ({
             languages = ALGORITHM_LANGUAGES;
             break;
           case QuestionType.DATABASE:
+          case QuestionType.PANDAS:
             languages = DATABASE_LANGUAGES;
             break;
           case QuestionType.JAVASCRIPT:

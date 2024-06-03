@@ -11,6 +11,7 @@ export enum QuestionType {
   JAVASCRIPT = 'JAVASCRIPT',
   SHELL = 'SHELL',
   CONCURRENCY = 'CONCURRENCY',
+  PANDAS = 'PANDAS',
 }
 
 export enum QuestionSource {
