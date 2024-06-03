@@ -36,9 +36,10 @@ const RAW_RUNTIME_STATE =
           ["@chakra-ui/react", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:2.8.2"],\
           ["@chakra-ui/spinner", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:2.1.0"],\
           ["@chakra-ui/system", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:2.6.2"],\
-          ["@codemirror/autocomplete", "virtual:53c647eed0b8f3ec0c2b403b34af71d1bf8d881db989fc88a8710dbaf2a0652693ff5fcf02293b427f4e20dd258b71ffc13f0c48d485e928945892035042bdf3#npm:6.16.2"],\
+          ["@codemirror/autocomplete", "virtual:d74f71936b3291561e3b7e3768082e09b94d1d975fc091835f7a1a79b04ec8ec9a2039efd951f45d1b891e30d55bdff4a0b3dc746289317ae445a8d9c65d95a4#npm:6.16.2"],\
           ["@codemirror/commands", "npm:6.5.0"],\
           ["@codemirror/lang-cpp", "npm:6.0.2"],\
+          ["@codemirror/lang-go", "npm:6.0.1"],\
           ["@codemirror/lang-java", "npm:6.0.1"],\
           ["@codemirror/lang-javascript", "npm:6.2.2"],\
           ["@codemirror/lang-lezer", "npm:6.0.1"],\
@@ -84,6 +85,8 @@ const RAW_RUNTIME_STATE =
           ["chakra-react-select", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:4.7.6"],\
           ["codemirror", "npm:6.0.1"],\
           ["codemirror-lang-elixir", "npm:4.0.0"],\
+          ["codemirror-lang-prolog", "npm:0.1.0"],\
+          ["codemirror-lang-zig", "npm:0.1.0"],\
           ["commitizen", "npm:4.3.0"],\
           ["dayjs", "npm:1.11.11"],\
           ["dayzed", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:3.2.3"],\
@@ -2662,10 +2665,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:53c647eed0b8f3ec0c2b403b34af71d1bf8d881db989fc88a8710dbaf2a0652693ff5fcf02293b427f4e20dd258b71ffc13f0c48d485e928945892035042bdf3#npm:6.16.2", {\
-        "packageLocation": "./.yarn/__virtual__/@codemirror-autocomplete-virtual-369289649b/0/cache/@codemirror-autocomplete-npm-6.16.2-358c1ebaac-0573740e55.zip/node_modules/@codemirror/autocomplete/",\
+      ["virtual:d74f71936b3291561e3b7e3768082e09b94d1d975fc091835f7a1a79b04ec8ec9a2039efd951f45d1b891e30d55bdff4a0b3dc746289317ae445a8d9c65d95a4#npm:6.16.2", {\
+        "packageLocation": "./.yarn/__virtual__/@codemirror-autocomplete-virtual-64229677ac/0/cache/@codemirror-autocomplete-npm-6.16.2-358c1ebaac-0573740e55.zip/node_modules/@codemirror/autocomplete/",\
         "packageDependencies": [\
-          ["@codemirror/autocomplete", "virtual:53c647eed0b8f3ec0c2b403b34af71d1bf8d881db989fc88a8710dbaf2a0652693ff5fcf02293b427f4e20dd258b71ffc13f0c48d485e928945892035042bdf3#npm:6.16.2"],\
+          ["@codemirror/autocomplete", "virtual:d74f71936b3291561e3b7e3768082e09b94d1d975fc091835f7a1a79b04ec8ec9a2039efd951f45d1b891e30d55bdff4a0b3dc746289317ae445a8d9c65d95a4#npm:6.16.2"],\
           ["@codemirror/language", "npm:6.10.1"],\
           ["@codemirror/state", "npm:6.4.1"],\
           ["@codemirror/view", "npm:6.26.3"],\
@@ -2678,7 +2681,6 @@ const RAW_RUNTIME_STATE =
         "packagePeers": [\
           "@codemirror/language",\
           "@codemirror/state",\
-          "@codemirror/view",\
           "@lezer/common",\
           "@types/codemirror__language",\
           "@types/codemirror__state",\
@@ -2717,11 +2719,25 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@codemirror-lang-css-npm-6.2.1-90066fa55f-03c9111904.zip/node_modules/@codemirror/lang-css/",\
         "packageDependencies": [\
           ["@codemirror/lang-css", "npm:6.2.1"],\
-          ["@codemirror/autocomplete", "virtual:53c647eed0b8f3ec0c2b403b34af71d1bf8d881db989fc88a8710dbaf2a0652693ff5fcf02293b427f4e20dd258b71ffc13f0c48d485e928945892035042bdf3#npm:6.16.2"],\
+          ["@codemirror/autocomplete", "virtual:d74f71936b3291561e3b7e3768082e09b94d1d975fc091835f7a1a79b04ec8ec9a2039efd951f45d1b891e30d55bdff4a0b3dc746289317ae445a8d9c65d95a4#npm:6.16.2"],\
           ["@codemirror/language", "npm:6.10.1"],\
           ["@codemirror/state", "npm:6.4.1"],\
           ["@lezer/common", "npm:1.2.1"],\
           ["@lezer/css", "npm:1.1.8"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@codemirror/lang-go", [\
+      ["npm:6.0.1", {\
+        "packageLocation": "./.yarn/cache/@codemirror-lang-go-npm-6.0.1-d74f71936b-6e361bddb3.zip/node_modules/@codemirror/lang-go/",\
+        "packageDependencies": [\
+          ["@codemirror/lang-go", "npm:6.0.1"],\
+          ["@codemirror/autocomplete", "virtual:d74f71936b3291561e3b7e3768082e09b94d1d975fc091835f7a1a79b04ec8ec9a2039efd951f45d1b891e30d55bdff4a0b3dc746289317ae445a8d9c65d95a4#npm:6.16.2"],\
+          ["@codemirror/language", "npm:6.10.1"],\
+          ["@codemirror/state", "npm:6.4.1"],\
+          ["@lezer/common", "npm:1.2.1"],\
+          ["@lezer/go", "npm:1.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -2731,7 +2747,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@codemirror-lang-html-npm-6.4.9-bea327537a-db4288a9e8.zip/node_modules/@codemirror/lang-html/",\
         "packageDependencies": [\
           ["@codemirror/lang-html", "npm:6.4.9"],\
-          ["@codemirror/autocomplete", "virtual:53c647eed0b8f3ec0c2b403b34af71d1bf8d881db989fc88a8710dbaf2a0652693ff5fcf02293b427f4e20dd258b71ffc13f0c48d485e928945892035042bdf3#npm:6.16.2"],\
+          ["@codemirror/autocomplete", "virtual:d74f71936b3291561e3b7e3768082e09b94d1d975fc091835f7a1a79b04ec8ec9a2039efd951f45d1b891e30d55bdff4a0b3dc746289317ae445a8d9c65d95a4#npm:6.16.2"],\
           ["@codemirror/lang-css", "npm:6.2.1"],\
           ["@codemirror/lang-javascript", "npm:6.2.2"],\
           ["@codemirror/language", "npm:6.10.1"],\
@@ -2760,7 +2776,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@codemirror-lang-javascript-npm-6.2.2-53c647eed0-eac2e57a7a.zip/node_modules/@codemirror/lang-javascript/",\
         "packageDependencies": [\
           ["@codemirror/lang-javascript", "npm:6.2.2"],\
-          ["@codemirror/autocomplete", "virtual:53c647eed0b8f3ec0c2b403b34af71d1bf8d881db989fc88a8710dbaf2a0652693ff5fcf02293b427f4e20dd258b71ffc13f0c48d485e928945892035042bdf3#npm:6.16.2"],\
+          ["@codemirror/autocomplete", "virtual:d74f71936b3291561e3b7e3768082e09b94d1d975fc091835f7a1a79b04ec8ec9a2039efd951f45d1b891e30d55bdff4a0b3dc746289317ae445a8d9c65d95a4#npm:6.16.2"],\
           ["@codemirror/language", "npm:6.10.1"],\
           ["@codemirror/lint", "npm:6.8.0"],\
           ["@codemirror/state", "npm:6.4.1"],\
@@ -2803,7 +2819,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@codemirror-lang-python-npm-6.1.6-45067b5c6f-a0a893d594.zip/node_modules/@codemirror/lang-python/",\
         "packageDependencies": [\
           ["@codemirror/lang-python", "npm:6.1.6"],\
-          ["@codemirror/autocomplete", "virtual:53c647eed0b8f3ec0c2b403b34af71d1bf8d881db989fc88a8710dbaf2a0652693ff5fcf02293b427f4e20dd258b71ffc13f0c48d485e928945892035042bdf3#npm:6.16.2"],\
+          ["@codemirror/autocomplete", "virtual:d74f71936b3291561e3b7e3768082e09b94d1d975fc091835f7a1a79b04ec8ec9a2039efd951f45d1b891e30d55bdff4a0b3dc746289317ae445a8d9c65d95a4#npm:6.16.2"],\
           ["@codemirror/language", "npm:6.10.1"],\
           ["@codemirror/state", "npm:6.4.1"],\
           ["@lezer/common", "npm:1.2.1"],\
@@ -2828,7 +2844,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@codemirror-lang-sql-npm-6.6.4-015778be66-0347555906.zip/node_modules/@codemirror/lang-sql/",\
         "packageDependencies": [\
           ["@codemirror/lang-sql", "npm:6.6.4"],\
-          ["@codemirror/autocomplete", "virtual:53c647eed0b8f3ec0c2b403b34af71d1bf8d881db989fc88a8710dbaf2a0652693ff5fcf02293b427f4e20dd258b71ffc13f0c48d485e928945892035042bdf3#npm:6.16.2"],\
+          ["@codemirror/autocomplete", "virtual:d74f71936b3291561e3b7e3768082e09b94d1d975fc091835f7a1a79b04ec8ec9a2039efd951f45d1b891e30d55bdff4a0b3dc746289317ae445a8d9c65d95a4#npm:6.16.2"],\
           ["@codemirror/language", "npm:6.10.1"],\
           ["@codemirror/state", "npm:6.4.1"],\
           ["@lezer/common", "npm:1.2.1"],\
@@ -4921,6 +4937,18 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@lezer/go", [\
+      ["npm:1.0.0", {\
+        "packageLocation": "./.yarn/cache/@lezer-go-npm-1.0.0-2d254a66d6-3a7a7be931.zip/node_modules/@lezer/go/",\
+        "packageDependencies": [\
+          ["@lezer/go", "npm:1.0.0"],\
+          ["@lezer/common", "npm:1.2.1"],\
+          ["@lezer/highlight", "npm:1.2.0"],\
+          ["@lezer/lr", "npm:1.4.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@lezer/highlight", [\
       ["npm:1.2.0", {\
         "packageLocation": "./.yarn/cache/@lezer-highlight-npm-1.2.0-3d350a15f1-14a80cbfb0.zip/node_modules/@lezer/highlight/",\
@@ -5316,7 +5344,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/__virtual__/@replit-codemirror-vscode-keymap-virtual-fd46821ae2/0/cache/@replit-codemirror-vscode-keymap-npm-6.0.2-15a3830f3e-2e87cb7794.zip/node_modules/@replit/codemirror-vscode-keymap/",\
         "packageDependencies": [\
           ["@replit/codemirror-vscode-keymap", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:6.0.2"],\
-          ["@codemirror/autocomplete", "virtual:53c647eed0b8f3ec0c2b403b34af71d1bf8d881db989fc88a8710dbaf2a0652693ff5fcf02293b427f4e20dd258b71ffc13f0c48d485e928945892035042bdf3#npm:6.16.2"],\
+          ["@codemirror/autocomplete", "virtual:d74f71936b3291561e3b7e3768082e09b94d1d975fc091835f7a1a79b04ec8ec9a2039efd951f45d1b891e30d55bdff4a0b3dc746289317ae445a8d9c65d95a4#npm:6.16.2"],\
           ["@codemirror/commands", "npm:6.5.0"],\
           ["@codemirror/language", "npm:6.10.1"],\
           ["@codemirror/lint", "npm:6.8.0"],\
@@ -7366,7 +7394,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/codemirror-npm-6.0.1-a317bb67bb-4f858cde1c.zip/node_modules/codemirror/",\
         "packageDependencies": [\
           ["codemirror", "npm:6.0.1"],\
-          ["@codemirror/autocomplete", "virtual:53c647eed0b8f3ec0c2b403b34af71d1bf8d881db989fc88a8710dbaf2a0652693ff5fcf02293b427f4e20dd258b71ffc13f0c48d485e928945892035042bdf3#npm:6.16.2"],\
+          ["@codemirror/autocomplete", "virtual:d74f71936b3291561e3b7e3768082e09b94d1d975fc091835f7a1a79b04ec8ec9a2039efd951f45d1b891e30d55bdff4a0b3dc746289317ae445a8d9c65d95a4#npm:6.16.2"],\
           ["@codemirror/commands", "npm:6.5.0"],\
           ["@codemirror/language", "npm:6.10.1"],\
           ["@codemirror/lint", "npm:6.8.0"],\
@@ -7384,6 +7412,31 @@ const RAW_RUNTIME_STATE =
           ["codemirror-lang-elixir", "npm:4.0.0"],\
           ["@codemirror/language", "npm:6.10.1"],\
           ["lezer-elixir", "npm:1.1.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["codemirror-lang-prolog", [\
+      ["npm:0.1.0", {\
+        "packageLocation": "./.yarn/cache/codemirror-lang-prolog-npm-0.1.0-3b6d7f23e9-4b323b86f0.zip/node_modules/codemirror-lang-prolog/",\
+        "packageDependencies": [\
+          ["codemirror-lang-prolog", "npm:0.1.0"],\
+          ["@codemirror/language", "npm:6.10.1"],\
+          ["@lezer/highlight", "npm:1.2.0"],\
+          ["@lezer/lr", "npm:1.4.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["codemirror-lang-zig", [\
+      ["npm:0.1.0", {\
+        "packageLocation": "./.yarn/cache/codemirror-lang-zig-npm-0.1.0-35353266bf-e817df26fa.zip/node_modules/codemirror-lang-zig/",\
+        "packageDependencies": [\
+          ["codemirror-lang-zig", "npm:0.1.0"],\
+          ["@codemirror/language", "npm:6.10.1"],\
+          ["@lezer/common", "npm:1.2.1"],\
+          ["@lezer/highlight", "npm:1.2.0"],\
+          ["@lezer/lr", "npm:1.4.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -14315,9 +14368,10 @@ const RAW_RUNTIME_STATE =
           ["@chakra-ui/react", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:2.8.2"],\
           ["@chakra-ui/spinner", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:2.1.0"],\
           ["@chakra-ui/system", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:2.6.2"],\
-          ["@codemirror/autocomplete", "virtual:53c647eed0b8f3ec0c2b403b34af71d1bf8d881db989fc88a8710dbaf2a0652693ff5fcf02293b427f4e20dd258b71ffc13f0c48d485e928945892035042bdf3#npm:6.16.2"],\
+          ["@codemirror/autocomplete", "virtual:d74f71936b3291561e3b7e3768082e09b94d1d975fc091835f7a1a79b04ec8ec9a2039efd951f45d1b891e30d55bdff4a0b3dc746289317ae445a8d9c65d95a4#npm:6.16.2"],\
           ["@codemirror/commands", "npm:6.5.0"],\
           ["@codemirror/lang-cpp", "npm:6.0.2"],\
+          ["@codemirror/lang-go", "npm:6.0.1"],\
           ["@codemirror/lang-java", "npm:6.0.1"],\
           ["@codemirror/lang-javascript", "npm:6.2.2"],\
           ["@codemirror/lang-lezer", "npm:6.0.1"],\
@@ -14363,6 +14417,8 @@ const RAW_RUNTIME_STATE =
           ["chakra-react-select", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:4.7.6"],\
           ["codemirror", "npm:6.0.1"],\
           ["codemirror-lang-elixir", "npm:4.0.0"],\
+          ["codemirror-lang-prolog", "npm:0.1.0"],\
+          ["codemirror-lang-zig", "npm:0.1.0"],\
           ["commitizen", "npm:4.3.0"],\
           ["dayjs", "npm:1.11.11"],\
           ["dayzed", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:3.2.3"],\

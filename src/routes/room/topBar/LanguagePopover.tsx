@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { Box, Link, Popover, SimpleGrid, Text } from '@chakra-ui/react';
+import { Button, Popover, SimpleGrid } from '@chakra-ui/react';
 
 import { MyPopover } from '@/components/popover';
 import { LANGUAGE_TO_STRING } from '@/constants/enumStrings';
@@ -33,27 +33,26 @@ export const LanguagePopover = ({
         justifyContent: 'space-between',
       }}
       content={
-        <SimpleGrid columnGap={3} columns={2} rowGap={2}>
+        <SimpleGrid columnGap={1} columns={2} rowGap={1}>
           {items.map((item, id) => (
-            <Link
-              backgroundColor={
-                language === item.value ? 'bg.subtle' : undefined
-              }
+            <Button
+              border="none"
+              fontSize="sm"
+              fontWeight="medium"
+              isActive={language === item.value}
+              justifyContent="flex-start"
               key={id}
               onClick={item.onClick}
-              variant="menu"
+              size="xs"
+              variant="secondary"
             >
-              <Box p={1}>
-                <Text fontSize="sm" fontWeight="medium" ps={1}>
-                  {item.title}
-                </Text>
-              </Box>
-            </Link>
+              {item.title}
+            </Button>
           ))}
         </SimpleGrid>
       }
       isDisabled={isDisabled}
-      popoverContentProps={{ p: 2, maxWidth: 64 }}
+      popoverContentProps={{ p: 1, maxWidth: 64, ms: 2 }}
       trigger={LANGUAGE_TO_STRING[language]}
     />
   );
