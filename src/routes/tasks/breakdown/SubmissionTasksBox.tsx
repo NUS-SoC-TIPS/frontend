@@ -7,6 +7,7 @@ import {
   HStack,
   Icon,
   Stack,
+  Tag,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
@@ -40,9 +41,12 @@ export const SubmissionTasksBox = ({
           <Stack spacing={4}>
             <HStack justify="space-between">
               <Stack spacing={1}>
-                <Text fontSize="lg" fontWeight="medium">
-                  Questions
-                </Text>
+                <HStack>
+                  <Text fontSize="lg" fontWeight="medium">
+                    Questions
+                  </Text>
+                  <Tag>Pending Excuse</Tag>
+                </HStack>
                 <Text color="fg.muted" fontSize="sm">
                   {submissions.length}/{numQuestions} Completed
                 </Text>

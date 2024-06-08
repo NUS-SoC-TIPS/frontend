@@ -9,6 +9,7 @@ import {
   HStack,
   Icon,
   Stack,
+  Tag,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
@@ -97,9 +98,12 @@ export const InterviewTasksBox = ({
           <Stack spacing={4}>
             <HStack justify="space-between">
               <Stack spacing={1}>
-                <Text fontSize="lg" fontWeight="medium">
-                  Interviews
-                </Text>
+                <HStack>
+                  <Text fontSize="lg" fontWeight="medium">
+                    Interviews
+                  </Text>
+                  <Tag>Pending Excuse</Tag>
+                </HStack>
                 <Text color="fg.muted" fontSize="sm">
                   {requireInterview
                     ? `${interviews.length}/1`
