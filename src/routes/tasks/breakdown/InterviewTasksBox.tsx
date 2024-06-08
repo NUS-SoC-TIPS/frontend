@@ -9,7 +9,6 @@ import {
   HStack,
   Icon,
   Stack,
-  Tag,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
@@ -18,6 +17,8 @@ import { UserProfile } from '@/components/userProfile';
 import { InterviewBase } from '@/types/api/interviews';
 import { StudentBase } from '@/types/api/students';
 import { compareIdsAscending } from '@/utils/sortUtils';
+
+import { ExcuseTag } from './ExcuseTag';
 
 interface Props {
   requireInterview: boolean;
@@ -102,7 +103,7 @@ export const InterviewTasksBox = ({
                   <Text fontSize="lg" fontWeight="medium">
                     Interviews
                   </Text>
-                  <Tag>Pending Excuse</Tag>
+                  <ExcuseTag />
                 </HStack>
                 <Text color="fg.muted" fontSize="sm">
                   {requireInterview

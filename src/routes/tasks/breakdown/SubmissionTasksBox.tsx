@@ -7,7 +7,6 @@ import {
   HStack,
   Icon,
   Stack,
-  Tag,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
@@ -15,6 +14,8 @@ import {
 import { QuestionBox } from '@/components/question';
 import { SubmissionBase } from '@/types/api/questions';
 import { compareIdsAscending } from '@/utils/sortUtils';
+
+import { ExcuseTag } from './ExcuseTag';
 
 interface Props {
   numQuestions: number;
@@ -45,7 +46,7 @@ export const SubmissionTasksBox = ({
                   <Text fontSize="lg" fontWeight="medium">
                     Questions
                   </Text>
-                  <Tag>Pending Excuse</Tag>
+                  <ExcuseTag />
                 </HStack>
                 <Text color="fg.muted" fontSize="sm">
                   {submissions.length}/{numQuestions} Completed
