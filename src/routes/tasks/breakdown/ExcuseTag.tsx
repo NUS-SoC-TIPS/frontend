@@ -2,16 +2,44 @@ import React from 'react';
 import { HiOutlineInformationCircle } from 'react-icons/hi';
 import { HStack, Tag, Text, Tooltip } from '@chakra-ui/react';
 
-export const ExcuseTag = (): React.FC => {
+import { ExcuseStatus } from '@/types/models/excuse';
+
+interface Props {
+  status: ExcuseStatus;
+}
+
+const excuseStatusMap = {
+  [ExcuseStatus.PENDING]: {
+    color: 'gray',
+    label: 'Pending Excuse',
+    helperText: 'Excuse Under Review',
+  },
+  [ExcuseStatus.ACCEPTED]: {
+    color: 'green',
+    label: 'Approved Excuse',
+    helperText: 'Excuse Approved',
+  },
+  [ExcuseStatus.REJECTED]: {
+    color: 'red',
+    label: 'Rejected Excuse',
+    helperText: 'Please Email SOC Tips for More Information',
+  },
+};
+
+export const ExcuseTag = ({ status }: Props): React.FC => {
   return (
-    <Tag>
+    <Tag colorScheme={excuseStatusMap[status]?.color}>
       <HStack spacing={1}>
-        <Tooltip hasArrow={true} label="Excuse Under Review" placement="top">
+        <Tooltip
+          hasArrow={true}
+          label={excuseStatusMap[status]?.helperText}
+          placement="top"
+        >
           <span>
             <HiOutlineInformationCircle />
           </span>
         </Tooltip>
-        <Text>Pending Excuse</Text>
+        <Text>{excuseStatusMap[status]?.label}</Text>
       </HStack>
     </Tag>
   );

@@ -5,10 +5,17 @@ import { Button } from '@chakra-ui/react';
 
 import { ErrorBanner } from '@/components/errorBanner';
 import { Page } from '@/components/page';
+import { getSelfExcuses } from '@/lib/excuses';
 import { getCohort } from '@/lib/tasks';
 import { CohortItem } from '@/types/api/cohorts';
+import { ExcuseBase } from '@/types/api/excuses';
+import { ExcuseStatus } from '@/types/models/excuse';
 import { formatDateWithYear } from '@/utils/dateUtils';
-import { computeTaskStepData, findCurrentWindow } from '@/utils/windowUtils';
+import {
+  computeTaskStepData,
+  findCurrentWindow,
+  findWindowIdFromStep,
+} from '@/utils/windowUtils';
 
 import { ExclusionBanner } from './banners';
 import { ExcuseModal } from './ExcuseModal';
@@ -21,6 +28,7 @@ import { TaskStep } from './TaskStep';
 interface State {
   isError: boolean;
   cohort: CohortItem | null;
+  excuses: ExcuseBase[] | null;
   step: number;
   isExcuseModalOpen: boolean;
 }
@@ -31,6 +39,7 @@ export const TasksBreakdown = (): ReactElement<typeof Page> => {
     {
       isError: false,
       cohort: null,
+      excuses: null,
       step: 0,
       isExcuseModalOpen: false,
     } as State,
@@ -44,7 +53,7 @@ export const TasksBreakdown = (): ReactElement<typeof Page> => {
         return Promise.resolve();
       }
       return getCohort(+id)
-        .then((cohort) => {
+        .then(async (cohort) => {
           if (cohort.windows.length === 0) {
             throw new Error('Cohort is not configured yet!');
           }
@@ -67,7 +76,23 @@ export const TasksBreakdown = (): ReactElement<typeof Page> => {
     };
   }, [id]);
 
-  const { cohort, isError, isExcuseModalOpen } = state;
+  useEffect(() => {
+    if (!state.cohort?.windows) {
+      return;
+    }
+
+    const fetchExcuses = (): Promise<void> => {
+      return getSelfExcuses(
+        findWindowIdFromStep(+state.step, state.cohort.windows),
+      ).then((excuses) => {
+        setState({ excuses });
+      });
+    };
+
+    fetchExcuses();
+  }, [state.cohort?.windows, state.step]);
+
+  const { cohort, isError, isExcuseModalOpen, excuses } = state;
 
   if (isError || id == null) {
     return (
@@ -126,6 +151,13 @@ export const TasksBreakdown = (): ReactElement<typeof Page> => {
               {formatDateWithYear(selectedWindow.endAt)})
             </Heading>
             <Button
+              // should be disabled if end date of window has passed or if the user's excuse is not pending
+              isDisabled={
+                excuses !== null &&
+                (selectedWindow.endAt < new Date() ||
+                  excuses.some((e) => e.status !== ExcuseStatus.PENDING))
+              }
+              isLoading={excuses === null}
               onClick={(): void => setState({ isExcuseModalOpen: true })}
               variant="secondary"
             >
@@ -145,11 +177,13 @@ export const TasksBreakdown = (): ReactElement<typeof Page> => {
             spacing={{ base: 6, md: 6 }}
           >
             <SubmissionTasksBox
+              excuses={excuses ?? []}
               hasCompletedQuestions={selectedWindow.hasCompletedQuestions}
               numQuestions={selectedWindow.numQuestions}
               submissions={selectedWindow.submissions}
             />
             <InterviewTasksBox
+              excuses={excuses ?? []}
               hasCompletedInterview={selectedWindow.hasCompletedInterview}
               interviews={selectedWindow.interviews}
               pairedPartner={selectedWindow.pairedPartner}

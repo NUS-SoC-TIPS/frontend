@@ -16,7 +16,7 @@ export const getSelfExcuses = async (
   windowId?: number,
 ): Promise<ExcuseBase[]> => {
   const response = await api.get(
-    `excuses/self${windowId ? `?windowId=${windowId}` : ''}`,
+    `excuses/self${windowId !== undefined ? `?windowId=${windowId}` : ''}`,
   );
   return response.data;
 };
