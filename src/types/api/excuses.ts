@@ -1,9 +1,19 @@
+import { ExcuseFrom, ExcuseStatus } from '../models/excuse';
+
 import { UserBase } from './users';
+import { WindowBase } from './windows';
 
 export interface ExcuseBase {
   id: number;
   user: UserBase;
-  excuseFrom: 'interview' | 'question' | 'interview_and_question';
+  window: WindowBase;
+  excuseFrom: ExcuseFrom;
   excuseReason: string;
-  status: 'pending' | 'accepted' | 'rejected';
+  status: ExcuseStatus;
+}
+
+export interface CreateExcuseDto {
+  windowId: number;
+  excuseFrom: ExcuseFrom;
+  excuseReason: string;
 }

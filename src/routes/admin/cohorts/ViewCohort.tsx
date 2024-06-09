@@ -19,6 +19,7 @@ import {
 import { CohortAdminItem } from '@/types/api/admin';
 import { ExcuseBase } from '@/types/api/excuses';
 import { WindowBase } from '@/types/api/windows';
+import { ExcuseFrom, ExcuseStatus } from '@/types/models/excuse';
 import {
   stripPrefixForUrlField,
   stripSuffixForEmailField,
@@ -57,9 +58,9 @@ const mockExcuses = [
       photoUrl:
         'https://res.cloudinary.com/folio-hnr/image/upload/v1679629122/blob_ycezgh.jpg',
     },
-    excuseFrom: 'interview_and_question',
+    excuseFrom: ExcuseFrom.INTERVIEW_AND_QUESTION,
     excuseReason: 'I am sick',
-    status: 'pending',
+    status: ExcuseStatus.PENDING,
   },
   {
     id: 2,
@@ -69,10 +70,10 @@ const mockExcuses = [
       profileUrl: 'https://github.com',
       photoUrl: 'https://avatars.githubusercontent.com/u/29945147?v=4',
     },
-    excuseFrom: 'interview',
+    excuseFrom: ExcuseFrom.QUESTION,
     excuseReason:
       'I am going on a holiday really far away, this is a super long piece of text that should be truncated at some point in time',
-    status: 'rejected',
+    status: ExcuseStatus.REJECTED,
   },
 ] as ExcuseBase[];
 

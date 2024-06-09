@@ -1,0 +1,11 @@
+export enum ExcuseFrom {
+  INTERVIEW = 'INTERVIEW',
+  QUESTION = 'QUESTION',
+  INTERVIEW_AND_QUESTION = 'INTERVIEW_AND_QUESTION',
+}
+
+export enum ExcuseStatus {
+  PENDING = 'PENDING',
+  ACCEPTED = 'ACCEPTED',
+  REJECTED = 'REJECTED',
+}
