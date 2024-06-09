@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import {
   Button,
   Checkbox,
@@ -8,9 +8,12 @@ import {
   HStack,
   Stack,
   Textarea,
+  useToast,
 } from '@chakra-ui/react';
 
 import { Modal } from '@/components/modal';
+import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from '@/constants/toast';
+import { createExcuse } from '@/lib/excuses';
 import { ExcuseBase } from '@/types/api/excuses';
 import { WindowBase } from '@/types/api/windows';
 import { ExcuseFrom, ExcuseStatus } from '@/types/models/excuse';
@@ -31,6 +34,14 @@ export const ExcuseModal = (
   const excuse = excuses?.[0];
   const isEditable = !excuse || excuse.status === ExcuseStatus.PENDING;
 
+  const [excuseFromVal, setExcuseFromVal] = useState<boolean[]>([]);
+  const [excuseReasonVal, setExcuseReasonVal] = useState(
+    excuse?.excuseReason || '',
+  );
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const toast = useToast();
+
   const mapExcuseFrom = (excuseFrom: ExcuseFrom): string[] => {
     switch (excuseFrom) {
       case ExcuseFrom.QUESTION:
@@ -44,6 +55,40 @@ export const ExcuseModal = (
     }
   };
 
+  const handleSubmit = async (): Promise<void> => {
+    const isBothChecked = excuseFromVal[0] && excuseFromVal[1];
+    const excuseFrom = isBothChecked
+      ? ExcuseFrom.INTERVIEW_AND_QUESTION
+      : excuseFromVal[0]
+      ? ExcuseFrom.QUESTION
+      : ExcuseFrom.INTERVIEW;
+    const excuseReason = excuseReasonVal.trim();
+
+    const data = {
+      excuseFrom,
+      reason: excuseReason,
+      windowId: window.id,
+    };
+
+    try {
+      setIsSubmitting(true);
+      await createExcuse(data);
+      toast({
+        ...DEFAULT_TOAST_PROPS,
+        title: 'Success!',
+        status: 'success',
+        description: 'Your excuse has been submitted successfully.',
+      });
+      handleClose();
+    } catch (e) {
+      toast(ERROR_TOAST_PROPS);
+    } finally {
+      setIsSubmitting(false);
+    }
+
+    return void 0;
+  };
+
   return (
     <Modal
       actions={
@@ -52,7 +97,13 @@ export const ExcuseModal = (
             {isEditable ? 'Cancel' : 'Close'}
           </Button>
           {isEditable && (
-            <Button variant="primary">{excuse ? 'Modify' : 'Submit'}</Button>
+            <Button
+              isLoading={isSubmitting}
+              onClick={handleSubmit}
+              variant="primary"
+            >
+              {excuse ? 'Modify' : 'Submit'}
+            </Button>
           )}
         </Stack>
       }
@@ -70,8 +121,23 @@ export const ExcuseModal = (
             id="excuse-variant"
           >
             <HStack spacing={10}>
-              <Checkbox value="QUESTION">Questions</Checkbox>
-              <Checkbox isDisabled={!window.requireInterview} value="INTERVIEW">
+              <Checkbox
+                isChecked={excuseFromVal[0]}
+                onChange={(e): void =>
+                  setExcuseFromVal((p) => [e.target.checked, p[1]])
+                }
+                value="QUESTION"
+              >
+                Questions
+              </Checkbox>
+              <Checkbox
+                isChecked={excuseFromVal[1]}
+                isDisabled={!window.requireInterview}
+                onChange={(e): void =>
+                  setExcuseFromVal((p) => [p[0], e.target.checked])
+                }
+                value="INTERVIEW"
+              >
                 Interview
               </Checkbox>
             </HStack>
@@ -81,9 +147,10 @@ export const ExcuseModal = (
         <FormControl isDisabled={!isEditable} isRequired={true}>
           <FormLabel htmlFor="excuse-reason">Excuse Reason</FormLabel>
           <Textarea
-            defaultValue={excuse?.excuseReason}
             id="excuse-reason"
+            onChange={(e): void => setExcuseReasonVal(e.target.value)}
             placeholder="Enter your excuse reason here..."
+            value={excuseReasonVal}
           />
         </FormControl>
       </Stack>

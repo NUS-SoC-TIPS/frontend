@@ -15,5 +15,5 @@ export interface ExcuseBase {
 export interface CreateExcuseDto {
   windowId: number;
   excuseFrom: ExcuseFrom;
-  excuseReason: string;
+  reason: string;
 }
