@@ -17,6 +17,7 @@ import {
   updateWindowAdmin,
 } from '@/lib/admin';
 import { CohortAdminItem } from '@/types/api/admin';
+import { ExcuseBase } from '@/types/api/excuses';
 import { WindowBase } from '@/types/api/windows';
 import {
   stripPrefixForUrlField,
@@ -29,7 +30,7 @@ import { NameFormControl, UrlFormControl } from '../components/form';
 import { EmailFormControl } from '../components/form/EmailFormControl';
 
 import { ConfirmRematchWindows, WindowModal } from './modals';
-import { StudentTable, WindowTable } from './tables';
+import { ExcuseTable, StudentTable, WindowTable } from './tables';
 import { ViewCohortPage } from './ViewCohortPage';
 import { ViewCohortSkeleton } from './ViewCohortSkeleton';
 
@@ -45,6 +46,35 @@ interface State {
   isRematchWindowsModalShown: boolean;
   selectedWindow: (Omit<WindowBase, 'id'> & { id: number | null }) | null;
 }
+
+const mockExcuses = [
+  {
+    id: 1,
+    user: {
+      name: 'Dev User',
+      githubUsername: 'straight-best-actor',
+      profileUrl: 'https://github.com',
+      photoUrl:
+        'https://res.cloudinary.com/folio-hnr/image/upload/v1679629122/blob_ycezgh.jpg',
+    },
+    excuseFrom: 'interview_and_question',
+    excuseReason: 'I am sick',
+    status: 'pending',
+  },
+  {
+    id: 2,
+    user: {
+      name: 'Shenyi Cui',
+      githubUsername: 'gay-best-actor',
+      profileUrl: 'https://github.com',
+      photoUrl: 'https://avatars.githubusercontent.com/u/29945147?v=4',
+    },
+    excuseFrom: 'interview',
+    excuseReason:
+      'I am going on a holiday really far away, this is a super long piece of text that should be truncated at some point in time',
+    status: 'rejected',
+  },
+] as ExcuseBase[];
 
 export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
   const [state, setState] = useReducer(
@@ -319,6 +349,10 @@ export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
           onEdit={onEditWindow}
           onView={(id: number): void => navigate(`${VIEW_WINDOW}/${id}`)}
           windows={cohort.windows}
+        />
+        <ExcuseTable
+          excuses={mockExcuses}
+          onView={(id: number): number => id}
         />
       </Stack>
       <ConfirmRematchWindows
