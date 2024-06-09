@@ -9,7 +9,6 @@ import { getSelfExcuses } from '@/lib/excuses';
 import { getCohort } from '@/lib/tasks';
 import { CohortItem } from '@/types/api/cohorts';
 import { ExcuseBase } from '@/types/api/excuses';
-import { ExcuseStatus } from '@/types/models/excuse';
 import { formatDateWithYear } from '@/utils/dateUtils';
 import {
   computeTaskStepData,
@@ -116,7 +115,12 @@ export const TasksBreakdown = (): ReactElement<typeof Page> => {
 
   return (
     <>
-      <ExcuseModal isOpen={isExcuseModalOpen} />
+      <ExcuseModal
+        excuses={excuses ?? []}
+        handleClose={(): void => setState({ isExcuseModalOpen: false })}
+        isOpen={isExcuseModalOpen}
+        window={selectedWindow}
+      />
       <TasksBreakdownPage
         coursemologyUrl={cohort.coursemologyUrl}
         email={cohort.email}
@@ -151,11 +155,11 @@ export const TasksBreakdown = (): ReactElement<typeof Page> => {
               {formatDateWithYear(selectedWindow.endAt)})
             </Heading>
             <Button
-              // should be disabled if end date of window has passed or if the user's excuse is not pending
+              // should be disabled if end date of window has passed and there are no excuses
               isDisabled={
                 excuses !== null &&
-                (selectedWindow.endAt < new Date() ||
-                  excuses.some((e) => e.status !== ExcuseStatus.PENDING))
+                selectedWindow.endAt < new Date() &&
+                excuses.length === 0
               }
               isLoading={excuses === null}
               onClick={(): void => setState({ isExcuseModalOpen: true })}
