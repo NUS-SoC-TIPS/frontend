@@ -59,7 +59,7 @@ const mockExcuses = [
         'https://res.cloudinary.com/folio-hnr/image/upload/v1679629122/blob_ycezgh.jpg',
     },
     excuseFrom: ExcuseFrom.INTERVIEW_AND_QUESTION,
-    excuseReason: 'I am sick',
+    reason: 'I am sick',
     status: ExcuseStatus.PENDING,
   },
   {
@@ -71,7 +71,7 @@ const mockExcuses = [
       photoUrl: 'https://avatars.githubusercontent.com/u/29945147?v=4',
     },
     excuseFrom: ExcuseFrom.QUESTION,
-    excuseReason:
+    reason:
       'I am going on a holiday really far away, this is a super long piece of text that should be truncated at some point in time',
     status: ExcuseStatus.REJECTED,
   },

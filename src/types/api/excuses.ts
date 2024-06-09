@@ -8,7 +8,7 @@ export interface ExcuseBase {
   user: UserBase;
   window: WindowBase;
   excuseFrom: ExcuseFrom;
-  excuseReason: string;
+  reason: string;
   status: ExcuseStatus;
 }
 

@@ -39,11 +39,11 @@ const getColumns = (onView: (id: number) => void): TableColumn[] => {
     },
     {
       label: 'Excuse Reason',
-      key: 'excuseReason',
+      key: 'reason',
       options: {
-        customBodyRenderer: (excuseReason: string): ReactNode => (
+        customBodyRenderer: (reason: string): ReactNode => (
           <div style={{ maxWidth: '225px' }}>
-            <Text isTruncated={true}>{excuseReason}</Text>
+            <Text isTruncated={true}>{reason}</Text>
           </div>
         ),
         isSortable: true,

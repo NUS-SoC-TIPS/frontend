@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import {
   Button,
   Checkbox,
@@ -35,12 +35,14 @@ export const ExcuseModal = (
   const isEditable = !excuse || excuse.status === ExcuseStatus.PENDING;
 
   const [excuseFromVal, setExcuseFromVal] = useState<boolean[]>([]);
-  const [excuseReasonVal, setExcuseReasonVal] = useState(
-    excuse?.excuseReason || '',
-  );
+  const [excuseReasonVal, setExcuseReasonVal] = useState(excuse?.reason || '');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const toast = useToast();
+
+  useEffect(() => {
+    setExcuseReasonVal(excuse?.reason || '');
+  }, [excuse?.reason]);
 
   const mapExcuseFrom = (excuseFrom: ExcuseFrom): string[] => {
     switch (excuseFrom) {
@@ -62,11 +64,11 @@ export const ExcuseModal = (
       : excuseFromVal[0]
       ? ExcuseFrom.QUESTION
       : ExcuseFrom.INTERVIEW;
-    const excuseReason = excuseReasonVal.trim();
+    const reason = excuseReasonVal.trim();
 
     const data = {
       excuseFrom,
-      reason: excuseReason,
+      reason,
       windowId: window.id,
     };
 
