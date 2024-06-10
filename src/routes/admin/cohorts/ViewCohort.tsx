@@ -48,7 +48,7 @@ interface State {
   selectedWindow: (Omit<WindowBase, 'id'> & { id: number | null }) | null;
 }
 
-const mockExcuses = [
+const mockExcuses: ExcuseBase[] = [
   {
     id: 1,
     user: {
@@ -57,6 +57,13 @@ const mockExcuses = [
       profileUrl: 'https://github.com',
       photoUrl:
         'https://res.cloudinary.com/folio-hnr/image/upload/v1679629122/blob_ycezgh.jpg',
+    },
+    window: {
+      id: 1,
+      startAt: new Date('2022-01-01'),
+      endAt: new Date('2022-01-07'),
+      numQuestions: 6,
+      requireInterview: true,
     },
     excuseFrom: ExcuseFrom.INTERVIEW_AND_QUESTION,
     reason: 'I am sick',
@@ -70,12 +77,19 @@ const mockExcuses = [
       profileUrl: 'https://github.com',
       photoUrl: 'https://avatars.githubusercontent.com/u/29945147?v=4',
     },
+    window: {
+      id: 2,
+      startAt: new Date('2022-01-08'),
+      endAt: new Date('2022-01-14'),
+      numQuestions: 6,
+      requireInterview: true,
+    },
     excuseFrom: ExcuseFrom.QUESTION,
     reason:
       'I am going on a holiday really far away, this is a super long piece of text that should be truncated at some point in time',
     status: ExcuseStatus.REJECTED,
   },
-] as ExcuseBase[];
+];
 
 export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
   const [state, setState] = useReducer(
@@ -354,6 +368,7 @@ export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
         <ExcuseTable
           excuses={mockExcuses}
           onView={(id: number): number => id}
+          windows={cohort.windows}
         />
       </Stack>
       <ConfirmRematchWindows
