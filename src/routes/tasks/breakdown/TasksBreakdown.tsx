@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useReducer } from 'react';
+import { ReactElement, useCallback, useEffect, useReducer } from 'react';
 import { useParams } from 'react-router-dom';
 import { Heading, HStack, Stack } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/react';
@@ -75,21 +75,21 @@ export const TasksBreakdown = (): ReactElement<typeof Page> => {
     };
   }, [id]);
 
+  const fetchExcuses = useCallback((): Promise<void> => {
+    return getSelfExcuses(
+      findWindowIdFromStep(+state.step, state.cohort.windows),
+    ).then((excuses) => {
+      setState({ excuses });
+    });
+  }, [state.step, state.cohort?.windows]);
+
   useEffect(() => {
     if (!state.cohort?.windows) {
       return;
     }
 
-    const fetchExcuses = (): Promise<void> => {
-      return getSelfExcuses(
-        findWindowIdFromStep(+state.step, state.cohort.windows),
-      ).then((excuses) => {
-        setState({ excuses });
-      });
-    };
-
     fetchExcuses();
-  }, [state.cohort?.windows, state.step]);
+  }, [fetchExcuses, state.cohort?.windows, state.step]);
 
   const { cohort, isError, isExcuseModalOpen, excuses } = state;
 
@@ -113,11 +113,16 @@ export const TasksBreakdown = (): ReactElement<typeof Page> => {
 
   const taskStepData = computeTaskStepData(cohort.windows);
 
+  const handleClose = (): Promise<void> => {
+    setState({ isExcuseModalOpen: false });
+    return fetchExcuses();
+  };
+
   return (
     <>
       <ExcuseModal
         excuses={excuses ?? []}
-        handleClose={(): void => setState({ isExcuseModalOpen: false })}
+        handleClose={handleClose}
         isOpen={isExcuseModalOpen}
         window={selectedWindow}
       />
