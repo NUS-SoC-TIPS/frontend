@@ -206,18 +206,22 @@ export const ExcuseModal = (
     >
       <form onSubmit={handleSubmit} ref={formRef}>
         <Stack spacing={5}>
-          <FormControl isDisabled={!isEditable} isRequired={true}>
+          <FormControl isRequired={true}>
             <FormLabel htmlFor="excuse-variant">Excuse From</FormLabel>
             <CheckboxGroup
               colorScheme="green"
               defaultValue={mapExcuseFrom(excuse?.excuseFrom)}
             >
               <HStack spacing={10}>
-                <Checkbox name="excuseQuestion" value="QUESTION">
+                <Checkbox
+                  isDisabled={!isEditable}
+                  name="excuseQuestion"
+                  value="QUESTION"
+                >
                   Questions
                 </Checkbox>
                 <Checkbox
-                  isDisabled={!window.requireInterview}
+                  isDisabled={!window.requireInterview || !isEditable}
                   name="excuseInterview"
                   value="INTERVIEW"
                 >

@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useReducer } from 'react';
+import { ReactElement, useCallback, useEffect, useReducer } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 
@@ -16,10 +16,10 @@ import {
   updateCohortAdmin,
   updateWindowAdmin,
 } from '@/lib/admin';
+import { getExcuses } from '@/lib/excuses';
 import { CohortAdminItem } from '@/types/api/admin';
 import { ExcuseBase } from '@/types/api/excuses';
 import { WindowBase } from '@/types/api/windows';
-import { ExcuseFrom, ExcuseStatus } from '@/types/models/excuse';
 import {
   stripPrefixForUrlField,
   stripSuffixForEmailField,
@@ -37,6 +37,7 @@ import { ViewCohortSkeleton } from './ViewCohortSkeleton';
 
 interface State {
   cohort: CohortAdminItem | null;
+  excuses: ExcuseBase[];
   name: string;
   coursemologyUrl: string;
   email: string;
@@ -48,65 +49,38 @@ interface State {
   selectedWindow: (Omit<WindowBase, 'id'> & { id: number | null }) | null;
 }
 
-const mockExcuses: ExcuseBase[] = [
-  {
-    id: 1,
-    user: {
-      name: 'Dev User',
-      githubUsername: 'straight-best-actor',
-      profileUrl: 'https://github.com',
-      photoUrl:
-        'https://res.cloudinary.com/folio-hnr/image/upload/v1679629122/blob_ycezgh.jpg',
-    },
-    window: {
-      id: 1,
-      startAt: new Date('2022-01-01'),
-      endAt: new Date('2022-01-07'),
-      numQuestions: 6,
-      requireInterview: true,
-    },
-    excuseFrom: ExcuseFrom.INTERVIEW_AND_QUESTION,
-    reason: 'I am sick',
-    status: ExcuseStatus.PENDING,
-  },
-  {
-    id: 2,
-    user: {
-      name: 'Shenyi Cui',
-      githubUsername: 'gay-best-actor',
-      profileUrl: 'https://github.com',
-      photoUrl: 'https://avatars.githubusercontent.com/u/29945147?v=4',
-    },
-    window: {
-      id: 2,
-      startAt: new Date('2022-01-08'),
-      endAt: new Date('2022-01-14'),
-      numQuestions: 6,
-      requireInterview: true,
-    },
-    excuseFrom: ExcuseFrom.QUESTION,
-    reason:
-      'I am going on a holiday really far away, this is a super long piece of text that should be truncated at some point in time',
-    status: ExcuseStatus.REJECTED,
-  },
-];
-
 export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
   const [state, setState] = useReducer(
     (s: State, a: Partial<State>): State => ({ ...s, ...a }),
     {
       cohort: null,
+      excuses: [],
       name: '',
       coursemologyUrl: '',
       email: '',
       isError: false,
       isUpdatingBasicInfo: false,
       selectedWindow: null,
+      isUpdatingOrCreatingWindow: false,
+      isRematchingWindows: false,
+      isRematchWindowsModalShown: false,
     } as State,
   );
   const toast = useToast();
   const navigate = useNavigate();
   const { id } = useParams();
+
+  const fetchExcuses = useCallback(async (): Promise<void> => {
+    if (id == null || id === undefined) {
+      return;
+    }
+    try {
+      const excuses = await getExcuses(+id);
+      setState({ excuses });
+    } catch {
+      toast(ERROR_TOAST_PROPS);
+    }
+  }, [id, toast]);
 
   useEffect(() => {
     let didCancel = false;
@@ -134,11 +108,12 @@ export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
       }
     };
     fetchData();
+    fetchExcuses();
 
     return () => {
       didCancel = true;
     };
-  }, [id]);
+  }, [id, fetchExcuses]);
 
   const { name, coursemologyUrl, email, cohort, isError, selectedWindow } =
     state;
@@ -365,7 +340,11 @@ export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
           onView={(id: number): void => navigate(`${VIEW_WINDOW}/${id}`)}
           windows={cohort.windows}
         />
-        <ExcuseTable excuses={mockExcuses} windows={cohort.windows} />
+        <ExcuseTable
+          excuses={state.excuses}
+          onDataUpdate={fetchExcuses}
+          windows={cohort.windows}
+        />
       </Stack>
       <ConfirmRematchWindows
         isLoading={state.isRematchingWindows}

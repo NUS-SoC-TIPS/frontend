@@ -10,12 +10,15 @@ import {
   Stack,
   Tag,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 
 import { Card } from '@/components/card';
 import { Modal } from '@/components/modal';
 import { Table } from '@/components/table';
 import { UserProfile } from '@/components/userProfile';
+import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from '@/constants/toast';
+import { approveExcuse, rejectExcuse } from '@/lib/excuses';
 import { ExcuseBase } from '@/types/api/excuses';
 import { UserBase } from '@/types/api/users';
 import { WindowBase } from '@/types/api/windows';
@@ -43,6 +46,7 @@ const getExcuseFromTags = (e: ExcuseFrom): string[] => {
 interface Props {
   excuses: ExcuseBase[];
   windows: WindowBase[];
+  onDataUpdate: () => Promise<void>;
 }
 
 const getColumns = (
@@ -149,6 +153,7 @@ const getColumns = (
 export const ExcuseTable = ({
   excuses,
   windows,
+  onDataUpdate,
 }: Props): ReactElement<Props, typeof Card> => {
   const [filter, setFilter] = useState('all');
   const filteredExcuses = excuses.filter((excuse) => {
@@ -164,7 +169,9 @@ export const ExcuseTable = ({
     }
   });
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedExcuse, setSelectedExcuse] = useState<ExcuseBase | null>(null);
+  const toast = useToast();
 
   const sortedWindows = useMemo(
     () =>
@@ -190,7 +197,46 @@ export const ExcuseTable = ({
   );
 
   const onClose = (): void => {
+    onDataUpdate();
     setIsOpen(false);
+  };
+
+  const onAccept = async (excuse: ExcuseBase): Promise<void> => {
+    try {
+      setIsLoading(true);
+      await approveExcuse(excuse.id);
+      await onDataUpdate();
+      toast({
+        ...DEFAULT_TOAST_PROPS,
+        title: 'Success!',
+        status: 'success',
+        description: 'Excuse has been accepted successfully.',
+      });
+      onClose();
+    } catch {
+      toast(ERROR_TOAST_PROPS);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const onReject = async (excuse: ExcuseBase): Promise<void> => {
+    try {
+      setIsLoading(true);
+      await rejectExcuse(excuse.id);
+      await onDataUpdate();
+      toast({
+        ...DEFAULT_TOAST_PROPS,
+        title: 'Success!',
+        status: 'success',
+        description: 'Excuse has been rejected successfully.',
+      });
+      onClose();
+    } catch {
+      toast(ERROR_TOAST_PROPS);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const columns = useMemo(
@@ -211,13 +257,27 @@ export const ExcuseTable = ({
         <Modal
           actions={
             <HStack>
-              <Button onClick={onClose} variant="secondary">
+              <Button
+                isDisabled={isLoading}
+                onClick={onClose}
+                variant="secondary"
+              >
                 Close
               </Button>
-              <Button colorScheme="red" variant="primary">
+              <Button
+                colorScheme="red"
+                isLoading={isLoading}
+                onClick={(): Promise<void> => onReject(selectedExcuse)}
+                variant="primary"
+              >
                 Reject
               </Button>
-              <Button colorScheme="green" variant="primary">
+              <Button
+                colorScheme="green"
+                isLoading={isLoading}
+                onClick={(): Promise<void> => onAccept(selectedExcuse)}
+                variant="primary"
+              >
                 Accept
               </Button>
             </HStack>
