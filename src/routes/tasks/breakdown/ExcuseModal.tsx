@@ -22,7 +22,7 @@ import {
 
 import { Modal } from '@/components/modal';
 import { DEFAULT_TOAST_PROPS, ERROR_TOAST_PROPS } from '@/constants/toast';
-import { createExcuse, deleteExcuse } from '@/lib/excuses';
+import { createExcuse, deleteExcuse, updateExcuse } from '@/lib/excuses';
 import { ExcuseBase } from '@/types/api/excuses';
 import { WindowBase } from '@/types/api/windows';
 import { ExcuseFrom, ExcuseStatus } from '@/types/models/excuse';
@@ -127,7 +127,11 @@ export const ExcuseModal = (
 
     try {
       setIsSubmitting(true);
-      await createExcuse(data);
+      if (excuse) {
+        await updateExcuse(excuse.id, data);
+      } else {
+        await createExcuse(data);
+      }
       toast({
         ...DEFAULT_TOAST_PROPS,
         title: 'Success!',
