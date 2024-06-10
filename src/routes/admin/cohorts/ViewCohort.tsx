@@ -365,11 +365,7 @@ export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
           onView={(id: number): void => navigate(`${VIEW_WINDOW}/${id}`)}
           windows={cohort.windows}
         />
-        <ExcuseTable
-          excuses={mockExcuses}
-          onView={(id: number): number => id}
-          windows={cohort.windows}
-        />
+        <ExcuseTable excuses={mockExcuses} windows={cohort.windows} />
       </Stack>
       <ConfirmRematchWindows
         isLoading={state.isRematchingWindows}

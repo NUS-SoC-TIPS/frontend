@@ -1,8 +1,19 @@
 import { ReactElement, ReactNode, useCallback, useMemo, useState } from 'react';
 import { HiFilter } from 'react-icons/hi';
-import { Button, HStack, Select, Tag, Text } from '@chakra-ui/react';
+import {
+  Button,
+  CheckboxGroup,
+  FormControl,
+  FormLabel,
+  HStack,
+  Select,
+  Stack,
+  Tag,
+  Text,
+} from '@chakra-ui/react';
 
 import { Card } from '@/components/card';
+import { Modal } from '@/components/modal';
 import { Table } from '@/components/table';
 import { UserProfile } from '@/components/userProfile';
 import { ExcuseBase } from '@/types/api/excuses';
@@ -10,6 +21,7 @@ import { UserBase } from '@/types/api/users';
 import { WindowBase } from '@/types/api/windows';
 import { ExcuseFrom, ExcuseStatus } from '@/types/models/excuse';
 import { TableColumn } from '@/types/table';
+import { formatDateWithYear } from '@/utils/dateUtils';
 import {
   compareDatesAscending,
   compareNamesAscending,
@@ -31,7 +43,6 @@ const getExcuseFromTags = (e: ExcuseFrom): string[] => {
 interface Props {
   excuses: ExcuseBase[];
   windows: WindowBase[];
-  onView: (id: number) => void;
 }
 
 const getColumns = (
@@ -137,7 +148,6 @@ const getColumns = (
 
 export const ExcuseTable = ({
   excuses,
-  onView,
   windows,
 }: Props): ReactElement<Props, typeof Card> => {
   const [filter, setFilter] = useState('all');
@@ -153,6 +163,8 @@ export const ExcuseTable = ({
         return true;
     }
   });
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedExcuse, setSelectedExcuse] = useState<ExcuseBase | null>(null);
 
   const sortedWindows = useMemo(
     () =>
@@ -169,36 +181,119 @@ export const ExcuseTable = ({
     [sortedWindows],
   );
 
+  const onView = useCallback(
+    (id: number): void => {
+      setIsOpen(true);
+      setSelectedExcuse(excuses.find((excuse) => excuse.id === id) ?? null);
+    },
+    [excuses],
+  );
+
+  const onClose = (): void => {
+    setIsOpen(false);
+  };
+
   const columns = useMemo(
     () => getColumns(onView, getWindowNumber),
     [getWindowNumber, onView],
   );
 
+  const isShowQuestion =
+    selectedExcuse?.excuseFrom === ExcuseFrom.QUESTION ||
+    selectedExcuse?.excuseFrom === ExcuseFrom.INTERVIEW_AND_QUESTION;
+  const isShowInterview =
+    selectedExcuse?.excuseFrom === ExcuseFrom.INTERVIEW ||
+    selectedExcuse?.excuseFrom === ExcuseFrom.INTERVIEW_AND_QUESTION;
+
   return (
-    <Card px={0} py={0}>
-      <Table
-        actionButton={
-          <HStack spacing={2}>
-            <HiFilter size={25} />
-            <Select
-              onChange={(e): void => setFilter(e.target.value)}
-              value={filter}
-            >
-              <option value="all">All</option>
-              <option value="pending">Pending Decision</option>
-              <option value="accepted">Accepted</option>
-              <option value="rejected">Rejected</option>
-            </Select>
-          </HStack>
-        }
-        columns={columns}
-        options={{
-          title: 'Excuses',
-          isDownloadable: false,
-          numRowsPerPage: excuses.length,
-        }}
-        rows={filteredExcuses}
-      />
-    </Card>
+    <>
+      {selectedExcuse && (
+        <Modal
+          actions={
+            <HStack>
+              <Button onClick={onClose} variant="secondary">
+                Close
+              </Button>
+              <Button colorScheme="red" variant="primary">
+                Reject
+              </Button>
+              <Button colorScheme="green" variant="primary">
+                Accept
+              </Button>
+            </HStack>
+          }
+          isOpen={isOpen}
+          onClose={onClose}
+          title="View Excuse"
+        >
+          <Stack spacing={5}>
+            <UserProfile ps={0} user={selectedExcuse.user} />
+
+            <FormControl>
+              <FormLabel>Excuse From</FormLabel>
+              <CheckboxGroup colorScheme="green">
+                <HStack spacing={2}>
+                  {isShowQuestion && <Tag>QUESTION</Tag>}
+                  {isShowInterview && <Tag colorScheme="purple">INTERVIEW</Tag>}
+                </HStack>
+              </CheckboxGroup>
+            </FormControl>
+
+            <FormControl>
+              <FormLabel>
+                Window {getWindowNumber(selectedExcuse.window)}
+              </FormLabel>
+              <Text fontSize="sm">{`${formatDateWithYear(
+                selectedExcuse.window.startAt,
+              )} - ${formatDateWithYear(selectedExcuse.window.endAt)}`}</Text>
+            </FormControl>
+
+            <FormControl>
+              <FormLabel>Excuse Reason</FormLabel>
+              <Text fontSize="sm">{selectedExcuse.reason}</Text>
+            </FormControl>
+
+            <FormControl>
+              <FormLabel>Current Status</FormLabel>
+              {selectedExcuse.status === ExcuseStatus.ACCEPTED && (
+                <Tag colorScheme="green">ACCEPTED</Tag>
+              )}
+              {selectedExcuse.status === ExcuseStatus.REJECTED && (
+                <Tag colorScheme="red">REJECTED</Tag>
+              )}
+              {selectedExcuse.status === ExcuseStatus.PENDING && (
+                <Tag>PENDING</Tag>
+              )}
+            </FormControl>
+          </Stack>
+        </Modal>
+      )}
+
+      <Card px={0} py={0}>
+        <Table
+          actionButton={
+            <HStack spacing={2}>
+              <HiFilter size={25} />
+              <Select
+                onChange={(e): void => setFilter(e.target.value)}
+                value={filter}
+              >
+                <option value="all">All</option>
+                <option value="pending">Pending Decision</option>
+                <option value="accepted">Accepted</option>
+                <option value="rejected">Rejected</option>
+              </Select>
+            </HStack>
+          }
+          columns={columns}
+          options={{
+            title: 'Excuses',
+            isDownloadable: false,
+            numRowsPerPage: excuses.length,
+          }}
+          rows={filteredExcuses}
+        />
+      </Card>
+    </>
   );
 };
