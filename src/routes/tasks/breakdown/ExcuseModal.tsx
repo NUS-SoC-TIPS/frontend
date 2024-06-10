@@ -94,11 +94,15 @@ export const ExcuseModal = (
     e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
-    const excuseFromQuestion =
-      e.currentTarget.elements.namedItem('excuseQuestion')?.checked;
-    const excuseFromInterview =
-      e.currentTarget.elements.namedItem('excuseInterview')?.checked;
-    const reason = e.currentTarget.elements.namedItem('reason')?.value;
+    const excuseFromQuestion = (
+      e.currentTarget.elements.namedItem('excuseQuestion') as HTMLInputElement
+    )?.checked;
+    const excuseFromInterview = (
+      e.currentTarget.elements.namedItem('excuseInterview') as HTMLInputElement
+    )?.checked;
+    const reason = (
+      e.currentTarget.elements.namedItem('reason') as HTMLInputElement
+    )?.value;
 
     const isNoneChecked = !excuseFromQuestion && !excuseFromInterview;
     const isEmptyReason = !reason;
@@ -207,7 +211,6 @@ export const ExcuseModal = (
             <CheckboxGroup
               colorScheme="green"
               defaultValue={mapExcuseFrom(excuse?.excuseFrom)}
-              id="excuse-variant"
             >
               <HStack spacing={10}>
                 <Checkbox name="excuseQuestion" value="QUESTION">

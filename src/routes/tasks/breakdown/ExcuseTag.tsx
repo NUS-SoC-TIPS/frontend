@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactElement } from 'react';
 import { HiOutlineInformationCircle } from 'react-icons/hi';
 import { HStack, Tag, Text, Tooltip } from '@chakra-ui/react';
 
@@ -26,7 +26,7 @@ const excuseStatusMap = {
   },
 };
 
-export const ExcuseTag = ({ status }: Props): React.FC => {
+export const ExcuseTag = ({ status }: Props): ReactElement<typeof Tag> => {
   return (
     <Tag colorScheme={excuseStatusMap[status]?.color}>
       <HStack spacing={1}>

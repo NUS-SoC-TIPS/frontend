@@ -77,7 +77,7 @@ export const TasksBreakdown = (): ReactElement<typeof Page> => {
 
   const fetchExcuses = useCallback((): Promise<void> => {
     return getSelfExcuses(
-      findWindowIdFromStep(+state.step, state.cohort.windows),
+      findWindowIdFromStep(+state.step, state.cohort?.windows ?? []),
     ).then((excuses) => {
       setState({ excuses });
     });
