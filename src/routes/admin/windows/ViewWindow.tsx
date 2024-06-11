@@ -12,7 +12,9 @@ import {
   getWindowAdmin,
   pairStudents,
 } from '@/lib/admin';
+import { getExcuses } from '@/lib/excuses';
 import { WindowItem } from '@/types/api/admin';
+import { ExcuseBase } from '@/types/api/excuses';
 import { InterviewBase } from '@/types/api/interviews';
 import { SubmissionBase } from '@/types/api/questions';
 import { StudentBase, StudentBaseWithId } from '@/types/api/students';
@@ -34,6 +36,7 @@ import { ViewWindowSkeleton } from './ViewWindowSkeleton';
 interface State {
   isError: boolean;
   window: WindowItem | null;
+  excuses: ExcuseBase[] | null;
   studentBeingExcluded: StudentBaseWithId | null;
   studentBeingIncluded:
     | (StudentBaseWithId & {
@@ -60,6 +63,7 @@ export const ViewWindow = (): ReactElement<typeof ViewWindowPage> => {
     {
       isError: false,
       window: null,
+      excuses: null,
       studentBeingExcluded: null,
       studentBeingIncluded: null,
       submissionsViewed: null,
@@ -100,6 +104,24 @@ export const ViewWindow = (): ReactElement<typeof ViewWindowPage> => {
       didCancel = true;
     };
   }, [id]);
+
+  useEffect(() => {
+    if (id == null || !state.window?.cohortId) {
+      return;
+    }
+
+    const fetchExcuses = async (): Promise<void> => {
+      try {
+        const resExcuse = await getExcuses(state.window?.cohortId ?? 0);
+        const excuses = resExcuse.filter((ex) => ex.window.id === +id);
+        setState({ excuses });
+      } catch {
+        toast(ERROR_TOAST_PROPS);
+      }
+    };
+
+    fetchExcuses();
+  }, [id, state.window?.cohortId, toast]);
 
   const {
     window,
@@ -293,6 +315,7 @@ export const ViewWindow = (): ReactElement<typeof ViewWindowPage> => {
         <StatCard stat={numCompleted} title="Number of Students Completed" />
       </SimpleGrid>
       <StudentTable
+        excuses={state.excuses}
         onAutoExclude={(): void =>
           setState({ isAutoExclusionModalShown: true })
         }

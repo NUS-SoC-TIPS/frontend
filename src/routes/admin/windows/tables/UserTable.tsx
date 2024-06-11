@@ -5,10 +5,12 @@ import { Card } from '@/components/card';
 import { Table } from '@/components/table';
 import { UserProfile } from '@/components/userProfile';
 import { WindowItem } from '@/types/api/admin';
+import { ExcuseBase } from '@/types/api/excuses';
 import { InterviewBase } from '@/types/api/interviews';
 import { SubmissionBase } from '@/types/api/questions';
 import { StudentBase } from '@/types/api/students';
 import { UserBase } from '@/types/api/users';
+import { ExcuseStatus } from '@/types/models/excuse';
 import { TableColumn, TableOptions } from '@/types/table';
 import { emptyFunction } from '@/utils/functionUtils';
 import {
@@ -27,6 +29,7 @@ interface Props {
   onViewSubmissions: (submissions: SubmissionBase[]) => void;
   onViewInterviews: (interviews: InterviewBase[]) => void;
   onViewPartner?: (partner: StudentBase) => void;
+  excuses?: ExcuseBase[] | null;
 }
 
 interface Row {
@@ -45,6 +48,7 @@ interface Row {
   coursemologyProfileUrl: string;
   partner: StudentBase | null;
   exclusion: { id: number; reason: string } | null;
+  isExcused?: boolean;
 }
 
 const getColumns = (
@@ -53,8 +57,9 @@ const getColumns = (
   onViewSubmissions: (submissions: SubmissionBase[]) => void,
   onViewInterviews: (interviews: InterviewBase[]) => void,
   onViewPartner: (partner: StudentBase) => void,
+  excuses?: ExcuseBase[] | null,
 ): TableColumn[] => {
-  return [
+  const baseTableColumns = [
     {
       label: 'User',
       key: 'user',
@@ -243,9 +248,29 @@ const getColumns = (
       },
     },
   ];
+
+  if (excuses !== undefined && excuses !== null) {
+    // push to second last position
+    baseTableColumns.splice(baseTableColumns.length - 1, 0, {
+      label: 'Is Excused',
+      key: 'isExcused',
+      options: {
+        customBodyRenderer: booleanRenderer,
+        customSearchValueRenderer: booleanRenderer,
+        customCsvBodyRenderer: booleanRenderer,
+        customSortComparator: compareBooleansTrueFirst,
+        isSortable: true,
+      },
+    });
+  }
+
+  return baseTableColumns;
 };
 
-const transformData = (users: WindowItem['students']): Row[] => {
+const transformData = (
+  users: WindowItem['students'],
+  excuses?: ExcuseBase[] | null,
+): Row[] => {
   return users.map((user) => {
     const {
       name,
@@ -261,6 +286,10 @@ const transformData = (users: WindowItem['students']): Row[] => {
       exclusion,
       pairedPartner,
     } = user;
+
+    const isExcused =
+      excuses?.find((e) => e.user.githubUsername === githubUsername)?.status ===
+      ExcuseStatus.ACCEPTED;
 
     return {
       studentId,
@@ -283,6 +312,7 @@ const transformData = (users: WindowItem['students']): Row[] => {
       coursemologyProfileUrl,
       exclusion,
       partner: pairedPartner,
+      ...(excuses !== undefined && excuses !== null && { isExcused }),
     };
   });
 };
@@ -297,6 +327,7 @@ export const UserTable = ({
   onIncludeOrExclude = emptyFunction,
   onExtraAction,
   extraActionName,
+  excuses,
 }: Props): ReactElement<Props, typeof Card> => {
   const columns = useMemo(
     () =>
@@ -306,6 +337,7 @@ export const UserTable = ({
         onViewSubmissions,
         onViewInterviews,
         onViewPartner,
+        excuses,
       ),
     [
       isInclude,
@@ -313,9 +345,10 @@ export const UserTable = ({
       onViewSubmissions,
       onViewInterviews,
       onViewPartner,
+      excuses,
     ],
   );
-  const rows = useMemo(() => transformData(users), [users]);
+  const rows = useMemo(() => transformData(users, excuses), [users, excuses]);
 
   return (
     <Card px={0} py={0}>

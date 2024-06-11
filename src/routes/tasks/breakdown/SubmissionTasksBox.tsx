@@ -12,12 +12,17 @@ import {
 } from '@chakra-ui/react';
 
 import { QuestionBox } from '@/components/question';
+import { ExcuseBase } from '@/types/api/excuses';
 import { SubmissionBase } from '@/types/api/questions';
+import { ExcuseFrom } from '@/types/models/excuse';
 import { compareIdsAscending } from '@/utils/sortUtils';
+
+import { ExcuseTag } from './ExcuseTag';
 
 interface Props {
   numQuestions: number;
   submissions: SubmissionBase[];
+  excuses: ExcuseBase[];
   hasCompletedQuestions: boolean;
 }
 
@@ -25,8 +30,15 @@ export const SubmissionTasksBox = ({
   submissions,
   numQuestions,
   hasCompletedQuestions,
+  excuses,
 }: Props): ReactElement<typeof Box> => {
   submissions.sort(compareIdsAscending);
+
+  const excuse = excuses.find(
+    (e) =>
+      e.excuseFrom === ExcuseFrom.QUESTION ||
+      e.excuseFrom === ExcuseFrom.INTERVIEW_AND_QUESTION,
+  );
 
   return (
     <Box as="section" flex={1}>
@@ -40,9 +52,12 @@ export const SubmissionTasksBox = ({
           <Stack spacing={4}>
             <HStack justify="space-between">
               <Stack spacing={1}>
-                <Text fontSize="lg" fontWeight="medium">
-                  Questions
-                </Text>
+                <HStack>
+                  <Text fontSize="lg" fontWeight="medium">
+                    Questions
+                  </Text>
+                  {excuse && <ExcuseTag status={excuse.status} />}
+                </HStack>
                 <Text color="fg.muted" fontSize="sm">
                   {submissions.length}/{numQuestions} Completed
                 </Text>

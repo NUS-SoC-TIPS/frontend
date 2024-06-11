@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react';
+import React, { forwardRef, ReactElement, ReactNode } from 'react';
 import {
   Button,
   Modal as ChakraModal,
@@ -25,7 +25,10 @@ const DEFAULT_PROPS: Partial<ModalProps> = {
   isCentered: true,
 };
 
-export const Modal = (props: Props): ReactElement<typeof ChakraModal> => {
+export const Modal = forwardRef(function Modal(
+  props: Props,
+  ref?: React.Ref<HTMLDivElement>,
+): ReactElement<typeof ChakraModal> {
   const {
     title,
     actions,
@@ -46,7 +49,7 @@ export const Modal = (props: Props): ReactElement<typeof ChakraModal> => {
         backdropFilter="blur(10px) hue-rotate(90deg)"
         bg="blackAlpha.300"
       />
-      <ModalContent bg="bg.canvas" borderRadius="2xl">
+      <ModalContent bg="bg.canvas" borderRadius="2xl" ref={ref}>
         <ModalBody p={{ base: 4, lg: 6 }}>
           <ModalHeader p={2} textAlign={textAlignCentre ? 'center' : undefined}>
             {title}
@@ -68,4 +71,4 @@ export const Modal = (props: Props): ReactElement<typeof ChakraModal> => {
       </ModalContent>
     </ChakraModal>
   );
-};
+});

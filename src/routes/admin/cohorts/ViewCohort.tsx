@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useReducer } from 'react';
+import { ReactElement, useCallback, useEffect, useReducer } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Flex, Stack, StackDivider, useToast } from '@chakra-ui/react';
 
@@ -16,7 +16,9 @@ import {
   updateCohortAdmin,
   updateWindowAdmin,
 } from '@/lib/admin';
+import { getExcuses } from '@/lib/excuses';
 import { CohortAdminItem } from '@/types/api/admin';
+import { ExcuseBase } from '@/types/api/excuses';
 import { WindowBase } from '@/types/api/windows';
 import {
   stripPrefixForUrlField,
@@ -29,12 +31,13 @@ import { NameFormControl, UrlFormControl } from '../components/form';
 import { EmailFormControl } from '../components/form/EmailFormControl';
 
 import { ConfirmRematchWindows, WindowModal } from './modals';
-import { StudentTable, WindowTable } from './tables';
+import { ExcuseTable, StudentTable, WindowTable } from './tables';
 import { ViewCohortPage } from './ViewCohortPage';
 import { ViewCohortSkeleton } from './ViewCohortSkeleton';
 
 interface State {
   cohort: CohortAdminItem | null;
+  excuses: ExcuseBase[];
   name: string;
   coursemologyUrl: string;
   email: string;
@@ -51,17 +54,33 @@ export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
     (s: State, a: Partial<State>): State => ({ ...s, ...a }),
     {
       cohort: null,
+      excuses: [],
       name: '',
       coursemologyUrl: '',
       email: '',
       isError: false,
       isUpdatingBasicInfo: false,
       selectedWindow: null,
+      isUpdatingOrCreatingWindow: false,
+      isRematchingWindows: false,
+      isRematchWindowsModalShown: false,
     } as State,
   );
   const toast = useToast();
   const navigate = useNavigate();
   const { id } = useParams();
+
+  const fetchExcuses = useCallback(async (): Promise<void> => {
+    if (id == null || id === undefined) {
+      return;
+    }
+    try {
+      const excuses = await getExcuses(+id);
+      setState({ excuses });
+    } catch {
+      toast(ERROR_TOAST_PROPS);
+    }
+  }, [id, toast]);
 
   useEffect(() => {
     let didCancel = false;
@@ -89,11 +108,12 @@ export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
       }
     };
     fetchData();
+    fetchExcuses();
 
     return () => {
       didCancel = true;
     };
-  }, [id]);
+  }, [id, fetchExcuses]);
 
   const { name, coursemologyUrl, email, cohort, isError, selectedWindow } =
     state;
@@ -318,6 +338,11 @@ export const ViewCohort = (): ReactElement<void, typeof ViewCohortPage> => {
           onAdd={onAddWindow}
           onEdit={onEditWindow}
           onView={(id: number): void => navigate(`${VIEW_WINDOW}/${id}`)}
+          windows={cohort.windows}
+        />
+        <ExcuseTable
+          excuses={state.excuses}
+          onDataUpdate={fetchExcuses}
           windows={cohort.windows}
         />
       </Stack>

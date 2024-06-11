@@ -14,14 +14,19 @@ import {
 } from '@chakra-ui/react';
 
 import { UserProfile } from '@/components/userProfile';
+import { ExcuseBase } from '@/types/api/excuses';
 import { InterviewBase } from '@/types/api/interviews';
 import { StudentBase } from '@/types/api/students';
+import { ExcuseFrom } from '@/types/models/excuse';
 import { compareIdsAscending } from '@/utils/sortUtils';
+
+import { ExcuseTag } from './ExcuseTag';
 
 interface Props {
   requireInterview: boolean;
   hasCompletedInterview: boolean;
   interviews: InterviewBase[];
+  excuses: ExcuseBase[];
   pairedPartner: StudentBase | null;
 }
 
@@ -30,6 +35,7 @@ export const InterviewTasksBox = ({
   pairedPartner,
   requireInterview,
   hasCompletedInterview,
+  excuses,
 }: Props): ReactElement<typeof Box> => {
   const boxShadow = useColorModeValue('sm', 'sm-dark');
   interviews.sort(compareIdsAscending);
@@ -39,6 +45,12 @@ export const InterviewTasksBox = ({
       (interview) =>
         interview.partner.githubUsername !== pairedPartner.githubUsername,
     );
+
+  const excuse = excuses.find(
+    (e) =>
+      e.excuseFrom === ExcuseFrom.INTERVIEW ||
+      e.excuseFrom === ExcuseFrom.INTERVIEW_AND_QUESTION,
+  );
 
   return (
     <Box as="section" flex={1}>
@@ -97,9 +109,12 @@ export const InterviewTasksBox = ({
           <Stack spacing={4}>
             <HStack justify="space-between">
               <Stack spacing={1}>
-                <Text fontSize="lg" fontWeight="medium">
-                  Interviews
-                </Text>
+                <HStack>
+                  <Text fontSize="lg" fontWeight="medium">
+                    Interviews
+                  </Text>
+                  {excuse && <ExcuseTag status={excuse.status} />}
+                </HStack>
                 <Text color="fg.muted" fontSize="sm">
                   {requireInterview
                     ? `${interviews.length}/1`

@@ -18,6 +18,22 @@ export const findCurrentWindow = (windows: WindowBase[]): number => {
   return lastIndex;
 };
 
+export const findWindowIdFromStep = (
+  step: number,
+  windows: WindowBase[],
+): number => {
+  if (windows.length === 0) {
+    return 0;
+  }
+  if (step < 0) {
+    return windows[0].id;
+  }
+  if (step >= windows.length) {
+    return windows[windows.length - 1].id;
+  }
+  return windows[step].id;
+};
+
 type TaskStepData = {
   left: 'RED' | 'GREEN' | 'GREY' | 'NONE';
   right: 'RED' | 'GREEN' | 'GREY' | 'NONE';
