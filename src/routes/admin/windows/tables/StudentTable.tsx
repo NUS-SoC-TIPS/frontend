@@ -19,7 +19,7 @@ interface Props {
   onViewSubmissions: (submissions: SubmissionBase[]) => void;
   onViewInterviews: (interviews: InterviewBase[]) => void;
   onViewPartner: (partner: StudentBase) => void;
-  excuses?: ExcuseBase[];
+  excuses?: ExcuseBase[] | null;
 }
 
 export const StudentTable = ({

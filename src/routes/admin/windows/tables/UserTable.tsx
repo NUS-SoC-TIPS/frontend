@@ -29,7 +29,7 @@ interface Props {
   onViewSubmissions: (submissions: SubmissionBase[]) => void;
   onViewInterviews: (interviews: InterviewBase[]) => void;
   onViewPartner?: (partner: StudentBase) => void;
-  excuses?: ExcuseBase[];
+  excuses?: ExcuseBase[] | null;
 }
 
 interface Row {
@@ -57,7 +57,7 @@ const getColumns = (
   onViewSubmissions: (submissions: SubmissionBase[]) => void,
   onViewInterviews: (interviews: InterviewBase[]) => void,
   onViewPartner: (partner: StudentBase) => void,
-  excuses?: ExcuseBase[],
+  excuses?: ExcuseBase[] | null,
 ): TableColumn[] => {
   const baseTableColumns = [
     {
@@ -269,7 +269,7 @@ const getColumns = (
 
 const transformData = (
   users: WindowItem['students'],
-  excuses?: ExcuseBase[],
+  excuses?: ExcuseBase[] | null,
 ): Row[] => {
   return users.map((user) => {
     const {
