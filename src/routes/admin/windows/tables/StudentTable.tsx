@@ -2,6 +2,7 @@ import { ReactElement } from 'react';
 
 import { Card } from '@/components/card';
 import { WindowItem } from '@/types/api/admin';
+import { ExcuseBase } from '@/types/api/excuses';
 import { InterviewBase } from '@/types/api/interviews';
 import { SubmissionBase } from '@/types/api/questions';
 import { StudentBase } from '@/types/api/students';
@@ -18,6 +19,7 @@ interface Props {
   onViewSubmissions: (submissions: SubmissionBase[]) => void;
   onViewInterviews: (interviews: InterviewBase[]) => void;
   onViewPartner: (partner: StudentBase) => void;
+  excuses?: ExcuseBase[];
 }
 
 export const StudentTable = ({
@@ -29,6 +31,7 @@ export const StudentTable = ({
   onViewSubmissions,
   onViewInterviews,
   onViewPartner,
+  excuses,
 }: Props): ReactElement<Props, typeof Card> => {
   let extraActionName: string | undefined = undefined;
   let onExtraAction: (() => void) | undefined = undefined;
@@ -42,8 +45,10 @@ export const StudentTable = ({
     extraActionName = 'Pair Students';
     onExtraAction = onPairStudents;
   }
+
   return (
     <UserTable
+      excuses={excuses}
       extraActionName={extraActionName}
       isInclude={false}
       onExtraAction={onExtraAction}

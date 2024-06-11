@@ -266,7 +266,10 @@ export const ExcuseTable = ({
               </Button>
               <Button
                 colorScheme="red"
-                isDisabled={new Date() > selectedExcuse.window.endAt}
+                isDisabled={
+                  new Date() > selectedExcuse.window.endAt ||
+                  selectedExcuse.status === ExcuseStatus.REJECTED
+                }
                 isLoading={isLoading}
                 onClick={(): Promise<void> => onReject(selectedExcuse)}
                 variant="primary"
@@ -275,7 +278,10 @@ export const ExcuseTable = ({
               </Button>
               <Button
                 colorScheme="green"
-                isDisabled={new Date() > selectedExcuse.window.endAt}
+                isDisabled={
+                  new Date() > selectedExcuse.window.endAt ||
+                  selectedExcuse.status === ExcuseStatus.ACCEPTED
+                }
                 isLoading={isLoading}
                 onClick={(): Promise<void> => onAccept(selectedExcuse)}
                 variant="primary"
