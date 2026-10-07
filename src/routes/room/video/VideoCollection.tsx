@@ -1,16 +1,16 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { PropsWithChildren, ReactElement, useEffect, useState } from 'react';
+import {
+  PropsWithChildren,
+  ReactElement,
+  useEffect,
+  useRef,
+} from 'react';
 import { Box, useBreakpointValue, useToast } from '@chakra-ui/react';
-import { AgoraVideoPlayer, IAgoraRTCRemoteUser } from 'agora-rtc-react';
+import { Socket } from 'socket.io-client';
 
 import { useAppSelector } from '@/app/hooks';
 import { ERROR_TOAST_PROPS } from '@/constants/toast';
 import { useUser } from '@/contexts/UserContext';
-import {
-  AGORA_APP_ID,
-  useClient,
-  useMicrophoneAndCameraTracks,
-} from '@/lib/agora';
+import { usePeerCall } from '@/lib/webrtc/usePeerCall';
 
 import { Controls } from './Controls';
 import './VideoCollection.scss';
@@ -35,23 +35,54 @@ const VideoPanel = ({
   );
 };
 
+const VideoPlayer = ({
+  stream,
+  muted = false,
+}: {
+  stream: MediaStream;
+  muted?: boolean;
+}): ReactElement<'video'> => {
+  const ref = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    if (ref.current != null) {
+      ref.current.srcObject = stream;
+    }
+  }, [stream]);
+
+  return (
+    <video
+      autoPlay
+      className="peer-video"
+      muted={muted}
+      playsInline
+      ref={ref}
+    />
+  );
+};
+
 interface Props {
   partnerName?: string;
   isPartnerInRoom: boolean;
+  socket: Socket;
 }
 
 export const VideoCollection = ({
   partnerName = '',
   isPartnerInRoom,
+  socket,
 }: Props): ReactElement<Props, typeof Box> | null => {
-  const [inCall, setInCall] = useState(true);
-  const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
-  const [start, setStart] = useState<boolean>(false);
-  const [hasInitialised, setHasInitialised] = useState<boolean>(false);
-  const client = useClient();
-  const { ready, tracks } = useMicrophoneAndCameraTracks();
   const user = useUser();
-  const { id, videoToken } = useAppSelector((state) => state.room);
+  const { iceServers } = useAppSelector((state) => state.room);
+  const {
+    localStream,
+    remoteStream,
+    error,
+    audioEnabled,
+    videoEnabled,
+    toggleAudio,
+    toggleVideo,
+  } = usePeerCall(socket, iceServers, isPartnerInRoom);
   const height = useBreakpointValue(
     {
       base: '25vw',
@@ -73,84 +104,18 @@ export const VideoCollection = ({
   const toast = useToast();
 
   useEffect(() => {
-    if (!AGORA_APP_ID || !videoToken) {
-      return () => {};
-    }
-
-    const init = async (channelName: string): Promise<void> => {
-      client.on('user-published', async (user, mediaType) => {
-        await client.subscribe(user, mediaType);
-        if (mediaType === 'video') {
-          setUsers((prevUsers) => {
-            return [...prevUsers, user];
-          });
-        }
-        if (mediaType === 'audio') {
-          user.audioTrack?.play();
-        }
-      });
-
-      client.on('user-unpublished', async (user, mediaType) => {
-        await client.unsubscribe(user, mediaType);
-        if (mediaType === 'audio') {
-          user.audioTrack?.stop();
-        }
-        if (mediaType === 'video') {
-          setUsers((prevUsers) => {
-            return prevUsers.filter((prevUser) => prevUser.uid !== user.uid);
-          });
-        }
-      });
-
-      client.on('user-left', async (user) => {
-        await client.unsubscribe(user);
-        setUsers((prevUsers) => {
-          return prevUsers.filter((prevUser) => prevUser.uid !== user.uid);
-        });
-      });
-
-      await client.join(AGORA_APP_ID, channelName, videoToken, `${user!.id}`);
-      setInCall(true);
-
-      if (tracks) {
-        await client.publish([tracks[0], tracks[1]]);
-      }
-
-      setStart(true);
-    };
-
-    if (ready && tracks && !hasInitialised) {
-      setHasInitialised(true);
-      init(`${id}`);
-    }
-
-    return () => {
-      if (hasInitialised) {
-        client.unpublish();
-        client.leave();
-      }
-    };
-  }, [client, hasInitialised, id, ready, tracks, user, videoToken]);
-
-  useEffect(() => {
-    return () => {
-      tracks?.forEach((track) => track.close());
-    };
-  }, [tracks]);
-
-  useEffect(() => {
-    // We want to check for null specifically
-    if (videoToken === null && !toast.isActive('video_token_error_toast')) {
+    if (error != null && !toast.isActive('video_error_toast')) {
       toast({
         ...ERROR_TOAST_PROPS,
-        id: 'video_token_error_toast',
+        id: 'video_error_toast',
         title: 'Failed to start video communication!',
-        description: 'Please refresh the page to try again.',
+        description:
+          'Please check your camera/microphone permissions and refresh the page to try again.',
       });
     }
-  }, [videoToken, toast]);
+  }, [error, toast]);
 
-  if (!client || !user || !videoToken) {
+  if (!user) {
     return null;
   }
 
@@ -168,26 +133,27 @@ export const VideoCollection = ({
       width={width}
       zIndex={4}
     >
-      {inCall && start && tracks && (
+      {localStream != null && (
         <>
           <VideoPanel>
-            <AgoraVideoPlayer className="agora-video" videoTrack={tracks[1]} />
-            <Controls name={user.name} tracks={tracks} />
+            <VideoPlayer muted stream={localStream} />
+            <Controls
+              mediaControls={{
+                audioEnabled,
+                videoEnabled,
+                onToggleAudio: toggleAudio,
+                onToggleVideo: toggleVideo,
+              }}
+              name={user.name}
+            />
           </VideoPanel>
           {isPartnerInRoom ? (
-            users.length > 0 && users[0].videoTrack ? (
-              <VideoPanel>
-                <AgoraVideoPlayer
-                  className="agora-video"
-                  videoTrack={users[0].videoTrack}
-                />
-                <Controls name={partnerName} />
-              </VideoPanel>
-            ) : (
-              <VideoPanel>
-                <Controls name={partnerName} />
-              </VideoPanel>
-            )
+            <VideoPanel>
+              {remoteStream != null && (
+                <VideoPlayer stream={remoteStream} />
+              )}
+              <Controls name={partnerName} />
+            </VideoPanel>
           ) : null}
         </>
       )}
