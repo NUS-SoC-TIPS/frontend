@@ -102,6 +102,7 @@ export const MiddleSection = ({
       <VideoCollection
         isPartnerInRoom={isPartnerInRoom}
         partnerName={partner?.name}
+        socket={socket}
       />
     </Box>
   );
