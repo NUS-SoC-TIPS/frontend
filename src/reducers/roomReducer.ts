@@ -23,7 +23,7 @@ export interface RoomState {
   id: number;
   status: RoomJoiningStatus;
   partner: { name: string } | null;
-  videoToken: string | null; // empty string = not set yet, null = video token failed to generate
+  iceServers: RTCIceServer[]; // ICE (STUN/TURN) config supplied by the backend on join
   isPartnerInRoom: boolean; // the partner may be set, but they might have disconnected
   isRoomClosed: boolean; // this is for when the room was just closed by a user in the room
   userActualSlug: string; // only used if user is already in another room
@@ -35,7 +35,7 @@ const initialState: RoomState = {
   id: 0,
   status: RoomJoiningStatus.LOADING,
   partner: null,
-  videoToken: '',
+  iceServers: [],
   isPartnerInRoom: false,
   isRoomClosed: false,
   userActualSlug: '',
@@ -55,7 +55,7 @@ export const roomSlice = createSlice({
         id,
         status,
         partner,
-        videoToken,
+        iceServers,
         isPartnerInRoom,
         isRoomClosed,
         userActualSlug,
@@ -65,8 +65,8 @@ export const roomSlice = createSlice({
       state.id = id ?? state.id;
       state.status = status ?? state.status;
       state.partner = partner ?? state.partner;
-      state.videoToken =
-        videoToken !== undefined ? videoToken : state.videoToken;
+      state.iceServers =
+        iceServers !== undefined ? iceServers : state.iceServers;
       state.isPartnerInRoom = isPartnerInRoom ?? state.isPartnerInRoom;
       state.isRoomClosed = isRoomClosed ?? state.isRoomClosed;
       state.userActualSlug = userActualSlug ?? state.userActualSlug;
@@ -77,7 +77,7 @@ export const roomSlice = createSlice({
       state.id = 0;
       state.status = RoomJoiningStatus.LOADING;
       state.partner = null;
-      state.videoToken = '';
+      state.iceServers = [];
       state.isPartnerInRoom = false;
       state.isRoomClosed = false;
       state.userActualSlug = '';

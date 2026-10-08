@@ -37,7 +37,7 @@ const handleJoinRoom = (socket: Socket): void => {
     (data: {
       id: number;
       partner: { name: string } | null;
-      videoToken: string;
+      iceServers: RTCIceServer[];
       isPartnerInRoom: boolean;
       language: Language;
       notes: string;
@@ -46,7 +46,7 @@ const handleJoinRoom = (socket: Socket): void => {
       const {
         id,
         partner,
-        videoToken,
+        iceServers,
         notes,
         language,
         isPartnerInRoom,
@@ -56,7 +56,7 @@ const handleJoinRoom = (socket: Socket): void => {
         updateRoomState({
           id,
           partner,
-          videoToken,
+          iceServers,
           isPartnerInRoom,
           status: RoomJoiningStatus.SUCCESS,
         }),
