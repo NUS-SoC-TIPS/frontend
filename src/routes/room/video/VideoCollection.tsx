@@ -101,16 +101,27 @@ export const VideoCollection = ({
   const toast = useToast();
 
   useEffect(() => {
-    if (error != null && !toast.isActive('video_error_toast')) {
-      toast({
-        ...ERROR_TOAST_PROPS,
-        id: 'video_error_toast',
-        title: 'Failed to start video communication!',
-        description:
-          'Please check your camera/microphone permissions and refresh the page to try again.',
-      });
+    if (error == null || toast.isActive('video_error_toast')) {
+      return;
     }
+    toast({
+      ...ERROR_TOAST_PROPS,
+      id: 'video_error_toast',
+      ...(error.kind === 'media'
+        ? {
+            title: 'Failed to access your camera/microphone!',
+            description:
+              'Your partner will not see or hear you. Please check your permissions and refresh the page.',
+          }
+        : {
+            title: 'Failed to connect video with your partner!',
+            description: 'Please refresh the page to try again.',
+          }),
+    });
   }, [error, toast]);
+
+  // Wait for the camera permission prompt to settle before showing panels.
+  const isMediaSettled = localStream != null || error?.kind === 'media';
 
   if (!user) {
     return null;
@@ -130,17 +141,23 @@ export const VideoCollection = ({
       width={width}
       zIndex={4}
     >
-      {localStream != null && (
+      {isMediaSettled && (
         <>
           <VideoPanel>
-            <VideoPlayer muted={true} stream={localStream} />
+            {localStream != null && (
+              <VideoPlayer muted={true} stream={localStream} />
+            )}
             <Controls
-              mediaControls={{
-                audioEnabled,
-                videoEnabled,
-                onToggleAudio: toggleAudio,
-                onToggleVideo: toggleVideo,
-              }}
+              mediaControls={
+                localStream != null
+                  ? {
+                      audioEnabled,
+                      videoEnabled,
+                      onToggleAudio: toggleAudio,
+                      onToggleVideo: toggleVideo,
+                    }
+                  : undefined
+              }
               name={user.name}
             />
           </VideoPanel>

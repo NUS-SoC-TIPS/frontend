@@ -7,12 +7,36 @@ interface SessionDescriptionPayload {
   sdp?: string;
 }
 
+interface OfferPayload extends SessionDescriptionPayload {
+  // Random per-peer value used to decide who backs off when both offer.
+  tiebreaker: number;
+}
+
+export type PeerCallErrorKind = 'media' | 'connection';
+
+export class PeerCallError extends Error {
+  readonly kind: PeerCallErrorKind;
+
+  constructor(kind: PeerCallErrorKind, message: string) {
+    super(message);
+    this.kind = kind;
+  }
+}
+
 export interface PeerCallCallbacks {
   onLocalStream: (stream: MediaStream | null) => void;
   onRemoteStream: (stream: MediaStream | null) => void;
   onConnectionStateChange: (state: RTCPeerConnectionState) => void;
-  onError: (error: Error) => void;
+  onError: (error: PeerCallError) => void;
 }
+
+// How many ICE restarts the initiator attempts before giving up on a
+// connection that has failed (e.g. after a network change).
+const MAX_ICE_RESTARTS = 2;
+
+// An offer can be lost if it reaches the partner before their video
+// component has mounted; resend it if it is still unanswered by then.
+const OFFER_RETRY_MS = 4000;
 
 /**
  * Owns a single 1:1 WebRTC peer connection: local media capture, the
@@ -23,16 +47,28 @@ export interface PeerCallCallbacks {
  * the two sockets in the room, and supplies the ICE server list (STUN,
  * plus TURN for the minority of calls that cannot connect directly).
  *
- * Roles are fixed to avoid offer collisions: the peer who joined the
- * room second (i.e. the partner was already present) is the initiator
- * and creates the offer; the first joiner answers.
+ * Presence is read straight off the room socket, so it is ordered with
+ * the signaling messages it relates to:
+ * - Our own (re)join with the partner present: we are the newcomer, so we
+ *   start a fresh connection and send the offer.
+ * - The partner (re)joins: they are the newcomer, so we start a fresh
+ *   connection and wait for their offer.
+ * - The partner disconnects: we tear the connection down.
+ * If both sides still offer at once (e.g. the partner joined while this
+ * component was mounting), the peer with the lower tiebreaker backs off.
+ * Unanswered offers are resent, so a lost offer only delays the call.
+ *
+ * All presence and signaling work runs through one serial queue, after
+ * local media capture has settled, so nothing is dropped while the
+ * camera permission prompt is open. A peer without camera/microphone
+ * still connects and receives the partner's media.
  */
 export class PeerCallManager {
   private readonly socket: Socket;
 
-  private readonly iceServers: RTCIceServer[];
-
   private readonly callbacks: PeerCallCallbacks;
+
+  private iceServers: RTCIceServer[];
 
   private peerConnection: RTCPeerConnection | null = null;
 
@@ -42,73 +78,53 @@ export class PeerCallManager {
 
   private isInitiator = false;
 
+  private iceRestarts = 0;
+
+  private readonly tiebreaker = Math.random();
+
+  private offerRetryTimer: ReturnType<typeof setTimeout> | null = null;
+
+  private audioEnabled = true;
+
+  private videoEnabled = true;
+
   private disposed = false;
+
+  private queue: Promise<void>;
 
   constructor(
     socket: Socket,
     iceServers: RTCIceServer[],
+    isPartnerInRoom: boolean,
     callbacks: PeerCallCallbacks,
   ) {
     this.socket = socket;
     this.iceServers = iceServers;
     this.callbacks = callbacks;
-    this.socket.on(
-      ROOM_EVENTS.VIDEO_OFFER,
-      this.handleOffer as (...args: unknown[]) => void,
-    );
-    this.socket.on(
-      ROOM_EVENTS.VIDEO_ANSWER,
-      this.handleAnswer as (...args: unknown[]) => void,
-    );
-    this.socket.on(
-      ROOM_EVENTS.VIDEO_ICE_CANDIDATE,
-      this.handleIceCandidate as (...args: unknown[]) => void,
-    );
-  }
-
-  /** Captures local camera/microphone. Does not connect to anyone yet. */
-  async start(): Promise<void> {
-    try {
-      this.localStream = await navigator.mediaDevices.getUserMedia({
-        audio: true,
-        video: true,
-      });
-      if (this.disposed) {
-        this.stopLocalTracks();
-        return;
-      }
-      this.callbacks.onLocalStream(this.localStream);
-    } catch (e: unknown) {
-      this.callbacks.onError(
-        e instanceof Error
-          ? e
-          : new Error('Failed to access camera/microphone'),
-      );
+    this.queue = this.acquireLocalMedia();
+    if (isPartnerInRoom) {
+      this.enqueue(() => this.connect(true));
     }
-  }
-
-  /**
-   * Reacts to partner presence. When the partner is present, ensures a
-   * peer connection exists (creating an offer if this peer is the
-   * initiator). When the partner leaves, tears the connection down so a
-   * later join starts from a clean state.
-   */
-  setPartnerPresent(present: boolean, isInitiator: boolean): void {
-    if (!present) {
-      this.closePeerConnection();
-      return;
-    }
-    this.isInitiator = isInitiator;
-    this.ensurePeerConnection();
+    this.socket.on(ROOM_EVENTS.JOIN_ROOM, this.handleSelfJoined);
+    this.socket.on(ROOM_EVENTS.JOINED_ROOM, this.handlePartnerJoined);
+    this.socket.on(
+      ROOM_EVENTS.PARTNER_DISCONNECTED,
+      this.handlePartnerDisconnected,
+    );
+    this.socket.on(ROOM_EVENTS.VIDEO_OFFER, this.handleOffer);
+    this.socket.on(ROOM_EVENTS.VIDEO_ANSWER, this.handleAnswer);
+    this.socket.on(ROOM_EVENTS.VIDEO_ICE_CANDIDATE, this.handleIceCandidate);
   }
 
   setAudioEnabled(enabled: boolean): void {
+    this.audioEnabled = enabled;
     this.localStream
       ?.getAudioTracks()
       .forEach((track) => (track.enabled = enabled));
   }
 
   setVideoEnabled(enabled: boolean): void {
+    this.videoEnabled = enabled;
     this.localStream
       ?.getVideoTracks()
       .forEach((track) => (track.enabled = enabled));
@@ -116,28 +132,171 @@ export class PeerCallManager {
 
   dispose(): void {
     this.disposed = true;
+    this.socket.off(ROOM_EVENTS.JOIN_ROOM, this.handleSelfJoined);
+    this.socket.off(ROOM_EVENTS.JOINED_ROOM, this.handlePartnerJoined);
+    this.socket.off(
+      ROOM_EVENTS.PARTNER_DISCONNECTED,
+      this.handlePartnerDisconnected,
+    );
     this.socket.off(ROOM_EVENTS.VIDEO_OFFER, this.handleOffer);
     this.socket.off(ROOM_EVENTS.VIDEO_ANSWER, this.handleAnswer);
     this.socket.off(ROOM_EVENTS.VIDEO_ICE_CANDIDATE, this.handleIceCandidate);
     this.closePeerConnection();
     this.stopLocalTracks();
-    this.callbacks.onLocalStream(null);
   }
 
-  private ensurePeerConnection(): void {
-    if (this.peerConnection != null || this.localStream == null) {
+  private enqueue(task: () => Promise<void> | void): void {
+    this.queue = this.queue
+      .then(() => (this.disposed ? undefined : task()))
+      .catch((e: unknown) => {
+        this.reportError(
+          'connection',
+          e instanceof Error ? e.message : 'WebRTC negotiation failed',
+        );
+      });
+  }
+
+  private async acquireLocalMedia(): Promise<void> {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: true,
+      });
+      if (this.disposed) {
+        stream.getTracks().forEach((track) => track.stop());
+        return;
+      }
+      this.localStream = stream;
+      this.setAudioEnabled(this.audioEnabled);
+      this.setVideoEnabled(this.videoEnabled);
+      this.callbacks.onLocalStream(stream);
+    } catch (e: unknown) {
+      // Carry on receive-only: the partner can still be seen and heard.
+      this.reportError(
+        'media',
+        e instanceof Error ? e.message : 'Failed to access camera/microphone',
+      );
+    }
+  }
+
+  private handleSelfJoined = (data: {
+    iceServers?: RTCIceServer[];
+    isPartnerInRoom?: boolean;
+  }): void => {
+    this.enqueue(() => {
+      // Our socket reconnected and rejoined; ICE credentials may be new.
+      this.iceServers = data.iceServers ?? this.iceServers;
+      this.closePeerConnection();
+      if (data.isPartnerInRoom) {
+        return this.connect(true);
+      }
+    });
+  };
+
+  private handlePartnerJoined = (): void => {
+    this.enqueue(() => {
+      this.closePeerConnection();
+      return this.connect(false);
+    });
+  };
+
+  private handlePartnerDisconnected = (): void => {
+    this.enqueue(() => this.closePeerConnection());
+  };
+
+  private handleOffer = (payload: OfferPayload): void => {
+    this.enqueue(async () => {
+      let peerConnection = this.peerConnection;
+      if (peerConnection == null) {
+        await this.connect(false);
+        peerConnection = this.peerConnection as RTCPeerConnection | null;
+        if (peerConnection == null) {
+          return;
+        }
+      }
+      if (peerConnection.signalingState === 'have-local-offer') {
+        // Both sides offered. Deterministically pick one to back off.
+        if (this.tiebreaker > payload.tiebreaker) {
+          return; // The partner backs off and will answer our offer.
+        }
+        this.clearOfferRetry();
+        await peerConnection.setLocalDescription({ type: 'rollback' });
+        this.isInitiator = false;
+      }
+      await peerConnection.setRemoteDescription({
+        type: payload.type,
+        sdp: payload.sdp,
+      });
+      await this.flushPendingIceCandidates();
+      const answer = await peerConnection.createAnswer();
+      await peerConnection.setLocalDescription(answer);
+      this.socket.emit(ROOM_EVENTS.VIDEO_ANSWER, {
+        type: answer.type,
+        sdp: answer.sdp,
+      } satisfies SessionDescriptionPayload);
+    });
+  };
+
+  private handleAnswer = (payload: SessionDescriptionPayload): void => {
+    this.enqueue(async () => {
+      const peerConnection = this.peerConnection;
+      // Ignore answers to offers we no longer have (e.g. after a reset).
+      if (peerConnection?.signalingState !== 'have-local-offer') {
+        return;
+      }
+      this.clearOfferRetry();
+      await peerConnection.setRemoteDescription(payload);
+      await this.flushPendingIceCandidates();
+    });
+  };
+
+  private handleIceCandidate = (payload: RTCIceCandidateInit): void => {
+    this.enqueue(() => this.addIceCandidate(payload));
+  };
+
+  private async addIceCandidate(payload: RTCIceCandidateInit): Promise<void> {
+    const peerConnection = this.peerConnection;
+    if (peerConnection?.remoteDescription == null) {
+      this.pendingIceCandidates.push(payload);
       return;
     }
+    try {
+      await peerConnection.addIceCandidate(payload);
+    } catch {
+      // Candidates for an offer we declined, or from a torn-down session,
+      // are expected to fail and are harmless.
+    }
+  }
+
+  private async flushPendingIceCandidates(): Promise<void> {
+    const queued = this.pendingIceCandidates;
+    this.pendingIceCandidates = [];
+    for (const candidate of queued) {
+      await this.addIceCandidate(candidate);
+    }
+  }
+
+  private async connect(isInitiator: boolean): Promise<void> {
+    if (this.peerConnection != null) {
+      return;
+    }
+    this.isInitiator = isInitiator;
+    this.iceRestarts = 0;
     const peerConnection = new RTCPeerConnection({
       iceServers: this.iceServers,
     });
     this.peerConnection = peerConnection;
 
-    this.localStream
-      .getTracks()
-      .forEach((track) =>
-        peerConnection.addTrack(track, this.localStream as MediaStream),
-      );
+    const { localStream } = this;
+    if (localStream != null) {
+      localStream
+        .getTracks()
+        .forEach((track) => peerConnection.addTrack(track, localStream));
+    } else if (isInitiator) {
+      // Without local media, the offer still needs m-lines to receive on.
+      peerConnection.addTransceiver('audio', { direction: 'recvonly' });
+      peerConnection.addTransceiver('video', { direction: 'recvonly' });
+    }
 
     peerConnection.onicecandidate = (event): void => {
       if (event.candidate) {
@@ -154,114 +313,90 @@ export class PeerCallManager {
       );
     };
     peerConnection.onconnectionstatechange = (): void => {
-      this.callbacks.onConnectionStateChange(peerConnection.connectionState);
-    };
-    peerConnection.onnegotiationneeded = async (): Promise<void> => {
-      if (!this.isInitiator || this.peerConnection !== peerConnection) {
+      if (this.peerConnection !== peerConnection) {
         return;
       }
-      try {
-        const offer = await peerConnection.createOffer();
-        await peerConnection.setLocalDescription(offer);
-        this.socket.emit(ROOM_EVENTS.VIDEO_OFFER, {
-          type: offer.type,
-          sdp: offer.sdp,
-        } satisfies SessionDescriptionPayload);
-      } catch (e: unknown) {
-        this.callbacks.onError(
-          e instanceof Error ? e : new Error('Failed to create offer'),
-        );
+      const state = peerConnection.connectionState;
+      this.callbacks.onConnectionStateChange(state);
+      if (state !== 'failed' || !this.isInitiator) {
+        return;
       }
+      if (this.iceRestarts >= MAX_ICE_RESTARTS) {
+        this.reportError('connection', 'Failed to connect to partner');
+        return;
+      }
+      this.iceRestarts += 1;
+      this.enqueue(() => this.sendOffer(peerConnection, true));
     };
+
+    if (isInitiator) {
+      await this.sendOffer(peerConnection, false);
+    }
   }
 
-  private handleOffer = async (
-    payload: SessionDescriptionPayload,
-  ): Promise<void> => {
-    try {
-      this.ensurePeerConnection();
-      const peerConnection = this.peerConnection;
-      if (peerConnection == null) {
-        return;
-      }
-      await peerConnection.setRemoteDescription(
-        new RTCSessionDescription(payload),
-      );
-      await this.flushPendingIceCandidates();
-      const answer = await peerConnection.createAnswer();
-      await peerConnection.setLocalDescription(answer);
-      this.socket.emit(ROOM_EVENTS.VIDEO_ANSWER, {
-        type: answer.type,
-        sdp: answer.sdp,
-      } satisfies SessionDescriptionPayload);
-    } catch (e: unknown) {
-      this.callbacks.onError(
-        e instanceof Error ? e : new Error('Failed to answer offer'),
-      );
-    }
-  };
-
-  private handleAnswer = async (
-    payload: SessionDescriptionPayload,
-  ): Promise<void> => {
-    try {
-      if (this.peerConnection == null) {
-        return;
-      }
-      await this.peerConnection.setRemoteDescription(
-        new RTCSessionDescription(payload),
-      );
-      await this.flushPendingIceCandidates();
-    } catch (e: unknown) {
-      this.callbacks.onError(
-        e instanceof Error ? e : new Error('Failed to accept answer'),
-      );
-    }
-  };
-
-  private handleIceCandidate = async (
-    payload: RTCIceCandidateInit,
-  ): Promise<void> => {
-    if (
-      this.peerConnection == null ||
-      this.peerConnection.remoteDescription == null
-    ) {
-      this.pendingIceCandidates.push(payload);
+  private async sendOffer(
+    peerConnection: RTCPeerConnection,
+    iceRestart: boolean,
+  ): Promise<void> {
+    if (this.peerConnection !== peerConnection) {
       return;
     }
-    try {
-      await this.peerConnection.addIceCandidate(new RTCIceCandidate(payload));
-    } catch (e: unknown) {
-      this.callbacks.onError(
-        e instanceof Error ? e : new Error('Failed to add ICE candidate'),
-      );
+    if (peerConnection.signalingState === 'have-local-offer') {
+      await peerConnection.setLocalDescription({ type: 'rollback' });
     }
-  };
+    const offer = await peerConnection.createOffer({ iceRestart });
+    await peerConnection.setLocalDescription(offer);
+    this.socket.emit(ROOM_EVENTS.VIDEO_OFFER, {
+      type: offer.type,
+      sdp: offer.sdp,
+      tiebreaker: this.tiebreaker,
+    } satisfies OfferPayload);
 
-  private async flushPendingIceCandidates(): Promise<void> {
-    const queued = this.pendingIceCandidates;
-    this.pendingIceCandidates = [];
-    for (const candidate of queued) {
-      await this.handleIceCandidate(candidate);
+    this.clearOfferRetry();
+    this.offerRetryTimer = setTimeout(() => {
+      this.offerRetryTimer = null;
+      this.enqueue(() => {
+        if (
+          this.peerConnection === peerConnection &&
+          peerConnection.signalingState === 'have-local-offer'
+        ) {
+          return this.sendOffer(peerConnection, iceRestart);
+        }
+      });
+    }, OFFER_RETRY_MS);
+  }
+
+  private clearOfferRetry(): void {
+    if (this.offerRetryTimer != null) {
+      clearTimeout(this.offerRetryTimer);
+      this.offerRetryTimer = null;
     }
   }
 
   private closePeerConnection(): void {
+    this.clearOfferRetry();
     if (this.peerConnection != null) {
       this.peerConnection.onicecandidate = null;
       this.peerConnection.ontrack = null;
       this.peerConnection.onconnectionstatechange = null;
-      this.peerConnection.onnegotiationneeded = null;
       this.peerConnection.close();
       this.peerConnection = null;
     }
     this.pendingIceCandidates = [];
-    this.callbacks.onRemoteStream(null);
-    this.callbacks.onConnectionStateChange('closed');
+    if (!this.disposed) {
+      this.callbacks.onRemoteStream(null);
+      this.callbacks.onConnectionStateChange('closed');
+    }
   }
 
   private stopLocalTracks(): void {
     this.localStream?.getTracks().forEach((track) => track.stop());
     this.localStream = null;
+  }
+
+  private reportError(kind: PeerCallErrorKind, message: string): void {
+    if (!this.disposed) {
+      this.callbacks.onError(new PeerCallError(kind, message));
+    }
   }
 }
