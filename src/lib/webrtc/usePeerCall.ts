@@ -1,13 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
-import { PeerCallManager } from './peerCall';
+import { PeerCallError, PeerCallManager } from './peerCall';
 
 export interface UsePeerCallResult {
   localStream: MediaStream | null;
   remoteStream: MediaStream | null;
   connectionState: RTCPeerConnectionState;
-  error: Error | null;
+  error: PeerCallError | null;
   audioEnabled: boolean;
   videoEnabled: boolean;
   toggleAudio: () => void;
@@ -16,9 +16,9 @@ export interface UsePeerCallResult {
 
 /**
  * React wrapper around PeerCallManager (see peerCall.ts for the
- * transport design). `joinedWithPartner` captures whether the partner
- * was already in the room when this client joined; that side is the
- * initiator, so the two peers never offer at the same time.
+ * transport design). `iceServers` and `isPartnerInRoom` are only read
+ * when the call starts; afterwards the manager follows presence and ICE
+ * configuration changes directly from the room socket.
  */
 export const usePeerCall = (
   socket: Socket | null,
@@ -29,49 +29,38 @@ export const usePeerCall = (
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
   const [connectionState, setConnectionState] =
     useState<RTCPeerConnectionState>('new');
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<PeerCallError | null>(null);
   const [audioEnabled, setAudioEnabled] = useState(true);
   const [videoEnabled, setVideoEnabled] = useState(true);
 
   const managerRef = useRef<PeerCallManager | null>(null);
-  const joinedWithPartnerRef = useRef<boolean | null>(null);
-
-  // The ICE server list only changes when (re)joining a room; key the
-  // effect by value so a fresh array identity does not restart media.
-  const iceServersKey = useMemo(() => JSON.stringify(iceServers), [iceServers]);
+  const initialStateRef = useRef({ iceServers, isPartnerInRoom });
 
   useEffect(() => {
     if (socket == null) {
       return () => {};
     }
-    const manager = new PeerCallManager(socket, iceServers, {
-      onLocalStream: setLocalStream,
-      onRemoteStream: setRemoteStream,
-      onConnectionStateChange: setConnectionState,
-      onError: setError,
-    });
+    const manager = new PeerCallManager(
+      socket,
+      initialStateRef.current.iceServers,
+      initialStateRef.current.isPartnerInRoom,
+      {
+        onLocalStream: setLocalStream,
+        onRemoteStream: setRemoteStream,
+        onConnectionStateChange: setConnectionState,
+        onError: setError,
+      },
+    );
     managerRef.current = manager;
-    void manager.start();
     return () => {
       manager.dispose();
       managerRef.current = null;
+      setLocalStream(null);
+      setRemoteStream(null);
+      setAudioEnabled(true);
+      setVideoEnabled(true);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [socket, iceServersKey]);
-
-  useEffect(() => {
-    const manager = managerRef.current;
-    if (manager == null) {
-      return;
-    }
-    if (joinedWithPartnerRef.current === null) {
-      joinedWithPartnerRef.current = isPartnerInRoom;
-    }
-    manager.setPartnerPresent(
-      isPartnerInRoom,
-      joinedWithPartnerRef.current === true,
-    );
-  }, [isPartnerInRoom, localStream]);
+  }, [socket]);
 
   const toggleAudio = (): void => {
     const next = !audioEnabled;
