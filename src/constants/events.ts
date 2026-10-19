@@ -30,6 +30,11 @@ export const ROOM_EVENTS = {
   // When the partner disconnects
   PARTNER_DISCONNECTED: 'partner_disconnected',
 
+  // WebRTC signaling, relayed verbatim between the two peers in the room
+  VIDEO_OFFER: 'video_offer',
+  VIDEO_ANSWER: 'video_answer',
+  VIDEO_ICE_CANDIDATE: 'video_ice_candidate',
+
   // General errors, sent from server
   JOIN_ROOM_FAILED: 'join_room_failed',
   CLOSE_ROOM_FAILED: 'close_room_failed',

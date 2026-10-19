@@ -77,8 +77,6 @@ const RAW_RUNTIME_STATE =
           ["@typescript-eslint/parser", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:5.62.0"],\
           ["@vitejs/plugin-react-swc", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:3.7.0"],\
           ["@vitest/coverage-v8", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:1.6.0"],\
-          ["agora-rtc-react", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:1.1.3"],\
-          ["agora-rtc-sdk-ng", "npm:4.20.2"],\
           ["autosize", "npm:6.0.1"],\
           ["axios", "npm:1.7.2"],\
           ["browser-image-compression", "npm:2.0.2"],\
@@ -137,43 +135,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@adobe-css-tools-npm-4.3.3-72a4f624fb-0e77057efb.zip/node_modules/@adobe/css-tools/",\
         "packageDependencies": [\
           ["@adobe/css-tools", "npm:4.3.3"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["@agora-js/media", [\
-      ["npm:4.20.2", {\
-        "packageLocation": "./.yarn/cache/@agora-js-media-npm-4.20.2-2ea3bd39d2-808e604fd1.zip/node_modules/@agora-js/media/",\
-        "packageDependencies": [\
-          ["@agora-js/media", "npm:4.20.2"],\
-          ["@agora-js/report", "npm:4.20.2"],\
-          ["@agora-js/shared", "npm:4.20.2"],\
-          ["agora-rte-extension", "npm:1.2.4"],\
-          ["axios", "npm:1.7.2"],\
-          ["pako", "npm:2.1.0"],\
-          ["webrtc-adapter", "npm:8.2.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["@agora-js/report", [\
-      ["npm:4.20.2", {\
-        "packageLocation": "./.yarn/cache/@agora-js-report-npm-4.20.2-e5ca0b35c2-bb976731cf.zip/node_modules/@agora-js/report/",\
-        "packageDependencies": [\
-          ["@agora-js/report", "npm:4.20.2"],\
-          ["@agora-js/shared", "npm:4.20.2"],\
-          ["axios", "npm:1.7.2"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["@agora-js/shared", [\
-      ["npm:4.20.2", {\
-        "packageLocation": "./.yarn/cache/@agora-js-shared-npm-4.20.2-ef12d896fe-c555199e8b.zip/node_modules/@agora-js/shared/",\
-        "packageDependencies": [\
-          ["@agora-js/shared", "npm:4.20.2"],\
-          ["axios", "npm:1.7.2"],\
-          ["ua-parser-js", "npm:0.7.38"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -6466,55 +6427,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["agora-rtc-react", [\
-      ["npm:1.1.3", {\
-        "packageLocation": "./.yarn/cache/agora-rtc-react-npm-1.1.3-4f840945f2-1a6d3bb202.zip/node_modules/agora-rtc-react/",\
-        "packageDependencies": [\
-          ["agora-rtc-react", "npm:1.1.3"]\
-        ],\
-        "linkType": "SOFT"\
-      }],\
-      ["virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:1.1.3", {\
-        "packageLocation": "./.yarn/__virtual__/agora-rtc-react-virtual-6ac75e3616/0/cache/agora-rtc-react-npm-1.1.3-4f840945f2-1a6d3bb202.zip/node_modules/agora-rtc-react/",\
-        "packageDependencies": [\
-          ["agora-rtc-react", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:1.1.3"],\
-          ["@types/react", "npm:18.3.3"],\
-          ["agora-rtc-sdk-ng", "npm:4.20.2"],\
-          ["react", "npm:18.3.1"]\
-        ],\
-        "packagePeers": [\
-          "@types/react",\
-          "react"\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["agora-rtc-sdk-ng", [\
-      ["npm:4.20.2", {\
-        "packageLocation": "./.yarn/cache/agora-rtc-sdk-ng-npm-4.20.2-eb7f7ee0ba-307761a842.zip/node_modules/agora-rtc-sdk-ng/",\
-        "packageDependencies": [\
-          ["agora-rtc-sdk-ng", "npm:4.20.2"],\
-          ["@agora-js/media", "npm:4.20.2"],\
-          ["@agora-js/report", "npm:4.20.2"],\
-          ["@agora-js/shared", "npm:4.20.2"],\
-          ["agora-rte-extension", "npm:1.2.4"],\
-          ["axios", "npm:1.7.2"],\
-          ["formdata-polyfill", "npm:4.0.10"],\
-          ["ua-parser-js", "npm:0.7.38"],\
-          ["webrtc-adapter", "npm:8.2.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["agora-rte-extension", [\
-      ["npm:1.2.4", {\
-        "packageLocation": "./.yarn/cache/agora-rte-extension-npm-1.2.4-eda4d14a4b-312f66df0a.zip/node_modules/agora-rte-extension/",\
-        "packageDependencies": [\
-          ["agora-rte-extension", "npm:1.2.4"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["ajv", [\
       ["npm:6.12.6", {\
         "packageLocation": "./.yarn/cache/ajv-npm-6.12.6-4b5105e2b2-48d6ad2113.zip/node_modules/ajv/",\
@@ -9046,17 +8958,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["fetch-blob", [\
-      ["npm:3.2.0", {\
-        "packageLocation": "./.yarn/cache/fetch-blob-npm-3.2.0-28e01becfc-5264ecceb5.zip/node_modules/fetch-blob/",\
-        "packageDependencies": [\
-          ["fetch-blob", "npm:3.2.0"],\
-          ["node-domexception", "npm:1.0.0"],\
-          ["web-streams-polyfill", "npm:3.3.3"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["figures", [\
       ["npm:3.2.0", {\
         "packageLocation": "./.yarn/cache/figures-npm-3.2.0-85d357e955-a3bf94e001.zip/node_modules/figures/",\
@@ -9278,16 +9179,6 @@ const RAW_RUNTIME_STATE =
           ["asynckit", "npm:0.4.0"],\
           ["combined-stream", "npm:1.0.8"],\
           ["mime-types", "npm:2.1.35"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["formdata-polyfill", [\
-      ["npm:4.0.10", {\
-        "packageLocation": "./.yarn/cache/formdata-polyfill-npm-4.0.10-e03013c013-9b5001d2ed.zip/node_modules/formdata-polyfill/",\
-        "packageDependencies": [\
-          ["formdata-polyfill", "npm:4.0.10"],\
-          ["fetch-blob", "npm:3.2.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -11908,15 +11799,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["node-domexception", [\
-      ["npm:1.0.0", {\
-        "packageLocation": "./.yarn/cache/node-domexception-npm-1.0.0-e1e813b76f-e332522f24.zip/node_modules/node-domexception/",\
-        "packageDependencies": [\
-          ["node-domexception", "npm:1.0.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["node-gyp", [\
       ["npm:10.1.0", {\
         "packageLocation": "./.yarn/unplugged/node-gyp-npm-10.1.0-bdea7d2ece/node_modules/node-gyp/",\
@@ -12313,15 +12195,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/p-try-npm-2.2.0-e0390dbaf8-f8a8e9a769.zip/node_modules/p-try/",\
         "packageDependencies": [\
           ["p-try", "npm:2.2.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["pako", [\
-      ["npm:2.1.0", {\
-        "packageLocation": "./.yarn/cache/pako-npm-2.1.0-78df11948c-38a04991d0.zip/node_modules/pako/",\
-        "packageDependencies": [\
-          ["pako", "npm:2.1.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -13637,15 +13510,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["sdp", [\
-      ["npm:3.2.0", {\
-        "packageLocation": "./.yarn/cache/sdp-npm-3.2.0-b1a5f85233-3ea337c24f.zip/node_modules/sdp/",\
-        "packageDependencies": [\
-          ["sdp", "npm:3.2.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["semver", [\
       ["npm:5.7.2", {\
         "packageLocation": "./.yarn/cache/semver-npm-5.7.2-938ee91eaa-fca14418a1.zip/node_modules/semver/",\
@@ -14409,8 +14273,6 @@ const RAW_RUNTIME_STATE =
           ["@typescript-eslint/parser", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:5.62.0"],\
           ["@vitejs/plugin-react-swc", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:3.7.0"],\
           ["@vitest/coverage-v8", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:1.6.0"],\
-          ["agora-rtc-react", "virtual:0e0166b1f60cba5f23015d0abe98ce72c6bb5c50e1a75726354c44c7e0b2681c3678d4a0bc272fcea9f34191ca329dc0e9c6947d861e624cf088a012a5e2c41e#npm:1.1.3"],\
-          ["agora-rtc-sdk-ng", "npm:4.20.2"],\
           ["autosize", "npm:6.0.1"],\
           ["axios", "npm:1.7.2"],\
           ["browser-image-compression", "npm:2.0.2"],\
@@ -14755,15 +14617,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/typescript-patch-32ada147aa-5659316360.zip/node_modules/typescript/",\
         "packageDependencies": [\
           ["typescript", "patch:typescript@npm%3A4.9.5#optional!builtin<compat/typescript>::version=4.9.5&hash=289587"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["ua-parser-js", [\
-      ["npm:0.7.38", {\
-        "packageLocation": "./.yarn/cache/ua-parser-js-npm-0.7.38-6dcd8631a2-011609d017.zip/node_modules/ua-parser-js/",\
-        "packageDependencies": [\
-          ["ua-parser-js", "npm:0.7.38"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -15313,15 +15166,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["web-streams-polyfill", [\
-      ["npm:3.3.3", {\
-        "packageLocation": "./.yarn/cache/web-streams-polyfill-npm-3.3.3-f24b9f8c34-8e7e13501b.zip/node_modules/web-streams-polyfill/",\
-        "packageDependencies": [\
-          ["web-streams-polyfill", "npm:3.3.3"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["web-vitals", [\
       ["npm:4.0.1", {\
         "packageLocation": "./.yarn/cache/web-vitals-npm-4.0.1-a5fb619069-610c09a898.zip/node_modules/web-vitals/",\
@@ -15336,16 +15180,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/webidl-conversions-npm-7.0.0-e8c8e30c68-4c4f65472c.zip/node_modules/webidl-conversions/",\
         "packageDependencies": [\
           ["webidl-conversions", "npm:7.0.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["webrtc-adapter", [\
-      ["npm:8.2.0", {\
-        "packageLocation": "./.yarn/cache/webrtc-adapter-npm-8.2.0-3d75ed65ad-520a1f6df1.zip/node_modules/webrtc-adapter/",\
-        "packageDependencies": [\
-          ["webrtc-adapter", "npm:8.2.0"],\
-          ["sdp", "npm:3.2.0"]\
         ],\
         "linkType": "HARD"\
       }]\
